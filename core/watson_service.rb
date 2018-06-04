@@ -1,5 +1,6 @@
 require("faraday")
 require("json")
+require("cgi")
 require("rubygems")
 require("excon")
 require_relative("detailed_response")
