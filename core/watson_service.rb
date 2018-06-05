@@ -14,11 +14,11 @@ class WatsonService
     @password = vars[:password] unless vars[:password].nil?
     @conn = Faraday.new(url: @url) do |connection|
       connection.basic_auth(@username, @password)
-      connection.headers["content-type"] = "application/json"
+      connection.headers["Content-Type"] = "application/json"
       # connection.response :logger
       connection.request :multipart
       connection.request(:url_encoded)
-      connection.adapter(Faraday.default_adapter) #:net_http
+      connection.adapter(:excon)
     end
   end
 
@@ -40,7 +40,7 @@ class WatsonService
       req.body = args[:json] unless args[:json].empty?
       req.params = args[:params] unless args[:params].nil?
     end
-    response = conn.builder.build_response(conn, request_obj)
+    response = conn.app.call(request_obj.to_env(conn))
     DetailedResponse.new(response)
   end
 end
