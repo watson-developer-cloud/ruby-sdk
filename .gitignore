@@ -11,7 +11,7 @@
 /tmp/
 .DS_Store
 /core/basic_test_file.rb
-/core/watson-ruby
+# /core/watson-ruby
 
 # Used by dotenv library to load environment variables.
 .env
