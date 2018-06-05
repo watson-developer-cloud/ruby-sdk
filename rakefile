@@ -1,0 +1,8 @@
+require "dotenv/tasks"
+
+task default: %w[test]
+
+task test: :dotenv do
+  ruby "tests/unit/test_language_translator_v2.rb"
+  ruby "tests/integration/test_language_translator_v2.rb"
+end
