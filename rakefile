@@ -5,4 +5,5 @@ task default: %w[test]
 task test: :dotenv do
   ruby "tests/unit/test_language_translator_v2.rb"
   ruby "tests/integration/test_language_translator_v2.rb"
+  ruby "tests/unit/test_tone_analyzer_v3.rb"
 end
