@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative("./../../core/watson-ruby/language_translator_v2.rb")
 require("minitest/autorun")
 
