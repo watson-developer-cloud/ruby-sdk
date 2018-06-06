@@ -14,6 +14,7 @@
 # /core/watson-ruby
 core/watson-ruby/.swagger-codegen-ignore
 core/watson-ruby/.swagger-codegen
+.rubocop.yml
 
 # Used by dotenv library to load environment variables.
 .env
