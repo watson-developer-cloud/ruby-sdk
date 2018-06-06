@@ -1,5 +1,4 @@
 require_relative("./../../core/watson-ruby/tone_analyzer_v3.rb")
-require_relative("./../test_response_object.rb")
 require("json")
 require("minitest/autorun")
 require("webmock/minitest")
@@ -12,7 +11,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: tone_response, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?tones%5B%5D&version=2017-09-21")
       .with(
