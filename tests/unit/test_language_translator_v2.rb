@@ -1,5 +1,4 @@
 require_relative("./../../core/watson-ruby/language_translator_v2.rb")
-require_relative("./../test_response_object.rb")
 require("minitest/autorun")
 require("webmock/minitest")
 
@@ -34,7 +33,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: "username",
       password: "password"
     )
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: expected, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.translate(text: "Hola, cómo estás? €", source: "es", target: "en")
     assert(expected_response.status == service_response.status)
     assert(expected_response.body == service_response.body)
@@ -72,7 +71,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: "username",
       password: "password"
     )
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: expected, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.translate(text: "Messi is the best ever", model_id: "en-es-conversational")
     assert(expected_response.status == service_response.status)
     assert(expected_response.body == service_response.body)
@@ -129,7 +128,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: "username",
       password: "password"
     )
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: expected, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.list_models
     assert(expected_response.status == service_response.status)
     expected_response.body.each_key do |key|
@@ -178,7 +177,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: "username",
       password: "password"
     )
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: expected, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.get_model(model_id: "en-es-conversational")
     assert(expected_response.status == service_response.status)
     assert(expected_response.body == service_response.body)
@@ -223,7 +222,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: "username",
       password: "password"
     )
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: expected, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.identify(text: "祝你有美好的一天")
     assert(expected_response.status == service_response.status)
     assert(expected_response.body == service_response.body)
@@ -280,7 +279,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: "username",
       password: "password"
     )
-    expected_response = DetailedResponse.new(TestResponseObject.new(status: 200, headers: headers, body: expected, is_testing: true))
+    expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.list_identifiable_languages
     assert(expected_response.status == service_response.status)
     assert(expected_response.body == service_response.body)
