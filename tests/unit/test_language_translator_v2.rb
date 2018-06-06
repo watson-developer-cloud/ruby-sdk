@@ -1,7 +1,6 @@
 require_relative("./../../core/watson-ruby/language_translator_v2.rb")
 require_relative("./../test_response_object.rb")
 require("minitest/autorun")
-require("faraday")
 require("webmock/minitest")
 
 WebMock.disable_net_connect!(allow_localhost: true)
