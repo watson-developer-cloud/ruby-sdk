@@ -41,6 +41,6 @@ class WatsonService
       req.params = args[:params] unless args[:params].nil?
     end
     response = conn.app.call(request_obj.to_env(conn))
-    DetailedResponse.new(response)
+    DetailedResponse.new(response: response)
   end
 end
