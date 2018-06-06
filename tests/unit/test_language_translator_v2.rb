@@ -28,7 +28,6 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443",
-          "User-Agent" => "Faraday v0.15.2"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -66,7 +65,6 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443",
-          "User-Agent" => "Faraday v0.15.2"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -123,7 +121,6 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443",
-          "User-Agent" => "Faraday v0.15.2"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -172,7 +169,6 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443",
-          "User-Agent" => "Faraday v0.15.2"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -217,7 +213,6 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "text/plain",
           "Host" => "gateway.watsonplatform.net:443",
-          "User-Agent" => "Faraday v0.15.2"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -274,7 +269,6 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443",
-          "User-Agent" => "Faraday v0.15.2"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
