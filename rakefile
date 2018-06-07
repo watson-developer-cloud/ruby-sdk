@@ -2,10 +2,17 @@ require "dotenv/tasks"
 
 task default: %w[test]
 
-task test: :dotenv do
+task :unit do
   ruby "tests/unit/test_language_translator_v2.rb"
-  ruby "tests/integration/test_language_translator_v2.rb"
   ruby "tests/unit/test_tone_analyzer_v3.rb"
-  ruby "tests/integration/test_tone_analyzer_v3.rb"
   ruby "tests/unit/test_personality_insights_v3.rb"
+end
+
+task integration: [:unit] do
+  ruby "tests/integration/test_language_translator_v2.rb"
+  ruby "tests/integration/test_tone_analyzer_v3.rb"
+  ruby "tests/integration/test_personality_insights_v3.rb"
+end
+
+task test: %i[dotenv integration] do
 end
