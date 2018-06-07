@@ -3,16 +3,25 @@
 require("json")
 # Custom exception class for errors returned from Watson APIs
 class WatsonApiException < StandardError
-  attr_reader :code, :message, :info, :transaction_id, :global_transaction_id, :sub_code
+  attr_reader :code, :error, :info, :transaction_id, :global_transaction_id, :sub_code
   # :param Faraday::Response response: The response object from the Watson API
-  def initialize(response:)
-    body_hash = JSON.parse(response.body)
-    @code = body_hash["code"] || body_hash["error_code"]
-    @error = body_hash["error"] || body_hash["error_message"]
-    @info = body_hash["description"] if body_hash.key?("description")
-    @sub_code = body_hash["sub_code"] if body_hash.key?("sub_code")
-    @transaction_id = response.headers["X-DP-Watson-Tran-ID"] if response.headers.key?("X-DP-Watson-Tran-ID")
-    @global_transaction_id = response.headers["X-Global-Transaction-ID"] if response.headers.key?("X-Global-Transaction-ID")
+  def initialize(code: nil, error: nil, info: nil, sub_code: nil, transaction_id: nil, global_transaction_id: nil, response: nil)
+    if code.nil? || error.nil?
+      body_hash = JSON.parse(response.body)
+      @code = body_hash["code"] || body_hash["error_code"]
+      @error = body_hash["error"] || body_hash["error_message"]
+      @info = body_hash["description"] if body_hash.key?("description")
+      @sub_code = body_hash["sub_code"] if body_hash.key?("sub_code")
+      @transaction_id = response.headers["X-DP-Watson-Tran-ID"] if response.headers.key?("X-DP-Watson-Tran-ID")
+      @global_transaction_id = response.headers["X-Global-Transaction-ID"] if response.headers.key?("X-Global-Transaction-ID")
+    else
+      @code = code
+      @error = error
+      @info = info
+      @sub_code = sub_code
+      @transaction_id = transaction_id
+      @global_transaction_id = global_transaction_id
+    end
   end
 
   def to_s

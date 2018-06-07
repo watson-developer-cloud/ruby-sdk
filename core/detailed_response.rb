@@ -4,7 +4,7 @@ require("json")
 
 class DetailedResponse
   attr_reader :status, :headers, :body
-  def initialize(status: nil, headers: nil, body: nil, response: {})
+  def initialize(status: nil, headers: nil, body: nil, response: nil)
     if status.nil? || headers.nil? || body.nil?
       @status = response.status
       @headers = response.headers
