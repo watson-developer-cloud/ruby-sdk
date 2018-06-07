@@ -27,7 +27,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -64,7 +64,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -120,7 +120,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -168,7 +168,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -212,7 +212,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "text/plain",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(
@@ -268,7 +268,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
     service = LanguageTranslatorV2.new(

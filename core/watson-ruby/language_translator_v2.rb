@@ -25,13 +25,8 @@ require_relative "../detailed_response"
 
 require_relative "../watson_service"
 
-##############################################################################
-# Service
-##############################################################################
-
+# The Language Translator V2 service.
 class LanguageTranslatorV2 < WatsonService
-  # The Language Translator V2 service.
-
   def initialize(args)
     # Construct a new client for the Language Translator service.
     #

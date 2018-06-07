@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative("./../../core/watson-ruby/tone_analyzer_v3.rb")
 require("json")
 require("minitest/autorun")

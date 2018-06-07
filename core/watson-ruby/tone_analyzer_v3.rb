@@ -31,13 +31,8 @@ require_relative "../detailed_response"
 
 require_relative "../watson_service"
 
-##############################################################################
-# Service
-##############################################################################
-
+# The Tone Analyzer V3 service.
 class ToneAnalyzerV3 < WatsonService
-  # The Tone Analyzer V3 service.
-
   def initialize(args)
     # Construct a new client for the Tone Analyzer service.
     #

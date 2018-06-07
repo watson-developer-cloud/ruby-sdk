@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative("./../../core/watson-ruby/tone_analyzer_v3.rb")
 require("json")
 require("minitest/autorun")
@@ -51,7 +53,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     service = ToneAnalyzerV3.new(
@@ -81,7 +83,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443",
+          "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     service = ToneAnalyzerV3.new(
