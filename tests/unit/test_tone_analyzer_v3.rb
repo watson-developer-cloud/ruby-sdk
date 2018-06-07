@@ -139,7 +139,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     rescue WatsonApiException => e
       assert(e.code == error_code)
       assert(e.error == error_message)
-      assert(e.sub_code == "C00012")
+      assert(e.info["sub_code"] == "C00012")
     end
   end
 end

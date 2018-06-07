@@ -3,22 +3,21 @@
 require("json")
 # Custom exception class for errors returned from Watson APIs
 class WatsonApiException < StandardError
-  attr_reader :code, :error, :info, :transaction_id, :global_transaction_id, :sub_code
+  attr_reader :code, :error, :info, :transaction_id, :global_transaction_id
   # :param Faraday::Response response: The response object from the Watson API
-  def initialize(code: nil, error: nil, info: nil, sub_code: nil, transaction_id: nil, global_transaction_id: nil, response: nil)
+  def initialize(code: nil, error: nil, info: nil, transaction_id: nil, global_transaction_id: nil, response: nil)
     if code.nil? || error.nil?
       body_hash = JSON.parse(response.body)
       @code = body_hash["code"] || body_hash["error_code"]
       @error = body_hash["error"] || body_hash["error_message"]
-      @info = body_hash["description"] if body_hash.key?("description")
-      @sub_code = body_hash["sub_code"] if body_hash.key?("sub_code")
+      %w[code error_code error error_message].each { |k| body_hash.delete(k) }
+      @info = body_hash
       @transaction_id = response.headers["X-DP-Watson-Tran-ID"] if response.headers.key?("X-DP-Watson-Tran-ID")
       @global_transaction_id = response.headers["X-Global-Transaction-ID"] if response.headers.key?("X-Global-Transaction-ID")
     else
       @code = code
       @error = error
       @info = info
-      @sub_code = sub_code
       @transaction_id = transaction_id
       @global_transaction_id = global_transaction_id
     end
@@ -26,7 +25,6 @@ class WatsonApiException < StandardError
 
   def to_s
     msg = "Error: #{@error}, Code: #{@code}"
-    msg += ", SubCode: #{@sub_code}" unless @sub_code.nil?
     msg += ", Information: #{@info}" unless @info.nil?
     msg += ", X-dp-watson-tran-id: #{@transaction_id}" unless @transaction_id.nil?
     msg += ", X-global-transaction-id: #{@global_transaction_id}" unless @global_transaction_id.nil?
