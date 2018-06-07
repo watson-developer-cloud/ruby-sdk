@@ -6,7 +6,9 @@ require("cgi")
 require("rubygems")
 require("excon")
 require_relative("detailed_response")
+require_relative("watson_api_exception.rb")
 
+# Class for interacting with the Watson API
 class WatsonService
   attr_accessor :url, :username, :password
   attr_reader :conn
@@ -43,6 +45,8 @@ class WatsonService
       req.params = args[:params] unless args[:params].nil?
     end
     response = conn.app.call(request_obj.to_env(conn))
-    DetailedResponse.new(response: response)
+    return DetailedResponse.new(response: response) if (response.status >= 200) && (response.status <= 299)
+    raise WatsonApiException.new(response: response)
+    # DetailedResponse.new(response: response)
   end
 end
