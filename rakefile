@@ -6,6 +6,7 @@ task :unit do
   ruby "tests/unit/test_language_translator_v2.rb"
   ruby "tests/unit/test_tone_analyzer_v3.rb"
   ruby "tests/unit/test_personality_insights_v3.rb"
+  ruby "tests/unit/test_assistant_v1.rb"
 end
 
 task integration: [:unit] do
