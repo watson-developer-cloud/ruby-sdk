@@ -22,7 +22,7 @@ class LanguageTranslatorV2Test < Minitest::Test
     }
     stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v2/translate")
       .with(
-        body: "{\"text\":\"Hola, cómo estás? €\",\"model_id\":null,\"source\":\"es\",\"target\":\"en\"}",
+        body: "{\"text\":\"Hola, cómo estás? €\",\"source\":\"es\",\"target\":\"en\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -59,7 +59,7 @@ class LanguageTranslatorV2Test < Minitest::Test
     }
     stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v2/translate")
       .with(
-        body: "{\"text\":\"Messi is the best ever\",\"model_id\":\"en-es-conversational\",\"source\":null,\"target\":null}",
+        body: "{\"text\":\"Messi is the best ever\",\"model_id\":\"en-es-conversational\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",

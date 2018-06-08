@@ -19,6 +19,7 @@ class WatsonService
     @conn = Faraday.new(url: @url) do |connection|
       connection.basic_auth(@username, @password)
       connection.headers["Content-Type"] = "application/json"
+      connection.headers["User-Agent"] = "IBM-Ruby-SDK-Service"
       # connection.response :logger
       connection.request :multipart
       connection.request(:url_encoded)
@@ -29,12 +30,13 @@ class WatsonService
   def request(args)
     defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: {} }
     args = defaults.merge(args)
+    args[:data].delete_if { |_k, v| v.nil? } if args[:data].instance_of?(Hash)
     args[:json] = args[:data].merge(args[:json]) unless args[:data].nil? || args[:data].instance_of?(String)
     args[:json] = args[:data] if args[:json].empty?
+    args[:json].delete_if { |_k, v| v.nil? } if args[:json].instance_of?(Hash)
     args[:headers]["Accept"] = "application/json" if args[:accept_json]
     args.reject { |_, value| value.nil? }
     args[:json] = args[:json].to_json if args[:json].instance_of?(Hash)
-    # args[:json].select {|_, value| !value.nil?}
     args.delete_if { |_k, v| v.nil? }
     args[:headers].delete_if { |_k, v| v.nil? } if args[:headers].instance_of?(Hash)
     args[:params].delete_if { |_k, v| v.nil? } if args[:params].instance_of?(Hash)

@@ -10,7 +10,7 @@ class DetailedResponse
       @headers = response.headers
       @headers = response.headers.to_hash if response.headers.respond_to?("to_hash")
       @body = response.body
-      @body = JSON.parse(response.body) if @headers.key?("Content-Type") && @headers["Content-Type"] == "application/json"
+      @body = JSON.parse(response.body) if !response.body.empty? && @headers.key?("Content-Type") && @headers["Content-Type"] == "application/json"
     else
       @status = status
       @headers = headers
