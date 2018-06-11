@@ -27,9 +27,9 @@
 # `X-Watson-Learning-Opt-Out` request header is set.
 
 require "json"
-require_relative "../detailed_response"
+require_relative "./detailed_response"
 
-require_relative "../watson_service"
+require_relative "./watson_service"
 
 ##
 # The Tone Analyzer V3 service.

@@ -19,9 +19,9 @@
 # apps and your users.
 
 require "json"
-require_relative "../detailed_response"
+require_relative "./detailed_response"
 
-require_relative "../watson_service"
+require_relative "./watson_service"
 
 ##
 # The Assistant V1 service.
