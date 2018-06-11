@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/personality_insights_v3.rb")
+require_relative("./../../lib/watson_developer_cloud.rb")
 require("json")
 require("minitest/autorun")
 
@@ -9,7 +9,7 @@ class PersonalityInsightsV3Test < Minitest::Test
   Minitest::Test.parallelize_me!
   def test_plain_to_json
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.txt")
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
@@ -23,7 +23,7 @@ class PersonalityInsightsV3Test < Minitest::Test
 
   def test_json_to_json
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
@@ -39,7 +39,7 @@ class PersonalityInsightsV3Test < Minitest::Test
 
   def test_json_to_csv
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
@@ -57,7 +57,7 @@ class PersonalityInsightsV3Test < Minitest::Test
 
   def test_plain_to_json_es
     personality_text = File.read(Dir.getwd + "/resources/personality-v3-es.txt")
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]

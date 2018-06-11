@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/language_translator_v2.rb")
+require_relative("./../../lib/watson_developer_cloud.rb")
 require("minitest/autorun")
 
 # Integration tests for the Language Translator V2 Service
 class LanguageTranslatorV2Test < Minitest::Test
   Minitest::Test.parallelize_me!
   def test_translate_source_target
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -20,7 +20,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_translate_model_id
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -32,7 +32,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_list_models
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -41,7 +41,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_get_model
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -52,7 +52,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_identify
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -63,7 +63,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_list_identifiable_languages
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )

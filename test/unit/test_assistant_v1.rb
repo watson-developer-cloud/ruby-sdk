@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/watson_assistant_v1.rb")
+require_relative("./../../lib/watson_developer_cloud.rb")
 require("json")
 require("minitest/autorun")
 require("webmock/minitest")
@@ -28,7 +28,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       version: "2018-02-16",
       username: "username",
       password: "password"
@@ -60,7 +60,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 429, body: error_response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -96,7 +96,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 407, body: error_response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -126,7 +126,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: {}.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -157,7 +157,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -200,7 +200,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -230,7 +230,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -266,7 +266,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -296,7 +296,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -331,7 +331,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -377,7 +377,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -412,7 +412,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -444,7 +444,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -471,7 +471,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -503,7 +503,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -547,7 +547,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -578,7 +578,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -612,7 +612,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -639,7 +639,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -671,7 +671,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -712,7 +712,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -744,7 +744,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -823,7 +823,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -907,7 +907,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -919,7 +919,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_message
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1010,7 +1010,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1038,7 +1038,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1071,7 +1071,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1119,7 +1119,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1151,7 +1151,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1187,7 +1187,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1214,7 +1214,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1250,7 +1250,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1297,7 +1297,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1333,7 +1333,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1372,7 +1372,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1400,7 +1400,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1436,7 +1436,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1479,7 +1479,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1511,7 +1511,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1527,7 +1527,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_dialog_nodes
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"
@@ -1614,7 +1614,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = AssistantV1.new(
+    service = WatsonDeveloperCloud::AssistantV1.new(
       username: "username",
       password: "password",
       version: "2018-02-16"

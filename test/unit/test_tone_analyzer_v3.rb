@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/tone_analyzer_v3.rb")
+require_relative("./../../lib/watson_developer_cloud.rb")
 require_relative("./../../lib/watson_developer_cloud/watson_api_exception.rb")
 require("json")
 require("minitest/autorun")
@@ -27,7 +27,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = ToneAnalyzerV3.new(
+    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -58,7 +58,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = ToneAnalyzerV3.new(
+    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -88,7 +88,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = ToneAnalyzerV3.new(
+    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -130,7 +130,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 400, body: tone_response.to_json, headers: headers)
-    service = ToneAnalyzerV3.new(
+    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"

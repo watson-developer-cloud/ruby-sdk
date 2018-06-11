@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/language_translator_v2.rb")
+require_relative("./../../lib/watson_developer_cloud.rb")
 require("minitest/autorun")
 require("webmock/minitest")
 
@@ -31,7 +31,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -68,7 +68,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -124,7 +124,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -172,7 +172,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -216,7 +216,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -272,7 +272,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = LanguageTranslatorV2.new(
+    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )

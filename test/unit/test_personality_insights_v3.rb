@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/personality_insights_v3.rb")
+require_relative("./../../lib/watson_developer_cloud.rb")
 require("json")
 require("minitest/autorun")
 require("webmock/minitest")
@@ -26,7 +26,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: "username",
       password: "password"
@@ -60,7 +60,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: "username",
       password: "password"
@@ -96,7 +96,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: "username",
       password: "password"
@@ -118,7 +118,7 @@ class PersonalityInsightsV3Test < Minitest::Test
   end
 
   def test_plain_to_json_es
-    profile_response = File.read(Dir.getwd + "/resources/personality-v3-expect4.txt")
+    profile_response = JSON.parse(File.read(Dir.getwd + "/resources/personality-v3-expect4.txt"))
     personality_text = File.read(Dir.getwd + "/resources/personality-v3-es.txt")
     headers = {
       "Content-Type" => "application/json"
@@ -136,7 +136,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
-    service = PersonalityInsightsV3.new(
+    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: "username",
       password: "password"
