@@ -17,7 +17,7 @@ class WatsonService
     @url = vars[:url] unless vars[:url].nil?
     @username = vars[:username] unless vars[:username].nil?
     @password = vars[:password] unless vars[:password].nil?
-    @conn = Faraday.new(url: @url) do |connection|
+    @conn = Faraday.new(url: @url, request: { open_timeout: 5, timeout: 5 }) do |connection|
       connection.basic_auth(@username, @password)
       connection.headers["Content-Type"] = "application/json"
       connection.headers["User-Agent"] = "IBM-Ruby-SDK-Service"
