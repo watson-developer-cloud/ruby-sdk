@@ -11,9 +11,9 @@
 /tmp/
 .DS_Store
 /core/basic_test_file.rb
-# /core/watson-ruby
-core/watson-ruby/.swagger-codegen-ignore
-core/watson-ruby/.swagger-codegen
+# /lib/watson_developer_cloud
+lib/watson_developer_cloud/.swagger-codegen-ignore
+lib/watson_developer_cloud/.swagger-codegen
 .rubocop.yml
 
 # Used by dotenv library to load environment variables.
