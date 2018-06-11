@@ -1,18 +1,26 @@
+# frozen_string_literal: true
+
 require "dotenv/tasks"
+require "rake/testtask"
 
 task default: %w[test]
 
 task :unit do
-  ruby "tests/unit/test_language_translator_v2.rb"
-  ruby "tests/unit/test_tone_analyzer_v3.rb"
-  ruby "tests/unit/test_personality_insights_v3.rb"
-  ruby "tests/unit/test_assistant_v1.rb"
+  Rake::TestTask.new do |t|
+    t.libs << "tests"
+    t.test_files = FileList["tests/unit/*.rb"]
+    t.verbose = true
+    t.warning = true
+  end
 end
 
 task integration: [:unit] do
-  ruby "tests/integration/test_language_translator_v2.rb"
-  ruby "tests/integration/test_tone_analyzer_v3.rb"
-  ruby "tests/integration/test_personality_insights_v3.rb"
+  Rake::TestTask.new do |t|
+    t.libs << "tests"
+    t.test_files = FileList["tests/integration/*.rb"]
+    t.verbose = true
+    t.warning = true
+  end
 end
 
 task test: %i[dotenv integration] do
