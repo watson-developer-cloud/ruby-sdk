@@ -2,6 +2,7 @@
 
 require("json")
 
+# Custom class for objects returned from API calls
 class DetailedResponse
   attr_reader :status, :headers, :body
   def initialize(status: nil, headers: nil, body: nil, response: nil)

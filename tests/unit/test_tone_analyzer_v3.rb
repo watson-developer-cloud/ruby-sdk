@@ -8,6 +8,7 @@ require("webmock/minitest")
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
+# Unit tests for the Tone Analyzer V3 Service
 class ToneAnalyzerV3Test < Minitest::Test
   def test_tone
     tone_response = JSON.parse(File.read(Dir.getwd + "/resources/tone-v3-expect1.json"))

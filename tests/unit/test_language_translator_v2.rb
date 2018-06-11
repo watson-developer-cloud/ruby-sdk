@@ -6,6 +6,7 @@ require("webmock/minitest")
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
+# Unit tests for the Language Translator V2 Service
 class LanguageTranslatorV2Test < Minitest::Test
   def test_translate_source_target
     expected = {

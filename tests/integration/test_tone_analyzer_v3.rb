@@ -4,6 +4,7 @@ require_relative("./../../core/watson-ruby/tone_analyzer_v3.rb")
 require("json")
 require("minitest/autorun")
 
+# Integration tests for the Tone Analyzer V3 Service
 class ToneAnalyzerV3Test < Minitest::Test
   Minitest::Test.parallelize_me!
   def test_tone
