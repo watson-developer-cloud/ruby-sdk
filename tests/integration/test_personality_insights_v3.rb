@@ -6,6 +6,7 @@ require("minitest/autorun")
 
 # Integration tests for the Personality Insights V3 Service
 class PersonalityInsightsV3Test < Minitest::Test
+  Minitest::Test.parallelize_me!
   def test_plain_to_json
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.txt")
     service = PersonalityInsightsV3.new(

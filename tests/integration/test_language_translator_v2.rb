@@ -4,6 +4,7 @@ require_relative("./../../core/watson-ruby/language_translator_v2.rb")
 require("minitest/autorun")
 
 class LanguageTranslatorV2Test < Minitest::Test
+  Minitest::Test.parallelize_me!
   def test_translate_source_target
     service = LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],

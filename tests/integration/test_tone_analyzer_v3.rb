@@ -5,6 +5,7 @@ require("json")
 require("minitest/autorun")
 
 class ToneAnalyzerV3Test < Minitest::Test
+  Minitest::Test.parallelize_me!
   def test_tone
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     service = ToneAnalyzerV3.new(
