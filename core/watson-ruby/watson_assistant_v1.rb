@@ -126,7 +126,7 @@ class AssistantV1 < WatsonService
       "intents" => intents,
       "output" => output
     }
-    url = "v1/workspaces/%s/message" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/message" % [url_encode(workspace_id)]
     response = request(
       method: "POST",
       url: url,
@@ -261,7 +261,7 @@ class AssistantV1 < WatsonService
       "export" => export,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s" % [url_encode(workspace_id)]
     response = request(
       method: "GET",
       url: url,
@@ -325,7 +325,7 @@ class AssistantV1 < WatsonService
       "metadata" => metadata,
       "learning_opt_out" => learning_opt_out
     }
-    url = "v1/workspaces/%s" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s" % [url_encode(workspace_id)]
     response = request(
       method: "POST",
       url: url,
@@ -354,7 +354,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s" % [url_encode(workspace_id)]
     request(
       method: "DELETE",
       url: url,
@@ -405,7 +405,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/intents" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/intents" % [url_encode(workspace_id)]
     response = request(
       method: "GET",
       url: url,
@@ -448,7 +448,7 @@ class AssistantV1 < WatsonService
       "description" => description,
       "examples" => examples
     }
-    url = "v1/workspaces/%s/intents" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/intents" % [url_encode(workspace_id)]
     response = request(
       method: "POST",
       url: url,
@@ -488,7 +488,7 @@ class AssistantV1 < WatsonService
       "export" => export,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/intents/%s" % [CGI.escape(workspace_id), CGI.escape(intent)]
+    url = "v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
     response = request(
       method: "GET",
       url: url,
@@ -532,7 +532,7 @@ class AssistantV1 < WatsonService
       "description" => new_description,
       "examples" => new_examples
     }
-    url = "v1/workspaces/%s/intents/%s" % [CGI.escape(workspace_id), CGI.escape(intent)]
+    url = "v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
     response = request(
       method: "POST",
       url: url,
@@ -563,7 +563,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/intents/%s" % [CGI.escape(workspace_id), CGI.escape(intent)]
+    url = "v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
     request(
       method: "DELETE",
       url: url,
@@ -611,7 +611,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/intents/%s/examples" % [CGI.escape(workspace_id), CGI.escape(intent)]
+    url = "v1/workspaces/%s/intents/%s/examples" % [url_encode(workspace_id), url_encode(intent)]
     response = request(
       method: "GET",
       url: url,
@@ -651,7 +651,7 @@ class AssistantV1 < WatsonService
     data = {
       "text" => text
     }
-    url = "v1/workspaces/%s/intents/%s/examples" % [CGI.escape(workspace_id), CGI.escape(intent)]
+    url = "v1/workspaces/%s/intents/%s/examples" % [url_encode(workspace_id), url_encode(intent)]
     response = request(
       method: "POST",
       url: url,
@@ -688,7 +688,7 @@ class AssistantV1 < WatsonService
       "version" => @version,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/intents/%s/examples/%s" % [CGI.escape(workspace_id), CGI.escape(intent), CGI.escape(text)]
+    url = "v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
     response = request(
       method: "GET",
       url: url,
@@ -729,7 +729,7 @@ class AssistantV1 < WatsonService
     data = {
       "text" => new_text
     }
-    url = "v1/workspaces/%s/intents/%s/examples/%s" % [CGI.escape(workspace_id), CGI.escape(intent), CGI.escape(text)]
+    url = "v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
     response = request(
       method: "POST",
       url: url,
@@ -762,7 +762,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/intents/%s/examples/%s" % [CGI.escape(workspace_id), CGI.escape(intent), CGI.escape(text)]
+    url = "v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
     request(
       method: "DELETE",
       url: url,
@@ -809,7 +809,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/counterexamples" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/counterexamples" % [url_encode(workspace_id)]
     response = request(
       method: "GET",
       url: url,
@@ -848,7 +848,7 @@ class AssistantV1 < WatsonService
     data = {
       "text" => text
     }
-    url = "v1/workspaces/%s/counterexamples" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/counterexamples" % [url_encode(workspace_id)]
     response = request(
       method: "POST",
       url: url,
@@ -884,7 +884,7 @@ class AssistantV1 < WatsonService
       "version" => @version,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/counterexamples/%s" % [CGI.escape(workspace_id), CGI.escape(text)]
+    url = "v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
     response = request(
       method: "GET",
       url: url,
@@ -920,7 +920,7 @@ class AssistantV1 < WatsonService
     data = {
       "text" => new_text
     }
-    url = "v1/workspaces/%s/counterexamples/%s" % [CGI.escape(workspace_id), CGI.escape(text)]
+    url = "v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
     response = request(
       method: "POST",
       url: url,
@@ -952,7 +952,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/counterexamples/%s" % [CGI.escape(workspace_id), CGI.escape(text)]
+    url = "v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
     request(
       method: "DELETE",
       url: url,
@@ -1003,7 +1003,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/entities" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/entities" % [url_encode(workspace_id)]
     response = request(
       method: "GET",
       url: url,
@@ -1049,7 +1049,7 @@ class AssistantV1 < WatsonService
       "values" => values,
       "fuzzy_match" => fuzzy_match
     }
-    url = "v1/workspaces/%s/entities" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/entities" % [url_encode(workspace_id)]
     response = request(
       method: "POST",
       url: url,
@@ -1089,7 +1089,7 @@ class AssistantV1 < WatsonService
       "export" => export,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/entities/%s" % [CGI.escape(workspace_id), CGI.escape(entity)]
+    url = "v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
     response = request(
       method: "GET",
       url: url,
@@ -1137,7 +1137,7 @@ class AssistantV1 < WatsonService
       "fuzzy_match" => new_fuzzy_match,
       "values" => new_values
     }
-    url = "v1/workspaces/%s/entities/%s" % [CGI.escape(workspace_id), CGI.escape(entity)]
+    url = "v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
     response = request(
       method: "POST",
       url: url,
@@ -1168,7 +1168,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/entities/%s" % [CGI.escape(workspace_id), CGI.escape(entity)]
+    url = "v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
     request(
       method: "DELETE",
       url: url,
@@ -1220,7 +1220,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/entities/%s/values" % [CGI.escape(workspace_id), CGI.escape(entity)]
+    url = "v1/workspaces/%s/entities/%s/values" % [url_encode(workspace_id), url_encode(entity)]
     response = request(
       method: "GET",
       url: url,
@@ -1277,7 +1277,7 @@ class AssistantV1 < WatsonService
       "patterns" => patterns,
       "type" => value_type
     }
-    url = "v1/workspaces/%s/entities/%s/values" % [CGI.escape(workspace_id), CGI.escape(entity)]
+    url = "v1/workspaces/%s/entities/%s/values" % [url_encode(workspace_id), url_encode(entity)]
     response = request(
       method: "POST",
       url: url,
@@ -1318,7 +1318,7 @@ class AssistantV1 < WatsonService
       "export" => export,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value)]
+    url = "v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
     response = request(
       method: "GET",
       url: url,
@@ -1377,7 +1377,7 @@ class AssistantV1 < WatsonService
       "synonyms" => new_synonyms,
       "patterns" => new_patterns
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value)]
+    url = "v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
     response = request(
       method: "POST",
       url: url,
@@ -1410,7 +1410,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value)]
+    url = "v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
     request(
       method: "DELETE",
       url: url,
@@ -1460,7 +1460,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value)]
+    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
     response = request(
       method: "GET",
       url: url,
@@ -1501,7 +1501,7 @@ class AssistantV1 < WatsonService
     data = {
       "synonym" => synonym
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value)]
+    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
     response = request(
       method: "POST",
       url: url,
@@ -1540,7 +1540,7 @@ class AssistantV1 < WatsonService
       "version" => @version,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value), CGI.escape(synonym)]
+    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
     response = request(
       method: "GET",
       url: url,
@@ -1582,7 +1582,7 @@ class AssistantV1 < WatsonService
     data = {
       "synonym" => new_synonym
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value), CGI.escape(synonym)]
+    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
     response = request(
       method: "POST",
       url: url,
@@ -1617,7 +1617,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [CGI.escape(workspace_id), CGI.escape(entity), CGI.escape(value), CGI.escape(synonym)]
+    url = "v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
     request(
       method: "DELETE",
       url: url,
@@ -1663,7 +1663,7 @@ class AssistantV1 < WatsonService
       "cursor" => cursor,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/dialog_nodes" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/dialog_nodes" % [url_encode(workspace_id)]
     response = request(
       method: "GET",
       url: url,
@@ -1741,7 +1741,7 @@ class AssistantV1 < WatsonService
       "digress_out" => digress_out,
       "digress_out_slots" => digress_out_slots
     }
-    url = "v1/workspaces/%s/dialog_nodes" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/dialog_nodes" % [url_encode(workspace_id)]
     response = request(
       method: "POST",
       url: url,
@@ -1776,7 +1776,7 @@ class AssistantV1 < WatsonService
       "version" => @version,
       "include_audit" => include_audit
     }
-    url = "v1/workspaces/%s/dialog_nodes/%s" % [CGI.escape(workspace_id), CGI.escape(dialog_node)]
+    url = "v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
     response = request(
       method: "GET",
       url: url,
@@ -1855,7 +1855,7 @@ class AssistantV1 < WatsonService
       "digress_out" => new_digress_out,
       "digress_out_slots" => new_digress_out_slots
     }
-    url = "v1/workspaces/%s/dialog_nodes/%s" % [CGI.escape(workspace_id), CGI.escape(dialog_node)]
+    url = "v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
     response = request(
       method: "POST",
       url: url,
@@ -1886,7 +1886,7 @@ class AssistantV1 < WatsonService
     params = {
       "version" => @version
     }
-    url = "v1/workspaces/%s/dialog_nodes/%s" % [CGI.escape(workspace_id), CGI.escape(dialog_node)]
+    url = "v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
     request(
       method: "DELETE",
       url: url,
@@ -1932,7 +1932,7 @@ class AssistantV1 < WatsonService
       "page_limit" => page_limit,
       "cursor" => cursor
     }
-    url = "v1/workspaces/%s/logs" % [CGI.escape(workspace_id)]
+    url = "v1/workspaces/%s/logs" % [url_encode(workspace_id)]
     response = request(
       method: "GET",
       url: url,

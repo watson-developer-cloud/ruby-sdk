@@ -281,7 +281,7 @@ class LanguageTranslatorV2 < WatsonService
     raise ArgumentError("model_id must be provided") if model_id.nil?
     headers = {
     }
-    url = "v2/models/%s" % [CGI.escape(model_id)]
+    url = "v2/models/%s" % [url_encode(model_id)]
     response = request(
       method: "DELETE",
       url: url,
@@ -304,7 +304,7 @@ class LanguageTranslatorV2 < WatsonService
     raise ArgumentError("model_id must be provided") if model_id.nil?
     headers = {
     }
-    url = "v2/models/%s" % [CGI.escape(model_id)]
+    url = "v2/models/%s" % [url_encode(model_id)]
     response = request(
       method: "GET",
       url: url,

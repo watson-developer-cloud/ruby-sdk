@@ -2,7 +2,7 @@
 
 require("faraday")
 require("json")
-require("cgi")
+require("erb")
 require("rubygems")
 require("excon")
 require_relative("detailed_response")
@@ -10,6 +10,7 @@ require_relative("watson_api_exception.rb")
 
 # Class for interacting with the Watson API
 class WatsonService
+  include ERB::Util
   attr_accessor :url, :username, :password
   attr_reader :conn
   def initialize(vars)

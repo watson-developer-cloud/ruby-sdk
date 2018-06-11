@@ -116,7 +116,7 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/I+want+financial+advice+today?version=2018-02-16")
+    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/I%20want%20financial%20advice%20today?version=2018-02-16")
       .with(
         body: "{}",
         headers: {
@@ -147,7 +147,7 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What+are+you+wearing%3F?version=2018-02-16")
+    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
       .with(
         body: "{}",
         headers: {
@@ -220,7 +220,7 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What+are+you+wearing%3F?version=2018-02-16")
+    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
       .with(
         body: "{\"text\":\"What are you wearing?\"}",
         headers: {
@@ -283,7 +283,6 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_delete_entity
-    response = ""
     headers = {
       "Content-Type" => "application/json"
     }
@@ -462,7 +461,7 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme+a+pizza+with+pepperoni?version=2018-02-16")
+    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
         body: "{}",
         headers: {
@@ -494,7 +493,7 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme+a+pizza+with+pepperoni?version=2018-02-16")
+    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
         body: "{}",
         headers: {
@@ -569,7 +568,7 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme+a+pizza+with+pepperoni?version=2018-02-16")
+    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
         body: "{\"text\":\"Gimme a pizza with pepperoni\"}",
         headers: {
@@ -779,7 +778,7 @@ class AssistantV1Test < Minitest::Test
             "context" => {
               "conversation_id" => "f2c7e362-4cc8-4761-8b0f-9ccd70c63bca",
               "system" => {
-                "dialog_stack" => [ "root" ],
+                "dialog_stack" => ["root"],
                 "dialog_turn_counter" => 1,
                 "dialog_request_counter" => 1
               },
@@ -1198,7 +1197,7 @@ class AssistantV1Test < Minitest::Test
       entity: "grilling",
       value: "aeiou"
     )
-    assert (service_response.body == response)
+    assert(service_response.body == response)
   end
 
   def test_delete_value
@@ -1605,8 +1604,8 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/user_data?customer_id=id&version=2018-02-16").
-      with(
+    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/user_data?customer_id=id&version=2018-02-16")
+      .with(
         body: "{}",
         headers: {
           "Accept" => "application/json",
