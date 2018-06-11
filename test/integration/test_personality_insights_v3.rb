@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../core/watson-ruby/personality_insights_v3.rb")
+require_relative("./../../lib/watson_developer_cloud/personality_insights_v3.rb")
 require("json")
 require("minitest/autorun")
 

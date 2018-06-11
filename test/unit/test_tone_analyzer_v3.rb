@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative("./../../core/watson-ruby/tone_analyzer_v3.rb")
-require_relative("./../../core/watson_api_exception.rb")
+require_relative("./../../lib/watson_developer_cloud/tone_analyzer_v3.rb")
+require_relative("./../../lib/watson_developer_cloud/watson_api_exception.rb")
 require("json")
 require("minitest/autorun")
 require("webmock/minitest")

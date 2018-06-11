@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../core/watson-ruby/watson_assistant_v1.rb")
+require_relative("./../../lib/watson_developer_cloud/watson_assistant_v1.rb")
 require("json")
 require("minitest/autorun")
 require("webmock/minitest")

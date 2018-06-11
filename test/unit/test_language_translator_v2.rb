@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../core/watson-ruby/language_translator_v2.rb")
+require_relative("./../../lib/watson_developer_cloud/language_translator_v2.rb")
 require("minitest/autorun")
 require("webmock/minitest")
 
