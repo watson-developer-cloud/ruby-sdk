@@ -13,7 +13,11 @@ class ToneAnalyzerV3Test < Minitest::Test
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
     )
-    assert(service.tone(tone_input: tone_text, content_type: "text/plain").status == 200)
+    service_response = service.tone(
+      tone_input: tone_text,
+      content_type: "text/plain"
+    )
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_tone_with_args
@@ -23,7 +27,12 @@ class ToneAnalyzerV3Test < Minitest::Test
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
     )
-    assert(service.tone(tone_input: tone_text, content_type: "text/plain", sentences: false).status == 200)
+    service_response = service.tone(
+      tone_input: tone_text,
+      content_type: "text/plain",
+      sentences: false
+    )
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_tone_chat
@@ -38,6 +47,9 @@ class ToneAnalyzerV3Test < Minitest::Test
         "user" => "glenn"
       }
     ]
-    assert(service.tone_chat(utterances: utterances).status == 200)
+    service_response = service.tone_chat(
+      utterances: utterances
+    )
+    assert((200..299).cover?(service_response.status))
   end
 end

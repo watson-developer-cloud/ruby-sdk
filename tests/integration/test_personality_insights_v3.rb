@@ -18,7 +18,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       content: personality_text,
       content_type: "text/plain;charset=utf-8"
     )
-    assert(service_response.status == 200)
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_json_to_json
@@ -34,7 +34,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       raw_scores: true,
       consumption_preferences: true
     )
-    assert(service_response.status == 200)
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_json_to_csv
@@ -52,7 +52,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       raw_scores: true,
       consumption_preferences: true
     )
-    assert(service_response.status == 200)
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_plain_to_json_es
@@ -68,6 +68,6 @@ class PersonalityInsightsV3Test < Minitest::Test
       content_language: "es",
       accept_language: "es"
     )
-    assert(service_response.status == 200)
+    assert((200..299).cover?(service_response.status))
   end
 end

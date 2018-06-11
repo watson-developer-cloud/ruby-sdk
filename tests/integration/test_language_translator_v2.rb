@@ -10,7 +10,12 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
-    assert(service.translate(text: "Hola, cómo estás? €", source: "es", target: "en").status == 200)
+    service_response = service.translate(
+      text: "Hola, cómo estás? €",
+      source: "es",
+      target: "en"
+    )
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_translate_model_id
@@ -18,7 +23,11 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
-    assert(service.translate(text: "Messi is the best ever", model_id: "en-es-conversational").status == 200)
+    service_response = service.translate(
+      text: "Messi is the best ever",
+      model_id: "en-es-conversational"
+    )
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_list_models
@@ -26,7 +35,8 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
-    assert(service.list_models.status == 200)
+    service_response = service.list_models
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_get_model
@@ -34,7 +44,10 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
-    assert(service.get_model(model_id: "en-es-conversational").status == 200)
+    service_response = service.get_model(
+      model_id: "en-es-conversational"
+    )
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_identify
@@ -42,7 +55,10 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
-    assert(service.identify(text: "祝你有美好的一天").status == 200)
+    service_response = service.identify(
+      text: "祝你有美好的一天"
+    )
+    assert((200..299).cover?(service_response.status))
   end
 
   def test_list_identifiable_languages
@@ -50,6 +66,7 @@ class LanguageTranslatorV2Test < Minitest::Test
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
-    assert(service.list_identifiable_languages.status == 200)
+    service_response = service.list_identifiable_languages
+    assert((200..299).cover?(service_response.status))
   end
 end
