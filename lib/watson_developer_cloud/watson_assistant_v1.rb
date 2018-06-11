@@ -25,7 +25,7 @@ require_relative "./watson_service"
 
 ##
 # The Assistant V1 service.
-class AssistantV1 < WatsonService
+class WatsonDeveloperCloud::AssistantV1 < WatsonService
   ##
   # @!method initialize(args)
   # Construct a new client for the Assistant service.

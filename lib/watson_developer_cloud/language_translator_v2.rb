@@ -27,7 +27,7 @@ require_relative "./watson_service"
 
 ##
 # The Language Translator V2 service.
-class LanguageTranslatorV2 < WatsonService
+class WatsonDeveloperCloud::LanguageTranslatorV2 < WatsonService
   ##
   # @!method initialize(args)
   # Construct a new client for the Language Translator service.

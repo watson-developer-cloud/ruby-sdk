@@ -42,7 +42,7 @@ require_relative "./watson_service"
 
 ##
 # The Personality Insights V3 service.
-class PersonalityInsightsV3 < WatsonService
+class WatsonDeveloperCloud::PersonalityInsightsV3 < WatsonService
   ##
   # @!method initialize(args)
   # Construct a new client for the Personality Insights service.

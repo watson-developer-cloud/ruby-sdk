@@ -33,7 +33,7 @@ require_relative "./watson_service"
 
 ##
 # The Tone Analyzer V3 service.
-class ToneAnalyzerV3 < WatsonService
+class WatsonDeveloperCloud::ToneAnalyzerV3 < WatsonService
   ##
   # @!method initialize(args)
   # Construct a new client for the Tone Analyzer service.
