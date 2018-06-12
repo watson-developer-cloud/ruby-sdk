@@ -1,13 +1,9 @@
 language: ruby
 
-before_install:
-- rvm get master
-- rvm use $RUBY_VERS --install --binary --fuzzy
-
-env:
-- RUBY_VERS=2.3
-- RUBY_VERS=2.4
-- RUBY_VERS=2.5
+rvm:
+- 2.3.7
+- 2.4.4
+- 2.5.1
 
 script:
 - bundle exec rake
