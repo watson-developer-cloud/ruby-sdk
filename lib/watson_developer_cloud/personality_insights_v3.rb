@@ -139,9 +139,8 @@ module WatsonDeveloperCloud
     #   text; for more information, see [Providing sufficient
     #   input](https://console.bluemix.net/docs/services/personality-insights/input.html#sufficient).
     #   For JSON input, provide an object of type `Content`.
-    # @param content_type [String]  The type of the input: application/json, text/html, or text/plain. A character
-    #   encoding can be specified by including a `charset` parameter. For example,
-    #   'text/html;charset=utf-8'.
+    # @param content_type [String]  The type of the input. A character encoding can be specified by including a
+    #   `charset` parameter. For example, 'text/html;charset=utf-8'.
     # @param accept [String]  The type of the response: application/json or text/csv. A character encoding can
     #   be specified by including a `charset` parameter. For example,
     #   'text/csv;charset=utf-8'.
