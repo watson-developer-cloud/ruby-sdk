@@ -1,4 +1,6 @@
 language: ruby
+before_install:
+- rvm get master
 rvm:
 - 2.3
 - 2.4
