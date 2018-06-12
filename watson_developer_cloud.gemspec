@@ -31,11 +31,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "dotenv"
-  spec.add_dependency "excon"
-  spec.add_dependency "faraday"
-  spec.add_dependency "json"
-  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "dotenv", "~> 2.4.0"
+  spec.add_dependency "excon", "~> 0.62.0"
+  spec.add_dependency "faraday", "~> 0.15.2"
+  spec.add_dependency "json", "~> 2.1.0"
+  spec.add_development_dependency "minitest", "~> 5.11.3"
   spec.add_development_dependency "rake", "~> 12.3.1"
-  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "webmock", "~> 3.4.2"
 end
