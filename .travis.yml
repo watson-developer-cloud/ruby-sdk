@@ -1,9 +1,16 @@
 language: ruby
-before_install:
-- rvm get master
-rvm:
-- 2.3
-- 2.4
-- 2.5
+
+matrix:
+  include:
+  - rvm: 2.3
+    before_install: - rvm get master
+                    - rvm use 2.3 --install --binary --fuzzy
+  - rvm: 2.4
+    before_install: - rvm get master
+                    - rvm use 2.4 --install --binary --fuzzy
+  - rvm: 2.5
+    before_install: - rvm get master
+                    - rvm use 2.5 --install --binary --fuzzy
+
 script:
 - bundle exec rake
