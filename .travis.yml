@@ -1,16 +1,13 @@
 language: ruby
 
-matrix:
-  include:
-  - rvm: 2.3
-    before_install: - rvm get master
-                    - rvm use 2.3 --install --binary --fuzzy
-  - rvm: 2.4
-    before_install: - rvm get master
-                    - rvm use 2.4 --install --binary --fuzzy
-  - rvm: 2.5
-    before_install: - rvm get master
-                    - rvm use 2.5 --install --binary --fuzzy
+before_install:
+- rvm get master
+- rvm use $RUBY_VERS --install --binary --fuzzy
+
+env:
+- RUBY_VERS=2.3
+- RUBY_VERS=2.4
+- RUBY_VERS=2.5
 
 script:
 - bundle exec rake
