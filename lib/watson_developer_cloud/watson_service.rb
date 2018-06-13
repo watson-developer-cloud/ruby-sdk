@@ -19,8 +19,7 @@ class WatsonService
     @conn = Excon.new(
       @url,
       headers: {
-        "User-Agent" => "IBM-Ruby-SDK-Service",
-        "Content-Type" => "application/json"
+        "User-Agent" => "IBM-Ruby-SDK-Service"
       },
       # debug_request: true,
       # debug_response: true,
@@ -32,29 +31,47 @@ class WatsonService
 
   def add_default_headers(headers: {})
     raise TypeError unless headers.instance_of?(Hash)
-    headers.each_pair { |k, v| @conn.headers[k] = v }
+    data = @conn.data
+    data[:headers].merge!(headers)
+    @conn = Excon.new(
+      @url,
+      headers: data[:headers],
+      user: @username,
+      password: @password
+    )
   end
 
   def request(args)
-    defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: {} }
+    defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: nil }
     args = defaults.merge(args)
     args[:data].delete_if { |_k, v| v.nil? } if args[:data].instance_of?(Hash)
-    args[:json] = args[:data].merge(args[:json]) unless args[:data].instance_of?(String)
+    if args[:data].respond_to?(:merge)
+      args[:json] = args[:data].merge(args[:json]) unless args[:data].instance_of?(String)
+    end
     args[:json] = args[:data] if args[:json].empty? || (args[:data].instance_of?(String) && !args[:data].empty?)
     args[:json].delete_if { |_k, v| v.nil? } if args[:json].instance_of?(Hash)
     args[:headers]["Accept"] = "application/json" if args[:accept_json]
-    args.reject { |_, value| value.nil? }
+    args[:headers]["Content-Type"] = "application/json" unless args[:headers].key?("Content-Type")
     args[:json] = args[:json].to_json if args[:json].instance_of?(Hash)
-    args.delete_if { |_k, v| v.nil? }
     args[:headers].delete_if { |_k, v| v.nil? } if args[:headers].instance_of?(Hash)
     args[:params].delete_if { |_k, v| v.nil? } if args[:params].instance_of?(Hash)
+    resp = ""
+    streamer = lambda do |chunk, _remaining_bytes, _total_bytes|
+      resp += chunk
+      # puts "Remaining: #{remaining_bytes} #{total_bytes}"
+    end
+    args.delete_if { |_, v| v.nil? } # || (v.respond_to?("empty") && v.empty?) }
+    headers = @conn.data[:headers].merge(args[:headers])
+    headers.delete("Content-Type") if args[:json].nil?
     response = @conn.request(
       method: args[:method],
       path: @conn.data[:path] + args[:url],
-      headers: @conn.data[:headers].merge(args[:headers]),
+      headers: headers,
       body: args[:json],
-      query: args[:params]
+      query: args[:params],
+      response_block: streamer
     )
+    response.body = resp unless resp.empty?
     return DetailedResponse.new(response: response) if (200..299).cover?(response.status)
     raise WatsonApiException.new(response: response)
     # DetailedResponse.new(response: response)
