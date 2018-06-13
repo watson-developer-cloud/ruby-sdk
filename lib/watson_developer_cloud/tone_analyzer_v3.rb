@@ -118,28 +118,28 @@ module WatsonDeveloperCloud
     #   to indicate the character encoding of the input text; for example: `Content-Type:
     #   text/plain;charset=utf-8`. For `text/html`, the service removes HTML tags and
     #   analyzes only the textual content.
-    # @param tone_input [ToneInput]  JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
+    # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
-    # @param content_type [String]  The type of the input. A character encoding can be specified by including a
+    # @param content_type [String] The type of the input. A character encoding can be specified by including a
     #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
-    # @param sentences [Boolean]  Indicates whether the service is to return an analysis of each individual sentence
+    # @param sentences [Boolean] Indicates whether the service is to return an analysis of each individual sentence
     #   in addition to its analysis of the full document. If `true` (the default), the
     #   service returns results for each sentence.
-    # @param tones [Array[String]]  **`2017-09-21`:** Deprecated. The service continues to accept the parameter for
+    # @param tones [Array[String]] **`2017-09-21`:** Deprecated. The service continues to accept the parameter for
     #   backward-compatibility, but the parameter no longer affects the response.
     #
     #   **`2016-05-19`:** A comma-separated list of tones for which the service is to
     #   return its analysis of the input; the indicated tones apply both to the full
     #   document and to individual sentences of the document. You can specify one or more
     #   of the valid values. Omit the parameter to request results for all three tones.
-    # @param content_language [String]  The language of the input text for the request: English or French. Regional
+    # @param content_language [String] The language of the input text for the request: English or French. Regional
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. The input content must match the specified language. Do not submit
     #   content that contains both languages. You can use different languages for
     #   **Content-Language** and **Accept-Language**.
     #   * **`2017-09-21`:** Accepts `en` or `fr`.
     #   * **`2016-05-19`:** Accepts only `en`.
-    # @param accept_language [String]  The desired language of the response. For two-character arguments, regional
+    # @param accept_language [String] The desired language of the response. For two-character arguments, regional
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
@@ -190,16 +190,16 @@ module WatsonDeveloperCloud
     #
     #   Per the JSON specification, the default character encoding for JSON content is
     #   effectively always UTF-8.
-    # @param utterances [Array[Utterance]]  An array of `Utterance` objects that provides the input content that the service
+    # @param utterances [Array[Utterance]] An array of `Utterance` objects that provides the input content that the service
     #   is to analyze.
-    # @param content_language [String]  The language of the input text for the request: English or French. Regional
+    # @param content_language [String] The language of the input text for the request: English or French. Regional
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. The input content must match the specified language. Do not submit
     #   content that contains both languages. You can use different languages for
     #   **Content-Language** and **Accept-Language**.
     #   * **`2017-09-21`:** Accepts `en` or `fr`.
     #   * **`2016-05-19`:** Accepts only `en`.
-    # @param accept_language [String]  The desired language of the response. For two-character arguments, regional
+    # @param accept_language [String] The desired language of the response. For two-character arguments, regional
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.

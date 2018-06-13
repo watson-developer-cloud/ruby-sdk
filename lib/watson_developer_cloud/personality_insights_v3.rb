@@ -135,16 +135,16 @@ module WatsonDeveloperCloud
     #   profile](https://console.bluemix.net/docs/services/personality-insights/output.html),
     #   and [Understanding a CSV
     #   profile](https://console.bluemix.net/docs/services/personality-insights/output-csv.html).
-    # @param content [Content]  A maximum of 20 MB of content to analyze, though the service requires much less
+    # @param content [Content] A maximum of 20 MB of content to analyze, though the service requires much less
     #   text; for more information, see [Providing sufficient
     #   input](https://console.bluemix.net/docs/services/personality-insights/input.html#sufficient).
     #   For JSON input, provide an object of type `Content`.
-    # @param content_type [String]  The type of the input. A character encoding can be specified by including a
+    # @param content_type [String] The type of the input. A character encoding can be specified by including a
     #   `charset` parameter. For example, 'text/html;charset=utf-8'.
-    # @param accept [String]  The type of the response: application/json or text/csv. A character encoding can
+    # @param accept [String] The type of the response: application/json or text/csv. A character encoding can
     #   be specified by including a `charset` parameter. For example,
     #   'text/csv;charset=utf-8'.
-    # @param content_language [String]  The language of the input text for the request: Arabic, English, Japanese, Korean,
+    # @param content_language [String] The language of the input text for the request: Arabic, English, Japanese, Korean,
     #   or Spanish. Regional variants are treated as their parent language; for example,
     #   `en-US` is interpreted as `en`.
     #
@@ -156,17 +156,17 @@ module WatsonDeveloperCloud
     #   items that specify a different language are ignored; omit this parameter to base
     #   the language on the specification of the content items. You can specify any
     #   combination of languages for **Content-Language** and **Accept-Language**.
-    # @param accept_language [String]  The desired language of the response. For two-character arguments, regional
+    # @param accept_language [String] The desired language of the response. For two-character arguments, regional
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can specify any combination of languages for the input and response
     #   content.
-    # @param raw_scores [Boolean]  Indicates whether a raw score in addition to a normalized percentile is returned
+    # @param raw_scores [Boolean] Indicates whether a raw score in addition to a normalized percentile is returned
     #   for each characteristic; raw scores are not compared with a sample population. By
     #   default, only normalized percentiles are returned.
-    # @param csv_headers [Boolean]  Indicates whether column labels are returned with a CSV response. By default, no
+    # @param csv_headers [Boolean] Indicates whether column labels are returned with a CSV response. By default, no
     #   column labels are returned. Applies only when the **Accept** parameter is set to
     #   `text/csv`.
-    # @param consumption_preferences [Boolean]  Indicates whether consumption preferences are returned with the results. By
+    # @param consumption_preferences [Boolean] Indicates whether consumption preferences are returned with the results. By
     #   default, no consumption preferences are returned.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def profile(content:, content_type:, accept: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)

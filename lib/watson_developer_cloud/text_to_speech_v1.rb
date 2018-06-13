@@ -155,8 +155,8 @@ module WatsonDeveloperCloud
     #   language, gender, and other details about the voice. Specify a customization ID to
     #   obtain information for that custom voice model of the specified voice. To list
     #   information about all available voices, use the **List voices** method.
-    # @param voice [String]  The voice for which information is to be returned.
-    # @param customization_id [String]  The customization ID (GUID) of a custom voice model for which information is to be
+    # @param voice [String] The voice for which information is to be returned.
+    # @param customization_id [String] The customization ID (GUID) of a custom voice model for which information is to be
     #   returned. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model. Omit the parameter to see
     #   information about the specified voice with no customization.
@@ -201,16 +201,16 @@ module WatsonDeveloperCloud
     #   example, a message such as `\"Unknown arguments:\"` or `\"Unknown url query
     #   arguments:\"` followed by a list of the form `\"invalid_arg_1, invalid_arg_2.\"`
     #   The request succeeds despite the warnings.
-    # @param text [String]  The text to synthesize.
-    # @param accept [String]  The requested audio format (MIME type) of the audio. You can use the `Accept`
+    # @param text [String] The text to synthesize.
+    # @param accept [String] The requested audio format (MIME type) of the audio. You can use the `Accept`
     #   header or the `accept` query parameter to specify the audio format. (For the
     #   `audio/l16` format, you can optionally specify `endianness=big-endian` or
     #   `endianness=little-endian`; the default is little endian.) For detailed
     #   information about the supported audio formats and sampling rates, see [Specifying
     #   an audio
     #   format](https://console.bluemix.net/docs/services/text-to-speech/http.html#format).
-    # @param voice [String]  The voice to use for synthesis.
-    # @param customization_id [String]  The customization ID (GUID) of a custom voice model to use for the synthesis. If a
+    # @param voice [String] The voice to use for synthesis.
+    # @param customization_id [String] The customization ID (GUID) of a custom voice model to use for the synthesis. If a
     #   custom voice model is specified, it is guaranteed to work only if it matches the
     #   language of the indicated voice. You must make the request with service
     #   credentials created for the instance of the service that owns the custom model.
@@ -253,13 +253,13 @@ module WatsonDeveloperCloud
     #   for a specific custom voice model to see the translation for that voice model.
     #
     #   **Note:** This method is currently a beta release.
-    # @param text [String]  The word for which the pronunciation is requested.
-    # @param voice [String]  A voice that specifies the language in which the pronunciation is to be returned.
+    # @param text [String] The word for which the pronunciation is requested.
+    # @param voice [String] A voice that specifies the language in which the pronunciation is to be returned.
     #   All voices for the same language (for example, `en-US`) return the same
     #   translation.
-    # @param format [String]  The phoneme format in which to return the pronunciation. Omit the parameter to
+    # @param format [String] The phoneme format in which to return the pronunciation. Omit the parameter to
     #   obtain the pronunciation in the default format.
-    # @param customization_id [String]  The customization ID (GUID) of a custom voice model for which the pronunciation is
+    # @param customization_id [String] The customization ID (GUID) of a custom voice model for which the pronunciation is
     #   to be returned. The language of a specified custom model must match the language
     #   of the specified voice. If the word is not defined in the specified custom model,
     #   the service returns the default translation for the custom model's language. You
@@ -301,10 +301,10 @@ module WatsonDeveloperCloud
     #   used to create it.
     #
     #   **Note:** This method is currently a beta release.
-    # @param name [String]  The name of the new custom voice model.
-    # @param language [String]  The language of the new custom voice model. Omit the parameter to use the the
+    # @param name [String] The name of the new custom voice model.
+    # @param language [String] The language of the new custom voice model. Omit the parameter to use the the
     #   default language, `en-US`.
-    # @param description [String]  A description of the new custom voice model. Specifying a description is
+    # @param description [String] A description of the new custom voice model. Specifying a description is
     #   recommended.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_voice_model(name:, language: nil, description: nil)
@@ -338,7 +338,7 @@ module WatsonDeveloperCloud
     #   about it.
     #
     #   **Note:** This method is currently a beta release.
-    # @param language [String]  The language for which custom voice models that are owned by the requesting
+    # @param language [String] The language for which custom voice models that are owned by the requesting
     #   service credentials are to be returned. Omit the parameter to see all custom voice
     #   models that are owned by the requester.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -370,12 +370,12 @@ module WatsonDeveloperCloud
     #   the instance of the service that owns a model to update it.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @param name [String]  A new name for the custom voice model.
-    # @param description [String]  A new description for the custom voice model.
-    # @param words [Array[Word]]  An array of `Word` objects that provides the words and their translations that are
+    # @param name [String] A new name for the custom voice model.
+    # @param description [String] A new description for the custom voice model.
+    # @param words [Array[Word]] An array of `Word` objects that provides the words and their translations that are
     #   to be added or updated for the custom voice model. Pass an empty array to make no
     #   additions or updates.
     # @return [nil]
@@ -408,7 +408,7 @@ module WatsonDeveloperCloud
     #   voice model, use the **List custom models** method.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -433,7 +433,7 @@ module WatsonDeveloperCloud
     #   instance of the service that owns a model to delete it.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @return [nil]
@@ -465,10 +465,10 @@ module WatsonDeveloperCloud
     #   owns a model to add words to it.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @param words [Array[Word]]  The **Add custom words** method accepts an array of `Word` objects. Each object
+    # @param words [Array[Word]] The **Add custom words** method accepts an array of `Word` objects. Each object
     #   provides a word that is to be added or updated for the custom voice model and the
     #   word's translation.
     #
@@ -505,7 +505,7 @@ module WatsonDeveloperCloud
     #   words.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -533,15 +533,15 @@ module WatsonDeveloperCloud
     #   model to add a word to it.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @param word [String]  The word that is to be added or updated for the custom voice model.
-    # @param translation [String]  The phonetic or sounds-like translation for the word. A phonetic translation is
+    # @param word [String] The word that is to be added or updated for the custom voice model.
+    # @param translation [String] The phonetic or sounds-like translation for the word. A phonetic translation is
     #   based on the SSML format for representing the phonetic string of a word either as
     #   an IPA translation or as an IBM SPR translation. A sounds-like is one or more
     #   words that, when combined, sound like the word.
-    # @param part_of_speech [String]  **Japanese only.** The part of speech for the word. The service uses the value to
+    # @param part_of_speech [String] **Japanese only.** The part of speech for the word. The service uses the value to
     #   produce the correct intonation for the word. You can create only a single entry,
     #   with or without a single part of speech, for any word; you cannot create multiple
     #   entries with different parts of speech for the same word. For more information,
@@ -577,10 +577,10 @@ module WatsonDeveloperCloud
     #   the instance of the service that owns a model to list its words.
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @param word [String]  The word that is to be queried from the custom voice model.
+    # @param word [String] The word that is to be queried from the custom voice model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
@@ -605,10 +605,10 @@ module WatsonDeveloperCloud
     #
     #
     #   **Note:** This method is currently a beta release.
-    # @param customization_id [String]  The customization ID (GUID) of the custom voice model. You must make the request
+    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @param word [String]  The word that is to be deleted from the custom voice model.
+    # @param word [String] The word that is to be deleted from the custom voice model.
     # @return [nil]
     def delete_word(customization_id:, word:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
@@ -642,7 +642,7 @@ module WatsonDeveloperCloud
     #   with a request that passes the data. For more information about customer IDs and
     #   about using this method, see [Information
     #   security](https://console.bluemix.net/docs/services/text-to-speech/information-security.html).
-    # @param customer_id [String]  The customer ID for which all data is to be deleted.
+    # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?

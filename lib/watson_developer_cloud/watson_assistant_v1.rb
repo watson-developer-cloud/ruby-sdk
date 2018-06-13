@@ -96,21 +96,21 @@ module WatsonDeveloperCloud
     # Get a response to a user's input.
     #
     #   There is no rate limit for this operation.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param input [InputData]  An input object that includes the input text.
-    # @param alternate_intents [Boolean]  Whether to return more than one intent. Set to `true` to return all matching
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param input [InputData] An input object that includes the input text.
+    # @param alternate_intents [Boolean] Whether to return more than one intent. Set to `true` to return all matching
     #   intents.
-    # @param context [Context]  State information for the conversation. Continue a conversation by including the
+    # @param context [Context] State information for the conversation. Continue a conversation by including the
     #   context object from the previous response.
-    # @param entities [Array[RuntimeEntity]]  Entities to use when evaluating the message. Include entities from the previous
+    # @param entities [Array[RuntimeEntity]] Entities to use when evaluating the message. Include entities from the previous
     #   response to continue using those entities rather than detecting entities in the
     #   new input.
-    # @param intents [Array[RuntimeIntent]]  Intents to use when evaluating the user input. Include intents from the previous
+    # @param intents [Array[RuntimeIntent]] Intents to use when evaluating the user input. Include intents from the previous
     #   response to continue using those intents rather than trying to recognize intents
     #   in the new input.
-    # @param output [OutputData]  System output. Include the output from the previous response to maintain
+    # @param output [OutputData] System output. Include the output from the previous response to maintain
     #   intermediate information over multiple requests.
-    # @param nodes_visited_details [Boolean]  Whether to include additional diagnostic information about the dialog nodes that
+    # @param nodes_visited_details [Boolean] Whether to include additional diagnostic information about the dialog nodes that
     #   were visited during processing of the message.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
@@ -152,13 +152,13 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -191,18 +191,18 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 30 requests per 30 minutes. For more information, see
     #   **Rate limiting**.
-    # @param name [String]  The name of the workspace. This string cannot contain carriage return, newline, or
+    # @param name [String] The name of the workspace. This string cannot contain carriage return, newline, or
     #   tab characters, and it must be no longer than 64 characters.
-    # @param description [String]  The description of the workspace. This string cannot contain carriage return,
+    # @param description [String] The description of the workspace. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param language [String]  The language of the workspace.
-    # @param intents [Array[CreateIntent]]  An array of objects defining the intents for the workspace.
-    # @param entities [Array[CreateEntity]]  An array of objects defining the entities for the workspace.
-    # @param dialog_nodes [Array[CreateDialogNode]]  An array of objects defining the nodes in the workspace dialog.
-    # @param counterexamples [Array[CreateCounterexample]]  An array of objects defining input examples that have been marked as irrelevant
+    # @param language [String] The language of the workspace.
+    # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
+    # @param entities [Array[CreateEntity]] An array of objects defining the entities for the workspace.
+    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the workspace dialog.
+    # @param counterexamples [Array[CreateCounterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
-    # @param metadata [Object]  Any metadata related to the workspace.
-    # @param learning_opt_out [Boolean]  Whether training data from the workspace can be used by IBM for general service
+    # @param metadata [Object] Any metadata related to the workspace.
+    # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil)
@@ -242,11 +242,11 @@ module WatsonDeveloperCloud
     #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
     #   With **export**=`true`, the limit is 20 requests per 30 minutes. For more
     #   information, see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_workspace(workspace_id:, export: nil, include_audit: nil)
@@ -277,21 +277,21 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 30 request per 30 minutes. For more information, see
     #   **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param name [String]  The name of the workspace. This string cannot contain carriage return, newline, or
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param name [String] The name of the workspace. This string cannot contain carriage return, newline, or
     #   tab characters, and it must be no longer than 64 characters.
-    # @param description [String]  The description of the workspace. This string cannot contain carriage return,
+    # @param description [String] The description of the workspace. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param language [String]  The language of the workspace.
-    # @param intents [Array[CreateIntent]]  An array of objects defining the intents for the workspace.
-    # @param entities [Array[CreateEntity]]  An array of objects defining the entities for the workspace.
-    # @param dialog_nodes [Array[CreateDialogNode]]  An array of objects defining the nodes in the workspace dialog.
-    # @param counterexamples [Array[CreateCounterexample]]  An array of objects defining input examples that have been marked as irrelevant
+    # @param language [String] The language of the workspace.
+    # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
+    # @param entities [Array[CreateEntity]] An array of objects defining the entities for the workspace.
+    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the workspace dialog.
+    # @param counterexamples [Array[CreateCounterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
-    # @param metadata [Object]  Any metadata related to the workspace.
-    # @param learning_opt_out [Boolean]  Whether training data from the workspace can be used by IBM for general service
+    # @param metadata [Object] Any metadata related to the workspace.
+    # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
-    # @param append [Boolean]  Whether the new data is to be appended to the existing data in the workspace. If
+    # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
     #   **append**=`false`, elements included in the new data completely replace the
     #   corresponding existing elements, including all subelements. For example, if the
     #   new data includes **entities** and **append**=`false`, all existing entities in
@@ -339,7 +339,7 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 30 requests per 30 minutes. For more information, see
     #   **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
+    # @param workspace_id [String] Unique identifier of the workspace.
     # @return [nil]
     def delete_workspace(workspace_id:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -371,17 +371,17 @@ module WatsonDeveloperCloud
     #   With **export**=`false`, this operation is limited to 2000 requests per 30
     #   minutes. With **export**=`true`, the limit is 400 requests per 30 minutes. For
     #   more information, see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -415,15 +415,15 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The name of the intent. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The name of the intent. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, hyphen, and dot
     #   characters.
     #   - It cannot begin with the reserved prefix `sys-`.
     #   - It must be no longer than 128 characters.
-    # @param description [String]  The description of the intent. This string cannot contain carriage return,
+    # @param description [String] The description of the intent. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param examples [Array[CreateExample]]  An array of user input examples for the intent.
+    # @param examples [Array[CreateExample]] An array of user input examples for the intent.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_intent(workspace_id:, intent:, description: nil, examples: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -458,12 +458,12 @@ module WatsonDeveloperCloud
     #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
     #   With **export**=`true`, the limit is 400 requests per 30 minutes. For more
     #   information, see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
@@ -495,15 +495,15 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param new_intent [String]  The name of the intent. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param new_intent [String] The name of the intent. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, hyphen, and dot
     #   characters.
     #   - It cannot begin with the reserved prefix `sys-`.
     #   - It must be no longer than 128 characters.
-    # @param new_description [String]  The description of the intent.
-    # @param new_examples [Array[CreateExample]]  An array of user input examples for the intent.
+    # @param new_description [String] The description of the intent.
+    # @param new_examples [Array[CreateExample]] An array of user input examples for the intent.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -537,8 +537,8 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
     # @return [nil]
     def delete_intent(workspace_id:, intent:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -570,15 +570,15 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -612,9 +612,9 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param text [String]  The text of a user input example. This string must conform to the following
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param text [String] The text of a user input example. This string must conform to the following
     #   restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
@@ -651,10 +651,10 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param text [String]  The text of the user input example.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param text [String] The text of the user input example.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_example(workspace_id:, intent:, text:, include_audit: nil)
@@ -685,10 +685,10 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param text [String]  The text of the user input example.
-    # @param new_text [String]  The text of the user input example. This string must conform to the following
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param text [String] The text of the user input example.
+    # @param new_text [String] The text of the user input example. This string must conform to the following
     #   restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
@@ -725,9 +725,9 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param intent [String]  The intent name.
-    # @param text [String]  The text of the user input example.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param text [String] The text of the user input example.
     # @return [nil]
     def delete_example(workspace_id:, intent:, text:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -761,14 +761,14 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -802,8 +802,8 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param text [String]  The text of a user input marked as irrelevant input. This string must conform to
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param text [String] The text of a user input marked as irrelevant input. This string must conform to
     #   the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters
     #   - It cannot consist of only whitespace characters
@@ -840,9 +840,9 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param text [String]  The text of a user input counterexample (for example, `What are you wearing?`).
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_counterexample(workspace_id:, text:, include_audit: nil)
@@ -873,9 +873,9 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param text [String]  The text of a user input counterexample (for example, `What are you wearing?`).
-    # @param new_text [String]  The text of a user input counterexample.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
+    # @param new_text [String] The text of a user input counterexample.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_counterexample(workspace_id:, text:, new_text: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -908,8 +908,8 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param text [String]  The text of a user input counterexample (for example, `What are you wearing?`).
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @return [nil]
     def delete_counterexample(workspace_id:, text:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -942,17 +942,17 @@ module WatsonDeveloperCloud
     #   With **export**=`false`, this operation is limited to 1000 requests per 30
     #   minutes. With **export**=`true`, the limit is 200 requests per 30 minutes. For
     #   more information, see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -986,16 +986,16 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, and hyphen characters.
     #   - It cannot begin with the reserved prefix `sys-`.
     #   - It must be no longer than 64 characters.
-    # @param description [String]  The description of the entity. This string cannot contain carriage return,
+    # @param description [String] The description of the entity. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param metadata [Object]  Any metadata related to the value.
-    # @param values [Array[CreateValue]]  An array of objects describing the entity values.
-    # @param fuzzy_match [Boolean]  Whether to use fuzzy matching for the entity.
+    # @param metadata [Object] Any metadata related to the value.
+    # @param values [Array[CreateValue]] An array of objects describing the entity values.
+    # @param fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1032,12 +1032,12 @@ module WatsonDeveloperCloud
     #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
     #   With **export**=`true`, the limit is 200 requests per 30 minutes. For more
     #   information, see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
@@ -1069,17 +1069,17 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param new_entity [String]  The name of the entity. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param new_entity [String] The name of the entity. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, and hyphen characters.
     #   - It cannot begin with the reserved prefix `sys-`.
     #   - It must be no longer than 64 characters.
-    # @param new_description [String]  The description of the entity. This string cannot contain carriage return,
+    # @param new_description [String] The description of the entity. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param new_metadata [Object]  Any metadata related to the entity.
-    # @param new_fuzzy_match [Boolean]  Whether to use fuzzy matching for the entity.
-    # @param new_values [Array[CreateValue]]  An array of entity values.
+    # @param new_metadata [Object] Any metadata related to the entity.
+    # @param new_fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
+    # @param new_values [Array[CreateValue]] An array of entity values.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1115,8 +1115,8 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
     # @return [nil]
     def delete_entity(workspace_id:, entity:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1148,18 +1148,18 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -1194,26 +1194,26 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value. This string must conform to the following
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value. This string must conform to the following
     #   restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @param metadata [Object]  Any metadata related to the entity value.
-    # @param synonyms [Array[String]]  An array containing any synonyms for the entity value. You can provide either
+    # @param metadata [Object] Any metadata related to the entity value.
+    # @param synonyms [Array[String]] An array containing any synonyms for the entity value. You can provide either
     #   synonyms or patterns (as indicated by **type**), but not both. A synonym must
     #   conform to the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @param patterns [Array[String]]  An array of patterns for the entity value. You can provide either synonyms or
+    # @param patterns [Array[String]] An array of patterns for the entity value. You can provide either synonyms or
     #   patterns (as indicated by **type**), but not both. A pattern is a regular
     #   expression no longer than 128 characters. For more information about how to
     #   specify a pattern, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/entities.html#creating-entities).
-    # @param value_type [String]  Specifies the type of value.
+    # @param value_type [String] Specifies the type of value.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1250,13 +1250,13 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param export [Boolean]  Whether to include all element content in the returned data. If
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
@@ -1289,23 +1289,23 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param new_value [String]  The text of the entity value. This string must conform to the following
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param new_value [String] The text of the entity value. This string must conform to the following
     #   restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @param new_metadata [Object]  Any metadata related to the entity value.
-    # @param new_type [String]  Specifies the type of value.
-    # @param new_synonyms [Array[String]]  An array of synonyms for the entity value. You can provide either synonyms or
+    # @param new_metadata [Object] Any metadata related to the entity value.
+    # @param new_type [String] Specifies the type of value.
+    # @param new_synonyms [Array[String]] An array of synonyms for the entity value. You can provide either synonyms or
     #   patterns (as indicated by **type**), but not both. A synonym must conform to the
     #   following resrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @param new_patterns [Array[String]]  An array of patterns for the entity value. You can provide either synonyms or
+    # @param new_patterns [Array[String]] An array of patterns for the entity value. You can provide either synonyms or
     #   patterns (as indicated by **type**), but not both. A pattern is a regular
     #   expression no longer than 128 characters. For more information about how to
     #   specify a pattern, see the
@@ -1346,9 +1346,9 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
     # @return [nil]
     def delete_value(workspace_id:, entity:, value:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1381,16 +1381,16 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -1425,10 +1425,10 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param synonym [String]  The text of the synonym. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param synonym [String] The text of the synonym. This string must conform to the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
@@ -1465,11 +1465,11 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param synonym [String]  The text of the synonym.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param synonym [String] The text of the synonym.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
@@ -1501,11 +1501,11 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param synonym [String]  The text of the synonym.
-    # @param new_synonym [String]  The text of the synonym. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param synonym [String] The text of the synonym.
+    # @param new_synonym [String] The text of the synonym. This string must conform to the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
@@ -1542,10 +1542,10 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param entity [String]  The name of the entity.
-    # @param value [String]  The text of the entity value.
-    # @param synonym [String]  The text of the synonym.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param synonym [String] The text of the synonym.
     # @return [nil]
     def delete_synonym(workspace_id:, entity:, value:, synonym:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1579,14 +1579,14 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param include_count [Boolean]  Whether to include information about the number of records returned.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
@@ -1619,36 +1619,36 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param dialog_node [String]  The dialog node ID. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
     #   characters.
     #   - It must be no longer than 1024 characters.
-    # @param description [String]  The description of the dialog node. This string cannot contain carriage return,
+    # @param description [String] The description of the dialog node. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param conditions [String]  The condition that will trigger the dialog node. This string cannot contain
+    # @param conditions [String] The condition that will trigger the dialog node. This string cannot contain
     #   carriage return, newline, or tab characters, and it must be no longer than 2048
     #   characters.
-    # @param parent [String]  The ID of the parent dialog node.
-    # @param previous_sibling [String]  The ID of the previous dialog node.
-    # @param output [Object]  The output of the dialog node. For more information about how to specify dialog
+    # @param parent [String] The ID of the parent dialog node.
+    # @param previous_sibling [String] The ID of the previous dialog node.
+    # @param output [Object] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
-    # @param context [Object]  The context for the dialog node.
-    # @param metadata [Object]  The metadata for the dialog node.
-    # @param next_step [DialogNodeNextStep]  The next step to be executed in dialog processing.
-    # @param actions [Array[DialogNodeAction]]  An array of objects describing any actions to be invoked by the dialog node.
-    # @param title [String]  The alias used to identify the dialog node. This string must conform to the
+    # @param context [Object] The context for the dialog node.
+    # @param metadata [Object] The metadata for the dialog node.
+    # @param next_step [DialogNodeNextStep] The next step to be executed in dialog processing.
+    # @param actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
+    # @param title [String] The alias used to identify the dialog node. This string must conform to the
     #   following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
     #   characters.
     #   - It must be no longer than 64 characters.
-    # @param node_type [String]  How the dialog node is processed.
-    # @param event_name [String]  How an `event_handler` node is processed.
-    # @param variable [String]  The location in the dialog context where output is stored.
-    # @param digress_in [String]  Whether this top-level dialog node can be digressed into.
-    # @param digress_out [String]  Whether this dialog node can be returned to after a digression.
-    # @param digress_out_slots [String]  Whether the user can digress to top-level nodes while filling out slots.
+    # @param node_type [String] How the dialog node is processed.
+    # @param event_name [String] How an `event_handler` node is processed.
+    # @param variable [String] The location in the dialog context where output is stored.
+    # @param digress_in [String] Whether this top-level dialog node can be digressed into.
+    # @param digress_out [String] Whether this dialog node can be returned to after a digression.
+    # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1696,9 +1696,9 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param dialog_node [String]  The dialog node ID (for example, `get_order`).
-    # @param include_audit [Boolean]  Whether to include the audit properties (`created` and `updated` timestamps) in
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
@@ -1728,37 +1728,37 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param dialog_node [String]  The dialog node ID (for example, `get_order`).
-    # @param new_dialog_node [String]  The dialog node ID. This string must conform to the following restrictions:
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
+    # @param new_dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
     #   characters.
     #   - It must be no longer than 1024 characters.
-    # @param new_description [String]  The description of the dialog node. This string cannot contain carriage return,
+    # @param new_description [String] The description of the dialog node. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param new_conditions [String]  The condition that will trigger the dialog node. This string cannot contain
+    # @param new_conditions [String] The condition that will trigger the dialog node. This string cannot contain
     #   carriage return, newline, or tab characters, and it must be no longer than 2048
     #   characters.
-    # @param new_parent [String]  The ID of the parent dialog node.
-    # @param new_previous_sibling [String]  The ID of the previous sibling dialog node.
-    # @param new_output [Object]  The output of the dialog node. For more information about how to specify dialog
+    # @param new_parent [String] The ID of the parent dialog node.
+    # @param new_previous_sibling [String] The ID of the previous sibling dialog node.
+    # @param new_output [Object] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
-    # @param new_context [Object]  The context for the dialog node.
-    # @param new_metadata [Object]  The metadata for the dialog node.
-    # @param new_next_step [DialogNodeNextStep]  The next step to be executed in dialog processing.
-    # @param new_title [String]  The alias used to identify the dialog node. This string must conform to the
+    # @param new_context [Object] The context for the dialog node.
+    # @param new_metadata [Object] The metadata for the dialog node.
+    # @param new_next_step [DialogNodeNextStep] The next step to be executed in dialog processing.
+    # @param new_title [String] The alias used to identify the dialog node. This string must conform to the
     #   following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
     #   characters.
     #   - It must be no longer than 64 characters.
-    # @param new_type [String]  How the dialog node is processed.
-    # @param new_event_name [String]  How an `event_handler` node is processed.
-    # @param new_variable [String]  The location in the dialog context where output is stored.
-    # @param new_actions [Array[DialogNodeAction]]  An array of objects describing any actions to be invoked by the dialog node.
-    # @param new_digress_in [String]  Whether this top-level dialog node can be digressed into.
-    # @param new_digress_out [String]  Whether this dialog node can be returned to after a digression.
-    # @param new_digress_out_slots [String]  Whether the user can digress to top-level nodes while filling out slots.
+    # @param new_type [String] How the dialog node is processed.
+    # @param new_event_name [String] How an `event_handler` node is processed.
+    # @param new_variable [String] The location in the dialog context where output is stored.
+    # @param new_actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
+    # @param new_digress_in [String] Whether this top-level dialog node can be digressed into.
+    # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
+    # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1806,8 +1806,8 @@ module WatsonDeveloperCloud
     #
     #   This operation is limited to 500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param dialog_node [String]  The dialog node ID (for example, `get_order`).
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
     # @return [nil]
     def delete_dialog_node(workspace_id:, dialog_node:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1840,15 +1840,15 @@ module WatsonDeveloperCloud
     #   If **cursor** is not specified, this operation is limited to 40 requests per 30
     #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
     #   more information, see **Rate limiting**.
-    # @param workspace_id [String]  Unique identifier of the workspace.
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param filter [String]  A cacheable parameter that limits the results to those matching the specified
+    # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. For more information, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/filter-reference.html#filter-query-syntax).
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1880,16 +1880,16 @@ module WatsonDeveloperCloud
     #   If **cursor** is not specified, this operation is limited to 40 requests per 30
     #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
     #   more information, see **Rate limiting**.
-    # @param filter [String]  A cacheable parameter that limits the results to those matching the specified
+    # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. You must specify a filter query that includes a value for `language`, as
     #   well as a value for `workspace_id` or `request.context.metadata.deployment`. For
     #   more information, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/filter-reference.html#filter-query-syntax).
-    # @param sort [String]  The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
     #   and `workspace_id`.
-    # @param page_limit [Fixnum]  The number of records to return in each page of results.
-    # @param cursor [String]  A token identifying the page of results to retrieve.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
       raise ArgumentError("filter must be provided") if filter.nil?
@@ -1927,7 +1927,7 @@ module WatsonDeveloperCloud
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
     #   security](https://console.bluemix.net/docs/services/conversation/information-security.html).
-    # @param customer_id [String]  The customer ID for which all data is to be deleted.
+    # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?

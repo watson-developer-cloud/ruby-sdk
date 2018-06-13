@@ -84,16 +84,16 @@ module WatsonDeveloperCloud
     # @!method translate(text:, model_id: nil, source: nil, target: nil)
     # Translate.
     # Translates the input text from the source language to the target language.
-    # @param text [Array[String]]  Input text in UTF-8 encoding. Multiple entries will result in multiple
+    # @param text [Array[String]] Input text in UTF-8 encoding. Multiple entries will result in multiple
     #   translations in the response.
-    # @param model_id [String]  Model ID of the translation model to use. If this is specified, the **source** and
+    # @param model_id [String] Model ID of the translation model to use. If this is specified, the **source** and
     #   **target** parameters will be ignored. The method requires either a model ID or
     #   both the **source** and **target** parameters.
-    # @param source [String]  Language code of the source text language. Use with `target` as an alternative way
+    # @param source [String] Language code of the source text language. Use with `target` as an alternative way
     #   to select a translation model. When `source` and `target` are set, and a model ID
     #   is not set, the system chooses a default model for the language pair (usually the
     #   model based on the news domain).
-    # @param target [String]  Language code of the translation target language. Use with source as an
+    # @param target [String] Language code of the translation target language. Use with source as an
     #   alternative way to select a translation model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def translate(text:, model_id: nil, source: nil, target: nil)
@@ -144,7 +144,7 @@ module WatsonDeveloperCloud
     # @!method identify(text:)
     # Identify language.
     # Identifies the language of the input text.
-    # @param text [String]  Input text in UTF-8 format.
+    # @param text [String] Input text in UTF-8 format.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def identify(text:)
       raise ArgumentError("text must be provided") if text.nil?
@@ -171,9 +171,9 @@ module WatsonDeveloperCloud
     # @!method list_models(source: nil, target: nil, default_models: nil)
     # List models.
     # Lists available translation models.
-    # @param source [String]  Specify a language code to filter results by source language.
-    # @param target [String]  Specify a language code to filter results by target language.
-    # @param default_models [Boolean]  If the default parameter isn't specified, the service will return all models
+    # @param source [String] Specify a language code to filter results by source language.
+    # @param target [String] Specify a language code to filter results by target language.
+    # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
     #   (default and non-default) for each language pair. To return only default models,
     #   set this to `true`. To return only non-default models, set this to `false`.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -205,22 +205,22 @@ module WatsonDeveloperCloud
     #   to several hours for a large parallel corpus. Glossary files must be less than 10
     #   MB. The cumulative file size of all uploaded glossary and corpus files is limited
     #   to 250 MB.
-    # @param base_model_id [String]  The model ID of the model to use as the base for customization. To see available
+    # @param base_model_id [String] The model ID of the model to use as the base for customization. To see available
     #   models, use the `List models` method.
-    # @param name [String]  An optional model name that you can use to identify the model. Valid characters
+    # @param name [String] An optional model name that you can use to identify the model. Valid characters
     #   are letters, numbers, dashes, underscores, spaces and apostrophes. The maximum
     #   length is 32 characters.
-    # @param forced_glossary [File]  A TMX file with your customizations. The customizations in the file completely
+    # @param forced_glossary [File] A TMX file with your customizations. The customizations in the file completely
     #   overwrite the domain translaton data, including high frequency or high confidence
     #   phrase translations. You can upload only one glossary with a file size less than
     #   10 MB per call.
-    # @param parallel_corpus [File]  A TMX file that contains entries that are treated as a parallel corpus instead of
+    # @param parallel_corpus [File] A TMX file that contains entries that are treated as a parallel corpus instead of
     #   a glossary.
-    # @param monolingual_corpus [File]  A UTF-8 encoded plain text file that is used to customize the target language
+    # @param monolingual_corpus [File] A UTF-8 encoded plain text file that is used to customize the target language
     #   model.
-    # @param forced_glossary_filename [String]  The filename for forced_glossary.
-    # @param parallel_corpus_filename [String]  The filename for parallel_corpus.
-    # @param monolingual_corpus_filename [String]  The filename for monolingual_corpus.
+    # @param forced_glossary_filename [String] The filename for forced_glossary.
+    # @param parallel_corpus_filename [String] The filename for parallel_corpus.
+    # @param monolingual_corpus_filename [String] The filename for monolingual_corpus.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, monolingual_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil, monolingual_corpus_filename: nil)
       raise ArgumentError("base_model_id must be provided") if base_model_id.nil?
@@ -268,7 +268,7 @@ module WatsonDeveloperCloud
     # @!method delete_model(model_id:)
     # Delete model.
     # Deletes a custom translation model.
-    # @param model_id [String]  Model ID of the model to delete.
+    # @param model_id [String] Model ID of the model to delete.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
@@ -289,7 +289,7 @@ module WatsonDeveloperCloud
     # Get model details.
     # Gets information about a translation model, including training status for custom
     #   models.
-    # @param model_id [String]  Model ID of the model to get.
+    # @param model_id [String] Model ID of the model to get.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
