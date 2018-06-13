@@ -28,6 +28,11 @@ class WatsonService
     end
   end
 
+  def add_default_headers(headers: {})
+    raise TypeError unless headers.instance_of?(Hash)
+    headers.each_pair { |k, v| @conn.headers[k] = v }
+  end
+
   def request(args)
     defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: {} }
     args = defaults.merge(args)
