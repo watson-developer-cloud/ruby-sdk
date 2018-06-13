@@ -17,7 +17,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     }
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?tones%5B%5D&version=2017-09-21")
+    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
       .with(
         body: tone_text,
         headers: {
@@ -48,7 +48,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     }
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: tone_response)
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?sentences=false&tones%5B%5D&version=2017-09-21")
+    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?sentences=false&version=2017-09-21")
       .with(
         body: tone_text,
         headers: {
@@ -120,7 +120,7 @@ class ToneAnalyzerV3Test < Minitest::Test
       "error" => error_message
     }
     text = "Team, I know that times are tough!"
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?tones%5B%5D&version=2017-09-21")
+    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
       .with(
         body: text,
         headers: {
