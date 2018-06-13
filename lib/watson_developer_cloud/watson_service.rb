@@ -36,10 +36,10 @@ class WatsonService
   end
 
   def request(args)
-    defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: nil }
+    defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: {} }
     args = defaults.merge(args)
     args[:data].delete_if { |_k, v| v.nil? } if args[:data].instance_of?(Hash)
-    args[:json] = args[:data].merge(args[:json]) unless args[:data].nil? || args[:data].instance_of?(String)
+    args[:json] = args[:data].merge(args[:json]) unless args[:data].instance_of?(String)
     args[:json] = args[:data] if args[:json].empty? || (args[:data].instance_of?(String) && !args[:data].empty?)
     args[:json].delete_if { |_k, v| v.nil? } if args[:json].instance_of?(Hash)
     args[:headers]["Accept"] = "application/json" if args[:accept_json]
