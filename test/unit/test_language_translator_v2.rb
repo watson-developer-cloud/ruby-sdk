@@ -116,11 +116,9 @@ class LanguageTranslatorV2Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v2/models")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
@@ -164,11 +162,9 @@ class LanguageTranslatorV2Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v2/models/en-es-conversational")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
@@ -264,11 +260,9 @@ class LanguageTranslatorV2Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v2/identifiable_languages")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)

@@ -50,11 +50,9 @@ class TextToSpeechV1Test < Minitest::Test
     synthesize_response_body = "<binary response>"
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/voices")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: voices_response.to_json, headers: { "Content-Type" => "application/json" })
@@ -67,11 +65,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/voices/en-us_AllisonVoice")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: voice_response.to_json, headers: { "Content-Type" => "application/json" })
@@ -105,11 +101,9 @@ class TextToSpeechV1Test < Minitest::Test
     )
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/pronunciation?text=this%20is%20some%20text")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -120,11 +114,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/pronunciation?text=yo&voice=VoiceEnUsLisa")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -136,11 +128,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/pronunciation?format=ipa&text=yo&voice=VoiceEnUsLisa")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -160,11 +150,9 @@ class TextToSpeechV1Test < Minitest::Test
     )
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -173,11 +161,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations?language=en-US")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -204,11 +190,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: { "customization" => "yep, just one" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -236,11 +220,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: {})
@@ -258,11 +240,9 @@ class TextToSpeechV1Test < Minitest::Test
     )
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -292,11 +272,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words/word")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: { "customization" => "yep, just one" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -325,11 +303,9 @@ class TextToSpeechV1Test < Minitest::Test
 
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words/word")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: { "Content-Type" => "application/json" })
@@ -347,11 +323,9 @@ class TextToSpeechV1Test < Minitest::Test
     )
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/user_data?customer_id=id")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: {})

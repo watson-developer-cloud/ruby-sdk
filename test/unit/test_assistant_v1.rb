@@ -118,11 +118,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/I%20want%20financial%20advice%20today?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: {}.to_json, headers: headers)
@@ -149,11 +147,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -192,11 +188,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -288,11 +282,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/pizza_toppings?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
@@ -323,11 +315,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/pizza_toppings?export=true&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -369,11 +359,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities?export=true&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -463,11 +451,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
@@ -495,11 +481,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -539,11 +523,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -631,11 +613,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
@@ -663,11 +643,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order?export=false&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -704,11 +682,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents?export=false&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -815,11 +791,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/logs?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -899,11 +873,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/logs?filter=language::en,request.context.metadata.deployment::deployment_1&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1030,11 +1002,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/aeiou/values/vowel/synonyms/a?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
@@ -1063,11 +1033,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms/barbecue?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1111,11 +1079,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1206,11 +1172,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
@@ -1242,11 +1206,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq?export=true&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1289,11 +1251,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values?export=true&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1392,11 +1352,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
@@ -1428,11 +1386,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid?export=false&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1471,11 +1427,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
@@ -1554,11 +1508,9 @@ class AssistantV1Test < Minitest::Test
 
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: { "description" => "deleted successfully" }.to_json, headers: headers)
@@ -1570,11 +1522,9 @@ class AssistantV1Test < Minitest::Test
 
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-atm" } }.to_json, headers: headers)
@@ -1586,11 +1536,9 @@ class AssistantV1Test < Minitest::Test
 
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes?version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-atm" } }.to_json, headers: headers)
@@ -1606,11 +1554,9 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/user_data?customer_id=id&version=2018-02-16")
       .with(
-        body: "{}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net:443"
         }
       ).to_return(status: 200, body: "", headers: headers)
