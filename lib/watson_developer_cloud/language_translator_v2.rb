@@ -106,7 +106,7 @@ module WatsonDeveloperCloud
         "source" => source,
         "target" => target
       }
-      url = "v2/translate"
+      url = "/v2/translate"
       response = request(
         method: "POST",
         url: url,
@@ -130,7 +130,7 @@ module WatsonDeveloperCloud
     def list_identifiable_languages()
       headers = {
       }
-      url = "v2/identifiable_languages"
+      url = "/v2/identifiable_languages"
       response = request(
         method: "GET",
         url: url,
@@ -151,8 +151,8 @@ module WatsonDeveloperCloud
       headers = {
       }
       data = text
-      headers = { "content-type" => "text/plain" }
-      url = "v2/identify"
+      headers = { "Content-Type" => "text/plain" }
+      url = "/v2/identify"
       response = request(
         method: "POST",
         url: url,
@@ -185,7 +185,7 @@ module WatsonDeveloperCloud
         "target" => target,
         "default" => default_models
       }
-      url = "v2/models"
+      url = "/v2/models"
       response = request(
         method: "GET",
         url: url,
@@ -248,7 +248,7 @@ module WatsonDeveloperCloud
         mime_type = "text/plain"
         monolingual_corpus_tuple = [monolingual_corpus_filename, monolingual_corpus, mime_type]
       end
-      url = "v2/models"
+      url = "/v2/models"
       response = request(
         method: "POST",
         url: url,
@@ -274,7 +274,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "v2/models/%s" % [url_encode(model_id)]
+      url = "/v2/models/%s" % [url_encode(model_id)]
       response = request(
         method: "DELETE",
         url: url,
@@ -295,7 +295,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "v2/models/%s" % [url_encode(model_id)]
+      url = "/v2/models/%s" % [url_encode(model_id)]
       response = request(
         method: "GET",
         url: url,

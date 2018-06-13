@@ -162,7 +162,7 @@ module WatsonDeveloperCloud
       else
         data = tone_input
       end
-      url = "v3/tone"
+      url = "/v3/tone"
       response = request(
         method: "POST",
         url: url,
@@ -216,7 +216,7 @@ module WatsonDeveloperCloud
       data = {
         "utterances" => utterances
       }
-      url = "v3/tone_chat"
+      url = "/v3/tone_chat"
       response = request(
         method: "POST",
         url: url,
