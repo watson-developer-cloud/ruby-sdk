@@ -14,8 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# IBM Watson&trade; Language Translator translates text from one language to another.
-# The service offers multiple domain-specific models that you can customize based on your
+#
+#
+# ---
+#
+# Language Translator v3 is
+# [available](https://www.ibm.com/watson/developercloud/language-translator/api/v3/). See
+# the [migration
+# guide](https://console.bluemix.net/docs/services/language-translator/migrating.html).
+#
+# ---
+#
+# IBM Watson&trade; Language Translator translates text from one language to another. The
+# service offers multiple domain-specific models that you can customize based on your
 # unique terminology and language. Use Language Translator to take news from across the
 # globe and present it in your language, communicate with your customers in their own
 # language, and more.
@@ -231,20 +242,20 @@ module WatsonDeveloperCloud
         "name" => name
       }
       forced_glossary_tuple = nil
-      if forced_glossary
-        forced_glossary_filename = forced_glossary.name if !forced_glossary_filename && forced_glossary.instance_variable_defined?("name")
+      unless forced_glossary.nil?
+        forced_glossary_filename = File.basename(forced_glossary.path) if forced_glossary_filename.nil? && forced_glossary.respond_to?(:path)
         mime_type = "application/octet-stream"
         forced_glossary_tuple = [forced_glossary_filename, forced_glossary, mime_type]
       end
       parallel_corpus_tuple = nil
-      if parallel_corpus
-        parallel_corpus_filename = parallel_corpus.name if !parallel_corpus_filename && parallel_corpus.instance_variable_defined?("name")
+      unless parallel_corpus.nil?
+        parallel_corpus_filename = File.basename(parallel_corpus.path) if parallel_corpus_filename.nil? && parallel_corpus.respond_to?(:path)
         mime_type = "application/octet-stream"
         parallel_corpus_tuple = [parallel_corpus_filename, parallel_corpus, mime_type]
       end
       monolingual_corpus_tuple = nil
-      if monolingual_corpus
-        monolingual_corpus_filename = monolingual_corpus.name if !monolingual_corpus_filename && monolingual_corpus.instance_variable_defined?("name")
+      unless monolingual_corpus.nil?
+        monolingual_corpus_filename = File.basename(monolingual_corpus.path) if monolingual_corpus_filename.nil? && monolingual_corpus.respond_to?(:path)
         mime_type = "text/plain"
         monolingual_corpus_tuple = [monolingual_corpus_filename, monolingual_corpus, mime_type]
       end
