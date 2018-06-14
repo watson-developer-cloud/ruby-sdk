@@ -6,4 +6,5 @@ module WatsonDeveloperCloud
   require_relative("./watson_developer_cloud/tone_analyzer_v3.rb")
   require_relative("./watson_developer_cloud/watson_assistant_v1.rb")
   require_relative("./watson_developer_cloud/text_to_speech_v1.rb")
+  require_relative("./watson_developer_cloud/discovery_v1.rb")
 end
