@@ -37,8 +37,8 @@ class LanguageTranslatorV2Test < Minitest::Test
     )
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.translate(text: "Hola, cómo estás? €", source: "es", target: "en")
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -74,8 +74,8 @@ class LanguageTranslatorV2Test < Minitest::Test
     )
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.translate(text: "Messi is the best ever", model_id: "en-es-conversational")
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -128,7 +128,7 @@ class LanguageTranslatorV2Test < Minitest::Test
     )
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.list_models
-    assert(expected_response.status == service_response.status)
+    assert_equal(expected_response.status, service_response.status)
     expected_response.body.each_key do |key|
       assert(service_response.body.key?(key))
       expected_response.body[key].each do |hash|
@@ -174,8 +174,8 @@ class LanguageTranslatorV2Test < Minitest::Test
     )
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.get_model(model_id: "en-es-conversational")
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -218,8 +218,8 @@ class LanguageTranslatorV2Test < Minitest::Test
     )
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.identify(text: "祝你有美好的一天")
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -272,8 +272,8 @@ class LanguageTranslatorV2Test < Minitest::Test
     )
     expected_response = DetailedResponse.new(status: 200, headers: headers, body: expected)
     service_response = service.list_identifiable_languages
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])

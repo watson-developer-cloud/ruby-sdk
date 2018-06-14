@@ -35,8 +35,8 @@ class PersonalityInsightsV3Test < Minitest::Test
       content: personality_text,
       content_type: "text/plain;charset=utf-8"
     )
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -71,8 +71,8 @@ class PersonalityInsightsV3Test < Minitest::Test
       raw_scores: true,
       consumption_preferences: true
     )
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -109,8 +109,8 @@ class PersonalityInsightsV3Test < Minitest::Test
       raw_scores: true,
       consumption_preferences: true
     )
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -147,8 +147,8 @@ class PersonalityInsightsV3Test < Minitest::Test
       content_language: "es",
       accept_language: "es"
     )
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])

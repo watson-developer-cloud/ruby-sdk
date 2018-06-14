@@ -33,8 +33,8 @@ class ToneAnalyzerV3Test < Minitest::Test
       password: "password"
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json")
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -64,8 +64,8 @@ class ToneAnalyzerV3Test < Minitest::Test
       password: "password"
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json", sentences: false)
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -100,8 +100,8 @@ class ToneAnalyzerV3Test < Minitest::Test
       }
     ]
     service_response = service.tone_chat(utterances: utterances)
-    assert(expected_response.status == service_response.status)
-    assert(expected_response.body == service_response.body)
+    assert_equal(expected_response.status, service_response.status)
+    assert_equal(expected_response.body, service_response.body)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -138,9 +138,9 @@ class ToneAnalyzerV3Test < Minitest::Test
     begin
       service.tone(tone_input: text, content_type: "application/json")
     rescue WatsonApiException => e
-      assert(e.code == error_code)
-      assert(e.error == error_message)
-      assert(e.info["sub_code"] == "C00012")
+      assert_equal(error_code, e.code)
+      assert_equal(error_message, e.error)
+      assert_equal("C00012", e.info["sub_code"])
     end
   end
 end

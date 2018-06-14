@@ -37,7 +37,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       text: "I want financial advice today."
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_rate_limit_exceeded
@@ -71,8 +71,8 @@ class AssistantV1Test < Minitest::Test
         text: "I want financial advice today."
       )
     rescue WatsonApiException => e
-      assert(e.code == error_code)
-      assert(e.error == error_msg)
+      assert_equal(error_code, e.code)
+      assert_equal(error_msg, e.error)
     end
   end
 
@@ -107,8 +107,8 @@ class AssistantV1Test < Minitest::Test
         text: "I want financial advice today."
       )
     rescue WatsonApiException => e
-      assert(e.code == error_code)
-      assert(e.error == error_msg)
+      assert_equal(error_code, e.code)
+      assert_equal(error_msg, e.error)
     end
   end
 
@@ -162,7 +162,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       text: "What are you wearing?"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_counterexamples
@@ -202,7 +202,7 @@ class AssistantV1Test < Minitest::Test
     service_response = service.list_counterexamples(
       workspace_id: "boguswid"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_counterexample
@@ -234,7 +234,7 @@ class AssistantV1Test < Minitest::Test
       text: "What are you wearing?",
       new_text: "What are you wearing?"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_create_entity
@@ -273,7 +273,7 @@ class AssistantV1Test < Minitest::Test
       values: nil,
       fuzzy_match: nil
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_delete_entity
@@ -331,7 +331,7 @@ class AssistantV1Test < Minitest::Test
       entity: "pizza_toppings",
       export: true
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_entities
@@ -374,7 +374,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       export: true
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_entity
@@ -410,7 +410,7 @@ class AssistantV1Test < Minitest::Test
       entity: "pizza_toppings",
       new_entity: "pizza_toppings"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_create_example
@@ -442,7 +442,7 @@ class AssistantV1Test < Minitest::Test
       intent: "pizza_order",
       text: "Gimme a pizza with pepperoni"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_delete_example
@@ -497,7 +497,7 @@ class AssistantV1Test < Minitest::Test
       intent: "pizza_order",
       text: "Gimme a pizza with pepperoni"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_examples
@@ -538,7 +538,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       intent: "pizza_order"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_example
@@ -571,7 +571,7 @@ class AssistantV1Test < Minitest::Test
       text: "Gimme a pizza with pepperoni",
       new_text: "Gimme a pizza with pepperoni"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_create_intent
@@ -604,7 +604,7 @@ class AssistantV1Test < Minitest::Test
       intent: "pizza_order",
       description: "User wants to start a new pizza order"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_delete_intent
@@ -659,7 +659,7 @@ class AssistantV1Test < Minitest::Test
       intent: "pizza_order",
       export: false
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_intents
@@ -697,7 +697,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       export: false
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_intent
@@ -731,7 +731,7 @@ class AssistantV1Test < Minitest::Test
       new_intent: "pizza_order",
       new_description: "User wants to start a new pizza order"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_logs
@@ -805,7 +805,7 @@ class AssistantV1Test < Minitest::Test
     service_response = service.list_logs(
       workspace_id: "boguswid"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_all_logs
@@ -887,7 +887,7 @@ class AssistantV1Test < Minitest::Test
     service_response = service.list_all_logs(
       filter: "language::en,request.context.metadata.deployment::deployment_1"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_message
@@ -933,7 +933,7 @@ class AssistantV1Test < Minitest::Test
       input: { "text" => "Turn on the lights" },
       context: nil
     )
-    assert(service_response.body == message_response)
+    assert_equal(message_response, service_response.body)
 
     message_ctx = {
       "context" => {
@@ -960,7 +960,7 @@ class AssistantV1Test < Minitest::Test
       input: { "text" => "Turn on the lights" },
       context: message_ctx["context"].to_json
     )
-    assert(service_response.body == message_response)
+    assert_equal(message_response, service_response.body)
   end
 
   def test_create_synonym
@@ -993,7 +993,7 @@ class AssistantV1Test < Minitest::Test
       value: "vowel",
       synonym: "a"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_delete_synonym
@@ -1050,7 +1050,7 @@ class AssistantV1Test < Minitest::Test
       value: "bbq",
       synonym: "barbecue"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_synonyms
@@ -1095,7 +1095,7 @@ class AssistantV1Test < Minitest::Test
       entity: "grilling",
       value: "bbq"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_synonym
@@ -1129,7 +1129,7 @@ class AssistantV1Test < Minitest::Test
       synonym: "barbecue",
       new_synonym: "barbecue"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_create_value
@@ -1163,7 +1163,7 @@ class AssistantV1Test < Minitest::Test
       entity: "grilling",
       value: "aeiou"
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_delete_value
@@ -1223,7 +1223,7 @@ class AssistantV1Test < Minitest::Test
       value: "bbq",
       export: true
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_values
@@ -1267,7 +1267,7 @@ class AssistantV1Test < Minitest::Test
       entity: "grilling",
       export: true
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_value
@@ -1306,7 +1306,7 @@ class AssistantV1Test < Minitest::Test
       new_metadata: { "code" => 1422 },
       new_synonyms: nil
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_create_workspace
@@ -1343,7 +1343,7 @@ class AssistantV1Test < Minitest::Test
       language: "en",
       metadata: {}
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_delete_workspace
@@ -1401,7 +1401,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       export: false
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_list_workspaces
@@ -1439,7 +1439,7 @@ class AssistantV1Test < Minitest::Test
       version: "2018-02-16"
     )
     service_response = service.list_workspaces
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_update_workspace
@@ -1477,7 +1477,7 @@ class AssistantV1Test < Minitest::Test
       language: "en",
       metadata: {}
     )
-    assert(service_response.body == response)
+    assert_equal(response, service_response.body)
   end
 
   def test_dialog_nodes
@@ -1504,7 +1504,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "id",
       dialog_node: "location-done"
     )
-    assert(service_response.body["application/json"]["dialog_node"] == "location-done")
+    assert_equal("location-done", service_response.body["application/json"]["dialog_node"])
 
     stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
       .with(
@@ -1532,7 +1532,7 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "id",
       dialog_node: "location-done"
     )
-    assert(service_response.body == { "application/json" => { "dialog_node" => "location-atm" } })
+    assert_equal({ "application/json" => { "dialog_node" => "location-atm" } }, service_response.body)
 
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes?version=2018-02-16")
       .with(
@@ -1545,7 +1545,7 @@ class AssistantV1Test < Minitest::Test
     service_response = service.list_dialog_nodes(
       workspace_id: "id"
     )
-    assert(service_response.body == { "application/json" => { "dialog_node" => "location-atm" } })
+    assert_equal({ "application/json" => { "dialog_node" => "location-atm" } }, service_response.body)
   end
 
   def test_delete_user_data
