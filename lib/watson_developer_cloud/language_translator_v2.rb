@@ -241,23 +241,17 @@ module WatsonDeveloperCloud
         "base_model_id" => base_model_id,
         "name" => name
       }
-      forced_glossary_tuple = nil
       unless forced_glossary.nil?
-        forced_glossary_filename = File.basename(forced_glossary.path) if forced_glossary_filename.nil? && forced_glossary.respond_to?(:path)
-        mime_type = "application/octet-stream"
-        forced_glossary_tuple = [forced_glossary_filename, forced_glossary, mime_type]
+        mime_type = "application/octet-stream".nil? ? "application/octet-stream" : "application/octet-stream"
+        forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type)
       end
-      parallel_corpus_tuple = nil
       unless parallel_corpus.nil?
-        parallel_corpus_filename = File.basename(parallel_corpus.path) if parallel_corpus_filename.nil? && parallel_corpus.respond_to?(:path)
-        mime_type = "application/octet-stream"
-        parallel_corpus_tuple = [parallel_corpus_filename, parallel_corpus, mime_type]
+        mime_type = "application/octet-stream".nil? ? "application/octet-stream" : "application/octet-stream"
+        parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type)
       end
-      monolingual_corpus_tuple = nil
       unless monolingual_corpus.nil?
-        monolingual_corpus_filename = File.basename(monolingual_corpus.path) if monolingual_corpus_filename.nil? && monolingual_corpus.respond_to?(:path)
-        mime_type = "text/plain"
-        monolingual_corpus_tuple = [monolingual_corpus_filename, monolingual_corpus, mime_type]
+        mime_type = "text/plain".nil? ? "application/octet-stream" : "text/plain"
+        monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type)
       end
       url = "/v2/models"
       response = request(
@@ -265,10 +259,10 @@ module WatsonDeveloperCloud
         url: url,
         headers: headers,
         params: params,
-        files: {
-          "forced_glossary" => forced_glossary_tuple,
-          "parallel_corpus" => parallel_corpus_tuple,
-          "monolingual_corpus" => monolingual_corpus_tuple
+        form: {
+          forced_glossary: forced_glossary,
+          parallel_corpus: parallel_corpus,
+          monolingual_corpus: monolingual_corpus
         },
         accept_json: true
       )

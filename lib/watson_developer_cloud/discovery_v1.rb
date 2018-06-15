@@ -491,27 +491,26 @@ module WatsonDeveloperCloud
         "step" => step,
         "configuration_id" => configuration_id
       }
-      configuration_tuple = nil
-      configuration_tuple = [nil, configuration, "text/plain"] if configuration
-      file_tuple = nil
-      unless file.nil?
-        filename = File.basename(file.path) if filename.nil? && file.respond_to?(:path)
-        raise ArgumentError("filename must be provided") if filename.nil?
-        mime_type = file_content_type || "application/octet-stream"
-        file_tuple = [filename, file, mime_type]
+      unless configuration.nil?
+        configuration = HTTP::FormData::Part.new(configuration, content_type: "text/plain")
       end
-      metadata_tuple = nil
-      metadata_tuple = [nil, metadata, "text/plain"] if metadata
+      unless file.nil?
+        mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
+        file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+      end
+      unless metadata.nil?
+        metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
+      end
       url = "/v1/environments/%s/preview" % [url_encode(environment_id)]
       response = request(
         method: "POST",
         url: url,
         headers: headers,
         params: params,
-        files: {
-          "configuration" => configuration_tuple,
-          "file" => file_tuple,
-          "metadata" => metadata_tuple
+        form: {
+          configuration: configuration,
+          file: file,
+          metadata: metadata
         },
         accept_json: true
       )
@@ -852,24 +851,22 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      file_tuple = nil
       unless file.nil?
-        filename = File.basename(file.path) if filename.nil? && file.respond_to?(:path)
-        raise ArgumentError("filename must be provided") if filename.nil?
-        mime_type = file_content_type || "application/octet-stream"
-        file_tuple = [filename, file, mime_type]
+        mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
+        file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
       end
-      metadata_tuple = nil
-      metadata_tuple = [nil, metadata, "text/plain"] if metadata
+      unless metadata.nil?
+        metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
+      end
       url = "/v1/environments/%s/collections/%s/documents" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
         url: url,
         headers: headers,
         params: params,
-        files: {
-          "file" => file_tuple,
-          "metadata" => metadata_tuple
+        form: {
+          file: file,
+          metadata: metadata
         },
         accept_json: true
       )
@@ -936,24 +933,22 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      file_tuple = nil
       unless file.nil?
-        filename = File.basename(file.path) if filename.nil? && file.respond_to?(:path)
-        raise ArgumentError("filename must be provided") if filename.nil?
-        mime_type = file_content_type || "application/octet-stream"
-        file_tuple = [filename, file, mime_type]
+        mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
+        file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
       end
-      metadata_tuple = nil
-      metadata_tuple = [nil, metadata, "text/plain"] if metadata
+      unless metadata.nil?
+        metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
+      end
       url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
       response = request(
         method: "POST",
         url: url,
         headers: headers,
         params: params,
-        files: {
-          "file" => file_tuple,
-          "metadata" => metadata_tuple
+        form: {
+          file: file,
+          metadata: metadata
         },
         accept_json: true
       )
