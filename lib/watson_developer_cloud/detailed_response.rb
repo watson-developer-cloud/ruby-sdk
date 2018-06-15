@@ -7,11 +7,11 @@ class DetailedResponse
   attr_reader :status, :headers, :body
   def initialize(status: nil, headers: nil, body: nil, response: nil)
     if status.nil? || headers.nil? || body.nil?
-      @status = response.status
-      @headers = response.headers
+      @status = response.code
+      @headers = response.headers.to_h
       @headers = response.headers.to_hash if response.headers.respond_to?("to_hash")
-      @body = response.body
-      @body = JSON.parse(response.body) if !response.body.empty? && @headers.key?("Content-Type") && @headers["Content-Type"] == "application/json"
+      @body = response.body.to_s
+      @body = JSON.parse(response.body.to_s) if !response.body.to_s.empty? && @headers.key?("Content-Type") && @headers["Content-Type"] == "application/json"
     else
       @status = status
       @headers = headers

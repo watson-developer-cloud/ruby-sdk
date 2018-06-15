@@ -3,9 +3,19 @@
 require("json")
 require("erb")
 require("rubygems")
-require("excon")
+require("http")
+require("stringio")
 require_relative("detailed_response")
 require_relative("watson_api_exception.rb")
+# require("httplog")
+# HttpLog.configure do |config|
+#   config.log_connect   = true
+#   config.log_request   = true
+#   config.log_headers   = true
+#   config.log_data      = true
+#   config.log_status    = true
+#   config.log_response  = true
+# end
 
 # Class for interacting with the Watson API
 class WatsonService
@@ -16,29 +26,24 @@ class WatsonService
     @url = vars[:url] unless vars[:url].nil?
     @username = vars[:username] unless vars[:username].nil?
     @password = vars[:password] unless vars[:password].nil?
-    @conn = Excon.new(
-      @url,
+    @conn = HTTP::Client.new(
       headers: {
         "User-Agent" => "IBM-Ruby-SDK-Service"
-      },
-      # debug_request: true,
-      # debug_response: true,
-      # instrumentor: Excon::StandardInstrumentor,
+      }
+    ).basic_auth(
       user: @username,
-      password: @password
+      pass: @password
+    ).timeout(
+      :per_operation,
+      read: 60,
+      write: 60,
+      connect: 60
     )
   end
 
   def add_default_headers(headers: {})
     raise TypeError unless headers.instance_of?(Hash)
-    data = @conn.data
-    data[:headers].merge!(headers)
-    @conn = Excon.new(
-      @url,
-      headers: data[:headers],
-      user: @username,
-      password: @password
-    )
+    headers.each_pair { |k, v| @conn.default_options.headers.add(k, v) }
   end
 
   def request(args)
@@ -55,24 +60,34 @@ class WatsonService
     args[:json] = args[:json].to_json if args[:json].instance_of?(Hash)
     args[:headers].delete_if { |_k, v| v.nil? } if args[:headers].instance_of?(Hash)
     args[:params].delete_if { |_k, v| v.nil? } if args[:params].instance_of?(Hash)
-    resp = ""
-    streamer = lambda do |chunk, _remaining_bytes, _total_bytes|
-      resp += chunk
-      # puts "Remaining: #{remaining_bytes} #{total_bytes}"
+    args[:files].delete_if { |_, v| v.nil? } if args.key?(:files)
+    args.delete_if { |_, v| v.nil? }
+    # args.delete_if { |_, v| v.respond_to?("empty") && v.empty? }
+    args.delete(:files) if args.key?(:files) && args[:files].empty?
+    args[:headers].delete("Content-Type") if args.key?(:files) || args[:json].nil?
+    if args.key?(:files)
+      response = @conn.persistent(@url, timeout: 10).follow.request(
+        args[:method],
+        HTTP::URI.parse(@url + args[:url]),
+        headers: @conn.default_options.headers.merge(HTTP::Headers.coerce(args[:headers])),
+        params: args[:params],
+        form: {
+          filename: args[:files]["file"][0],
+          file: args[:files]["file"][1].instance_of?(StringIO) ? args[:files]["file"][1] : HTTP::FormData::File.new(args[:files]["file"][1].path)
+        }
+      )
     end
-    args.delete_if { |_, v| v.nil? } # || (v.respond_to?("empty") && v.empty?) }
-    headers = @conn.data[:headers].merge(args[:headers])
-    headers.delete("Content-Type") if args[:json].nil?
-    response = @conn.request(
-      method: args[:method],
-      path: @conn.data[:path] + args[:url],
-      headers: headers,
-      body: args[:json],
-      query: args[:params],
-      response_block: streamer
-    )
-    response.body = resp unless resp.empty?
-    return DetailedResponse.new(response: response) if (200..299).cover?(response.status)
+    unless args.key?(:files)
+      response = @conn.persistent(@url, timeout: 10).follow.request(
+        args[:method],
+        HTTP::URI.parse(@url + args[:url]),
+        headers: @conn.default_options.headers.merge(HTTP::Headers.coerce(args[:headers])),
+        body: args[:json],
+        params: args[:params]
+      )
+    end
+    response[:http_version] = 1.1
+    return DetailedResponse.new(response: response) if (200..299).cover?(response.code)
     raise WatsonApiException.new(response: response)
     # DetailedResponse.new(response: response)
   end
