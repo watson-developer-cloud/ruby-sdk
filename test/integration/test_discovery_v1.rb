@@ -103,7 +103,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: new_collection_id,
       expansions: [
         {
-          "input terms" => ["a"],
+          "input_terms" => ["a"],
           "expanded_terms" => ["aa"]
         }
       ]
@@ -126,21 +126,6 @@ class DiscoveryV1Test < Minitest::Test
     deleted_collection = JSON.parse(deleted_collection)
     assert_equal("deleted", deleted_collection["status"])
   end
-
-  # def test_thing
-  #   response = @service.query(
-  #     environment_id: @environment_id,
-  #     collection_id: @collection_id
-  #   ).body
-  #   response = JSON.parse(response)
-  #   response["results"].each do |id|
-  #     service_response = @service.delete_document(
-  #       environment_id: @environment_id,
-  #       collection_id: @collection_id,
-  #       document_id: id["id"]
-  #     ).body
-  #   end
-  # end
 
   def test_documents
     add_doc = nil
