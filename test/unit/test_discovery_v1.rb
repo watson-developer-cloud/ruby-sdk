@@ -8,7 +8,7 @@ require("stringio")
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-# Unit tests for the Text to Speech V1 Service
+# Unit tests for the Discovery V1 Service
 class DiscoveryV1Test < Minitest::Test
   def test_environments
     discovery_response_body = {
@@ -44,7 +44,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -62,7 +62,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -84,7 +84,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -107,7 +107,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -129,7 +129,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -149,7 +149,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -176,7 +176,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "create" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_collection(
@@ -195,7 +195,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "create" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_collection(
@@ -211,7 +211,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_collection(
@@ -225,7 +225,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_collection(
@@ -239,7 +239,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_collection_fields(
@@ -260,7 +260,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.query(
@@ -279,7 +279,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -303,7 +303,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -338,7 +338,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: results.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_configurations(
@@ -351,7 +351,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_configuration(
@@ -367,7 +367,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_configuration(
@@ -383,7 +383,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_configuration(
@@ -398,7 +398,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "deleted" => "bogus -- ok" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_configuration(
@@ -419,7 +419,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { configurations: [] }.to_json, headers: { "Content-Type" => "application/json" })
     File.open(Dir.getwd + "/resources/simple.html") do |file_info|
@@ -435,7 +435,7 @@ class DiscoveryV1Test < Minitest::Test
           headers: {
             "Accept" => "application/json",
             "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-            "Host" => "gateway.watsonplatform.net:443",
+            "Host" => "gateway.watsonplatform.net",
             "User-Agent" => "IBM-Ruby-SDK-Service"
           }
         ).to_return(status: 200, body: { configurations: [] }.to_json, headers: { "Content-Type" => "application/json" })
@@ -459,7 +459,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
     File.open(Dir.getwd + "/resources/simple.html") do |file_info|
@@ -475,7 +475,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: doc_status.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_document_status(
@@ -490,7 +490,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_document(
@@ -505,7 +505,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_document(
@@ -554,7 +554,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 204, body: "", headers: {})
     service_response = service.delete_all_training_data(
@@ -593,7 +593,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_training_data(
@@ -641,7 +641,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_training_data(
@@ -665,7 +665,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_training_data(
@@ -694,7 +694,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::DiscoveryV1.new(
@@ -731,7 +731,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_training_example(
@@ -756,7 +756,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 204, body: "", headers: {})
     service_response = service.delete_training_example(
@@ -784,7 +784,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_training_example(
@@ -816,7 +816,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_training_example(
@@ -841,7 +841,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { expansions: "results" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_expansions(
@@ -857,7 +857,7 @@ class DiscoveryV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { expansions: "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_expansions(
@@ -877,7 +877,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { description: "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_expansions(
@@ -898,7 +898,7 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_user_data(

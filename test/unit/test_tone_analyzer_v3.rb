@@ -24,7 +24,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
@@ -55,7 +55,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
@@ -85,7 +85,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
@@ -127,7 +127,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 400, body: tone_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::ToneAnalyzerV3.new(

@@ -53,7 +53,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: voices_response.to_json, headers: { "Content-Type" => "application/json" })
     service = WatsonDeveloperCloud::TextToSpeechV1.new(
@@ -68,7 +68,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: voice_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_voice(
@@ -82,7 +82,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: synthesize_response_body, headers: {})
     service_response = service.synthesize(
@@ -104,7 +104,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_pronunciation(
@@ -117,7 +117,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_pronunciation(
@@ -131,7 +131,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_pronunciation(
@@ -153,7 +153,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_voice_models
@@ -164,7 +164,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_voice_models(
@@ -179,7 +179,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_voice_model(
@@ -193,7 +193,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "customization" => "yep, just one" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_voice_model(
@@ -208,7 +208,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.update_voice_model(
@@ -223,7 +223,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_voice_model(
@@ -243,7 +243,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_words(
@@ -258,7 +258,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: { "Content-Type" => "application/json" })
     service_response = service.add_words(
@@ -275,7 +275,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "customization" => "yep, just one" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_word(
@@ -291,7 +291,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: { "Content-Type" => "application/json" })
     service_response = service.add_word(
@@ -306,7 +306,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: { "Content-Type" => "application/json" })
     service_response = service.delete_word(
@@ -326,7 +326,7 @@ class TextToSpeechV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net:443"
+          "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_user_data(

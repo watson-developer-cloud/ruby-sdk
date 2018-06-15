@@ -23,7 +23,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "text/plain;charset=utf-8",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
     service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
@@ -57,7 +57,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
     service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
@@ -93,7 +93,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
@@ -133,7 +133,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Language" => "es",
           "Content-Type" => "text/plain;charset=utf-8",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::PersonalityInsightsV3.new(

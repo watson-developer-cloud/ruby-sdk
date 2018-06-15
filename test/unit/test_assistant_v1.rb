@@ -25,7 +25,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -57,7 +57,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 429, body: error_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -93,7 +93,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 407, body: error_response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -121,7 +121,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: {}.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -150,7 +150,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -191,7 +191,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -221,7 +221,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -257,7 +257,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -285,7 +285,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -318,7 +318,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -362,7 +362,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -397,7 +397,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -429,7 +429,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -454,7 +454,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -484,7 +484,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -526,7 +526,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -557,7 +557,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -591,7 +591,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -616,7 +616,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -646,7 +646,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -685,7 +685,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -717,7 +717,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -794,7 +794,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -876,7 +876,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -925,7 +925,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
     service_response = service.message(
@@ -952,7 +952,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
     service_response = service.message(
@@ -979,7 +979,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1005,7 +1005,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1036,7 +1036,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1082,7 +1082,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1114,7 +1114,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1150,7 +1150,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1175,7 +1175,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1209,7 +1209,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1254,7 +1254,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1290,7 +1290,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1329,7 +1329,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1355,7 +1355,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1389,7 +1389,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1430,7 +1430,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1462,7 +1462,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
@@ -1497,7 +1497,7 @@ class AssistantV1Test < Minitest::Test
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-done" } }.to_json, headers: headers)
     service_response = service.create_dialog_node(
@@ -1511,7 +1511,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "description" => "deleted successfully" }.to_json, headers: headers)
     service_response = service.delete_dialog_node(
@@ -1525,7 +1525,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-atm" } }.to_json, headers: headers)
     service_response = service.get_dialog_node(
@@ -1539,7 +1539,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-atm" } }.to_json, headers: headers)
     service_response = service.list_dialog_nodes(
@@ -1557,7 +1557,7 @@ class AssistantV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net:443"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service = WatsonDeveloperCloud::AssistantV1.new(
