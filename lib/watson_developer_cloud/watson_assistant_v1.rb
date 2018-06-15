@@ -1210,7 +1210,7 @@ module WatsonDeveloperCloud
     #   - It must be no longer than 64 characters.
     # @param patterns [Array[String]] An array of patterns for the entity value. You can provide either synonyms or
     #   patterns (as indicated by **type**), but not both. A pattern is a regular
-    #   expression no longer than 128 characters. For more information about how to
+    #   expression no longer than 512 characters. For more information about how to
     #   specify a pattern, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/entities.html#creating-entities).
     # @param value_type [String] Specifies the type of value.
@@ -1307,7 +1307,7 @@ module WatsonDeveloperCloud
     #   - It must be no longer than 64 characters.
     # @param new_patterns [Array[String]] An array of patterns for the entity value. You can provide either synonyms or
     #   patterns (as indicated by **type**), but not both. A pattern is a regular
-    #   expression no longer than 128 characters. For more information about how to
+    #   expression no longer than 512 characters. For more information about how to
     #   specify a pattern, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/entities.html#creating-entities).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
