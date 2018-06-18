@@ -72,16 +72,4 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
     service_response = service.list_models
     assert((200..299).cover?(service_response.status))
   end
-
-  # def test_delete_model
-  #   model_id = "invalid_model_id"
-  #   service = WatsonDeveloperCloud::NaturalLanguageUnderstandingV1.new(
-  #     version: "2018-03-16",
-  #     username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
-  #     password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
-  #   )
-  #   service_response = service.delete_model(
-  #     model_id: model_id
-  #   )
-  # end
 end
