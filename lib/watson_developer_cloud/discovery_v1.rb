@@ -491,9 +491,7 @@ module WatsonDeveloperCloud
         "step" => step,
         "configuration_id" => configuration_id
       }
-      unless configuration.nil?
-        configuration = HTTP::FormData::Part.new(configuration, content_type: "text/plain")
-      end
+      configuration = HTTP::FormData::Part.new(configuration, content_type: "text/plain") unless configuration.nil?
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
         if filename
@@ -502,9 +500,7 @@ module WatsonDeveloperCloud
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
         end
       end
-      unless metadata.nil?
-        metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
-      end
+      metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
       url = "/v1/environments/%s/preview" % [url_encode(environment_id)]
       response = request(
         method: "POST",
@@ -863,9 +859,7 @@ module WatsonDeveloperCloud
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
         end
       end
-      unless metadata.nil?
-        metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
-      end
+      metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
       url = "/v1/environments/%s/collections/%s/documents" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
@@ -949,9 +943,7 @@ module WatsonDeveloperCloud
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
         end
       end
-      unless metadata.nil?
-        metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
-      end
+      metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
       url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
       response = request(
         method: "POST",
