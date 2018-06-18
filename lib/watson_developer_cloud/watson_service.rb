@@ -63,7 +63,7 @@ class WatsonService
     args.delete_if { |_, v| v.nil? }
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
     if args.key?(:form)
-      response = @conn.persistent(@url, timeout: 10).follow.request(
+      response = @conn.follow.request(
         args[:method],
         HTTP::URI.parse(@url + args[:url]),
         headers: @conn.default_options.headers.merge(HTTP::Headers.coerce(args[:headers])),
@@ -72,7 +72,7 @@ class WatsonService
       )
     end
     unless args.key?(:form)
-      response = @conn.persistent(@url, timeout: 10).follow.request(
+      response = @conn.follow.request(
         args[:method],
         HTTP::URI.parse(@url + args[:url]),
         headers: @conn.default_options.headers.merge(HTTP::Headers.coerce(args[:headers])),
