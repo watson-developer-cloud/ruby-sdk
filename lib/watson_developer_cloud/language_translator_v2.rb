@@ -243,15 +243,27 @@ module WatsonDeveloperCloud
       }
       unless forced_glossary.nil?
         mime_type = "application/octet-stream"
-        forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type)
+        if forced_glossary_filename
+          forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type, filename: forced_glossary_filename) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type, filename: forced_glossary_filename)
+        else
+          forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type)
+        end
       end
       unless parallel_corpus.nil?
         mime_type = "application/octet-stream"
-        parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type)
+        if parallel_corpus_filename
+          parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type, filename: parallel_corpus_filename) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type, filename: parallel_corpus_filename)
+        else
+          parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type)
+        end
       end
       unless monolingual_corpus.nil?
         mime_type = "text/plain"
-        monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type)
+        if monolingual_corpus_filename
+          monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type, filename: monolingual_corpus_filename) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type, filename: monolingual_corpus_filename)
+        else
+          monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type)
+        end
       end
       url = "/v2/models"
       response = request(

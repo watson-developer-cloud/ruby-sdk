@@ -496,7 +496,11 @@ module WatsonDeveloperCloud
       end
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
-        file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+        if filename
+          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
+        else
+          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+        end
       end
       unless metadata.nil?
         metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
@@ -853,7 +857,11 @@ module WatsonDeveloperCloud
       }
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
-        file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+        if filename
+          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
+        else
+          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+        end
       end
       unless metadata.nil?
         metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")
@@ -935,7 +943,11 @@ module WatsonDeveloperCloud
       }
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
-        file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+        if filename
+          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
+        else
+          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
+        end
       end
       unless metadata.nil?
         metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain")

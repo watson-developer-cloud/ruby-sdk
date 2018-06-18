@@ -141,6 +141,7 @@ class DiscoveryV1Test < Minitest::Test
 
     doc_status = { "status" => "processing" }
     while doc_status["status"] == "processing"
+      sleep(1)
       doc_status = @service.get_document_status(
         environment_id: @environment_id,
         collection_id: @collection_id,
@@ -164,6 +165,7 @@ class DiscoveryV1Test < Minitest::Test
 
     doc_status = { "status" => "processing" }
     while doc_status["status"] == "processing"
+      sleep(1)
       doc_status = @service.get_document_status(
         environment_id: @environment_id,
         collection_id: @collection_id,
