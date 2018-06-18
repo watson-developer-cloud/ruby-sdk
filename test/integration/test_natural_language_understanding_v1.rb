@@ -4,7 +4,7 @@ require_relative("./../../lib/watson_developer_cloud.rb")
 require("json")
 require("minitest/autorun")
 
-# Unit tests for the Natural Language Understanding V1 Service
+# Integration tests for the Natural Language Understanding V1 Service
 class NaturalLanguageUnderstandingV1Test < Minitest::Test
   def test_text_analyze
     service = WatsonDeveloperCloud::NaturalLanguageUnderstandingV1.new(
