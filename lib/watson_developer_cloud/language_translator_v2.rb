@@ -242,15 +242,15 @@ module WatsonDeveloperCloud
         "name" => name
       }
       unless forced_glossary.nil?
-        mime_type = "application/octet-stream".nil? ? "application/octet-stream" : "application/octet-stream"
+        mime_type = "application/octet-stream"
         forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type)
       end
       unless parallel_corpus.nil?
-        mime_type = "application/octet-stream".nil? ? "application/octet-stream" : "application/octet-stream"
+        mime_type = "application/octet-stream"
         parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type)
       end
       unless monolingual_corpus.nil?
-        mime_type = "text/plain".nil? ? "application/octet-stream" : "text/plain"
+        mime_type = "text/plain"
         monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type)
       end
       url = "/v2/models"
