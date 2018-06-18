@@ -60,10 +60,7 @@ class WatsonService
     args[:json] = args[:json].to_json if args[:json].instance_of?(Hash)
     args[:headers].delete_if { |_k, v| v.nil? } if args[:headers].instance_of?(Hash)
     args[:params].delete_if { |_k, v| v.nil? } if args[:params].instance_of?(Hash)
-    # args[:files].delete_if { |_, v| v.nil? } if args.key?(:files)
     args.delete_if { |_, v| v.nil? }
-    # args.delete_if { |_, v| v.respond_to?("empty") && v.empty? }
-    # args.delete(:files) if args.key?(:files) && args[:files].empty?
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
     if args.key?(:form)
       response = @conn.persistent(@url, timeout: 10).follow.request(
@@ -72,10 +69,6 @@ class WatsonService
         headers: @conn.default_options.headers.merge(HTTP::Headers.coerce(args[:headers])),
         params: args[:params],
         form: args[:form]
-        # form: {
-        #   filename: args[:files]["file"][0],
-        #   file: args[:files]["file"][1].instance_of?(StringIO) ? args[:files]["file"][1] : HTTP::FormData::File.new(args[:files]["file"][1].path)
-        # }
       )
     end
     unless args.key?(:form)
