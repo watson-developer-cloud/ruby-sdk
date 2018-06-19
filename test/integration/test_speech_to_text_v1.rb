@@ -48,7 +48,6 @@ class SpeechToTextV1Test < Minitest::Test
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     ).body
-    p output
     assert_equal("thunderstorms could produce large hail isolated tornadoes and heavy rain ", output["results"][0]["alternatives"][0]["transcript"])
   end
 
