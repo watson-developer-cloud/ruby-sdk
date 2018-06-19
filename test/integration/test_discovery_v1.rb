@@ -85,10 +85,15 @@ class DiscoveryV1Test < Minitest::Test
     new_collection_id = JSON.parse(new_collection_id)["collection_id"]
     refute(new_collection_id.nil?)
 
-    @service.get_collection(
-      environment_id: @environment_id,
-      collection_id: new_collection_id
-    )
+    collection_status = { "status" => "pending" }
+    while collection_status["status"] == "pending"
+      sleep(1)
+      collection_status = @service.get_collection(
+        environment_id: @environment_id,
+        collection_id: new_collection_id
+      ).body
+      collection_status = JSON.parse(collection_status)
+    end
     updated_collection = @service.update_collection(
       environment_id: @environment_id,
       collection_id: new_collection_id,
