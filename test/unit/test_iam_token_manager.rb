@@ -23,8 +23,9 @@ class IAMTokenManagerTest < Minitest::Test
       iam_access_token: "iam_access_token",
       iam_url: iam_url
     )
-    stub_request(:post, "https://iam.bluemix.net/identity/token/grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=iam_api_key&response_type=cloud_iam")
+    stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
+        body: {"apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam"},
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -50,8 +51,9 @@ class IAMTokenManagerTest < Minitest::Test
       iam_access_token: "iam_access_token",
       iam_url: iam_url
     )
-    stub_request(:post, "https://iam.bluemix.net/identity/token/grant_type=refresh_token&refresh_token=")
+    stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
+        body: {"grant_type" => "refresh_token", "refresh_token" => ""},
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -119,8 +121,9 @@ class IAMTokenManagerTest < Minitest::Test
       "expiration" => 1_524_167_011,
       "refresh_token" => "jy4gl91BQ"
     }
-    stub_request(:post, "https://iam.bluemix.net/identity/token/grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=iam_api_key&response_type=cloud_iam")
+    stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
+        body: {"apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam"},
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -136,7 +139,7 @@ class IAMTokenManagerTest < Minitest::Test
     token = token_manager._token
     assert_equal("hellohello", token)
 
-    stub_request(:post, "https://iam.bluemix.net/identity/token/grant_type=refresh_token&refresh_token=jy4gl91BQ")
+    stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
         headers: {
           "Accept" => "application/json",
