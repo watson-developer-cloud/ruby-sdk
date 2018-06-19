@@ -435,8 +435,7 @@ class DiscoveryV1Test < Minitest::Test
           headers: {
             "Accept" => "application/json",
             "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-            "Host" => "gateway.watsonplatform.net",
-            "User-Agent" => "IBM-Ruby-SDK-Service"
+            "Host" => "gateway.watsonplatform.net"
           }
         ).to_return(status: 200, body: { configurations: [] }.to_json, headers: { "Content-Type" => "application/json" })
       service_response = service.test_configuration_in_environment(
