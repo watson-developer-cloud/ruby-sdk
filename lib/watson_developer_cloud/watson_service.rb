@@ -58,10 +58,10 @@ class WatsonService
 
     if !vars[:api_key].nil?
       _api_key(vars[:api_key])
-    elsif !vars[:username].nil? && !vars[:password].nil?
-      _set_username_and_password(username: vars[:username], password: vars[:password])
     elsif !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
       _token_manager(iam_api_key: vars[:iam_api_key], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
+    elsif !vars[:username].nil? && !vars[:password].nil?
+      _set_username_and_password(username: vars[:username], password: vars[:password])
     end
 
     @url = vars[:url] unless vars[:url].nil?
@@ -130,11 +130,12 @@ class WatsonService
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
 
     conn = @conn
-    unless @token_manager.nil?
+    if !@token_manager.nil?
       access_token = @token_manager._token
       args[:headers]["Authorization"] = "Bearer #{access_token}"
+    elsif !@username.nil? && !@password.nil?
+      conn = @conn.basic_auth(user: @username, pass: @password)
     end
-    conn = @conn.basic_auth(user: @username, pass: @password) unless @username.nil? || @password.nil?
     unless @api_key.nil?
       args[:params] = {} if args[:params].nil?
       args[:params]["apikey"] = @api_key if (@url + args[:url]).starts_with?("https://gateway-a.watsonplatform.net/calls")
