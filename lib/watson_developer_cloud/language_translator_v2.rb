@@ -117,10 +117,10 @@ module WatsonDeveloperCloud
         "source" => source,
         "target" => target
       }
-      url = "/v2/translate"
+      method_url = "/v2/translate"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         json: data,
         accept_json: true
@@ -141,10 +141,10 @@ module WatsonDeveloperCloud
     def list_identifiable_languages()
       headers = {
       }
-      url = "/v2/identifiable_languages"
+      method_url = "/v2/identifiable_languages"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -163,10 +163,10 @@ module WatsonDeveloperCloud
       }
       data = text
       headers = { "Content-Type" => "text/plain" }
-      url = "/v2/identify"
+      method_url = "/v2/identify"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         data: data,
         accept_json: true
@@ -196,10 +196,10 @@ module WatsonDeveloperCloud
         "target" => target,
         "default" => default_models
       }
-      url = "/v2/models"
+      method_url = "/v2/models"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -265,10 +265,10 @@ module WatsonDeveloperCloud
           monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type)
         end
       end
-      url = "/v2/models"
+      method_url = "/v2/models"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         form: {
@@ -291,10 +291,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "/v2/models/%s" % [url_encode(model_id)]
+      method_url = "/v2/models/%s" % [url_encode(model_id)]
       response = request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -312,10 +312,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "/v2/models/%s" % [url_encode(model_id)]
+      method_url = "/v2/models/%s" % [url_encode(model_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )

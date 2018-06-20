@@ -175,10 +175,10 @@ module WatsonDeveloperCloud
         "language" => language,
         "limit_text_characters" => limit_text_characters
       }
-      url = "/v1/analyze"
+      method_url = "/v1/analyze"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -204,10 +204,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/models"
+      method_url = "/v1/models"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -228,10 +228,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/models/%s" % [url_encode(model_id)]
+      method_url = "/v1/models/%s" % [url_encode(model_id)]
       response = request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true

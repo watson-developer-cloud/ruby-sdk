@@ -116,10 +116,10 @@ module WatsonDeveloperCloud
         "description" => description,
         "size" => size
       }
-      url = "/v1/environments"
+      method_url = "/v1/environments"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -141,10 +141,10 @@ module WatsonDeveloperCloud
         "version" => @version,
         "name" => name
       }
-      url = "/v1/environments"
+      method_url = "/v1/environments"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -164,10 +164,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s" % [url_encode(environment_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -195,10 +195,10 @@ module WatsonDeveloperCloud
         "name" => name,
         "description" => description
       }
-      url = "/v1/environments/%s" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s" % [url_encode(environment_id)]
       response = request(
         method: "PUT",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -219,10 +219,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s" % [url_encode(environment_id)]
       response = request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -247,10 +247,10 @@ module WatsonDeveloperCloud
         "version" => @version,
         "collection_ids" => collection_ids.to_a
       }
-      url = "/v1/environments/%s/fields" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/fields" % [url_encode(environment_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -301,10 +301,10 @@ module WatsonDeveloperCloud
         "enrichments" => enrichments,
         "normalizations" => normalizations
       }
-      url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -328,10 +328,10 @@ module WatsonDeveloperCloud
         "version" => @version,
         "name" => name
       }
-      url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -353,10 +353,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -402,10 +402,10 @@ module WatsonDeveloperCloud
         "enrichments" => enrichments,
         "normalizations" => normalizations
       }
-      url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
       response = request(
         method: "PUT",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -434,10 +434,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
       response = request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -501,10 +501,10 @@ module WatsonDeveloperCloud
         end
       end
       metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
-      url = "/v1/environments/%s/preview" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/preview" % [url_encode(environment_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         form: {
@@ -545,10 +545,10 @@ module WatsonDeveloperCloud
         "configuration_id" => configuration_id,
         "language" => language
       }
-      url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -572,10 +572,10 @@ module WatsonDeveloperCloud
         "version" => @version,
         "name" => name
       }
-      url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -597,10 +597,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -630,10 +630,10 @@ module WatsonDeveloperCloud
         "description" => description,
         "configuration_id" => configuration_id
       }
-      url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "PUT",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -656,10 +656,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -682,10 +682,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/fields" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/fields" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -713,10 +713,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -759,10 +759,10 @@ module WatsonDeveloperCloud
       data = {
         "expansions" => expansions
       }
-      url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -787,10 +787,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -860,10 +860,10 @@ module WatsonDeveloperCloud
         end
       end
       metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
-      url = "/v1/environments/%s/collections/%s/documents" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         form: {
@@ -895,10 +895,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -944,10 +944,10 @@ module WatsonDeveloperCloud
         end
       end
       metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
-      url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         form: {
@@ -978,10 +978,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
       response = request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1079,10 +1079,10 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/collections/%s/query" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/query" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1173,10 +1173,10 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/collections/%s/notices" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/notices" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1260,10 +1260,10 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/query" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/query" % [url_encode(environment_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1344,10 +1344,10 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/notices" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/notices" % [url_encode(environment_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1388,10 +1388,10 @@ module WatsonDeveloperCloud
         "count" => count,
         "evidence_count" => evidence_count
       }
-      url = "/v1/environments/%s/collections/%s/query_entities" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/query_entities" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -1436,10 +1436,10 @@ module WatsonDeveloperCloud
         "count" => count,
         "evidence_count" => evidence_count
       }
-      url = "/v1/environments/%s/collections/%s/query_relations" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/query_relations" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -1467,10 +1467,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1502,10 +1502,10 @@ module WatsonDeveloperCloud
         "filter" => filter,
         "examples" => examples
       }
-      url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -1529,10 +1529,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1558,10 +1558,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1587,10 +1587,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1615,10 +1615,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1651,10 +1651,10 @@ module WatsonDeveloperCloud
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -1682,10 +1682,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1718,10 +1718,10 @@ module WatsonDeveloperCloud
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
       response = request(
         method: "PUT",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         json: data,
@@ -1749,10 +1749,10 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1784,10 +1784,10 @@ module WatsonDeveloperCloud
         "version" => @version,
         "customer_id" => customer_id
       }
-      url = "/v1/user_data"
+      method_url = "/v1/user_data"
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true

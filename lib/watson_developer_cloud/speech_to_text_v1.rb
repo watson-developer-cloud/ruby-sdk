@@ -137,10 +137,10 @@ module WatsonDeveloperCloud
     def list_models()
       headers = {
       }
-      url = "/v1/models"
+      method_url = "/v1/models"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -160,10 +160,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "/v1/models/%s" % [url_encode(model_id)]
+      method_url = "/v1/models/%s" % [url_encode(model_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -341,10 +341,10 @@ module WatsonDeveloperCloud
         "speaker_labels" => speaker_labels
       }
       data = audio
-      url = "/v1/recognize"
+      method_url = "/v1/recognize"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         data: data,
@@ -411,10 +411,10 @@ module WatsonDeveloperCloud
         "callback_url" => callback_url,
         "user_secret" => user_secret
       }
-      url = "/v1/register_callback"
+      method_url = "/v1/register_callback"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -437,10 +437,10 @@ module WatsonDeveloperCloud
       params = {
         "callback_url" => callback_url
       }
-      url = "/v1/unregister_callback"
+      method_url = "/v1/unregister_callback"
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -655,10 +655,10 @@ module WatsonDeveloperCloud
         "speaker_labels" => speaker_labels
       }
       data = audio
-      url = "/v1/recognitions"
+      method_url = "/v1/recognitions"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         data: data,
@@ -682,10 +682,10 @@ module WatsonDeveloperCloud
     def check_jobs()
       headers = {
       }
-      url = "/v1/recognitions"
+      method_url = "/v1/recognitions"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -711,10 +711,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("id must be provided") if id.nil?
       headers = {
       }
-      url = "/v1/recognitions/%s" % [url_encode(id)]
+      method_url = "/v1/recognitions/%s" % [url_encode(id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -735,10 +735,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("id must be provided") if id.nil?
       headers = {
       }
-      url = "/v1/recognitions/%s" % [url_encode(id)]
+      method_url = "/v1/recognitions/%s" % [url_encode(id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -792,10 +792,10 @@ module WatsonDeveloperCloud
         "dialect" => dialect,
         "description" => description
       }
-      url = "/v1/customizations"
+      method_url = "/v1/customizations"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         json: data,
         accept_json: true
@@ -821,10 +821,10 @@ module WatsonDeveloperCloud
       params = {
         "language" => language
       }
-      url = "/v1/customizations"
+      method_url = "/v1/customizations"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -845,10 +845,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s" % [url_encode(customization_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -870,10 +870,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s" % [url_encode(customization_id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -941,10 +941,10 @@ module WatsonDeveloperCloud
         "word_type_to_add" => word_type_to_add,
         "customization_weight" => customization_weight
       }
-      url = "/v1/customizations/%s/train" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/train" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -968,10 +968,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/reset" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/reset" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1007,10 +1007,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/upgrade_model" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/upgrade_model" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1036,10 +1036,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/corpora" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/corpora" % [url_encode(customization_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1123,10 +1123,10 @@ module WatsonDeveloperCloud
         else
           corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type)
         end
-      url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         form: {
@@ -1157,10 +1157,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1190,10 +1190,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1237,10 +1237,10 @@ module WatsonDeveloperCloud
         "word_type" => word_type,
         "sort" => sort
       }
-      url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1317,10 +1317,10 @@ module WatsonDeveloperCloud
       data = {
         "words" => words
       }
-      url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         json: data,
         accept_json: true
@@ -1400,10 +1400,10 @@ module WatsonDeveloperCloud
         "sounds_like" => sounds_like,
         "display_as" => display_as
       }
-      url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
+      method_url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
       request(
         method: "PUT",
-        url: url,
+        url: method_url,
         headers: headers,
         json: data,
         accept_json: true
@@ -1429,10 +1429,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
+      method_url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1461,10 +1461,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
-      url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
+      method_url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1505,10 +1505,10 @@ module WatsonDeveloperCloud
         "base_model_name" => base_model_name,
         "description" => description
       }
-      url = "/v1/acoustic_customizations"
+      method_url = "/v1/acoustic_customizations"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         json: data,
         accept_json: true
@@ -1534,10 +1534,10 @@ module WatsonDeveloperCloud
       params = {
         "language" => language
       }
-      url = "/v1/acoustic_customizations"
+      method_url = "/v1/acoustic_customizations"
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1558,10 +1558,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1583,10 +1583,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1650,10 +1650,10 @@ module WatsonDeveloperCloud
       params = {
         "custom_language_model_id" => custom_language_model_id
       }
-      url = "/v1/acoustic_customizations/%s/train" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/train" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1677,10 +1677,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/acoustic_customizations/%s/reset" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/reset" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1729,10 +1729,10 @@ module WatsonDeveloperCloud
       params = {
         "custom_language_model_id" => custom_language_model_id
       }
-      url = "/v1/acoustic_customizations/%s/upgrade_model" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/upgrade_model" % [url_encode(customization_id)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true
@@ -1761,10 +1761,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      url = "/v1/acoustic_customizations/%s/audio" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/audio" % [url_encode(customization_id)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1889,10 +1889,10 @@ module WatsonDeveloperCloud
         "allow_overwrite" => allow_overwrite
       }
       data = audio_resource
-      url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
       request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         data: data,
@@ -1936,10 +1936,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
       headers = {
       }
-      url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
       response = request(
         method: "GET",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -1968,10 +1968,10 @@ module WatsonDeveloperCloud
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
       headers = {
       }
-      url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         accept_json: true
       )
@@ -2004,10 +2004,10 @@ module WatsonDeveloperCloud
       params = {
         "customer_id" => customer_id
       }
-      url = "/v1/user_data"
+      method_url = "/v1/user_data"
       request(
         method: "DELETE",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         accept_json: true

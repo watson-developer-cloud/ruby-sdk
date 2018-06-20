@@ -189,10 +189,10 @@ module WatsonDeveloperCloud
       else
         data = content
       end
-      url = "/v3/profile"
+      method_url = "/v3/profile"
       response = request(
         method: "POST",
-        url: url,
+        url: method_url,
         headers: headers,
         params: params,
         data: data,
