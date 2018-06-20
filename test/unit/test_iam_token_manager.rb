@@ -25,7 +25,7 @@ class IAMTokenManagerTest < Minitest::Test
     )
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: {"apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam"},
+        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -53,7 +53,7 @@ class IAMTokenManagerTest < Minitest::Test
     )
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: {"grant_type" => "refresh_token", "refresh_token" => ""},
+        body: { "grant_type" => "refresh_token", "refresh_token" => "" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -123,7 +123,7 @@ class IAMTokenManagerTest < Minitest::Test
     }
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: {"apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam"},
+        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
