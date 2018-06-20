@@ -72,8 +72,7 @@ class IAMTokenManager
       )
       return @token_info["access_token"]
     elsif _is_token_expired?
-      token_info = _request_token if _is_refresh_token_expired?
-      token_info = _refresh_token unless _is_refresh_token_expired?
+      token_info = _is_refresh_token_expired? ? _request_token : _refresh_token
       _save_token_info(
         token_info: token_info
       )
