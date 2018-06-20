@@ -57,7 +57,7 @@ class WatsonService
     headers["x-watson-learning-opt-out"] = true if vars[:x_watson_learning_opt_out]
 
     if !vars[:api_key].nil?
-      _api_key(vars[:api_key])
+      _api_key(api_key: vars[:api_key])
     elsif !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
       _token_manager(iam_api_key: vars[:iam_api_key], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
@@ -126,6 +126,7 @@ class WatsonService
     args[:json] = args[:json].to_json if args[:json].instance_of?(Hash)
     args[:headers].delete_if { |_k, v| v.nil? } if args[:headers].instance_of?(Hash)
     args[:params].delete_if { |_k, v| v.nil? } if args[:params].instance_of?(Hash)
+    args[:form].delete_if { |_k, v| v.nil? } if args.key?(:form)
     args.delete_if { |_, v| v.nil? }
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
 
@@ -138,8 +139,8 @@ class WatsonService
     end
     unless @api_key.nil?
       args[:params] = {} if args[:params].nil?
-      args[:params]["apikey"] = @api_key if (@url + args[:url]).starts_with?("https://gateway-a.watsonplatform.net/calls")
-      args[:params]["api_key"] = @api_key unless (@url + args[:url]).starts_with?("https://gateway-a.watsonplatform.net/calls")
+      args[:params]["apikey"] = @api_key if (@url + args[:url]).start_with?("https://gateway-a.watsonplatform.net/calls")
+      args[:params]["api_key"] = @api_key unless (@url + args[:url]).start_with?("https://gateway-a.watsonplatform.net/calls")
     end
 
     if args.key?(:form)
@@ -150,8 +151,7 @@ class WatsonService
         params: args[:params],
         form: args[:form]
       )
-    end
-    unless args.key?(:form)
+    else
       response = conn.follow.request(
         args[:method],
         HTTP::URI.parse(@url + args[:url]),
