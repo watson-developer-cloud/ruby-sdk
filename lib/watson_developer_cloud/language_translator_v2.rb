@@ -291,7 +291,8 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "/v2/models/%s" % [url_encode(model_id)]
+      require("erb")
+      url = "/v2/models/%s" % [ERB::Util.url_encode(model_id)]
       response = request(
         method: "DELETE",
         url: url,
@@ -312,7 +313,8 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      url = "/v2/models/%s" % [url_encode(model_id)]
+      require("erb")
+      url = "/v2/models/%s" % [ERB::Util.url_encode(model_id)]
       response = request(
         method: "GET",
         url: url,

@@ -164,7 +164,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: url,
@@ -195,7 +196,8 @@ module WatsonDeveloperCloud
         "name" => name,
         "description" => description
       }
-      url = "/v1/environments/%s" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "PUT",
         url: url,
@@ -219,7 +221,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "DELETE",
         url: url,
@@ -247,7 +250,8 @@ module WatsonDeveloperCloud
         "version" => @version,
         "collection_ids" => collection_ids.to_a
       }
-      url = "/v1/environments/%s/fields" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: url,
@@ -301,7 +305,8 @@ module WatsonDeveloperCloud
         "enrichments" => enrichments,
         "normalizations" => normalizations
       }
-      url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: url,
@@ -328,7 +333,8 @@ module WatsonDeveloperCloud
         "version" => @version,
         "name" => name
       }
-      url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: url,
@@ -353,7 +359,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      require("erb")
+      url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
       response = request(
         method: "GET",
         url: url,
@@ -402,7 +409,8 @@ module WatsonDeveloperCloud
         "enrichments" => enrichments,
         "normalizations" => normalizations
       }
-      url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      require("erb")
+      url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
       response = request(
         method: "PUT",
         url: url,
@@ -434,7 +442,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      require("erb")
+      url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
       response = request(
         method: "DELETE",
         url: url,
@@ -501,7 +510,8 @@ module WatsonDeveloperCloud
         end
       end
       metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
-      url = "/v1/environments/%s/preview" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/preview" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: url,
@@ -545,7 +555,8 @@ module WatsonDeveloperCloud
         "configuration_id" => configuration_id,
         "language" => language
       }
-      url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: url,
@@ -572,7 +583,8 @@ module WatsonDeveloperCloud
         "version" => @version,
         "name" => name
       }
-      url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: url,
@@ -597,7 +609,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: url,
@@ -630,7 +643,8 @@ module WatsonDeveloperCloud
         "description" => description,
         "configuration_id" => configuration_id
       }
-      url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "PUT",
         url: url,
@@ -656,7 +670,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "DELETE",
         url: url,
@@ -682,7 +697,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/fields" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/fields" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: url,
@@ -713,7 +729,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: url,
@@ -759,7 +776,8 @@ module WatsonDeveloperCloud
       data = {
         "expansions" => expansions
       }
-      url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: url,
@@ -787,7 +805,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       request(
         method: "DELETE",
         url: url,
@@ -860,7 +879,8 @@ module WatsonDeveloperCloud
         end
       end
       metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
-      url = "/v1/environments/%s/collections/%s/documents" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/documents" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: url,
@@ -895,7 +915,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
       response = request(
         method: "GET",
         url: url,
@@ -944,7 +965,8 @@ module WatsonDeveloperCloud
         end
       end
       metadata = HTTP::FormData::Part.new(metadata, content_type: "text/plain") unless metadata.nil?
-      url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
       response = request(
         method: "POST",
         url: url,
@@ -978,7 +1000,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
       response = request(
         method: "DELETE",
         url: url,
@@ -1079,7 +1102,8 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/collections/%s/query" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1173,7 +1197,8 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/collections/%s/notices" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1260,7 +1285,8 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/query" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/query" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1344,7 +1370,8 @@ module WatsonDeveloperCloud
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      url = "/v1/environments/%s/notices" % [url_encode(environment_id)]
+      require("erb")
+      url = "/v1/environments/%s/notices" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1388,7 +1415,8 @@ module WatsonDeveloperCloud
         "count" => count,
         "evidence_count" => evidence_count
       }
-      url = "/v1/environments/%s/collections/%s/query_entities" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/query_entities" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: url,
@@ -1436,7 +1464,8 @@ module WatsonDeveloperCloud
         "count" => count,
         "evidence_count" => evidence_count
       }
-      url = "/v1/environments/%s/collections/%s/query_relations" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/query_relations" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: url,
@@ -1467,7 +1496,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1502,7 +1532,8 @@ module WatsonDeveloperCloud
         "filter" => filter,
         "examples" => examples
       }
-      url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: url,
@@ -1529,7 +1560,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       request(
         method: "DELETE",
         url: url,
@@ -1558,7 +1590,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1587,7 +1620,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       request(
         method: "DELETE",
         url: url,
@@ -1615,7 +1649,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1651,7 +1686,8 @@ module WatsonDeveloperCloud
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       response = request(
         method: "POST",
         url: url,
@@ -1682,7 +1718,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
       request(
         method: "DELETE",
         url: url,
@@ -1718,7 +1755,8 @@ module WatsonDeveloperCloud
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
       response = request(
         method: "PUT",
         url: url,
@@ -1749,7 +1787,8 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      require("erb")
+      url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
       response = request(
         method: "GET",
         url: url,
