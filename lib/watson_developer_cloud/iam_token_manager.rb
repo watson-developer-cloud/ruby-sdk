@@ -139,6 +139,7 @@ class IAMTokenManager
   # token expiring before the request could be made.
   # The buffer will be a fraction of the total TTL. Using 80%.
   def _is_token_expired?
+    return true if @token_info["expiration"].nil? || @token_info["expires_in"].nil?
     fraction_of_ttl = 0.8
     time_to_live = @token_info["expires_in"].nil? ? 0 : @token_info["expires_in"]
     expire_time = @token_info["expiration"].nil? ? 0 : @token_info["expiration"]
