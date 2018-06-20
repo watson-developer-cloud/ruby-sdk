@@ -9,4 +9,5 @@ module WatsonDeveloperCloud
   require_relative("./watson_developer_cloud/discovery_v1.rb")
   require_relative("./watson_developer_cloud/natural_language_understanding_v1.rb")
   require_relative("./watson_developer_cloud/speech_to_text_v1.rb")
+  require_relative("./watson_developer_cloud/visual_recognition_v3.rb")
 end
