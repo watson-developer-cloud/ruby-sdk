@@ -160,8 +160,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
+      url = "/v1/models/%s" % [url_encode(model_id)]
       response = request(
         method: "GET",
         url: url,
@@ -712,8 +711,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("id must be provided") if id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
+      url = "/v1/recognitions/%s" % [url_encode(id)]
       response = request(
         method: "GET",
         url: url,
@@ -737,8 +735,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("id must be provided") if id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
+      url = "/v1/recognitions/%s" % [url_encode(id)]
       request(
         method: "DELETE",
         url: url,
@@ -848,8 +845,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s" % [url_encode(customization_id)]
       response = request(
         method: "GET",
         url: url,
@@ -874,8 +870,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s" % [url_encode(customization_id)]
       request(
         method: "DELETE",
         url: url,
@@ -946,8 +941,7 @@ module WatsonDeveloperCloud
         "word_type_to_add" => word_type_to_add,
         "customization_weight" => customization_weight
       }
-      require("erb")
-      url = "/v1/customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s/train" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -974,8 +968,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s/reset" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -1014,8 +1007,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s/upgrade_model" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -1044,8 +1036,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s/corpora" % [url_encode(customization_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1132,8 +1123,7 @@ module WatsonDeveloperCloud
         else
           corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type)
         end
-      require("erb")
-      url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
+      url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       request(
         method: "POST",
         url: url,
@@ -1167,8 +1157,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
+      url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       response = request(
         method: "GET",
         url: url,
@@ -1201,8 +1190,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
+      url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       request(
         method: "DELETE",
         url: url,
@@ -1249,8 +1237,7 @@ module WatsonDeveloperCloud
         "word_type" => word_type,
         "sort" => sort
       }
-      require("erb")
-      url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1330,8 +1317,7 @@ module WatsonDeveloperCloud
       data = {
         "words" => words
       }
-      require("erb")
-      url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -1414,8 +1400,7 @@ module WatsonDeveloperCloud
         "sounds_like" => sounds_like,
         "display_as" => display_as
       }
-      require("erb")
-      url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
+      url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
       request(
         method: "PUT",
         url: url,
@@ -1444,8 +1429,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
+      url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
       response = request(
         method: "GET",
         url: url,
@@ -1477,8 +1461,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
+      url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
       request(
         method: "DELETE",
         url: url,
@@ -1575,8 +1558,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1601,8 +1583,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
       request(
         method: "DELETE",
         url: url,
@@ -1669,8 +1650,7 @@ module WatsonDeveloperCloud
       params = {
         "custom_language_model_id" => custom_language_model_id
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/acoustic_customizations/%s/train" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -1697,8 +1677,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/acoustic_customizations/%s/reset" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -1750,8 +1729,7 @@ module WatsonDeveloperCloud
       params = {
         "custom_language_model_id" => custom_language_model_id
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/acoustic_customizations/%s/upgrade_model" % [url_encode(customization_id)]
       request(
         method: "POST",
         url: url,
@@ -1783,8 +1761,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
+      url = "/v1/acoustic_customizations/%s/audio" % [url_encode(customization_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1912,8 +1889,7 @@ module WatsonDeveloperCloud
         "allow_overwrite" => allow_overwrite
       }
       data = audio_resource
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
+      url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
       request(
         method: "POST",
         url: url,
@@ -1960,8 +1936,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
+      url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
       response = request(
         method: "GET",
         url: url,
@@ -1993,8 +1968,7 @@ module WatsonDeveloperCloud
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
       headers = {
       }
-      require("erb")
-      url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
+      url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
       request(
         method: "DELETE",
         url: url,

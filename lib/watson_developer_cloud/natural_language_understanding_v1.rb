@@ -228,8 +228,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
+      url = "/v1/models/%s" % [url_encode(model_id)]
       response = request(
         method: "DELETE",
         url: url,

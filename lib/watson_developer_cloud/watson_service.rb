@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("json")
+require("erb")
 require("rubygems")
 require("http")
 require("stringio")
@@ -20,6 +21,7 @@ require_relative("./version.rb")
 
 # Class for interacting with the Watson API
 class WatsonService
+  include ERB::Util
   attr_accessor :url, :username, :password
   attr_reader :conn
   def initialize(vars)

@@ -129,8 +129,7 @@ module WatsonDeveloperCloud
         "intents" => intents,
         "output" => output
       }
-      require("erb")
-      url = "/v1/workspaces/%s/message" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/message" % [url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: url,
@@ -259,8 +258,7 @@ module WatsonDeveloperCloud
         "export" => export,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s" % [url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: url,
@@ -322,8 +320,7 @@ module WatsonDeveloperCloud
         "metadata" => metadata,
         "learning_opt_out" => learning_opt_out
       }
-      require("erb")
-      url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s" % [url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: url,
@@ -351,8 +348,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s" % [url_encode(workspace_id)]
       request(
         method: "DELETE",
         url: url,
@@ -401,8 +397,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/intents" % [url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: url,
@@ -443,8 +438,7 @@ module WatsonDeveloperCloud
         "description" => description,
         "examples" => examples
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/intents" % [url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: url,
@@ -482,8 +476,7 @@ module WatsonDeveloperCloud
         "export" => export,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+      url = "/v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
       response = request(
         method: "GET",
         url: url,
@@ -525,8 +518,7 @@ module WatsonDeveloperCloud
         "description" => new_description,
         "examples" => new_examples
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+      url = "/v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
       response = request(
         method: "POST",
         url: url,
@@ -556,8 +548,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+      url = "/v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
       request(
         method: "DELETE",
         url: url,
@@ -603,8 +594,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+      url = "/v1/workspaces/%s/intents/%s/examples" % [url_encode(workspace_id), url_encode(intent)]
       response = request(
         method: "GET",
         url: url,
@@ -642,8 +632,7 @@ module WatsonDeveloperCloud
       data = {
         "text" => text
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+      url = "/v1/workspaces/%s/intents/%s/examples" % [url_encode(workspace_id), url_encode(intent)]
       response = request(
         method: "POST",
         url: url,
@@ -678,8 +667,7 @@ module WatsonDeveloperCloud
         "version" => @version,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+      url = "/v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
       response = request(
         method: "GET",
         url: url,
@@ -718,8 +706,7 @@ module WatsonDeveloperCloud
       data = {
         "text" => new_text
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+      url = "/v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
       response = request(
         method: "POST",
         url: url,
@@ -751,8 +738,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+      url = "/v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
       request(
         method: "DELETE",
         url: url,
@@ -797,8 +783,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/counterexamples" % [url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: url,
@@ -835,8 +820,7 @@ module WatsonDeveloperCloud
       data = {
         "text" => text
       }
-      require("erb")
-      url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/counterexamples" % [url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: url,
@@ -870,8 +854,7 @@ module WatsonDeveloperCloud
         "version" => @version,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+      url = "/v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
       response = request(
         method: "GET",
         url: url,
@@ -905,8 +888,7 @@ module WatsonDeveloperCloud
       data = {
         "text" => new_text
       }
-      require("erb")
-      url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+      url = "/v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
       response = request(
         method: "POST",
         url: url,
@@ -937,8 +919,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+      url = "/v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
       request(
         method: "DELETE",
         url: url,
@@ -987,8 +968,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/entities" % [url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1032,8 +1012,7 @@ module WatsonDeveloperCloud
         "values" => values,
         "fuzzy_match" => fuzzy_match
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/entities" % [url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: url,
@@ -1071,8 +1050,7 @@ module WatsonDeveloperCloud
         "export" => export,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      url = "/v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
       response = request(
         method: "GET",
         url: url,
@@ -1118,8 +1096,7 @@ module WatsonDeveloperCloud
         "fuzzy_match" => new_fuzzy_match,
         "values" => new_values
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      url = "/v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
       response = request(
         method: "POST",
         url: url,
@@ -1149,8 +1126,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      url = "/v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
       request(
         method: "DELETE",
         url: url,
@@ -1200,8 +1176,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      url = "/v1/workspaces/%s/entities/%s/values" % [url_encode(workspace_id), url_encode(entity)]
       response = request(
         method: "GET",
         url: url,
@@ -1256,8 +1231,7 @@ module WatsonDeveloperCloud
         "patterns" => patterns,
         "type" => value_type
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      url = "/v1/workspaces/%s/entities/%s/values" % [url_encode(workspace_id), url_encode(entity)]
       response = request(
         method: "POST",
         url: url,
@@ -1296,8 +1270,7 @@ module WatsonDeveloperCloud
         "export" => export,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
       response = request(
         method: "GET",
         url: url,
@@ -1354,8 +1327,7 @@ module WatsonDeveloperCloud
         "synonyms" => new_synonyms,
         "patterns" => new_patterns
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
       response = request(
         method: "POST",
         url: url,
@@ -1387,8 +1359,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
       request(
         method: "DELETE",
         url: url,
@@ -1436,8 +1407,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
       response = request(
         method: "GET",
         url: url,
@@ -1476,8 +1446,7 @@ module WatsonDeveloperCloud
       data = {
         "synonym" => synonym
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
       response = request(
         method: "POST",
         url: url,
@@ -1514,8 +1483,7 @@ module WatsonDeveloperCloud
         "version" => @version,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
       response = request(
         method: "GET",
         url: url,
@@ -1555,8 +1523,7 @@ module WatsonDeveloperCloud
       data = {
         "synonym" => new_synonym
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
       response = request(
         method: "POST",
         url: url,
@@ -1590,8 +1557,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+      url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
       request(
         method: "DELETE",
         url: url,
@@ -1635,8 +1601,7 @@ module WatsonDeveloperCloud
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/dialog_nodes" % [url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: url,
@@ -1712,8 +1677,7 @@ module WatsonDeveloperCloud
         "digress_out" => digress_out,
         "digress_out_slots" => digress_out_slots
       }
-      require("erb")
-      url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/dialog_nodes" % [url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: url,
@@ -1746,8 +1710,7 @@ module WatsonDeveloperCloud
         "version" => @version,
         "include_audit" => include_audit
       }
-      require("erb")
-      url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+      url = "/v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
       response = request(
         method: "GET",
         url: url,
@@ -1824,8 +1787,7 @@ module WatsonDeveloperCloud
         "digress_out" => new_digress_out,
         "digress_out_slots" => new_digress_out_slots
       }
-      require("erb")
-      url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+      url = "/v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
       response = request(
         method: "POST",
         url: url,
@@ -1855,8 +1817,7 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-      require("erb")
-      url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+      url = "/v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
       request(
         method: "DELETE",
         url: url,
@@ -1900,8 +1861,7 @@ module WatsonDeveloperCloud
         "page_limit" => page_limit,
         "cursor" => cursor
       }
-      require("erb")
-      url = "/v1/workspaces/%s/logs" % [ERB::Util.url_encode(workspace_id)]
+      url = "/v1/workspaces/%s/logs" % [url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: url,
