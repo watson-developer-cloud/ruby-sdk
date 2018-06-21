@@ -59,7 +59,7 @@ class VisualRecognitionV3Test < Minitest::Test
     ).body
     refute(output.nil?)
 
-    output = @service.delete_classifier(
+    @service.delete_classifier(
       classifier_id: classifier_id
     )
   end
