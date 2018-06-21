@@ -241,6 +241,9 @@ module WatsonDeveloperCloud
       }
       unless forced_glossary.nil?
         mime_type = "application/octet-stream"
+        unless forced_glossary.instance_of?(StringIO) || forced_glossary.instance_of?(File)
+          forced_glossary = forced_glossary.respond_to?(:to_json) ? StringIO.new(forced_glossary.to_json) : StringIO.new(forced_glossary)
+        end
         if forced_glossary_filename
           forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type, filename: forced_glossary_filename) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type, filename: forced_glossary_filename)
         else
@@ -249,6 +252,9 @@ module WatsonDeveloperCloud
       end
       unless parallel_corpus.nil?
         mime_type = "application/octet-stream"
+        unless parallel_corpus.instance_of?(StringIO) || parallel_corpus.instance_of?(File)
+          parallel_corpus = parallel_corpus.respond_to?(:to_json) ? StringIO.new(parallel_corpus.to_json) : StringIO.new(parallel_corpus)
+        end
         if parallel_corpus_filename
           parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type, filename: parallel_corpus_filename) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type, filename: parallel_corpus_filename)
         else
@@ -257,6 +263,9 @@ module WatsonDeveloperCloud
       end
       unless monolingual_corpus.nil?
         mime_type = "text/plain"
+        unless monolingual_corpus.instance_of?(StringIO) || monolingual_corpus.instance_of?(File)
+          monolingual_corpus = monolingual_corpus.respond_to?(:to_json) ? StringIO.new(monolingual_corpus.to_json) : StringIO.new(monolingual_corpus)
+        end
         if monolingual_corpus_filename
           monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type, filename: monolingual_corpus_filename) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type, filename: monolingual_corpus_filename)
         else

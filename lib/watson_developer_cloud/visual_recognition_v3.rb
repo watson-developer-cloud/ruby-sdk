@@ -132,6 +132,9 @@ module WatsonDeveloperCloud
       }
       unless images_file.nil?
         mime_type = images_file_content_type.nil? ? "application/octet-stream" : images_file_content_type
+        unless images_file.instance_of?(StringIO) || images_file.instance_of?(File)
+          images_file = images_file.respond_to?(:to_json) ? StringIO.new(images_file.to_json) : StringIO.new(images_file)
+        end
         if images_filename
           images_file = images_file.instance_of?(StringIO) ? HTTP::FormData::File.new(images_file, content_type: mime_type, filename: images_filename) : HTTP::FormData::File.new(images_file.path, content_type: mime_type, filename: images_filename)
         else
@@ -201,6 +204,9 @@ module WatsonDeveloperCloud
       }
       unless images_file.nil?
         mime_type = images_file_content_type.nil? ? "application/octet-stream" : images_file_content_type
+        unless images_file.instance_of?(StringIO) || images_file.instance_of?(File)
+          images_file = images_file.respond_to?(:to_json) ? StringIO.new(images_file.to_json) : StringIO.new(images_file)
+        end
         if images_filename
           images_file = images_file.instance_of?(StringIO) ? HTTP::FormData::File.new(images_file, content_type: mime_type, filename: images_filename) : HTTP::FormData::File.new(images_file.path, content_type: mime_type, filename: images_filename)
         else
@@ -265,6 +271,9 @@ module WatsonDeveloperCloud
         "version" => @version
       }
       mime_type = "application/octet-stream"
+      unless classname_positive_examples.instance_of?(StringIO) || classname_positive_examples.instance_of?(File)
+        classname_positive_examples = classname_positive_examples.respond_to?(:to_json) ? StringIO.new(classname_positive_examples.to_json) : StringIO.new(classname_positive_examples)
+      end
       if classname_positive_examples_filename
         classname_positive_examples = classname_positive_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(classname_positive_examples, content_type: mime_type, filename: classname_positive_examples_filename) : HTTP::FormData::File.new(classname_positive_examples.path, content_type: mime_type, filename: classname_positive_examples_filename)
       else
@@ -272,6 +281,9 @@ module WatsonDeveloperCloud
       end
       unless negative_examples.nil?
         mime_type = "application/octet-stream"
+        unless negative_examples.instance_of?(StringIO) || negative_examples.instance_of?(File)
+          negative_examples = negative_examples.respond_to?(:to_json) ? StringIO.new(negative_examples.to_json) : StringIO.new(negative_examples)
+        end
         if negative_examples_filename
           negative_examples = negative_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(negative_examples, content_type: mime_type, filename: negative_examples_filename) : HTTP::FormData::File.new(negative_examples.path, content_type: mime_type, filename: negative_examples_filename)
         else
@@ -388,6 +400,9 @@ module WatsonDeveloperCloud
       }
       unless classname_positive_examples.nil?
         mime_type = "application/octet-stream"
+        unless classname_positive_examples.instance_of?(StringIO) || classname_positive_examples.instance_of?(File)
+          classname_positive_examples = classname_positive_examples.respond_to?(:to_json) ? StringIO.new(classname_positive_examples.to_json) : StringIO.new(classname_positive_examples)
+        end
         if classname_positive_examples_filename
           classname_positive_examples = classname_positive_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(classname_positive_examples, content_type: mime_type, filename: classname_positive_examples_filename) : HTTP::FormData::File.new(classname_positive_examples.path, content_type: mime_type, filename: classname_positive_examples_filename)
         else
@@ -396,6 +411,9 @@ module WatsonDeveloperCloud
       end
       unless negative_examples.nil?
         mime_type = "application/octet-stream"
+        unless negative_examples.instance_of?(StringIO) || negative_examples.instance_of?(File)
+          negative_examples = negative_examples.respond_to?(:to_json) ? StringIO.new(negative_examples.to_json) : StringIO.new(negative_examples)
+        end
         if negative_examples_filename
           negative_examples = negative_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(negative_examples, content_type: mime_type, filename: negative_examples_filename) : HTTP::FormData::File.new(negative_examples.path, content_type: mime_type, filename: negative_examples_filename)
         else

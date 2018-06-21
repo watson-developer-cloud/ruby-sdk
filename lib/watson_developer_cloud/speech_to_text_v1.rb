@@ -1114,6 +1114,9 @@ module WatsonDeveloperCloud
         "allow_overwrite" => allow_overwrite
       }
       mime_type = "text/plain"
+      unless corpus_file.instance_of?(StringIO) || corpus_file.instance_of?(File)
+        corpus_file = corpus_file.respond_to?(:to_json) ? StringIO.new(corpus_file.to_json) : StringIO.new(corpus_file)
+      end
       if corpus_filename
         corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type, filename: corpus_filename) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type, filename: corpus_filename)
       else

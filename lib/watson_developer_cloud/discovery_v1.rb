@@ -491,6 +491,9 @@ module WatsonDeveloperCloud
       }
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
+        unless file.instance_of?(StringIO) || file.instance_of?(File)
+          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
+        end
         if filename
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
         else
@@ -846,6 +849,9 @@ module WatsonDeveloperCloud
       }
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
+        unless file.instance_of?(StringIO) || file.instance_of?(File)
+          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
+        end
         if filename
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
         else
@@ -929,6 +935,9 @@ module WatsonDeveloperCloud
       }
       unless file.nil?
         mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
+        unless file.instance_of?(StringIO) || file.instance_of?(File)
+          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
+        end
         if filename
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
         else
