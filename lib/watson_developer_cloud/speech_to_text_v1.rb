@@ -169,7 +169,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Sessionless
     #########################
@@ -352,7 +351,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Asynchronous
     #########################
@@ -744,7 +742,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Custom language models
     #########################
@@ -1016,7 +1013,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Custom corpora
     #########################
@@ -1117,12 +1113,12 @@ module WatsonDeveloperCloud
       params = {
         "allow_overwrite" => allow_overwrite
       }
-        mime_type = "text/plain"
-        if corpus_filename
-          corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type, filename: corpus_filename) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type, filename: corpus_filename)
-        else
-          corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type)
-        end
+      mime_type = "text/plain"
+      if corpus_filename
+        corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type, filename: corpus_filename) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type, filename: corpus_filename)
+      else
+        corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type)
+      end
       method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
       request(
         method: "POST",
@@ -1199,7 +1195,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Custom words
     #########################
@@ -1470,7 +1465,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Custom acoustic models
     #########################
@@ -1739,7 +1733,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Custom audio resources
     #########################
@@ -1977,7 +1970,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # User data
     #########################
@@ -2014,6 +2006,5 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
   end
 end

@@ -178,7 +178,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Synthesis
     #########################
@@ -239,7 +238,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Pronunciation
     #########################
@@ -287,7 +285,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Custom models
     #########################
@@ -450,7 +447,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Custom words
     #########################
@@ -624,7 +620,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # User data
     #########################
@@ -661,6 +656,5 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
   end
 end

@@ -140,7 +140,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Workspaces
     #########################
@@ -358,7 +357,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Intents
     #########################
@@ -558,7 +556,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Examples
     #########################
@@ -748,7 +745,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Counterexamples
     #########################
@@ -929,7 +925,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Entities
     #########################
@@ -1136,7 +1131,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Values
     #########################
@@ -1369,7 +1363,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Synonyms
     #########################
@@ -1567,7 +1560,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Dialog nodes
     #########################
@@ -1827,7 +1819,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Logs
     #########################
@@ -1912,7 +1903,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # User data
     #########################
@@ -1947,6 +1937,5 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
   end
 end

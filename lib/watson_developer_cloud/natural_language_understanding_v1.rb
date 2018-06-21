@@ -186,7 +186,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Manage models
     #########################
@@ -238,6 +237,5 @@ module WatsonDeveloperCloud
       )
       response
     end
-
   end
 end

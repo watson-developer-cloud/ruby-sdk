@@ -127,7 +127,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Identification
     #########################
@@ -173,7 +172,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Models
     #########################
@@ -321,6 +319,5 @@ module WatsonDeveloperCloud
       )
       response
     end
-
   end
 end

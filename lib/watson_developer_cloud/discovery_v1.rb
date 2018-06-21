@@ -257,7 +257,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Configurations
     #########################
@@ -444,7 +443,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Test your configuration on a document
     #########################
@@ -514,7 +512,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Collections
     #########################
@@ -690,7 +687,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Expansions
     #########################
@@ -795,7 +791,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Documents
     #########################
@@ -984,7 +979,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Queries
     #########################
@@ -1443,7 +1437,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Training data
     #########################
@@ -1755,7 +1748,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # User data
     #########################
@@ -1790,6 +1782,5 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
   end
 end

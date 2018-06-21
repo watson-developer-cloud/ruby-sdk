@@ -158,7 +158,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Face
     #########################
@@ -222,7 +221,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # Custom
     #########################
@@ -266,12 +264,12 @@ module WatsonDeveloperCloud
       params = {
         "version" => @version
       }
-        mime_type = "application/octet-stream"
-        if classname_positive_examples_filename
-          classname_positive_examples = classname_positive_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(classname_positive_examples, content_type: mime_type, filename: classname_positive_examples_filename) : HTTP::FormData::File.new(classname_positive_examples.path, content_type: mime_type, filename: classname_positive_examples_filename)
-        else
-          classname_positive_examples = classname_positive_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(classname_positive_examples, content_type: mime_type) : HTTP::FormData::File.new(classname_positive_examples.path, content_type: mime_type)
-        end
+      mime_type = "application/octet-stream"
+      if classname_positive_examples_filename
+        classname_positive_examples = classname_positive_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(classname_positive_examples, content_type: mime_type, filename: classname_positive_examples_filename) : HTTP::FormData::File.new(classname_positive_examples.path, content_type: mime_type, filename: classname_positive_examples_filename)
+      else
+        classname_positive_examples = classname_positive_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(classname_positive_examples, content_type: mime_type) : HTTP::FormData::File.new(classname_positive_examples.path, content_type: mime_type)
+      end
       unless negative_examples.nil?
         mime_type = "application/octet-stream"
         if negative_examples_filename
@@ -441,7 +439,6 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
     #########################
     # Core ML
     #########################
@@ -470,7 +467,6 @@ module WatsonDeveloperCloud
       )
       response
     end
-
     #########################
     # User data
     #########################
@@ -505,6 +501,5 @@ module WatsonDeveloperCloud
       )
       nil
     end
-
   end
 end

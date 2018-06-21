@@ -227,6 +227,5 @@ module WatsonDeveloperCloud
       )
       response
     end
-
   end
 end
