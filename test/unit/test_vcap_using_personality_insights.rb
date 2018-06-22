@@ -7,7 +7,7 @@ require("webmock/minitest")
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-ENV["VCAP_SERVICES"] = "{\"personality_insights\":[{\"credentials\":{\"password\":\"password\",\"url\":\"https:\/\/gateway.watsonplatform.net\/personality-insights\/api\",\"username\":\"username\"},\"label\":\"personality_insights\",\"name\":\"personality-insights-service\",\"plan\":\"standard\",\"tags\":[\"watson\",\"ibm_created\",\"ibm_dedicated_public\",\"lite\"]}]}"
+ENV["VCAP_SERVICES"] = JSON.parse(File.read(Dir.getwd + "/resources/vcap-testing.json")).to_json
 
 # Unit tests for VCAP Services using the Personality Insights V3 Service
 class VcapPersonalityInsightsV3Test < Minitest::Test

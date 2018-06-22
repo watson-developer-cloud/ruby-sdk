@@ -1,0 +1,20 @@
+{
+  "personality_insights": [
+  	{
+  		"credentials": {
+  			"password": "password",
+  			"url": "https://gateway.watsonplatform.net/personality-insights/api",
+  			"username": "username"
+  		},
+  		"label": "personality_insights",
+  		"name": "personality-insights-service",
+  		"plan": "standard",
+  		"tags": [
+  			"watson",
+  			"ibm_created",
+  			"ibm_dedicated_public",
+  			"lite"
+  		]
+  	}
+  ]
+}

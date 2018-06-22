@@ -25,14 +25,6 @@ class WatsonService
   attr_accessor :url, :username, :password
   attr_reader :conn
   def initialize(vars)
-    load_from_vcap_services = lambda do |service_name|
-      vcap_services = ENV["VCAP_SERVICES"]
-      unless vcap_services.nil?
-        services = JSON.parse(vcap_services)
-        return services[service_name][0]["credentials"] if services.key?(service_name)
-      end
-      nil
-    end
     defaults = {
       vcap_services_name: nil,
       username: nil,
@@ -63,8 +55,8 @@ class WatsonService
       "User-Agent" => user_agent_string
     }
     headers["x-watson-learning-opt-out"] = true if vars[:x_watson_learning_opt_out]
-    if vars[:use_vcap_services] && (@username.nil? || @api_key.nil?)
-      @vcap_service_credentials = load_from_vcap_services.call(vars[:vcap_services_name])
+    if vars[:use_vcap_services]
+      @vcap_service_credentials = load_from_vcap_services(service_name: vars[:vcap_services_name])
       if !@vcap_service_credentials.nil? && @vcap_service_credentials.instance_of?(Hash)
         @url = @vcap_service_credentials["url"]
         @username = @vcap_service_credentials["username"] if @vcap_service_credentials.key?("username")
@@ -93,6 +85,15 @@ class WatsonService
       write: 60,
       connect: 60
     )
+  end
+
+  def load_from_vcap_services(service_name:)
+    vcap_services = ENV["VCAP_SERVICES"]
+    unless vcap_services.nil?
+      services = JSON.parse(vcap_services)
+      return services[service_name][0]["credentials"] if services.key?(service_name)
+    end
+    nil
   end
 
   def _set_username_and_password(username: nil, password: nil)
