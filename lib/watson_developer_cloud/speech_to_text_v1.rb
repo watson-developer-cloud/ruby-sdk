@@ -351,6 +351,67 @@ module WatsonDeveloperCloud
       )
       response
     end
+
+    def recognize_with_websocket(
+      audio: nil,
+      chunk_data: false,
+      content_type: "audio/l16; rate=44100",
+      model: "en-US_BroadbandModel",
+      recognize_callback: nil,
+      customization_id: nil,
+      acoustic_customization_id: nil,
+      customization_weight: nil,
+      version: nil,
+      inactivity_timeout: 30,
+      interim_results: false,
+      keywords: nil,
+      keywords_threshold: nil,
+      max_alternatives: 1,
+      word_alternatives_threshold: nil,
+      word_confidence: false,
+      timestamps: false,
+      profanity_filter: nil,
+      smart_formatting: false,
+      speaker_labels: nil
+    )
+      raise ArgumentError("Audio must be provided") if audio.nil? && !use_microphone
+      raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
+      raise TypeError("Callback is not a derived class of RecognizeCallback") unless recognize_callback.is_a?(RecognizeCallback)
+
+      require_relative("./websocket/speech_to_text_websocket_listener.rb")
+
+      headers = {}
+      headers = @conn.default_options.headers.to_hash unless @conn.default_options.headers.to_hash.empty?
+      headers["Authorization"] = "Basic " + Base64.strict_encode64("#{@username}:#{@password}")
+      url = @url.gsub("https:", "wss:")
+      params = {
+        "model" => model,
+        "customization_id" => customization_id,
+        "acoustic_customization_id" => acoustic_customization_id,
+        "customization_weight" => customization_weight,
+        "version" => version
+      }
+      params.delete_if { |_, v| v.nil? }
+      url += "/v1/recognize?" + HTTP::URI.form_encode(params)
+
+      options = {
+        "content_type" => content_type,
+        "inactivity_timeout" => inactivity_timeout,
+        "interim_results" => interim_results,
+        "keywords" => keywords,
+        "keywords_threshold" => keywords_threshold,
+        "max_alternatives" => max_alternatives,
+        "word_alternatives_threshold" => word_alternatives_threshold,
+        "word_confidence" => word_confidence,
+        "timestamps" => timestamps,
+        "profanity_filter" => profanity_filter,
+        "smart_formatting" => smart_formatting,
+        "speaker_labels" => speaker_labels
+      }
+      options.delete_if { |_, v| v.nil? }
+      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
+    end
+
     #########################
     # Asynchronous
     #########################
