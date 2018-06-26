@@ -43,7 +43,7 @@ class SpeechToTextV1Test < Minitest::Test
 
   def test_recognize
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-    output = @service.recognize_sessionless(
+    output = @service.recognize(
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     ).body

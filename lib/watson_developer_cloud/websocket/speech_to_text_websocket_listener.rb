@@ -119,14 +119,14 @@ class WebSocketClient
           send_audio(data: data)
         end
       else
-        if @queue.length == 1 && !@mic_running
+        if @queue.length == 1
           send_chunk(chunk: @queue.pop(true), final: true)
           @queue.close
           @timer.cancel if @timer.respond_to?(:cancel)
           return
         end
         send_chunk(chunk: @queue.pop(true), final: false) unless @queue.empty?
-        @timer = EventMachine::Timer.new(TEN_MILLISECONDS) { send_audio(data: data) } unless @queue.empty? && !@mic_running
+        @timer = EventMachine::Timer.new(TEN_MILLISECONDS) { send_audio(data: data) }
       end
     else
       if @bytes_sent + ONE_KB >= @data_size

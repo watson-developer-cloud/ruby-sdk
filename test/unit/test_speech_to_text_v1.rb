@@ -58,7 +58,7 @@ class SpeechToTextV1Test < Minitest::Test
           "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: recognize_response.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.recognize_sessionless(
+    service_response = service.recognize(
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     )
