@@ -5,7 +5,7 @@ require("faye/websocket")
 require("json")
 
 ONE_KB = 1024
-TIMEOUT_PREFIX = "No speech detected for"
+TIMEOUT_PREFIX = "No speech detected for".freeze
 CLOSE_SIGNAL = 1000
 TEN_MILLISECONDS = 0.01
 
@@ -87,6 +87,17 @@ class WebSocketClient
     end
   end
 
+  def add_audio_chunk(chunk:)
+    @data_size += chunk.size
+    @queue << chunk
+  end
+
+  def stop_audio
+    @mic_running = false
+  end
+
+  private
+
   def on_connect(_response)
     @callback.on_connected
   end
@@ -145,17 +156,6 @@ class WebSocketClient
     end
     transcripts
   end
-
-  def add_audio_chunk(chunk:)
-    @data_size += chunk.size
-    @queue << chunk
-  end
-
-  def stop_audio
-    @mic_running = false
-  end
-
-  private
 
   def send_chunk(chunk:, final: false)
     return if chunk.nil?
