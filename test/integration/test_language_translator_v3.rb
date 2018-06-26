@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud.rb")
 require("json")
-require("minitest/autorun")
+require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
 # Integration tests for the Language Translator V3 Service

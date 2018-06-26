@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud.rb")
 require("json")
-require("minitest/autorun")
+require_relative("./../test_helper.rb")
 
 # Integration tests for the Natural Language Understanding V1 Service
 class NaturalLanguageUnderstandingV1Test < Minitest::Test

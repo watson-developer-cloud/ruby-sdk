@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative("./../../lib/watson_developer_cloud/iam_token_manager.rb")
-require("minitest/autorun")
+require_relative("./../test_helper.rb")
 require("webmock/minitest")
 
 WebMock.disable_net_connect!(allow_localhost: true)
