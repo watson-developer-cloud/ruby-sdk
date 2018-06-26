@@ -18,7 +18,7 @@ class MyRecognizeCallback < RecognizeCallback
   end
 
   def on_inactivity_timeout(*)
-    SpeechToTextV1Test.inactivity_timeout
+    SpeechToTextV1Test.inactivity_timeout_true
   end
 
   def on_transcription_complete; end
@@ -29,8 +29,12 @@ class SpeechToTextV1Test < Minitest::Test
   include Minitest::Hooks
 
   @@inactivity_timeout_occurred = false
-  def self.inactivity_timeout
+  def self.inactivity_timeout_true
     @@inactivity_timeout_occurred = true
+  end
+
+  def self.inactivity_timeout_false
+    @@inactivity_timeout_occurred = false
   end
 
   attr_accessor :service
@@ -149,9 +153,9 @@ class SpeechToTextV1Test < Minitest::Test
       word_alternatives_threshold: 0.5,
       model: "en-US_BroadbandModel"
     )
-    @@inactivity_timeout_occurred = false
+    SpeechToTextV1Test.inactivity_timeout_false
     speech.start
     assert(@@inactivity_timeout_occurred)
-    @@inactivity_timeout_occurred = false
+    SpeechToTextV1Test.inactivity_timeout_false
   end
 end
