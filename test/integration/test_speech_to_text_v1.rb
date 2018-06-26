@@ -2,12 +2,37 @@
 
 require("json")
 require_relative("./../test_helper.rb")
+require_relative("./../../lib/watson_developer_cloud/websocket/recognize_abstract_callback.rb")
+require_relative("./../../lib/watson_developer_cloud/websocket/speech_to_text_websocket_listener.rb")
 require("minitest/hooks/test")
+
+class MyRecognizeCallback < RecognizeCallback
+  def initialize
+    super
+  end
+
+  def on_transcription(transcript:); end
+
+  def on_error(error:)
+    puts "Error received: #{error}"
+  end
+
+  def on_inactivity_timeout(*)
+    SpeechToTextV1Test.inactivity_timeout
+  end
+
+  def on_transcription_complete; end
+end
 
 # Integration tests for the Speech to Text V1 Service
 class SpeechToTextV1Test < Minitest::Test
   include Minitest::Hooks
-  Minitest::Test.parallelize_me!
+
+  @@inactivity_timeout_occurred = false
+  def self.inactivity_timeout
+    @@inactivity_timeout_occurred = true
+  end
+
   attr_accessor :service
   def before_all
     @service = WatsonDeveloperCloud::SpeechToTextV1.new(
@@ -24,20 +49,20 @@ class SpeechToTextV1Test < Minitest::Test
 
   def test_models
     output = JSON.parse(@service.list_models.body)
-    refute(output.nil?)
+    refute_nil(output)
 
     model = @service.get_model(
       model_id: "ko-KR_BroadbandModel"
     ).body
     model = JSON.parse(model)
-    refute(model.nil?)
+    refute_nil(model)
 
     begin
       @service.get_model(
         model_id: "bogus"
       )
     rescue StandardError => e
-      refute(e.global_transaction_id.nil?)
+      refute_nil(e.global_transaction_id)
     end
   end
 
@@ -47,12 +72,12 @@ class SpeechToTextV1Test < Minitest::Test
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     ).body
-    assert_equal("thunderstorms could produce large hail isolated tornadoes and heavy rain ", output["results"][0]["alternatives"][0]["transcript"])
+    refute_nil(output["results"][0]["alternatives"][0]["transcript"])
   end
 
   def test_recognitions
     output = @service.check_jobs.body
-    refute(output.nil?)
+    refute_nil(output)
   end
 
   def test_custom_corpora
@@ -65,7 +90,7 @@ class SpeechToTextV1Test < Minitest::Test
     output = @service.list_corpora(
       customization_id: customization_id
     ).body
-    refute(output.nil?)
+    refute_nil(output)
 
     @service.delete_language_model(
       customization_id: customization_id
@@ -74,18 +99,18 @@ class SpeechToTextV1Test < Minitest::Test
 
   def test_acoustic_model
     list_models = @service.list_acoustic_models.body
-    refute(list_models.nil?)
+    refute_nil(list_models)
 
     create_acoustic_model = @service.create_acoustic_model(
       name: "integration_test_model_ruby",
       base_model_name: "en-US_BroadbandModel"
     ).body
-    refute(create_acoustic_model.nil?)
+    refute_nil(create_acoustic_model)
 
     get_acoustic_model = @service.get_acoustic_model(
       customization_id: create_acoustic_model["customization_id"]
     ).body
-    refute(get_acoustic_model.nil?)
+    refute_nil(get_acoustic_model)
 
     @service.reset_acoustic_model(
       customization_id: get_acoustic_model["customization_id"]
@@ -94,5 +119,39 @@ class SpeechToTextV1Test < Minitest::Test
     @service.delete_acoustic_model(
       customization_id: get_acoustic_model["customization_id"]
     )
+  end
+
+  def test_recognize_websocket
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    mycallback = MyRecognizeCallback.new
+    speech = @service.recognize_with_websocket(
+      audio: audio_file,
+      recognize_callback: mycallback,
+      interim_results: true,
+      timestamps: true,
+      max_alternatives: 2,
+      word_alternatives_threshold: 0.5,
+      model: "en-US_BroadbandModel"
+    )
+    speech.start
+  end
+
+  def test_inactivity_timeout_with_websocket
+    audio_file = File.open(Dir.getwd + "/resources/sound-with-pause.wav")
+    mycallback = MyRecognizeCallback.new
+    speech = @service.recognize_with_websocket(
+      audio: audio_file,
+      recognize_callback: mycallback,
+      interim_results: true,
+      inactivity_timeout: 3,
+      timestamps: true,
+      max_alternatives: 2,
+      word_alternatives_threshold: 0.5,
+      model: "en-US_BroadbandModel"
+    )
+    @@inactivity_timeout_occurred = false
+    speech.start
+    assert(@@inactivity_timeout_occurred)
+    @@inactivity_timeout_occurred = false
   end
 end

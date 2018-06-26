@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "dotenv", "~> 2.4.0"
   spec.add_runtime_dependency "eventmachine", "~> 1.2.7"
   spec.add_runtime_dependency "faye-websocket", "~> 0.10.7"
-  spec.add_runtime_dependency "ffi", "~> 1.9.25"
   spec.add_dependency "http", "~> 3.3.0"
   spec.add_development_dependency "httplog", "~> 1.0.3"
   spec.add_dependency "json", "~> 2.1.0"

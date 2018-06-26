@@ -68,7 +68,6 @@ class WebSocketClient
     on_close = lambda do |_event|
       @client = nil
       EM.stop_event_loop
-      Thread.exit
     end
 
     on_error = lambda do |event|
@@ -115,9 +114,6 @@ class WebSocketClient
     if @chunk_data
       if @mic_running
         @queue.empty? ? send_chunk(chunk: nil, final: false) : send_chunk(chunk: @queue.pop(true), final: false)
-        @timer = EventMachine::Timer.new(TEN_MILLISECONDS) do
-          send_audio(data: data)
-        end
       else
         if @queue.length == 1
           send_chunk(chunk: @queue.pop(true), final: true)
@@ -126,7 +122,6 @@ class WebSocketClient
           return
         end
         send_chunk(chunk: @queue.pop(true), final: false) unless @queue.empty?
-        @timer = EventMachine::Timer.new(TEN_MILLISECONDS) { send_audio(data: data) }
       end
     else
       if @bytes_sent + ONE_KB >= @data_size
@@ -138,10 +133,8 @@ class WebSocketClient
         @timer.cancel if @timer.respond_to?(:cancel)
       end
       send_chunk(chunk: data.read(ONE_KB), final: false)
-      @timer = EventMachine::Timer.new(TEN_MILLISECONDS) do
-        send_audio(data: data)
-      end
     end
+    @timer = EventMachine::Timer.new(TEN_MILLISECONDS) { send_audio(data: data) }
   end
 
   def extract_transcripts(alternatives:)
