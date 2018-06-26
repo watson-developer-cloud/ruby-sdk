@@ -4,7 +4,7 @@ require("simplecov")
 require("simplecov-console")
 
 if ENV["COVERAGE"]
-  SimpleCov.formatter = SimpleCov::Formatter::Console if ENV["Travis"]
+  SimpleCov.formatter = SimpleCov::Formatter::Console if ENV["TRAVIS"]
   unless SimpleCov.running
     SimpleCov.start do
       add_filter "/test/"
