@@ -14,29 +14,12 @@ class MyRecognizeCallback < RecognizeCallback
     @atomic_boolean = atomic_boolean
   end
 
-  def on_transcription(transcript:)
-    p "on_transcription"
-  end
-
   def on_error(error:)
     puts "Error received: #{error}"
   end
 
   def on_inactivity_timeout(*)
-    p "on_inactivity_timeout"
     @atomic_boolean.make_true
-  end
-
-  def on_transcription_complete
-    p "on_transcription_complete"
-  end
-
-  def on_data(*)
-    p "on_data"
-  end
-
-  def on_hypothesis(*)
-    p "on_hypothesis"
   end
 end
 
@@ -162,14 +145,8 @@ class SpeechToTextV1Test < Minitest::Test
       word_alternatives_threshold: 0.5,
       model: "en-US_BroadbandModel"
     )
-    p "Before expected timeout"
-    thr = Thread.new do
-      p "BEFORE IN THREAD"
-      speech.start
-      p "AFTER IN THREAD"
-    end
+    thr = Thread.new{ speech.start }
     thr.join
-    p "After expected timeout"
     assert(atomic_boolean.true?)
   end
 end
