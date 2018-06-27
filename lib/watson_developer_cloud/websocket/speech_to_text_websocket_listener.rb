@@ -74,6 +74,7 @@ class WebSocketClient
       p event.message
     end
 
+    EM.reactor_thread.join unless EM.reactor_thread.nil?
     EM.run do
       @client = Faye::WebSocket::Client.new(@url, nil, headers: @headers)
       @client.onclose = on_close
