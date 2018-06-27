@@ -13,17 +13,30 @@ class MyRecognizeCallback < RecognizeCallback
     @test_object = test_object
   end
 
-  def on_transcription(transcript:); end
+  def on_transcription(transcript:)
+    p "on_transcription"
+  end
 
   def on_error(error:)
     puts "Error received: #{error}"
   end
 
   def on_inactivity_timeout(*)
+    p "on_inactivity_timeout"
     @test_object.inactivity_timeout_true unless @test_object.nil?
   end
 
-  def on_transcription_complete; end
+  def on_transcription_complete
+    p "one_transcription_complete"
+  end
+
+  def on_data(*)
+    p "on_data"
+  end
+
+  def on_hypothesis(*)
+    p "on_hypothesis"
+  end
 end
 
 # Integration tests for the Speech to Text V1 Service
@@ -157,8 +170,10 @@ class SpeechToTextV1Test < Minitest::Test
       word_alternatives_threshold: 0.5,
       model: "en-US_BroadbandModel"
     )
+    p "Before expected timeout"
     thr = Thread.new { speech.start }
     thr.join
+    p "After expected timeout"
     assert(@inactivity_timeout_occurred)
   end
 end
