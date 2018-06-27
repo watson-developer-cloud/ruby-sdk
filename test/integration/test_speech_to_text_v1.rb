@@ -13,17 +13,30 @@ class MyRecognizeCallback < RecognizeCallback
     @test_object = test_object
   end
 
-  def on_transcription(transcript:); end
+  def on_transcription(transcript:)
+    p "transcript"
+  end
 
   def on_error(error:)
     puts "Error received: #{error}"
   end
 
   def on_inactivity_timeout(*)
+    p "on_inactivity_timeout"
     @test_object.inactivity_timeout_true unless @test_object.nil?
   end
 
-  def on_transcription_complete; end
+  def on_transcription_complete
+    p "transcript complete"
+  end
+
+  def on_data(data:)
+    p "data"
+  end
+
+  def on_hypothesis(hypothesis:)
+    p "hypothesis"
+  end
 end
 
 # Integration tests for the Speech to Text V1 Service
