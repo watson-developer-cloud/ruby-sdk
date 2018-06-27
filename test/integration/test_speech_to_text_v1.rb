@@ -6,9 +6,11 @@ require_relative("./../../lib/watson_developer_cloud/websocket/recognize_abstrac
 require_relative("./../../lib/watson_developer_cloud/websocket/speech_to_text_websocket_listener.rb")
 require("minitest/hooks/test")
 
+# Recognize Callback class
 class MyRecognizeCallback < RecognizeCallback
-  def initialize
+  def initialize(test_object: nil)
     super
+    @test_object = test_object
   end
 
   def on_transcription(transcript:); end
@@ -18,7 +20,7 @@ class MyRecognizeCallback < RecognizeCallback
   end
 
   def on_inactivity_timeout(*)
-    SpeechToTextV1Test.inactivity_timeout_true
+    @test_object.inactivity_timeout_true
   end
 
   def on_transcription_complete; end
@@ -28,13 +30,13 @@ end
 class SpeechToTextV1Test < Minitest::Test
   include Minitest::Hooks
 
-  @@inactivity_timeout_occurred = false
-  def self.inactivity_timeout_true
-    @@inactivity_timeout_occurred = true
+  @inactivity_timeout_occurred = false
+  def inactivity_timeout_true
+    @inactivity_timeout_occurred = true
   end
 
-  def self.inactivity_timeout_false
-    @@inactivity_timeout_occurred = false
+  def inactivity_timeout_false
+    @inactivity_timeout_occurred = false
   end
 
   attr_accessor :service
@@ -142,7 +144,7 @@ class SpeechToTextV1Test < Minitest::Test
 
   def test_inactivity_timeout_with_websocket
     audio_file = File.open(Dir.getwd + "/resources/sound-with-pause.wav")
-    mycallback = MyRecognizeCallback.new
+    mycallback = MyRecognizeCallback.new(test_object: self)
     speech = @service.recognize_with_websocket(
       audio: audio_file,
       recognize_callback: mycallback,
@@ -153,9 +155,9 @@ class SpeechToTextV1Test < Minitest::Test
       word_alternatives_threshold: 0.5,
       model: "en-US_BroadbandModel"
     )
-    SpeechToTextV1Test.inactivity_timeout_false
+    inactivity_timeout_false
     speech.start
-    assert(@@inactivity_timeout_occurred)
-    SpeechToTextV1Test.inactivity_timeout_false
+    assert(@inactivity_timeout_occurred)
+    inactivity_timeout_false
   end
 end

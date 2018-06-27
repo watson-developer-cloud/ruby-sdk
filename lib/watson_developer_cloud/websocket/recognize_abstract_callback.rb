@@ -2,7 +2,7 @@
 
 # Abstract class for Recognize Callbacks
 class RecognizeCallback
-  def initialize; end
+  def initialize(*); end
 
   # Called when an interim result is received
   def on_transcription(transcript:); end
