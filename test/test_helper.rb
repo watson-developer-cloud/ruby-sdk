@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require("simplecov")
-require("simplecov-console")
+require("codecov")
 
 if ENV["COVERAGE"]
-  SimpleCov.formatter = SimpleCov::Formatter::Console if ENV["TRAVIS"]
+  SimpleCov.formatter = SimpleCov::Formatter::CodeCov if ENV["CI"]
   unless SimpleCov.running
     SimpleCov.start do
       add_filter "/test/"
