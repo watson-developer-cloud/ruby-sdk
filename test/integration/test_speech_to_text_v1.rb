@@ -5,12 +5,13 @@ require_relative("./../test_helper.rb")
 require_relative("./../../lib/watson_developer_cloud/websocket/recognize_abstract_callback.rb")
 require_relative("./../../lib/watson_developer_cloud/websocket/speech_to_text_websocket_listener.rb")
 require("minitest/hooks/test")
+require("concurrent")
 
 # Recognize Callback class
 class MyRecognizeCallback < RecognizeCallback
-  def initialize(test_object: nil)
+  def initialize(event: nil)
     super
-    @test_object = test_object
+    @event = event
   end
 
   def on_transcription(transcript:)
@@ -23,11 +24,11 @@ class MyRecognizeCallback < RecognizeCallback
 
   def on_inactivity_timeout(*)
     p "on_inactivity_timeout"
-    @test_object.inactivity_timeout_true unless @test_object.nil?
+    @event.set
   end
 
   def on_transcription_complete
-    p "one_transcription_complete"
+    p "on_transcription_complete"
   end
 
   def on_data(*)
@@ -42,15 +43,6 @@ end
 # Integration tests for the Speech to Text V1 Service
 class SpeechToTextV1Test < Minitest::Test
   include Minitest::Hooks
-
-  @inactivity_timeout_occurred = false
-  def inactivity_timeout_true
-    @inactivity_timeout_occurred = true
-  end
-
-  def inactivity_timeout_false
-    @inactivity_timeout_occurred = false
-  end
 
   attr_accessor :service
   def before_all
@@ -157,9 +149,9 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_inactivity_timeout_with_websocket
-    inactivity_timeout_false
     audio_file = File.open(Dir.getwd + "/resources/sound-with-pause.wav")
-    mycallback = MyRecognizeCallback.new(test_object: self)
+    event = Concurrent::Event.new
+    mycallback = MyRecognizeCallback.new(event: event)
     speech = @service.recognize_with_websocket(
       audio: audio_file,
       recognize_callback: mycallback,
@@ -171,9 +163,14 @@ class SpeechToTextV1Test < Minitest::Test
       model: "en-US_BroadbandModel"
     )
     p "Before expected timeout"
-    thr = Thread.new { speech.start }
+    thr = Thread.new do
+      p "BEFORE IN THREAD"
+      speech.start
+      event.wait(30)
+      p "AFTER IN THREAD"
+    end
     thr.join
     p "After expected timeout"
-    assert(@inactivity_timeout_occurred)
+    assert(event.set?)
   end
 end
