@@ -9,9 +9,9 @@ require("concurrent")
 
 # Recognize Callback class
 class MyRecognizeCallback < RecognizeCallback
-  def initialize(event: nil)
+  def initialize(atomic_boolean: nil)
     super
-    @event = event
+    @atomic_boolean = atomic_boolean
   end
 
   def on_transcription(transcript:)
@@ -24,7 +24,7 @@ class MyRecognizeCallback < RecognizeCallback
 
   def on_inactivity_timeout(*)
     p "on_inactivity_timeout"
-    @event.set
+    @atomic_boolean.make_true
   end
 
   def on_transcription_complete
@@ -150,8 +150,8 @@ class SpeechToTextV1Test < Minitest::Test
 
   def test_inactivity_timeout_with_websocket
     audio_file = File.open(Dir.getwd + "/resources/sound-with-pause.wav")
-    event = Concurrent::Event.new
-    mycallback = MyRecognizeCallback.new(event: event)
+    atomic_boolean = Concurrent::AtomicBoolean.new
+    mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
     speech = @service.recognize_with_websocket(
       audio: audio_file,
       recognize_callback: mycallback,
@@ -166,11 +166,10 @@ class SpeechToTextV1Test < Minitest::Test
     thr = Thread.new do
       p "BEFORE IN THREAD"
       speech.start
-      event.wait(30)
       p "AFTER IN THREAD"
     end
     thr.join
     p "After expected timeout"
-    assert(event.set?)
+    assert(atomic_boolean.true?)
   end
 end
