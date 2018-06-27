@@ -20,7 +20,7 @@ class MyRecognizeCallback < RecognizeCallback
   end
 
   def on_inactivity_timeout(*)
-    @test_object.inactivity_timeout_true
+    @test_object.inactivity_timeout_true unless @test_object.nil?
   end
 
   def on_transcription_complete; end
@@ -143,6 +143,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_inactivity_timeout_with_websocket
+    inactivity_timeout_false
     audio_file = File.open(Dir.getwd + "/resources/sound-with-pause.wav")
     mycallback = MyRecognizeCallback.new(test_object: self)
     speech = @service.recognize_with_websocket(
@@ -155,9 +156,7 @@ class SpeechToTextV1Test < Minitest::Test
       word_alternatives_threshold: 0.5,
       model: "en-US_BroadbandModel"
     )
-    inactivity_timeout_false
     speech.start
     assert(@inactivity_timeout_occurred)
-    inactivity_timeout_false
   end
 end
