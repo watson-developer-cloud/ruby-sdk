@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "watson_developer_cloud/version"
+require "watson_apis/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "watson_developer_cloud"
-  spec.version       = WatsonDeveloperCloud::VERSION
+  spec.name          = "watson_apis"
+  spec.version       = WatsonAPIs::VERSION
   spec.authors       = ["Author"]
   # spec.email         = ["TODO: Write your email address"]
 
