@@ -7,7 +7,6 @@ if ENV["COVERAGE"]
   SimpleCov.formatter = SimpleCov::Formatter::Codecov if ENV["CI"]
   unless SimpleCov.running
     SimpleCov.start do
-      use_merging true
       add_filter "/test/"
       add_filter "/lib/watson_apis/version.rb"
 
