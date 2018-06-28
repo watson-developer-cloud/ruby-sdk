@@ -142,4 +142,34 @@ class ToneAnalyzerV3Test < Minitest::Test
       assert_equal("C00012", e.info["sub_code"])
     end
   end
+
+  # Test to ensure that custom headers are sent
+  def test_tone_with_custom_headers
+    tone_response = JSON.parse(File.read(Dir.getwd + "/resources/tone-v3-expect1.json"))
+    headers = {
+      "Content-Type" => "application/json"
+    }
+    tone_text = File.read(Dir.getwd + "/resources/personality.txt")
+    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
+      .with(
+        body: tone_text,
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "Custom/Type",
+          "Host" => "gateway.watsonplatform.net",
+          "Custom-Header-One" => "yes"
+        }
+      ).to_return(status: 200, body: tone_response.to_json, headers: headers)
+    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      username: "username",
+      password: "password"
+    )
+    service_response = service.headers(
+      "Custom-Header-One" => "yes",
+      "Content-Type" => "Custom/Type"
+    ).tone(tone_input: tone_text, content_type: "application/json")
+    assert_equal(tone_response, service_response.body)
+  end
 end
