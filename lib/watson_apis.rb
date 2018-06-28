@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module WatsonAPIs
-  require_relative("./watson_apis/language_translator_v2.rb")
   require_relative("./watson_apis/personality_insights_v3.rb")
   require_relative("./watson_apis/tone_analyzer_v3.rb")
   require_relative("./watson_apis/watson_assistant_v1.rb")
