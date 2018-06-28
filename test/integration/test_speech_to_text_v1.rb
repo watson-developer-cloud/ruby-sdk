@@ -145,7 +145,7 @@ class SpeechToTextV1Test < Minitest::Test
       word_alternatives_threshold: 0.5,
       model: "en-US_BroadbandModel"
     )
-    thr = Thread.new{ speech.start }
+    thr = Thread.new { speech.start }
     thr.join
     assert(atomic_boolean.true?)
   end

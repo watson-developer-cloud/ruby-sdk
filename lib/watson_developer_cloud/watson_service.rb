@@ -22,8 +22,7 @@ require_relative("./version.rb")
 # Class for interacting with the Watson API
 class WatsonService
   include ERB::Util
-  attr_accessor :url, :username, :password
-  attr_reader :conn
+  attr_accessor :api_key, :password, :url, :username
   def initialize(vars)
     defaults = {
       vcap_services_name: nil,
@@ -70,11 +69,12 @@ class WatsonService
     end
 
     if !vars[:api_key].nil?
-      _api_key(api_key: vars[:api_key])
+      @api_key = vars[:api_key]
     elsif !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
       _token_manager(iam_api_key: vars[:iam_api_key], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
-      _set_username_and_password(username: vars[:username], password: vars[:password])
+      @username = vars[:username]
+      @password = vars[:password]
     end
 
     @conn = HTTP::Client.new(
@@ -96,18 +96,9 @@ class WatsonService
     nil
   end
 
-  def _set_username_and_password(username: nil, password: nil)
-    @username = username unless username.nil?
-    @password = password unless password.nil?
-  end
-
   def add_default_headers(headers: {})
     raise TypeError unless headers.instance_of?(Hash)
     headers.each_pair { |k, v| @conn.default_options.headers.add(k, v) }
-  end
-
-  def _api_key(api_key:)
-    @api_key = api_key unless api_key.nil?
   end
 
   def _token_manager(iam_api_key: nil, iam_access_token: nil, iam_url: nil)
@@ -129,10 +120,7 @@ class WatsonService
     @iam_api_key = iam_api_key
   end
 
-  def _url(url:)
-    @url = url
-  end
-
+  # @return [DetailedResponse]
   def request(args)
     defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: nil }
     args = defaults.merge(args)
@@ -181,9 +169,7 @@ class WatsonService
         params: args[:params]
       )
     end
-    response[:http_version] = 1.1
     return DetailedResponse.new(response: response) if (200..299).cover?(response.code)
     raise WatsonApiException.new(response: response)
-    # DetailedResponse.new(response: response)
   end
 end
