@@ -10,7 +10,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   Minitest::Test.parallelize_me!
   attr_accessor :service
   def before_all
-    @service = WatsonDeveloperCloud::LanguageTranslatorV3.new(
+    @service = WatsonAPIs::LanguageTranslatorV3.new(
       username: ENV["LANGUAGE_TRANSLATOR_V3_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_V3_PASSWORD"],
       version: "2018-05-01"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_developer_cloud/watson_api_exception.rb")
+require_relative("./../../lib/watson_apis/watson_api_exception.rb")
 require("json")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
@@ -26,7 +26,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
+    service = WatsonAPIs::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -57,7 +57,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
+    service = WatsonAPIs::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -87,7 +87,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
+    service = WatsonAPIs::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -129,7 +129,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 400, body: tone_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
+    service = WatsonAPIs::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"
@@ -161,7 +161,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Custom-Header-One" => "yes"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::ToneAnalyzerV3.new(
+    service = WatsonAPIs::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: "username",
       password: "password"

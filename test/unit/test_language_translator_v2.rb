@@ -30,7 +30,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -67,7 +67,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -121,7 +121,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -167,7 +167,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -211,7 +211,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )
@@ -265,7 +265,7 @@ class LanguageTranslatorV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: headers)
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: "username",
       password: "password"
     )

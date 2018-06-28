@@ -55,7 +55,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: voices_response.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::TextToSpeechV1.new(
+    service = WatsonAPIs::TextToSpeechV1.new(
       username: "username",
       password: "password"
     )
@@ -94,7 +94,7 @@ class TextToSpeechV1Test < Minitest::Test
     response = {
       "pronunciation" => "pronunciation info"
     }
-    service = WatsonDeveloperCloud::TextToSpeechV1.new(
+    service = WatsonAPIs::TextToSpeechV1.new(
       username: "username",
       password: "password"
     )
@@ -143,7 +143,7 @@ class TextToSpeechV1Test < Minitest::Test
 
   def test_custom_voice_models
     response = { "customizations" => "yep" }
-    service = WatsonDeveloperCloud::TextToSpeechV1.new(
+    service = WatsonAPIs::TextToSpeechV1.new(
       username: "username",
       password: "password"
     )
@@ -233,7 +233,7 @@ class TextToSpeechV1Test < Minitest::Test
 
   def test_custom_words
     response = { "customizations" => "yep" }
-    service = WatsonDeveloperCloud::TextToSpeechV1.new(
+    service = WatsonAPIs::TextToSpeechV1.new(
       username: "username",
       password: "password"
     )
@@ -316,7 +316,7 @@ class TextToSpeechV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonDeveloperCloud::TextToSpeechV1.new(
+    service = WatsonAPIs::TextToSpeechV1.new(
       username: "username",
       password: "password"
     )

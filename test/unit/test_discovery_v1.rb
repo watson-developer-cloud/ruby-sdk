@@ -46,7 +46,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -64,7 +64,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -86,7 +86,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -109,7 +109,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -131,7 +131,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -151,7 +151,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -163,7 +163,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collection
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -249,7 +249,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -281,7 +281,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -305,7 +305,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -327,7 +327,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -408,7 +408,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_document
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -542,7 +542,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_all_training_data
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -563,7 +563,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_data
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -627,7 +627,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -653,7 +653,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_data
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -695,7 +695,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -717,7 +717,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -744,7 +744,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_example
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -772,7 +772,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -802,7 +802,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -829,7 +829,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_expansions
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -886,7 +886,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonDeveloperCloud::DiscoveryV1.new(
+    service = WatsonAPIs::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"

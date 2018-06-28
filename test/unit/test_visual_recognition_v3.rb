@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Visual Recognition V3 Service
 class VisualRecognitionV3Test < Minitest::Test
   def test_get_classifier
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -39,7 +39,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_classifier
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -57,7 +57,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_list_classifiers
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -88,7 +88,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_create_classifier
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -119,7 +119,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_update_classifier
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -150,7 +150,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_classify
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -213,7 +213,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_detect_faces
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )
@@ -270,7 +270,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
       api_key: "bogusapikey"
     )

@@ -20,7 +20,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -66,7 +66,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_get_model
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -95,7 +95,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -154,7 +154,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_callbacks
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -186,7 +186,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_model
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -258,7 +258,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_acoustic_model
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -331,7 +331,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_corpora
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -394,7 +394,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_words
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -538,7 +538,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_audio_resources
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -603,7 +603,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    service = WatsonAPIs::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )

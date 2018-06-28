@@ -10,7 +10,7 @@ class TextToSpeechV1Test < Minitest::Test
   Minitest::Test.parallelize_me!
   attr_accessor :service
   def before_all
-    @service = WatsonDeveloperCloud::TextToSpeechV1.new(
+    @service = WatsonAPIs::TextToSpeechV1.new(
       username: ENV["TEXT_TO_SPEECH_USERNAME"],
       password: ENV["TEXT_TO_SPEECH_PASSWORD"]
     )

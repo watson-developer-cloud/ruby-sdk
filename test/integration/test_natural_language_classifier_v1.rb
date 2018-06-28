@@ -10,7 +10,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
   Minitest::Test.parallelize_me!
   attr_accessor :service
   def before_all
-    @service = WatsonDeveloperCloud::NaturalLanguageClassifierV1.new(
+    @service = WatsonAPIs::NaturalLanguageClassifierV1.new(
       username: ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"],
       password: ENV["NATURAL_LANGUAGE_CLASSIFIER_PASSWORD"]
     )

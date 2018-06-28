@@ -27,7 +27,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
+    service = WatsonAPIs::PersonalityInsightsV3.new(
       version: "2017-10-13"
     )
     service_response = service.profile(
@@ -59,7 +59,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
+    service = WatsonAPIs::PersonalityInsightsV3.new(
       version: "2017-10-13"
     )
     service_response = service.profile(
@@ -93,7 +93,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
+    service = WatsonAPIs::PersonalityInsightsV3.new(
       version: "2017-10-13"
     )
     service_response = service.profile(
@@ -131,7 +131,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
-    service = WatsonDeveloperCloud::PersonalityInsightsV3.new(
+    service = WatsonAPIs::PersonalityInsightsV3.new(
       version: "2017-10-13"
     )
     service_response = service.profile(

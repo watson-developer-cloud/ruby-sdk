@@ -10,7 +10,7 @@ class VisualRecognitionV3Test < Minitest::Test
   Minitest::Test.parallelize_me!
   attr_accessor :service, :classifier_id
   def before_all
-    @service = WatsonDeveloperCloud::VisualRecognitionV3.new(
+    @service = WatsonAPIs::VisualRecognitionV3.new(
       api_key: ENV["VISUAL_RECOGNITION_API_KEY"],
       version: "2018-03-19",
       url: "https://gateway-a.watsonplatform.net/visual-recognition/api"

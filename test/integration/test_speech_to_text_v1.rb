@@ -2,8 +2,8 @@
 
 require("json")
 require_relative("./../test_helper.rb")
-require_relative("./../../lib/watson_developer_cloud/websocket/recognize_abstract_callback.rb")
-require_relative("./../../lib/watson_developer_cloud/websocket/speech_to_text_websocket_listener.rb")
+require_relative("./../../lib/watson_apis/websocket/recognize_abstract_callback.rb")
+require_relative("./../../lib/watson_apis/websocket/speech_to_text_websocket_listener.rb")
 require("minitest/hooks/test")
 require("concurrent")
 
@@ -29,7 +29,7 @@ class SpeechToTextV1Test < Minitest::Test
 
   attr_accessor :service
   def before_all
-    @service = WatsonDeveloperCloud::SpeechToTextV1.new(
+    @service = WatsonAPIs::SpeechToTextV1.new(
       username: ENV["SPEECH_TO_TEXT_USERNAME"],
       password: ENV["SPEECH_TO_TEXT_PASSWORD"]
     )

@@ -10,7 +10,7 @@ class DiscoveryV1Test < Minitest::Test
   Minitest::Test.parallelize_me!
   attr_accessor :service, :environment_id, :collection_id
   def before_all
-    @service = WatsonDeveloperCloud::DiscoveryV1.new(
+    @service = WatsonAPIs::DiscoveryV1.new(
       username: ENV["DISCOVERY_USERNAME"],
       password: ENV["DISCOVERY_PASSWORD"],
       version: "2018-03-05"

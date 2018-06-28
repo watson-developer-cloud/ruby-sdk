@@ -6,7 +6,7 @@ require_relative("./../test_helper.rb")
 class LanguageTranslatorV2Test < Minitest::Test
   Minitest::Test.parallelize_me!
   def test_translate_source_target
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -19,7 +19,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_translate_model_id
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -31,7 +31,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_list_models
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -40,7 +40,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_get_model
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -51,7 +51,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_identify
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )
@@ -62,7 +62,7 @@ class LanguageTranslatorV2Test < Minitest::Test
   end
 
   def test_list_identifiable_languages
-    service = WatsonDeveloperCloud::LanguageTranslatorV2.new(
+    service = WatsonAPIs::LanguageTranslatorV2.new(
       username: ENV["LANGUAGE_TRANSLATOR_USERNAME"],
       password: ENV["LANGUAGE_TRANSLATOR_PASSWORD"]
     )

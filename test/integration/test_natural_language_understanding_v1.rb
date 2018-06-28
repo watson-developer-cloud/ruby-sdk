@@ -6,7 +6,7 @@ require_relative("./../test_helper.rb")
 # Integration tests for the Natural Language Understanding V1 Service
 class NaturalLanguageUnderstandingV1Test < Minitest::Test
   def test_text_analyze
-    service = WatsonDeveloperCloud::NaturalLanguageUnderstandingV1.new(
+    service = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
       username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
       password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
@@ -33,7 +33,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_html_analyze
-    service = WatsonDeveloperCloud::NaturalLanguageUnderstandingV1.new(
+    service = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
       username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
       password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
@@ -48,7 +48,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_url_analyze
-    service = WatsonDeveloperCloud::NaturalLanguageUnderstandingV1.new(
+    service = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
       username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
       password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
@@ -63,7 +63,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_list_models
-    service = WatsonDeveloperCloud::NaturalLanguageUnderstandingV1.new(
+    service = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
       username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
       password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
