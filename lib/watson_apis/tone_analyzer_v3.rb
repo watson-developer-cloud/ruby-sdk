@@ -31,7 +31,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Tone Analyzer V3 service.
   class ToneAnalyzerV3 < WatsonService

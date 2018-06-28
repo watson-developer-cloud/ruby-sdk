@@ -23,7 +23,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Assistant V1 service.
   class AssistantV1 < WatsonService

@@ -29,7 +29,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Natural Language Understanding V1 service.
   class NaturalLanguageUnderstandingV1 < WatsonService

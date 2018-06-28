@@ -40,7 +40,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Personality Insights V3 service.
   class PersonalityInsightsV3 < WatsonService

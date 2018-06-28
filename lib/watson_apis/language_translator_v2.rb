@@ -14,36 +14,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# IBM Watson&trade; Language Translator translates text from one language to another.
-# The service offers multiple IBM provided translation models that you can customize based
-# on your unique terminology and language. Use Language Translator to take news from
-# across the globe and present it in your language, communicate with your customers in
-# their own language, and more.
+#
+#
+# ---
+#
+# Language Translator v3 is
+# [available](https://www.ibm.com/watson/developercloud/language-translator/api/v3/). See
+# the [migration
+# guide](https://console.bluemix.net/docs/services/language-translator/migrating.html).
+#
+# ---
+#
+# IBM Watson&trade; Language Translator translates text from one language to another. The
+# service offers multiple domain-specific models that you can customize based on your
+# unique terminology and language. Use Language Translator to take news from across the
+# globe and present it in your language, communicate with your customers in their own
+# language, and more.
 
 require "json"
 require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
-  # The Language Translator V3 service.
-  class LanguageTranslatorV3 < WatsonService
+  # The Language Translator V2 service.
+  class LanguageTranslatorV2 < WatsonService
     ##
     # @!method initialize(args)
     # Construct a new client for the Language Translator service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
     # @option args url [String] The base url to use when contacting the service (e.g.
     #   "https://gateway.watsonplatform.net/language-translator/api").
     #   The base url may differ between Bluemix regions.
@@ -68,7 +69,6 @@ module WatsonDeveloperCloud
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args)
       defaults = {}
-      defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/language-translator/api"
       defaults[:username] = nil
       defaults[:password] = nil
@@ -86,7 +86,6 @@ module WatsonDeveloperCloud
         iam_url: args[:iam_url],
         use_vcap_services: true
       )
-      @version = args[:version]
     end
     #########################
     # Translation
@@ -112,21 +111,17 @@ module WatsonDeveloperCloud
       raise ArgumentError("text must be provided") if text.nil?
       headers = {
       }
-      params = {
-        "version" => @version
-      }
       data = {
         "text" => text,
         "model_id" => model_id,
         "source" => source,
         "target" => target
       }
-      method_url = "/v3/translate"
+      method_url = "/v2/translate"
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
-        params: params,
         json: data,
         accept_json: true
       )
@@ -145,15 +140,11 @@ module WatsonDeveloperCloud
     def list_identifiable_languages()
       headers = {
       }
-      params = {
-        "version" => @version
-      }
-      method_url = "/v3/identifiable_languages"
+      method_url = "/v2/identifiable_languages"
       response = request(
         method: "GET",
         url: method_url,
         headers: headers,
-        params: params,
         accept_json: true
       )
       response
@@ -169,17 +160,13 @@ module WatsonDeveloperCloud
       raise ArgumentError("text must be provided") if text.nil?
       headers = {
       }
-      params = {
-        "version" => @version
-      }
       data = text
       headers = { "Content-Type" => "text/plain" }
-      method_url = "/v3/identify"
+      method_url = "/v2/identify"
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
-        params: params,
         data: data,
         accept_json: true
       )
@@ -197,19 +184,17 @@ module WatsonDeveloperCloud
     # @param target [String] Specify a language code to filter results by target language.
     # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
     #   (default and non-default) for each language pair. To return only default models,
-    #   set this to `true`. To return only non-default models, set this to `false`. There
-    #   is exactly one default model per language pair, the IBM provided base model.
+    #   set this to `true`. To return only non-default models, set this to `false`.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_models(source: nil, target: nil, default_models: nil)
       headers = {
       }
       params = {
-        "version" => @version,
         "source" => source,
         "target" => target,
         "default" => default_models
       }
-      method_url = "/v3/models"
+      method_url = "/v2/models"
       response = request(
         method: "GET",
         url: method_url,
@@ -221,47 +206,36 @@ module WatsonDeveloperCloud
     end
 
     ##
-    # @!method create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil)
+    # @!method create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, monolingual_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil, monolingual_corpus_filename: nil)
     # Create model.
-    # Uploads Translation Memory eXchange (TMX) files to customize a translation model.
+    # Uploads a TMX glossary file on top of a domain to customize a translation model.
     #
-    #   You can either customize a model with a forced glossary or with a corpus that
-    #   contains parallel sentences. To create a model that is customized with a parallel
-    #   corpus <b>and</b> a forced glossary, proceed in two steps: customize with a
-    #   parallel corpus first and then customize the resulting model with a glossary.
-    #   Depending on the type of customization and the size of the uploaded corpora,
-    #   training can range from minutes for a glossary to several hours for a large
-    #   parallel corpus. You can upload a single forced glossary file and this file must
-    #   be less than <b>10 MB</b>. You can upload multiple parallel corpora tmx files. The
-    #   cumulative file size of all uploaded files is limited to <b>250 MB</b>. To
-    #   successfully train with a parallel corpus you must have at least <b>5,000 parallel
-    #   sentences</b> in your corpus.
-    #
-    #   You can have a <b>maxium of 10 custom models per language pair</b>.
+    #   Depending on the size of the file, training can range from minutes for a glossary
+    #   to several hours for a large parallel corpus. Glossary files must be less than 10
+    #   MB. The cumulative file size of all uploaded glossary and corpus files is limited
+    #   to 250 MB.
     # @param base_model_id [String] The model ID of the model to use as the base for customization. To see available
-    #   models, use the `List models` method. Usually all IBM provided models are
-    #   customizable. In addition, all your models that have been created via parallel
-    #   corpus customization, can be further customized with a forced glossary.
+    #   models, use the `List models` method.
     # @param name [String] An optional model name that you can use to identify the model. Valid characters
     #   are letters, numbers, dashes, underscores, spaces and apostrophes. The maximum
     #   length is 32 characters.
     # @param forced_glossary [File] A TMX file with your customizations. The customizations in the file completely
     #   overwrite the domain translaton data, including high frequency or high confidence
     #   phrase translations. You can upload only one glossary with a file size less than
-    #   10 MB per call. A forced glossary should contain single words or short phrases.
-    # @param parallel_corpus [File] A TMX file with parallel sentences for source and target language. You can upload
-    #   multiple parallel_corpus files in one request. All uploaded parallel_corpus files
-    #   combined, your parallel corpus must contain at least 5,000 parallel sentences to
-    #   train successfully.
+    #   10 MB per call.
+    # @param parallel_corpus [File] A TMX file that contains entries that are treated as a parallel corpus instead of
+    #   a glossary.
+    # @param monolingual_corpus [File] A UTF-8 encoded plain text file that is used to customize the target language
+    #   model.
     # @param forced_glossary_filename [String] The filename for forced_glossary.
     # @param parallel_corpus_filename [String] The filename for parallel_corpus.
+    # @param monolingual_corpus_filename [String] The filename for monolingual_corpus.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil)
+    def create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, monolingual_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil, monolingual_corpus_filename: nil)
       raise ArgumentError("base_model_id must be provided") if base_model_id.nil?
       headers = {
       }
       params = {
-        "version" => @version,
         "base_model_id" => base_model_id,
         "name" => name
       }
@@ -287,7 +261,18 @@ module WatsonDeveloperCloud
           parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type)
         end
       end
-      method_url = "/v3/models"
+      unless monolingual_corpus.nil?
+        mime_type = "text/plain"
+        unless monolingual_corpus.instance_of?(StringIO) || monolingual_corpus.instance_of?(File)
+          monolingual_corpus = monolingual_corpus.respond_to?(:to_json) ? StringIO.new(monolingual_corpus.to_json) : StringIO.new(monolingual_corpus)
+        end
+        if monolingual_corpus_filename
+          monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type, filename: monolingual_corpus_filename) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type, filename: monolingual_corpus_filename)
+        else
+          monolingual_corpus = monolingual_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(monolingual_corpus, content_type: mime_type) : HTTP::FormData::File.new(monolingual_corpus.path, content_type: mime_type)
+        end
+      end
+      method_url = "/v2/models"
       response = request(
         method: "POST",
         url: method_url,
@@ -295,7 +280,8 @@ module WatsonDeveloperCloud
         params: params,
         form: {
           forced_glossary: forced_glossary,
-          parallel_corpus: parallel_corpus
+          parallel_corpus: parallel_corpus,
+          monolingual_corpus: monolingual_corpus
         },
         accept_json: true
       )
@@ -312,15 +298,11 @@ module WatsonDeveloperCloud
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      params = {
-        "version" => @version
-      }
-      method_url = "/v3/models/%s" % [url_encode(model_id)]
+      method_url = "/v2/models/%s" % [url_encode(model_id)]
       response = request(
         method: "DELETE",
         url: method_url,
         headers: headers,
-        params: params,
         accept_json: true
       )
       response
@@ -330,23 +312,18 @@ module WatsonDeveloperCloud
     # @!method get_model(model_id:)
     # Get model details.
     # Gets information about a translation model, including training status for custom
-    #   models. Use this API call to poll the status of your customization request. A
-    #   successfully completed training will have a status of `available`.
+    #   models.
     # @param model_id [String] Model ID of the model to get.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      params = {
-        "version" => @version
-      }
-      method_url = "/v3/models/%s" % [url_encode(model_id)]
+      method_url = "/v2/models/%s" % [url_encode(model_id)]
       response = request(
         method: "GET",
         url: method_url,
         headers: headers,
-        params: params,
         accept_json: true
       )
       response

@@ -73,7 +73,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Text to Speech V1 service.
   class TextToSpeechV1 < WatsonService

@@ -25,7 +25,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Discovery V1 service.
   class DiscoveryV1 < WatsonService
@@ -178,8 +178,8 @@ module WatsonDeveloperCloud
     ##
     # @!method update_environment(environment_id:, name: nil, description: nil)
     # Update an environment.
-    # Updates an environment. The environment's `name` and  `description` parameters can
-    #   be changed. You must specify a `name` for the environment.
+    # Updates an environment. The environment's **name** and  **description** parameters
+    #   can be changed. You must specify a **name** for the environment.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] Name that identifies the environment.
     # @param description [String] Description of the environment.
@@ -262,12 +262,12 @@ module WatsonDeveloperCloud
     #########################
 
     ##
-    # @!method create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil)
+    # @!method create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
     # Add configuration.
     # Creates a new configuration.
     #
-    #   If the input configuration contains the `configuration_id`, `created`, or
-    #   `updated` properties, then they are ignored and overridden by the system, and an
+    #   If the input configuration contains the **configuration_id**, **created**, or
+    #   **updated** properties, then they are ignored and overridden by the system, and an
     #   error is not returned so that the overridden fields do not need to be removed when
     #   copying a configuration.
     #
@@ -284,8 +284,9 @@ module WatsonDeveloperCloud
     # @param normalizations [Array[NormalizationOperation]] Defines operations that can be used to transform the final output JSON into a
     #   normalized form. Operations are executed in the order that they appear in the
     #   array.
+    # @param source [Source] Object containing source parameters for the configuration.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil)
+    def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
       raise ArgumentError("name must be provided") if name.nil?
       headers = {
@@ -298,7 +299,8 @@ module WatsonDeveloperCloud
         "description" => description,
         "conversions" => conversions,
         "enrichments" => enrichments,
-        "normalizations" => normalizations
+        "normalizations" => normalizations,
+        "source" => source
       }
       method_url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
       response = request(
@@ -364,12 +366,12 @@ module WatsonDeveloperCloud
     end
 
     ##
-    # @!method update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil)
+    # @!method update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
     # Update a configuration.
     # Replaces an existing configuration.
     #     * Completely replaces the original configuration.
-    #     * The `configuration_id`, `updated`, and `created` fields are accepted in the
-    #   request, but they are ignored, and an error is not generated. It is also
+    #     * The **configuration_id**, **updated**, and **created** fields are accepted in
+    #   the request, but they are ignored, and an error is not generated. It is also
     #   acceptable for users to submit an updated configuration with none of the three
     #   properties.
     #     * Documents are processed with a snapshot of the configuration as it was at the
@@ -384,8 +386,9 @@ module WatsonDeveloperCloud
     # @param normalizations [Array[NormalizationOperation]] Defines operations that can be used to transform the final output JSON into a
     #   normalized form. Operations are executed in the order that they appear in the
     #   array.
+    # @param source [Source] Object containing source parameters for the configuration.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil)
+    def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
       raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
       raise ArgumentError("name must be provided") if name.nil?
@@ -399,7 +402,8 @@ module WatsonDeveloperCloud
         "description" => description,
         "conversions" => conversions,
         "enrichments" => enrichments,
-        "normalizations" => normalizations
+        "normalizations" => normalizations,
+        "source" => source
       }
       method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
       response = request(
@@ -456,7 +460,7 @@ module WatsonDeveloperCloud
     # @param environment_id [String] The ID of the environment.
     # @param configuration [String] The configuration to use to process the document. If this part is provided, then
     #   the provided configuration is used to process the document. If the
-    #   `configuration_id` is also provided (both are present at the same time), then
+    #   **configuration_id** is also provided (both are present at the same time), then
     #   request is rejected. The maximum supported configuration size is 1 MB.
     #   Configuration parts larger than 1 MB are rejected.
     #   See the `GET /configurations/{configuration_id}` operation for an example
@@ -464,9 +468,9 @@ module WatsonDeveloperCloud
     # @param step [String] Specify to only run the input document through the given step instead of running
     #   the input document through the entire ingestion workflow. Valid values are
     #   `convert`, `enrich`, and `normalize`.
-    # @param configuration_id [String] The ID of the configuration to use to process the document. If the `configuration`
-    #   form part is also provided (both are present at the same time), then request will
-    #   be rejected.
+    # @param configuration_id [String] The ID of the configuration to use to process the document. If the
+    #   **configuration** form part is also provided (both are present at the same time),
+    #   then the request will be rejected.
     # @param file [File] The content of the document to ingest. The maximum supported file size is 50
     #   megabytes. Files larger than 50 megabytes is rejected.
     # @param metadata [String] If you're using the Data Crawler to upload your documents, you can test a document
@@ -731,18 +735,20 @@ module WatsonDeveloperCloud
     # @param collection_id [String] The ID of the collection.
     # @param expansions [Array[Expansion]] An array of query expansion definitions.
     #
-    #    Each object in the `expansions` array represents a term or set of terms that will
-    #   be expanded into other terms. Each expansion object can be configured so that all
-    #   terms are expanded to all other terms in the object - bi-directional, or a set
-    #   list of terms can be expanded into a second list of terms - uni-directional.
+    #    Each object in the **expansions** array represents a term or set of terms that
+    #   will be expanded into other terms. Each expansion object can be configured as
+    #   bidirectional or unidirectional. Bidirectional means that all terms are expanded
+    #   to all other terms in the object. Unidirectional means that a set list of terms
+    #   can be expanded into a second list of terms.
     #
-    #    To create a bi-directional expansion specify an `expanded_terms` array. When
-    #   found in a query, all items in the `expanded_terms` array are then expanded to the
-    #   other items in the same array.
+    #    To create a bi-directional expansion specify an **expanded_terms** array. When
+    #   found in a query, all items in the **expanded_terms** array are then expanded to
+    #   the other items in the same array.
     #
-    #    To create a uni-directional expansion, specify both an array of `input_terms` and
-    #   an array of `expanded_terms`. When items in the `input_terms` array are present in
-    #   a query, they are expanded using the items listed in the `expanded_terms` array.
+    #    To create a uni-directional expansion, specify both an array of **input_terms**
+    #   and an array of **expanded_terms**. When items in the **input_terms** array are
+    #   present in a query, they are expanded using the items listed in the
+    #   **expanded_terms** array.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_expansions(environment_id:, collection_id:, expansions:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
@@ -803,17 +809,18 @@ module WatsonDeveloperCloud
     # Add a document.
     # Add a document to a collection with optional metadata.
     #
-    #     * The `version` query parameter is still required.
+    #     * The **version** query parameter is still required.
     #
     #     * Returns immediately after the system has accepted the document for processing.
     #
     #     * The user must provide document content, metadata, or both. If the request is
     #   missing both document content and metadata, it is rejected.
     #
-    #     * The user can set the `Content-Type` parameter on the `file` part to indicate
-    #   the media type of the document. If the `Content-Type` parameter is missing or is
-    #   one of the generic media types (for example, `application/octet-stream`), then the
-    #   service attempts to automatically detect the document's media type.
+    #     * The user can set the **Content-Type** parameter on the **file** part to
+    #   indicate the media type of the document. If the **Content-Type** parameter is
+    #   missing or is one of the generic media types (for example,
+    #   `application/octet-stream`), then the service attempts to automatically detect the
+    #   document's media type.
     #
     #     * The following field names are reserved and will be filtered out if present
     #   after normalization: `id`, `score`, `highlight`, and any field with the prefix of:
@@ -1006,10 +1013,10 @@ module WatsonDeveloperCloud
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
-    #   `natural_language_query` and `query` at the same time.
+    #   **natural_language_query** and **query** at the same time.
     # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
-    #   data and natural language understanding. You cannot use `natural_language_query`
-    #   and `query` at the same time.
+    #   data and natural language understanding. You cannot use **natural_language_query**
+    #   and **query** at the same time.
     # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
     # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
     #   exact answer. Aggregations are useful for building applications, because you can
@@ -1033,21 +1040,21 @@ module WatsonDeveloperCloud
     # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have. The default
     #   is `400`. The minimum is `50`. The maximum is `2000`.
     # @param deduplicate [Boolean] When `true` and used with a Watson Discovery News collection, duplicate results
-    #   (based on the contents of the `title` field) are removed. Duplicate comparison is
-    #   limited to the current query only, `offset` is not considered. Defaults to
-    #   `false`. This parameter is currently Beta functionality.
+    #   (based on the contents of the **title** field) are removed. Duplicate comparison
+    #   is limited to the current query only; **offset** is not considered. This parameter
+    #   is currently Beta functionality.
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
-    #   `offset` is not considered. This parameter is currently Beta functionality.
+    #   **offset** is not considered. This parameter is currently Beta functionality.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
-    #   specified in the `similar.document_ids` parameter. The default is `false`.
+    #   specified in the **similar.document_ids** parameter.
     # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
     #   documents.
     #
-    #   **Note:** If the `natural_language_query` parameter is also specified, it will be
-    #   used to expand the scope of the document similarity search to include the natural
-    #   language query. Other query parameters, such as `filter` and `query` are
-    #   subsequently applied and reduce the query scope.
+    #   **Note:** If the **natural_language_query** parameter is also specified, it will
+    #   be used to expand the scope of the document similarity search to include the
+    #   natural language query. Other query parameters, such as **filter** and **query**
+    #   are subsequently applied and reduce the query scope.
     # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
     #   to identify similar documents. If not specified, the entire document is used for
     #   comparison.
@@ -1105,10 +1112,10 @@ module WatsonDeveloperCloud
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
-    #   `natural_language_query` and `query` at the same time.
+    #   **natural_language_query** and **query** at the same time.
     # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
-    #   data and natural language understanding. You cannot use `natural_language_query`
-    #   and `query` at the same time.
+    #   data and natural language understanding. You cannot use **natural_language_query**
+    #   and **query** at the same time.
     # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
     # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
     #   exact answer. Aggregations are useful for building applications, because you can
@@ -1133,16 +1140,16 @@ module WatsonDeveloperCloud
     #   is `400`. The minimum is `50`. The maximum is `2000`.
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
-    #   `offset` is not considered. This parameter is currently Beta functionality.
+    #   **offset** is not considered. This parameter is currently Beta functionality.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
-    #   specified in the `similar.document_ids` parameter. The default is `false`.
+    #   specified in the **similar.document_ids** parameter.
     # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
     #   documents.
     #
-    #   **Note:** If the `natural_language_query` parameter is also specified, it will be
-    #   used to expand the scope of the document similarity search to include the natural
-    #   language query. Other query parameters, such as `filter` and `query` are
-    #   subsequently applied and reduce the query scope.
+    #   **Note:** If the **natural_language_query** parameter is also specified, it will
+    #   be used to expand the scope of the document similarity search to include the
+    #   natural language query. Other query parameters, such as **filter** and **query**
+    #   are subsequently applied and reduce the query scope.
     # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
     #   to identify similar documents. If not specified, the entire document is used for
     #   comparison.
@@ -1184,7 +1191,7 @@ module WatsonDeveloperCloud
     end
 
     ##
-    # @!method federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    # @!method federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, passages: nil, passages_fields: nil, passages_count: nil, passages_characters: nil)
     # Query documents in multiple collections.
     # See the [Discovery service
     #   documentation](https://console.bluemix.net/docs/services/discovery/using.html) for
@@ -1197,10 +1204,10 @@ module WatsonDeveloperCloud
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
-    #   `natural_language_query` and `query` at the same time.
+    #   **natural_language_query** and **query** at the same time.
     # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
-    #   data and natural language understanding. You cannot use `natural_language_query`
-    #   and `query` at the same time.
+    #   data and natural language understanding. You cannot use **natural_language_query**
+    #   and **query** at the same time.
     # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
     #   exact answer. Aggregations are useful for building applications, because you can
     #   use them to build lists, tables, and time series. For a full list of possible
@@ -1217,26 +1224,33 @@ module WatsonDeveloperCloud
     #   that match the query with `<em></em>` tags around the matching query terms.
     #   Defaults to false.
     # @param deduplicate [Boolean] When `true` and used with a Watson Discovery News collection, duplicate results
-    #   (based on the contents of the `title` field) are removed. Duplicate comparison is
-    #   limited to the current query only, `offset` is not considered. Defaults to
-    #   `false`. This parameter is currently Beta functionality.
+    #   (based on the contents of the **title** field) are removed. Duplicate comparison
+    #   is limited to the current query only; **offset** is not considered. This parameter
+    #   is currently Beta functionality.
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
-    #   `offset` is not considered. This parameter is currently Beta functionality.
+    #   **offset** is not considered. This parameter is currently Beta functionality.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
-    #   specified in the `similar.document_ids` parameter. The default is `false`.
+    #   specified in the **similar.document_ids** parameter.
     # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
     #   documents.
     #
-    #   **Note:** If the `natural_language_query` parameter is also specified, it will be
-    #   used to expand the scope of the document similarity search to include the natural
-    #   language query. Other query parameters, such as `filter` and `query` are
-    #   subsequently applied and reduce the query scope.
+    #   **Note:** If the **natural_language_query** parameter is also specified, it will
+    #   be used to expand the scope of the document similarity search to include the
+    #   natural language query. Other query parameters, such as **filter** and **query**
+    #   are subsequently applied and reduce the query scope.
     # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
     #   to identify similar documents. If not specified, the entire document is used for
     #   comparison.
+    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
+    # @param passages_fields [Array[String]] A comma-separated list of fields that passages are drawn from. If this parameter
+    #   not specified, then all top-level fields are included.
+    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
+    #   requested total is not found. The default is `10`. The maximum is `100`.
+    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have. The default
+    #   is `400`. The minimum is `50`. The maximum is `2000`.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, passages: nil, passages_fields: nil, passages_count: nil, passages_characters: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
       raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
       headers = {
@@ -1257,7 +1271,11 @@ module WatsonDeveloperCloud
         "deduplicate.field" => deduplicate_field,
         "similar" => similar,
         "similar.document_ids" => similar_document_ids.to_a,
-        "similar.fields" => similar_fields.to_a
+        "similar.fields" => similar_fields.to_a,
+        "passages" => passages,
+        "passages.fields" => passages_fields.to_a,
+        "passages.count" => passages_count,
+        "passages.characters" => passages_characters
       }
       method_url = "/v1/environments/%s/query" % [url_encode(environment_id)]
       response = request(
@@ -1286,10 +1304,10 @@ module WatsonDeveloperCloud
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
-    #   `natural_language_query` and `query` at the same time.
+    #   **natural_language_query** and **query** at the same time.
     # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
-    #   data and natural language understanding. You cannot use `natural_language_query`
-    #   and `query` at the same time.
+    #   data and natural language understanding. You cannot use **natural_language_query**
+    #   and **query** at the same time.
     # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
     #   exact answer. Aggregations are useful for building applications, because you can
     #   use them to build lists, tables, and time series. For a full list of possible
@@ -1307,16 +1325,16 @@ module WatsonDeveloperCloud
     #   Defaults to false.
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
-    #   `offset` is not considered. This parameter is currently Beta functionality.
+    #   **offset** is not considered. This parameter is currently Beta functionality.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
-    #   specified in the `similar.document_ids` parameter. The default is `false`.
+    #   specified in the **similar.document_ids** parameter.
     # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
     #   documents.
     #
-    #   **Note:** If the `natural_language_query` parameter is also specified, it will be
-    #   used to expand the scope of the document similarity search to include the natural
-    #   language query. Other query parameters, such as `filter` and `query` are
-    #   subsequently applied and reduce the query scope.
+    #   **Note:** If the **natural_language_query** parameter is also specified, it will
+    #   be used to expand the scope of the document similarity search to include the
+    #   natural language query. Other query parameters, such as **filter** and **query**
+    #   are subsequently applied and reduce the query scope.
     # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
     #   to identify similar documents. If not specified, the entire document is used for
     #   comparison.
@@ -1790,6 +1808,176 @@ module WatsonDeveloperCloud
         accept_json: true
       )
       nil
+    end
+    #########################
+    # Credentials
+    #########################
+
+    ##
+    # @!method list_credentials(environment_id:)
+    # List credentials.
+    # List all the source credentials that have been created for this service instance.
+    #
+    #    **Note:**  All credentials are sent over an encrypted connection and encrypted at
+    #   rest.
+    # @param environment_id [String] The ID of the environment.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def list_credentials(environment_id:)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      method_url = "/v1/environments/%s/credentials" % [url_encode(environment_id)]
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_credentials(environment_id:, source_type: nil, credential_details: nil)
+    # Create credentials.
+    # Creates a set of credentials to connect to a remote source. Created credentials
+    #   are used in a configuration to associate a collection with the remote source.
+    #
+    #   **Note:** All credentials are sent over an encrypted connection and encrypted at
+    #   rest.
+    # @param environment_id [String] The ID of the environment.
+    # @param source_type [String] The source that this credentials object connects to.
+    #   -  `box` indicates the credentials are used to connect an instance of Enterprise
+    #   Box.
+    #   -  `salesforce` indicates the credentials are used to connect to Salesforce.
+    #   -  `sharepoint` indicates the credentials are used to connect to Microsoft
+    #   SharePoint Online.
+    # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
+    #
+    #   Obtain credentials for your source from the administrator of the source.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def create_credentials(environment_id:, source_type: nil, credential_details: nil)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      data = {
+        "source_type" => source_type,
+        "credential_details" => credential_details
+      }
+      method_url = "/v1/environments/%s/credentials" % [url_encode(environment_id)]
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_credentials(environment_id:, credential_id:)
+    # View Credentials.
+    # Returns details about the specified credentials.
+    #
+    #    **Note:** Secure credential information such as a password or SSH key is never
+    #   returned and must be obtained from the source system.
+    # @param environment_id [String] The ID of the environment.
+    # @param credential_id [String] The unique identifier for a set of source credentials.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_credentials(environment_id:, credential_id:)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError("credential_id must be provided") if credential_id.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      method_url = "/v1/environments/%s/credentials/%s" % [url_encode(environment_id), url_encode(credential_id)]
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil)
+    # Update credentials.
+    # Updates an existing set of source credentials.
+    #
+    #   **Note:** All credentials are sent over an encrypted connection and encrypted at
+    #   rest.
+    # @param environment_id [String] The ID of the environment.
+    # @param credential_id [String] The unique identifier for a set of source credentials.
+    # @param source_type [String] The source that this credentials object connects to.
+    #   -  `box` indicates the credentials are used to connect an instance of Enterprise
+    #   Box.
+    #   -  `salesforce` indicates the credentials are used to connect to Salesforce.
+    #   -  `sharepoint` indicates the credentials are used to connect to Microsoft
+    #   SharePoint Online.
+    # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
+    #
+    #   Obtain credentials for your source from the administrator of the source.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError("credential_id must be provided") if credential_id.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      data = {
+        "source_type" => source_type,
+        "credential_details" => credential_details
+      }
+      method_url = "/v1/environments/%s/credentials/%s" % [url_encode(environment_id), url_encode(credential_id)]
+      response = request(
+        method: "PUT",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_credentials(environment_id:, credential_id:)
+    # Delete credentials.
+    # Deletes a set of stored credentials from your Discovery instance.
+    # @param environment_id [String] The ID of the environment.
+    # @param credential_id [String] The unique identifier for a set of source credentials.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def delete_credentials(environment_id:, credential_id:)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError("credential_id must be provided") if credential_id.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      method_url = "/v1/environments/%s/credentials/%s" % [url_encode(environment_id), url_encode(credential_id)]
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
     end
   end
 end

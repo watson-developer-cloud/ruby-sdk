@@ -23,7 +23,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonDeveloperCloud
+module WatsonAPIs
   ##
   # The Visual Recognition V3 service.
   class VisualRecognitionV3 < WatsonService
@@ -89,9 +89,9 @@ module WatsonDeveloperCloud
     #   assumes UTF-8 encoding if it encounters non-ASCII characters.
     #
     #   You can also include an image with the **url** parameter.
-    # @param accept_language [String] The language of the output class names. The full set of languages is supported
-    #   only for the built-in `default` classifier ID. The class names of custom
-    #   classifiers are not translated.
+    # @param accept_language [String] The language of the output class names. The full set of languages is supported for
+    #   the built-in classifier IDs: `default`, `food`, and `explicit`. The class names of
+    #   custom classifiers are not translated.
     #
     #   The response might not be in the specified language when the requested language is
     #   not supported or when there is no translation for the class name.
