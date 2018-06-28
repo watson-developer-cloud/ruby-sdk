@@ -2,7 +2,6 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "watson_developer_cloud/version"
-require "rake"
 
 Gem::Specification.new do |spec|
   spec.name          = "watson_developer_cloud"
@@ -25,7 +24,7 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files = FileList["lib/*.rb", "lib/watson_developer_cloud/*.rb", "bin/*", "test/**/*"].to_a
+  spec.files = Dir["rakefile", "{bin,lib,test}/**/*", "README*"] & `git ls-files -z`.split("\0")
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
