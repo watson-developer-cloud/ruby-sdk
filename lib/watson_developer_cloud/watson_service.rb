@@ -44,6 +44,7 @@ class WatsonService
     @iam_access_token = vars[:iam_access_token]
     @iam_url = vars[:iam_url]
     @token_manager = nil
+    @temp_headers = nil
 
     user_agent_string = "watson-apis-ruby-sdk-" + WatsonDeveloperCloud::VERSION
     user_agent_string += " " + ENV["_system_name"]
@@ -152,6 +153,9 @@ class WatsonService
       args[:params]["api_key"] = @api_key unless (@url + args[:url]).start_with?("https://gateway-a.watsonplatform.net/calls")
     end
 
+    args[:headers] = args[:headers].merge(@temp_headers) unless @temp_headers.nil?
+    @temp_headers = nil unless @temp_headers.nil?
+
     if args.key?(:form)
       response = conn.follow.request(
         args[:method],
@@ -171,5 +175,14 @@ class WatsonService
     end
     return DetailedResponse.new(response: response) if (200..299).cover?(response.code)
     raise WatsonApiException.new(response: response)
+  end
+
+  # @note Chainable
+  # @param headers [Hash] Custom headers to be sent with the request
+  # @return [self]
+  def headers(headers)
+    raise TypeError("Expected Hash type, received #{headers.class}") unless headers.instance_of?(Hash)
+    @temp_headers = headers
+    self
   end
 end
