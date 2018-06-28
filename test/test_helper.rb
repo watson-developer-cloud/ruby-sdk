@@ -8,9 +8,10 @@ if ENV["COVERAGE"]
   unless SimpleCov.running
     SimpleCov.start do
       add_filter "/test/"
-      add_filter "/lib/watson_apis/version.rb"
+      add_filter do |src_file|
+        File.basename(src_file.filename) == "version.rb"
+      end
 
-      track_files "/lib/**/**/*"
       add_group "lib", "/lib/"
       command_name "Minitest"
     end
