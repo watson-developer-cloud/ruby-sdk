@@ -9,7 +9,7 @@ if ENV["COVERAGE"]
     SimpleCov.start do
       use_merging true
       add_filter "/test/"
-      add_filter "/lib/version.rb"
+      add_filter "/lib/watson_apis/version.rb"
 
       track_files "/lib/**/**/*"
       add_group "lib", "/lib/"
