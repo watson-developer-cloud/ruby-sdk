@@ -24,7 +24,7 @@ deploy:
     script: npx travis-deploy-once "npx semantic-release"
 
   - provider: rubygems
-    api_key: ${RUBYGEMS_API_KEY}
+    api_key: $RUBYGEMS_API_KEY
     gem: watson_apis
     on:
       branch: master
