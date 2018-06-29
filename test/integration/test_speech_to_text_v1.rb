@@ -8,7 +8,7 @@ require("minitest/hooks/test")
 require("concurrent")
 
 # Recognize Callback class
-class MyRecognizeCallback < RecognizeCallback
+class MyRecognizeCallback < WatsonAPIs::RecognizeCallback
   def initialize(atomic_boolean: nil)
     super
     @atomic_boolean = atomic_boolean
