@@ -202,7 +202,7 @@ The Speech-to-Text service supports websockets with the `recognize-with-websocke
 require "watson_apis"
 
 callback = WatsonAPIs::RecognizeCallback.new
-audio_file = <Audio File for Analysis>
+audio_file = "<Audio File for Analysis>"
 speech_to_text = WatsonAPIs::SpeechToTextV1.new(
   username: "<username>",
   password: "<password>"
