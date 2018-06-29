@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Client library to use the IBM Watson Services"
   spec.homepage = "https://www.github.com/watson-developer-cloud"
-  spec.licenses = ["APACHE-2.0"]
+  spec.licenses = ["Apache-2.0"]
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
