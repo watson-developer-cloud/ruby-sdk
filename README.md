@@ -234,4 +234,4 @@ This library is licensed under the [Apache 2.0 license][license].
 [CONTRIBUTING]: https://github.com/watson-developer-cloud/ruby-sdk/blob/master/CONTRIBUTING.md
 [license]: http://www.apache.org/licenses/LICENSE-2.0
 [vcap_services]: https://console.bluemix.net/docs/services/watson/getting-started-variables.html
-[ibm-cloud-onboarding]: TODO
+[ibm-cloud-onboarding]: http://console.bluemix.net/registration?target=/developer/watson&cm_sp=WatsonPlatform-WatsonServices-_-OnPageNavLink-IBMWatson_SDKs-_-Ruby
