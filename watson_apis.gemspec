@@ -1,22 +1,22 @@
-
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "watson_apis/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "watson_apis"
-  spec.version       = WatsonAPIs::VERSION
-  spec.authors       = ["Author"]
-  # spec.email         = ["TODO: Write your email address"]
+  spec.name = "watson_apis"
+  spec.version = WatsonAPIs::VERSION
+  spec.authors = ["Max Nussbaum"]
 
-  spec.summary       = %q{Summary}
-  # spec.description   = %q{TODO: Write a longer description or delete this line.}
-  # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary = "Client library to use the IBM Watson Services"
+  spec.homepage = "https://www.github.com/watson-developer-cloud"
+  spec.licenses = ["APACHE-2.0"]
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
     spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata["source_code_uri"] = "https://github.com/watson-developer-cloud/ruby-sdk"
+    spec.metadata["documentation_uri"] = "https://console.bluemix.net/developer/watson/documentation"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
@@ -25,8 +25,8 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir["rakefile", "{bin,lib,test}/**/*", "README*"] & `git ls-files -z`.split("\0")
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "eventmachine", "~> 1.2.7"
