@@ -16,6 +16,7 @@ before_install:
 install:
   - pip install --user bumpversion
   - npm install @semantic-release/exec
+  - bundle install
 
 script:
 - bundle exec rake
