@@ -13,7 +13,7 @@ before_install:
   - npm install npm@latest -g
 
 install:
-  - pip install bumpversion
+  - pip install --user bumpversion
   - npm install @semantic-release/exec
 
 script:
