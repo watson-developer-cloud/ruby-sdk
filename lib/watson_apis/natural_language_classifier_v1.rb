@@ -194,11 +194,11 @@ module WatsonAPIs
     end
 
     ##
-    # @!method list_classifiers()
+    # @!method list_classifiers
     # List classifiers.
     # Returns an empty array if no classifiers are available.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_classifiers()
+    def list_classifiers
       headers = {
       }
       method_url = "/v1/classifiers"

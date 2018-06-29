@@ -128,13 +128,13 @@ module WatsonAPIs
     #########################
 
     ##
-    # @!method list_models()
+    # @!method list_models
     # List models.
     # Lists all language models that are available for use with the service. The
     #   information includes the name of the model and its minimum sampling rate in Hertz,
     #   among other things.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_models()
+    def list_models
       headers = {
       }
       method_url = "/v1/models"
@@ -750,7 +750,7 @@ module WatsonAPIs
     end
 
     ##
-    # @!method check_jobs()
+    # @!method check_jobs
     # Check jobs.
     # Returns the ID and status of the latest 100 outstanding jobs associated with the
     #   service credentials with which it is called. The method also returns the creation
@@ -761,7 +761,7 @@ module WatsonAPIs
     #   them with the **Delete a job** method or until the job's time to live expires,
     #   whichever comes first.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def check_jobs()
+    def check_jobs
       headers = {
       }
       method_url = "/v1/recognitions"

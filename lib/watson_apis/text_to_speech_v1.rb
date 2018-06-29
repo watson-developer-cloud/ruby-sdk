@@ -129,13 +129,13 @@ module WatsonAPIs
     #########################
 
     ##
-    # @!method list_voices()
+    # @!method list_voices
     # List voices.
     # Lists all voices available for use with the service. The information includes the
     #   name, language, gender, and other details about the voice. To see information
     #   about a specific voice, use the **Get a voice** method.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_voices()
+    def list_voices
       headers = {
       }
       method_url = "/v1/voices"

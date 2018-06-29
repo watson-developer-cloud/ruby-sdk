@@ -191,13 +191,13 @@ module WatsonAPIs
     #########################
 
     ##
-    # @!method list_models()
+    # @!method list_models
     # List models.
     # Lists available models for Relations and Entities features, including Watson
     #   Knowledge Studio custom models that you have created and linked to your Natural
     #   Language Understanding service.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_models()
+    def list_models
       headers = {
       }
       params = {

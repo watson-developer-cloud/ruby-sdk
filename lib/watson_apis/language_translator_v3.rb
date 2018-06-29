@@ -137,12 +137,12 @@ module WatsonAPIs
     #########################
 
     ##
-    # @!method list_identifiable_languages()
+    # @!method list_identifiable_languages
     # List identifiable languages.
     # Lists the languages that the service can identify. Returns the language code (for
     #   example, `en` for English or `es` for Spanish) and name of each language.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_identifiable_languages()
+    def list_identifiable_languages
       headers = {
       }
       params = {
