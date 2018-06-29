@@ -10,6 +10,8 @@ rvm:
 before_install:
   - sudo apt-get update
   - sudo apt-get install python
+  - nvm install node
+  - nvm use node
 
 install:
   - pip install --user bumpversion
