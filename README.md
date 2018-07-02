@@ -17,7 +17,6 @@ Ruby gem to quickly get started with the various [Watson APIs][wdc] services.
     * [Getting credentials](#getting-credentials)
     * [IAM](#iam)
     * [Username and password](#username-and-password)
-    * [API key](#api-key)
   * [Ruby version](#ruby-version)
   * [Sending request headers](#sending-request-headers)
   * [Parsing HTTP response info](#parsing-http-response-info)
@@ -60,7 +59,6 @@ Watson services are migrating to token-based Identity and Access Management (IAM
 
 - With some service instances, you authenticate to the API by using **[IAM](#iam)**.
 - In other instances, you authenticate by providing the **[username and password](#username-and-password)** for the service instance.
-- Visual Recognition uses a form of [API key](#api-key) only with instances created before May 23, 2018. Newer instances of Visual Recognition use IAM.
 
 ### Getting credentials
 To find out which authentication to use, view the service credentials. You find the service credentials for authentication the same way for all Watson services:
@@ -124,23 +122,6 @@ discovery = DiscoveryV1.new(version: "2017-10-16", username: "<username>", passw
 discovery = DiscoveryV1.new(version: "2017-10-16")
 discovery.username = "<username>"
 discovery.password = "<password>"
-```
-
-### API key
-
-**Important**: This type of authentication works only with Visual Recognition instances created before May 23, 2018. Newer instances of Visual Recognition use [IAM](#iam).
-
-```ruby
-require "watson_apis"
-include WatsonAPIs
-# In the constructor
-visual_recognition = VisualRecognitionV3.new(version: "2018-05-22", api_key: "<api_key>")
-```
-
-```ruby
-# After instantiation
-visual_recognition = VisualRecognitionV3.new(version: "2018-05-22")
-visual_recognition.api_key = "<api_key>"
 ```
 
 ## Ruby version
