@@ -12,6 +12,7 @@ Ruby gem to quickly get started with the various [Watson APIs][wdc] services.
 
   * [Before you begin](#before-you-begin)
   * [Installation](#installation)
+  * [Examples] (#examples)
   * [Running in IBM Cloud](#running-in-ibm-cloud)
   * [Authentication](#authentication)
     * [Getting credentials](#getting-credentials)
@@ -48,6 +49,10 @@ Inside of your Ruby program do:
 ```ruby
 require "watson_apis"
 ```
+
+## Examples
+
+The [examples][examples] folder has basic and advanced examples. The examples within each service assume that you already have [service credentials](#getting-credentials).
 
 ## Running in IBM Cloud
 
