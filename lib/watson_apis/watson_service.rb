@@ -37,12 +37,9 @@ class WatsonService
     }
     vars = defaults.merge(vars)
     @url = vars[:url]
-    @api_key = vars[:api_key]
-    @username = vars[:username]
-    @password = vars[:password]
-    @iam_api_key = vars[:iam_api_key]
-    @iam_access_token = vars[:iam_access_token]
-    @iam_url = vars[:iam_url]
+    @api_key = nil
+    @username = nil
+    @password = nil
     @token_manager = nil
     @temp_headers = nil
 
@@ -74,8 +71,12 @@ class WatsonService
     elsif !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
       _token_manager(iam_api_key: vars[:iam_api_key], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
-      @username = vars[:username]
-      @password = vars[:password]
+      if vars[:username] == "apikey"
+        _iam_api_key(iam_api_key: vars[:password])
+      else
+        @username = vars[:username]
+        @password = vars[:password]
+      end
     end
 
     @conn = HTTP::Client.new(
@@ -139,6 +140,11 @@ class WatsonService
     args[:form].delete_if { |_k, v| v.nil? } if args.key?(:form)
     args.delete_if { |_, v| v.nil? }
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
+
+    if @username == "apikey"
+      _iam_api_key(iam_api_key: @password)
+      @username = nil
+    end
 
     conn = @conn
     if !@token_manager.nil?
