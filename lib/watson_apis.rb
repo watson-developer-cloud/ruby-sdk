@@ -4,7 +4,7 @@
 module WatsonAPIs
   require_relative("./watson_apis/personality_insights_v3.rb")
   require_relative("./watson_apis/tone_analyzer_v3.rb")
-  require_relative("./watson_apis/watson_assistant_v1.rb")
+  require_relative("./watson_apis/assistant_v1.rb")
   require_relative("./watson_apis/text_to_speech_v1.rb")
   require_relative("./watson_apis/discovery_v1.rb")
   require_relative("./watson_apis/natural_language_understanding_v1.rb")
