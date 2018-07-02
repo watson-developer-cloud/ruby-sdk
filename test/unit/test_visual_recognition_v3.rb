@@ -11,7 +11,7 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_get_classifier
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
     response = {
       "classifier_id" => "bogusnumber",
@@ -25,11 +25,12 @@ class VisualRecognitionV3Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_classifier(
@@ -41,13 +42,14 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_delete_classifier
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: { "response" => 200 }.to_json, headers: { "Content-Type" => "applicaton/json" })
     service_response = service.delete_classifier(
@@ -59,7 +61,7 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_list_classifiers
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
     response = {
       "classifiers" =>
@@ -76,11 +78,12 @@ class VisualRecognitionV3Test < Minitest::Test
           }
         ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_classifiers
@@ -90,7 +93,7 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_create_classifier
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
     response = {
       "classifier_id" => "DogBreeds_2014254824",
@@ -103,11 +106,12 @@ class VisualRecognitionV3Test < Minitest::Test
     cars = File.open(Dir.getwd + "/resources/cars.zip")
     trucks = File.open(Dir.getwd + "/resources/trucks.zip")
 
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_classifier(
@@ -121,7 +125,7 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_update_classifier
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
     response = {
       "classifier_id" => "bogusid",
@@ -135,12 +139,13 @@ class VisualRecognitionV3Test < Minitest::Test
         { "class" => "brokenwinshield" }
       ]
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusid?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_classifier(
@@ -152,7 +157,7 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_classify
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
     response = {
       "images" =>
@@ -181,11 +186,12 @@ class VisualRecognitionV3Test < Minitest::Test
       "images_processed" => 1
     }
 
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.classify(
@@ -215,7 +221,7 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_detect_faces
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
     response = {
       "images" => [
@@ -250,11 +256,12 @@ class VisualRecognitionV3Test < Minitest::Test
       ],
       "images_processed" => 1
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/detect_faces?api_key=bogusapikey&version=2018-03-19")
+    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/detect_faces?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.detect_faces(
@@ -272,13 +279,14 @@ class VisualRecognitionV3Test < Minitest::Test
   def test_delete_user_data
     service = WatsonAPIs::VisualRecognitionV3.new(
       version: "2018-03-19",
-      api_key: "bogusapikey"
+      iam_access_token: "bogus_access_token"
     )
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/user_data?api_key=bogusapikey&customer_id=id&version=2018-03-19")
+    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/user_data?customer_id=id&version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_user_data(

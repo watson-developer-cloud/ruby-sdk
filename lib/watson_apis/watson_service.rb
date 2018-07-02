@@ -22,7 +22,7 @@ require_relative("./version.rb")
 # Class for interacting with the Watson API
 class WatsonService
   include ERB::Util
-  attr_accessor :api_key, :password, :url, :username
+  attr_accessor :password, :url, :username
   def initialize(vars)
     defaults = {
       vcap_services_name: nil,
@@ -37,7 +37,6 @@ class WatsonService
     }
     vars = defaults.merge(vars)
     @url = vars[:url]
-    @api_key = nil
     @username = nil
     @password = nil
     @token_manager = nil
@@ -58,17 +57,13 @@ class WatsonService
         @url = @vcap_service_credentials["url"]
         @username = @vcap_service_credentials["username"] if @vcap_service_credentials.key?("username")
         @password = @vcap_service_credentials["password"] if @vcap_service_credentials.key?("password")
-        @api_key = @vcap_service_credentials["apikey"] if @vcap_service_credentials.key?("apikey")
-        @api_key = @vcap_service_credentials["api_key"] if @vcap_service_credentials.key?("api_key")
         @iam_api_key = @vcap_service_credentials["iam_api_key"] if @vcap_service_credentials.key?("iam_api_key")
         @iam_access_token = @vcap_service_credentials["iam_access_token"] if @vcap_service_credentials.key?("iam_access_token")
         @iam_url = @vcap_service_credentials["iam_url"] if @vcap_service_credentials.key?("iam_url")
       end
     end
 
-    if !vars[:api_key].nil?
-      @api_key = vars[:api_key]
-    elsif !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
+    if !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
       _token_manager(iam_api_key: vars[:iam_api_key], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
       if vars[:username] == "apikey"
@@ -152,11 +147,6 @@ class WatsonService
       args[:headers]["Authorization"] = "Bearer #{access_token}"
     elsif !@username.nil? && !@password.nil?
       conn = @conn.basic_auth(user: @username, pass: @password)
-    end
-    unless @api_key.nil?
-      args[:params] = {} if args[:params].nil?
-      args[:params]["apikey"] = @api_key if (@url + args[:url]).start_with?("https://gateway-a.watsonplatform.net/calls")
-      args[:params]["api_key"] = @api_key unless (@url + args[:url]).start_with?("https://gateway-a.watsonplatform.net/calls")
     end
 
     args[:headers] = args[:headers].merge(@temp_headers) unless @temp_headers.nil?

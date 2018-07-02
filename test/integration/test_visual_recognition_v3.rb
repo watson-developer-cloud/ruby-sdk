@@ -11,11 +11,11 @@ class VisualRecognitionV3Test < Minitest::Test
   attr_accessor :service, :classifier_id
   def before_all
     @service = WatsonAPIs::VisualRecognitionV3.new(
-      api_key: ENV["VISUAL_RECOGNITION_API_KEY"],
+      iam_api_key: ENV["VISUAL_RECOGNITION_IAM_APIKEY"],
       version: "2018-03-19",
-      url: "https://gateway-a.watsonplatform.net/visual-recognition/api"
+      url: ENV["VISUAL_RECOGNITION_IAM_URL"]
     )
-    @classifier_id = "doxnotxdeletexintegrationxtest_397877192"
+    @classifier_id = "doxnotxdeletexsdksxintegration_718351350"
     @service.add_default_headers(
       headers: {
         "X-Watson-Learning-Opt-Out" => "1",
@@ -61,12 +61,5 @@ class VisualRecognitionV3Test < Minitest::Test
     @service.delete_classifier(
       classifier_id: classifier_id
     )
-  end
-
-  def test_core_ml_model
-    core_ml_model = @service.get_core_ml_model(
-      classifier_id: @classifier_id
-    )
-    refute(core_ml_model.nil?)
   end
 end
