@@ -487,4 +487,32 @@ class IAMAssistantV1Test < Minitest::Test
     )
     assert(service_response.nil?)
   end
+
+  def test_get_workspace_with_iam_user_pass_params
+    service = WatsonAPIs::AssistantV1.new(
+      username: "apikey",
+      password: ENV["ASSISTANT_IAM_APIKEY"],
+      url: ENV["ASSISTANT_IAM_URL"],
+      version: "2018-02-16"
+    )
+    service_response = service.get_workspace(
+      workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
+      export: false
+    )
+    assert((200..299).cover?(service_response.status))
+  end
+
+  def test_get_workspace_with_iam_user_pass_non_params
+    service = WatsonAPIs::AssistantV1.new(
+      url: ENV["ASSISTANT_IAM_URL"],
+      version: "2018-02-16"
+    )
+    service.username = "apikey"
+    service.password = ENV["ASSISTANT_IAM_APIKEY"]
+    service_response = service.get_workspace(
+      workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
+      export: false
+    )
+    assert((200..299).cover?(service_response.status))
+  end
 end
