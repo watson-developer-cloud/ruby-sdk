@@ -1,2 +1,2 @@
 ## Examples
-This example shows you how to use the Java SDK.
+This example shows you how to use the Ruby SDK.
