@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require("json")
 require_relative("./../test_helper.rb")
 require_relative("./../../lib/watson_apis/websocket/recognize_abstract_callback.rb")
 require_relative("./../../lib/watson_apis/websocket/speech_to_text_websocket_listener.rb")
@@ -42,13 +41,13 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_models
-    output = JSON.parse(@service.list_models.body)
+    output = @service.list_models.body
     refute_nil(output)
 
     model = @service.get_model(
       model_id: "ko-KR_BroadbandModel"
     ).body
-    model = JSON.parse(model)
+    model = model
     refute_nil(model)
 
     begin

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
@@ -26,7 +25,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_environments
-    envs = JSON.parse(@service.list_environments.body)
+    envs = @service.list_environments.body
     refute(envs.nil?)
     env = @service.get_environment(
       environment_id: envs["environments"][0]["environment_id"]
@@ -51,7 +50,7 @@ class DiscoveryV1Test < Minitest::Test
       name: name,
       description: "creating new config for ruby sdk"
     ).body
-    new_configuration_id = JSON.parse(new_configuration_id)["configuration_id"]
+    new_configuration_id = new_configuration_id["configuration_id"]
     refute(new_configuration_id.nil?)
     @service.get_configuration(
       environment_id: @environment_id,
@@ -63,14 +62,14 @@ class DiscoveryV1Test < Minitest::Test
       configuration_id: new_configuration_id,
       name: "lala"
     ).body
-    updated_config = JSON.parse(updated_config)
+    updated_config = updated_config
     assert_equal("lala", updated_config["name"])
 
     deleted_config = @service.delete_configuration(
       environment_id: @environment_id,
       configuration_id: new_configuration_id
     ).body
-    deleted_config = JSON.parse(deleted_config)
+    deleted_config = deleted_config
     assert_equal("deleted", deleted_config["status"])
   end
 
@@ -81,7 +80,7 @@ class DiscoveryV1Test < Minitest::Test
       name: name,
       description: "Integration test for ruby sdk"
     ).body
-    new_collection_id = JSON.parse(new_collection_id)["collection_id"]
+    new_collection_id = new_collection_id["collection_id"]
     refute(new_collection_id.nil?)
 
     collection_status = { "status" => "pending" }
@@ -91,7 +90,7 @@ class DiscoveryV1Test < Minitest::Test
         environment_id: @environment_id,
         collection_id: new_collection_id
       ).body
-      collection_status = JSON.parse(collection_status)
+      collection_status = collection_status
     end
     updated_collection = @service.update_collection(
       environment_id: @environment_id,
@@ -99,7 +98,7 @@ class DiscoveryV1Test < Minitest::Test
       name: name,
       description: "Updating description"
     ).body
-    updated_collection = JSON.parse(updated_collection)
+    updated_collection = updated_collection
     assert_equal("Updating description", updated_collection["description"])
 
     @service.create_expansions(
@@ -116,7 +115,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: @environment_id,
       collection_id: new_collection_id
     ).body
-    expansions = JSON.parse(expansions)
+    expansions = expansions
     refute(expansions["expansions"].nil?)
 
     @service.delete_expansions(
@@ -127,7 +126,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: @environment_id,
       collection_id: new_collection_id
     ).body
-    deleted_collection = JSON.parse(deleted_collection)
+    deleted_collection = deleted_collection
     assert_equal("deleted", deleted_collection["status"])
   end
 
@@ -140,7 +139,7 @@ class DiscoveryV1Test < Minitest::Test
         file: file_info
       ).body
     end
-    add_doc = JSON.parse(add_doc)
+    add_doc = add_doc
     refute(add_doc["document_id"].nil?)
 
     doc_status = { "status" => "processing" }
@@ -151,7 +150,7 @@ class DiscoveryV1Test < Minitest::Test
         collection_id: @collection_id,
         document_id: add_doc["document_id"]
       ).body
-      doc_status = JSON.parse(doc_status)
+      doc_status = doc_status
     end
     assert_equal("available", doc_status["status"])
 
@@ -175,7 +174,7 @@ class DiscoveryV1Test < Minitest::Test
         collection_id: @collection_id,
         document_id: add_doc["document_id"]
       ).body
-      doc_status = JSON.parse(doc_status)
+      doc_status = doc_status
     end
     assert_equal("available", doc_status["status"])
 
@@ -184,7 +183,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: @collection_id,
       document_id: add_doc["document_id"]
     ).body
-    delete_doc = JSON.parse(delete_doc)
+    delete_doc = delete_doc
     assert_equal("deleted", delete_doc["status"])
   end
 

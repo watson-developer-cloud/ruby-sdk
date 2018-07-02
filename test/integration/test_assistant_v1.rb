@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require("json")
 require_relative("./../test_helper.rb")
 SimpleCov.command_name "test:integration"
 
@@ -19,7 +18,7 @@ class AssistantV1Test < Minitest::Test
       language: "en",
       metadata: {}
     )
-    workspace_id = JSON.parse(service_response.body)["workspace_id"]
+    workspace_id = service_response.body["workspace_id"]
     assert((200..299).cover?(service_response.status))
 
     service_response = service.update_workspace(
@@ -317,7 +316,7 @@ class AssistantV1Test < Minitest::Test
     )
     assert((200..299).cover?(service_response.status))
 
-    context = JSON.parse(service_response.body)["context"]
+    context = service_response.body["context"]
     service_response = service.message(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       input: { "text" => "Turn on the lights" },

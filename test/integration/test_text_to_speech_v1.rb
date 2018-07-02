@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
@@ -23,7 +22,7 @@ class TextToSpeechV1Test < Minitest::Test
   end
 
   def test_voices
-    output = JSON.parse(@service.list_voices.body)
+    output = @service.list_voices.body
     refute(output["voices"].nil?)
     voice = @service.get_voice(voice: output["voices"][0]["name"])
     refute(voice.nil?)
