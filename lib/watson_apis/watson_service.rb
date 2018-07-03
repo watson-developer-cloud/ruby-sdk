@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require("json")
+require("concurrent")
 require("erb")
-require("rubygems")
 require("http")
 require("stringio")
+require("json")
+# require("rubygems")
 require_relative("./detailed_response.rb")
 require_relative("./watson_api_exception.rb")
 require_relative("./iam_token_manager.rb")
@@ -22,8 +23,10 @@ require_relative("./version.rb")
 # Class for interacting with the Watson API
 class WatsonService
   include ERB::Util
+  prepend Concurrent::Async
   attr_accessor :password, :url, :username
   def initialize(vars)
+    super()
     defaults = {
       vcap_services_name: nil,
       username: nil,
