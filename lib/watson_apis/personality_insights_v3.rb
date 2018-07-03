@@ -35,6 +35,8 @@
 # neither logs nor retains data from requests and responses, regardless of whether the
 # `X-Watson-Learning-Opt-Out` request header is set.
 
+require "concurrent"
+require "erb"
 require "json"
 require_relative "./detailed_response"
 
@@ -43,7 +45,8 @@ require_relative "./watson_service"
 module WatsonAPIs
   ##
   # The Personality Insights V3 service.
-  class PersonalityInsightsV3 < WatsonService
+  class PersonalityInsightsV3
+    include Concurrent::Async
     ##
     # @!method initialize(args)
     # Construct a new client for the Personality Insights service.
@@ -82,6 +85,8 @@ module WatsonAPIs
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
+      @__async_initialized__ = false
+      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/personality-insights/api"
@@ -91,7 +96,7 @@ module WatsonAPIs
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      super(
+      @watson_service = WatsonService.new(
         vcap_services_name: "personality_insights",
         url: args[:url],
         username: args[:username],
@@ -103,6 +108,57 @@ module WatsonAPIs
       )
       @version = args[:version]
     end
+
+    # :nocov:
+    def add_default_headers(headers: {})
+      @watson_service.add_default_headers(headers: headers)
+    end
+
+    def _iam_access_token(iam_access_token:)
+      @watson_service._iam_access_token(iam_access_token: iam_access_token)
+    end
+
+    def _iam_api_key(iam_api_key:)
+      @watson_service._iam_api_key(iam_api_key: iam_api_key)
+    end
+
+    # @return [DetailedResponse]
+    def request(args)
+      @watson_service.request(args)
+    end
+
+    # @note Chainable
+    # @param headers [Hash] Custom headers to be sent with the request
+    # @return [self]
+    def headers(headers)
+      @watson_service.headers(headers)
+      self
+    end
+
+    def password=(password)
+      @watson_service.password = password
+    end
+
+    def password
+      @watson_service.password
+    end
+
+    def username=(username)
+      @watson_service.username = username
+    end
+
+    def username
+      @watson_service.username
+    end
+
+    def url=(url)
+      @watson_service.url = url
+    end
+
+    def url
+      @watson_service.url
+    end
+    # :nocov:
     #########################
     # Methods
     #########################

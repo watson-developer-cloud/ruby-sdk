@@ -18,6 +18,8 @@
 # identify scenes, objects, and faces  in images you upload to the service. You can create
 # and train a custom classifier to identify subjects that suit your needs.
 
+require "concurrent"
+require "erb"
 require "json"
 require_relative "./detailed_response"
 
@@ -26,7 +28,8 @@ require_relative "./watson_service"
 module WatsonAPIs
   ##
   # The Visual Recognition V3 service.
-  class VisualRecognitionV3 < WatsonService
+  class VisualRecognitionV3
+    include Concurrent::Async
     ##
     # @!method initialize(args)
     # Construct a new client for the Visual Recognition service.
@@ -56,6 +59,8 @@ module WatsonAPIs
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
+      @__async_initialized__ = false
+      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/visual-recognition/api"
@@ -64,7 +69,7 @@ module WatsonAPIs
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      super(
+      @watson_service = WatsonService.new(
         vcap_services_name: "watson_vision_combined",
         url: args[:url],
         api_key: args[:api_key],
@@ -75,6 +80,57 @@ module WatsonAPIs
       )
       @version = args[:version]
     end
+
+    # :nocov:
+    def add_default_headers(headers: {})
+      @watson_service.add_default_headers(headers: headers)
+    end
+
+    def _iam_access_token(iam_access_token:)
+      @watson_service._iam_access_token(iam_access_token: iam_access_token)
+    end
+
+    def _iam_api_key(iam_api_key:)
+      @watson_service._iam_api_key(iam_api_key: iam_api_key)
+    end
+
+    # @return [DetailedResponse]
+    def request(args)
+      @watson_service.request(args)
+    end
+
+    # @note Chainable
+    # @param headers [Hash] Custom headers to be sent with the request
+    # @return [self]
+    def headers(headers)
+      @watson_service.headers(headers)
+      self
+    end
+
+    def password=(password)
+      @watson_service.password = password
+    end
+
+    def password
+      @watson_service.password
+    end
+
+    def username=(username)
+      @watson_service.username = username
+    end
+
+    def username
+      @watson_service.username
+    end
+
+    def url=(url)
+      @watson_service.url = url
+    end
+
+    def url
+      @watson_service.url
+    end
+    # :nocov:
     #########################
     # General
     #########################
@@ -343,7 +399,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v3/classifiers/%s" % [url_encode(classifier_id)]
+      method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -420,7 +476,7 @@ module WatsonAPIs
           negative_examples = negative_examples.instance_of?(StringIO) ? HTTP::FormData::File.new(negative_examples, content_type: mime_type) : HTTP::FormData::File.new(negative_examples.path, content_type: mime_type)
         end
       end
-      method_url = "/v3/classifiers/%s" % [url_encode(classifier_id)]
+      method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -447,7 +503,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v3/classifiers/%s" % [url_encode(classifier_id)]
+      method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -475,7 +531,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v3/classifiers/%s/core_ml_model" % [url_encode(classifier_id)]
+      method_url = "/v3/classifiers/%s/core_ml_model" % [ERB::Util.url_encode(classifier_id)]
       response = request(
         method: "GET",
         url: method_url,

@@ -18,6 +18,8 @@
 # understanding, and integrated dialog tools to create conversation flows between your
 # apps and your users.
 
+require "concurrent"
+require "erb"
 require "json"
 require_relative "./detailed_response"
 
@@ -26,7 +28,8 @@ require_relative "./watson_service"
 module WatsonAPIs
   ##
   # The Assistant V1 service.
-  class AssistantV1 < WatsonService
+  class AssistantV1
+    include Concurrent::Async
     ##
     # @!method initialize(args)
     # Construct a new client for the Assistant service.
@@ -65,6 +68,8 @@ module WatsonAPIs
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
+      @__async_initialized__ = false
+      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/assistant/api"
@@ -74,7 +79,7 @@ module WatsonAPIs
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      super(
+      @watson_service = WatsonService.new(
         vcap_services_name: "conversation",
         url: args[:url],
         username: args[:username],
@@ -86,6 +91,57 @@ module WatsonAPIs
       )
       @version = args[:version]
     end
+
+    # :nocov:
+    def add_default_headers(headers: {})
+      @watson_service.add_default_headers(headers: headers)
+    end
+
+    def _iam_access_token(iam_access_token:)
+      @watson_service._iam_access_token(iam_access_token: iam_access_token)
+    end
+
+    def _iam_api_key(iam_api_key:)
+      @watson_service._iam_api_key(iam_api_key: iam_api_key)
+    end
+
+    # @return [DetailedResponse]
+    def request(args)
+      @watson_service.request(args)
+    end
+
+    # @note Chainable
+    # @param headers [Hash] Custom headers to be sent with the request
+    # @return [self]
+    def headers(headers)
+      @watson_service.headers(headers)
+      self
+    end
+
+    def password=(password)
+      @watson_service.password = password
+    end
+
+    def password
+      @watson_service.password
+    end
+
+    def username=(username)
+      @watson_service.username = username
+    end
+
+    def username
+      @watson_service.username
+    end
+
+    def url=(url)
+      @watson_service.url = url
+    end
+
+    def url
+      @watson_service.url
+    end
+    # :nocov:
     #########################
     # Message
     #########################
@@ -129,7 +185,7 @@ module WatsonAPIs
         "intents" => intents,
         "output" => output
       }
-      method_url = "/v1/workspaces/%s/message" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/message" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -257,7 +313,7 @@ module WatsonAPIs
         "export" => export,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -319,7 +375,7 @@ module WatsonAPIs
         "metadata" => metadata,
         "learning_opt_out" => learning_opt_out
       }
-      method_url = "/v1/workspaces/%s" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -347,7 +403,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -395,7 +451,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/intents" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -436,7 +492,7 @@ module WatsonAPIs
         "description" => description,
         "examples" => examples
       }
-      method_url = "/v1/workspaces/%s/intents" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -474,7 +530,7 @@ module WatsonAPIs
         "export" => export,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
+      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       response = request(
         method: "GET",
         url: method_url,
@@ -516,7 +572,7 @@ module WatsonAPIs
         "description" => new_description,
         "examples" => new_examples
       }
-      method_url = "/v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
+      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       response = request(
         method: "POST",
         url: method_url,
@@ -546,7 +602,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/intents/%s" % [url_encode(workspace_id), url_encode(intent)]
+      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       request(
         method: "DELETE",
         url: method_url,
@@ -591,7 +647,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/intents/%s/examples" % [url_encode(workspace_id), url_encode(intent)]
+      method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       response = request(
         method: "GET",
         url: method_url,
@@ -629,7 +685,7 @@ module WatsonAPIs
       data = {
         "text" => text
       }
-      method_url = "/v1/workspaces/%s/intents/%s/examples" % [url_encode(workspace_id), url_encode(intent)]
+      method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       response = request(
         method: "POST",
         url: method_url,
@@ -664,7 +720,7 @@ module WatsonAPIs
         "version" => @version,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
+      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
       response = request(
         method: "GET",
         url: method_url,
@@ -703,7 +759,7 @@ module WatsonAPIs
       data = {
         "text" => new_text
       }
-      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
+      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
       response = request(
         method: "POST",
         url: method_url,
@@ -735,7 +791,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [url_encode(workspace_id), url_encode(intent), url_encode(text)]
+      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
       request(
         method: "DELETE",
         url: method_url,
@@ -779,7 +835,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/counterexamples" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -816,7 +872,7 @@ module WatsonAPIs
       data = {
         "text" => text
       }
-      method_url = "/v1/workspaces/%s/counterexamples" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -850,7 +906,7 @@ module WatsonAPIs
         "version" => @version,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
+      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
       response = request(
         method: "GET",
         url: method_url,
@@ -884,7 +940,7 @@ module WatsonAPIs
       data = {
         "text" => new_text
       }
-      method_url = "/v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
+      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
       response = request(
         method: "POST",
         url: method_url,
@@ -915,7 +971,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/counterexamples/%s" % [url_encode(workspace_id), url_encode(text)]
+      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
       request(
         method: "DELETE",
         url: method_url,
@@ -963,7 +1019,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/entities" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1007,7 +1063,7 @@ module WatsonAPIs
         "values" => values,
         "fuzzy_match" => fuzzy_match
       }
-      method_url = "/v1/workspaces/%s/entities" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1045,7 +1101,7 @@ module WatsonAPIs
         "export" => export,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
+      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1091,7 +1147,7 @@ module WatsonAPIs
         "fuzzy_match" => new_fuzzy_match,
         "values" => new_values
       }
-      method_url = "/v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
+      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1121,7 +1177,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/entities/%s" % [url_encode(workspace_id), url_encode(entity)]
+      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1170,7 +1226,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values" % [url_encode(workspace_id), url_encode(entity)]
+      method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1225,7 +1281,7 @@ module WatsonAPIs
         "patterns" => patterns,
         "type" => value_type
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values" % [url_encode(workspace_id), url_encode(entity)]
+      method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1264,7 +1320,7 @@ module WatsonAPIs
         "export" => export,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1321,7 +1377,7 @@ module WatsonAPIs
         "synonyms" => new_synonyms,
         "patterns" => new_patterns
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1353,7 +1409,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1400,7 +1456,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1439,7 +1495,7 @@ module WatsonAPIs
       data = {
         "synonym" => synonym
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [url_encode(workspace_id), url_encode(entity), url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1476,7 +1532,7 @@ module WatsonAPIs
         "version" => @version,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1516,7 +1572,7 @@ module WatsonAPIs
       data = {
         "synonym" => new_synonym
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1550,7 +1606,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [url_encode(workspace_id), url_encode(entity), url_encode(value), url_encode(synonym)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1593,7 +1649,7 @@ module WatsonAPIs
         "cursor" => cursor,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/dialog_nodes" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1669,7 +1725,7 @@ module WatsonAPIs
         "digress_out" => digress_out,
         "digress_out_slots" => digress_out_slots
       }
-      method_url = "/v1/workspaces/%s/dialog_nodes" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1702,7 +1758,7 @@ module WatsonAPIs
         "version" => @version,
         "include_audit" => include_audit
       }
-      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
+      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1779,7 +1835,7 @@ module WatsonAPIs
         "digress_out" => new_digress_out,
         "digress_out_slots" => new_digress_out_slots
       }
-      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
+      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1809,7 +1865,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [url_encode(workspace_id), url_encode(dialog_node)]
+      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1852,7 +1908,7 @@ module WatsonAPIs
         "page_limit" => page_limit,
         "cursor" => cursor
       }
-      method_url = "/v1/workspaces/%s/logs" % [url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/logs" % [ERB::Util.url_encode(workspace_id)]
       response = request(
         method: "GET",
         url: method_url,

@@ -67,6 +67,8 @@
 # method to delete the data for a customer ID. See [Information
 # security](https://console.bluemix.net/docs/services/speech-to-text/information-security.html).
 
+require "concurrent"
+require "erb"
 require "json"
 require_relative "./detailed_response"
 
@@ -75,7 +77,8 @@ require_relative "./watson_service"
 module WatsonAPIs
   ##
   # The Speech to Text V1 service.
-  class SpeechToTextV1 < WatsonService
+  class SpeechToTextV1
+    include Concurrent::Async
     ##
     # @!method initialize(args)
     # Construct a new client for the Speech to Text service.
@@ -104,6 +107,8 @@ module WatsonAPIs
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
+      @__async_initialized__ = false
+      super()
       defaults = {}
       defaults[:url] = "https://stream.watsonplatform.net/speech-to-text/api"
       defaults[:username] = nil
@@ -112,7 +117,7 @@ module WatsonAPIs
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      super(
+      @watson_service = WatsonService.new(
         vcap_services_name: "speech_to_text",
         url: args[:url],
         username: args[:username],
@@ -123,6 +128,57 @@ module WatsonAPIs
         use_vcap_services: true
       )
     end
+
+    # :nocov:
+    def add_default_headers(headers: {})
+      @watson_service.add_default_headers(headers: headers)
+    end
+
+    def _iam_access_token(iam_access_token:)
+      @watson_service._iam_access_token(iam_access_token: iam_access_token)
+    end
+
+    def _iam_api_key(iam_api_key:)
+      @watson_service._iam_api_key(iam_api_key: iam_api_key)
+    end
+
+    # @return [DetailedResponse]
+    def request(args)
+      @watson_service.request(args)
+    end
+
+    # @note Chainable
+    # @param headers [Hash] Custom headers to be sent with the request
+    # @return [self]
+    def headers(headers)
+      @watson_service.headers(headers)
+      self
+    end
+
+    def password=(password)
+      @watson_service.password = password
+    end
+
+    def password
+      @watson_service.password
+    end
+
+    def username=(username)
+      @watson_service.username = username
+    end
+
+    def username
+      @watson_service.username
+    end
+
+    def url=(url)
+      @watson_service.url = url
+    end
+
+    def url
+      @watson_service.url
+    end
+    # :nocov:
     #########################
     # Models
     #########################
@@ -160,7 +216,7 @@ module WatsonAPIs
       raise ArgumentError("model_id must be provided") if model_id.nil?
       headers = {
       }
-      method_url = "/v1/models/%s" % [url_encode(model_id)]
+      method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -404,9 +460,9 @@ module WatsonAPIs
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
 
       headers = {}
-      headers = @conn.default_options.headers.to_hash unless @conn.default_options.headers.to_hash.empty?
-      headers["Authorization"] = "Basic " + Base64.strict_encode64("#{@username}:#{@password}")
-      url = @url.gsub("https:", "wss:")
+      headers = @watson_service.conn.default_options.headers.to_hash unless @watson_service.conn.default_options.headers.to_hash.empty?
+      headers["Authorization"] = "Basic " + Base64.strict_encode64("#{@watson_service.username}:#{@watson_service.password}")
+      url = @watson_service.url.gsub("https:", "wss:")
       params = {
         "model" => model,
         "customization_id" => customization_id,
@@ -793,7 +849,7 @@ module WatsonAPIs
       raise ArgumentError("id must be provided") if id.nil?
       headers = {
       }
-      method_url = "/v1/recognitions/%s" % [url_encode(id)]
+      method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -817,7 +873,7 @@ module WatsonAPIs
       raise ArgumentError("id must be provided") if id.nil?
       headers = {
       }
-      method_url = "/v1/recognitions/%s" % [url_encode(id)]
+      method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -926,7 +982,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -951,7 +1007,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1022,7 +1078,7 @@ module WatsonAPIs
         "word_type_to_add" => word_type_to_add,
         "customization_weight" => customization_weight
       }
-      method_url = "/v1/customizations/%s/train" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1049,7 +1105,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/reset" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1088,7 +1144,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/upgrade_model" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1116,7 +1172,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/corpora" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1206,7 +1262,7 @@ module WatsonAPIs
       else
         corpus_file = corpus_file.instance_of?(StringIO) ? HTTP::FormData::File.new(corpus_file, content_type: mime_type) : HTTP::FormData::File.new(corpus_file.path, content_type: mime_type)
       end
-      method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
       request(
         method: "POST",
         url: method_url,
@@ -1240,7 +1296,7 @@ module WatsonAPIs
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1273,7 +1329,7 @@ module WatsonAPIs
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/corpora/%s" % [url_encode(customization_id), url_encode(corpus_name)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1319,7 +1375,7 @@ module WatsonAPIs
         "word_type" => word_type,
         "sort" => sort
       }
-      method_url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1399,7 +1455,7 @@ module WatsonAPIs
       data = {
         "words" => words
       }
-      method_url = "/v1/customizations/%s/words" % [url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1482,7 +1538,7 @@ module WatsonAPIs
         "sounds_like" => sounds_like,
         "display_as" => display_as
       }
-      method_url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
+      method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
       request(
         method: "PUT",
         url: method_url,
@@ -1511,7 +1567,7 @@ module WatsonAPIs
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
+      method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1543,7 +1599,7 @@ module WatsonAPIs
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
-      method_url = "/v1/customizations/%s/words/%s" % [url_encode(customization_id), url_encode(word_name)]
+      method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1639,7 +1695,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1664,7 +1720,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/acoustic_customizations/%s" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1731,7 +1787,7 @@ module WatsonAPIs
       params = {
         "custom_language_model_id" => custom_language_model_id
       }
-      method_url = "/v1/acoustic_customizations/%s/train" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1758,7 +1814,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/acoustic_customizations/%s/reset" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1810,7 +1866,7 @@ module WatsonAPIs
       params = {
         "custom_language_model_id" => custom_language_model_id
       }
-      method_url = "/v1/acoustic_customizations/%s/upgrade_model" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
       request(
         method: "POST",
         url: method_url,
@@ -1841,7 +1897,7 @@ module WatsonAPIs
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       headers = {
       }
-      method_url = "/v1/acoustic_customizations/%s/audio" % [url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1969,7 +2025,7 @@ module WatsonAPIs
         "allow_overwrite" => allow_overwrite
       }
       data = audio_resource
-      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
       request(
         method: "POST",
         url: method_url,
@@ -2016,7 +2072,7 @@ module WatsonAPIs
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
       headers = {
       }
-      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
       response = request(
         method: "GET",
         url: method_url,
@@ -2048,7 +2104,7 @@ module WatsonAPIs
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
       headers = {
       }
-      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [url_encode(customization_id), url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
       request(
         method: "DELETE",
         url: method_url,

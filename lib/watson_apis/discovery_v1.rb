@@ -20,6 +20,8 @@
 # data with pre-enriched content, and use a simplified query language to eliminate the
 # need for manual filtering of results.
 
+require "concurrent"
+require "erb"
 require "json"
 require_relative "./detailed_response"
 
@@ -28,7 +30,8 @@ require_relative "./watson_service"
 module WatsonAPIs
   ##
   # The Discovery V1 service.
-  class DiscoveryV1 < WatsonService
+  class DiscoveryV1
+    include Concurrent::Async
     ##
     # @!method initialize(args)
     # Construct a new client for the Discovery service.
@@ -67,6 +70,8 @@ module WatsonAPIs
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
+      @__async_initialized__ = false
+      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/discovery/api"
@@ -76,7 +81,7 @@ module WatsonAPIs
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      super(
+      @watson_service = WatsonService.new(
         vcap_services_name: "discovery",
         url: args[:url],
         username: args[:username],
@@ -88,6 +93,57 @@ module WatsonAPIs
       )
       @version = args[:version]
     end
+
+    # :nocov:
+    def add_default_headers(headers: {})
+      @watson_service.add_default_headers(headers: headers)
+    end
+
+    def _iam_access_token(iam_access_token:)
+      @watson_service._iam_access_token(iam_access_token: iam_access_token)
+    end
+
+    def _iam_api_key(iam_api_key:)
+      @watson_service._iam_api_key(iam_api_key: iam_api_key)
+    end
+
+    # @return [DetailedResponse]
+    def request(args)
+      @watson_service.request(args)
+    end
+
+    # @note Chainable
+    # @param headers [Hash] Custom headers to be sent with the request
+    # @return [self]
+    def headers(headers)
+      @watson_service.headers(headers)
+      self
+    end
+
+    def password=(password)
+      @watson_service.password = password
+    end
+
+    def password
+      @watson_service.password
+    end
+
+    def username=(username)
+      @watson_service.username = username
+    end
+
+    def username
+      @watson_service.username
+    end
+
+    def url=(url)
+      @watson_service.url = url
+    end
+
+    def url
+      @watson_service.url
+    end
+    # :nocov:
     #########################
     # Environments
     #########################
@@ -164,7 +220,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -195,7 +251,7 @@ module WatsonAPIs
         "name" => name,
         "description" => description
       }
-      method_url = "/v1/environments/%s" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "PUT",
         url: method_url,
@@ -219,7 +275,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "DELETE",
         url: method_url,
@@ -247,7 +303,7 @@ module WatsonAPIs
         "version" => @version,
         "collection_ids" => collection_ids.to_a
       }
-      method_url = "/v1/environments/%s/fields" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -302,7 +358,7 @@ module WatsonAPIs
         "normalizations" => normalizations,
         "source" => source
       }
-      method_url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -329,7 +385,7 @@ module WatsonAPIs
         "version" => @version,
         "name" => name
       }
-      method_url = "/v1/environments/%s/configurations" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -354,7 +410,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -405,7 +461,7 @@ module WatsonAPIs
         "normalizations" => normalizations,
         "source" => source
       }
-      method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
       response = request(
         method: "PUT",
         url: method_url,
@@ -437,7 +493,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/configurations/%s" % [url_encode(environment_id), url_encode(configuration_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
       response = request(
         method: "DELETE",
         url: method_url,
@@ -504,7 +560,7 @@ module WatsonAPIs
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
         end
       end
-      method_url = "/v1/environments/%s/preview" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/preview" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -547,7 +603,7 @@ module WatsonAPIs
         "configuration_id" => configuration_id,
         "language" => language
       }
-      method_url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -574,7 +630,7 @@ module WatsonAPIs
         "version" => @version,
         "name" => name
       }
-      method_url = "/v1/environments/%s/collections" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -599,7 +655,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -632,7 +688,7 @@ module WatsonAPIs
         "description" => description,
         "configuration_id" => configuration_id
       }
-      method_url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "PUT",
         url: method_url,
@@ -658,7 +714,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "DELETE",
         url: method_url,
@@ -684,7 +740,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/fields" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/fields" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -714,7 +770,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -762,7 +818,7 @@ module WatsonAPIs
       data = {
         "expansions" => expansions
       }
-      method_url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -790,7 +846,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/expansions" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -865,7 +921,7 @@ module WatsonAPIs
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
         end
       end
-      method_url = "/v1/environments/%s/collections/%s/documents" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -900,7 +956,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -951,7 +1007,7 @@ module WatsonAPIs
           file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
         end
       end
-      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -985,7 +1041,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(document_id)]
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
       response = request(
         method: "DELETE",
         url: method_url,
@@ -1085,7 +1141,7 @@ module WatsonAPIs
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      method_url = "/v1/environments/%s/collections/%s/query" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1179,7 +1235,7 @@ module WatsonAPIs
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      method_url = "/v1/environments/%s/collections/%s/notices" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1277,7 +1333,7 @@ module WatsonAPIs
         "passages.count" => passages_count,
         "passages.characters" => passages_characters
       }
-      method_url = "/v1/environments/%s/query" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/query" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1361,7 +1417,7 @@ module WatsonAPIs
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
-      method_url = "/v1/environments/%s/notices" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/notices" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1405,7 +1461,7 @@ module WatsonAPIs
         "count" => count,
         "evidence_count" => evidence_count
       }
-      method_url = "/v1/environments/%s/collections/%s/query_entities" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/query_entities" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1453,7 +1509,7 @@ module WatsonAPIs
         "count" => count,
         "evidence_count" => evidence_count
       }
-      method_url = "/v1/environments/%s/collections/%s/query_relations" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/query_relations" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1483,7 +1539,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1518,7 +1574,7 @@ module WatsonAPIs
         "filter" => filter,
         "examples" => examples
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1545,7 +1601,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data" % [url_encode(environment_id), url_encode(collection_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1574,7 +1630,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1603,7 +1659,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1631,7 +1687,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1667,7 +1723,7 @@ module WatsonAPIs
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1698,7 +1754,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
       request(
         method: "DELETE",
         url: method_url,
@@ -1734,7 +1790,7 @@ module WatsonAPIs
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
       response = request(
         method: "PUT",
         url: method_url,
@@ -1765,7 +1821,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [url_encode(environment_id), url_encode(collection_id), url_encode(query_id), url_encode(example_id)]
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1829,7 +1885,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/credentials" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1870,7 +1926,7 @@ module WatsonAPIs
         "source_type" => source_type,
         "credential_details" => credential_details
       }
-      method_url = "/v1/environments/%s/credentials" % [url_encode(environment_id)]
+      method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
       response = request(
         method: "POST",
         url: method_url,
@@ -1900,7 +1956,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/credentials/%s" % [url_encode(environment_id), url_encode(credential_id)]
+      method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
       response = request(
         method: "GET",
         url: method_url,
@@ -1942,7 +1998,7 @@ module WatsonAPIs
         "source_type" => source_type,
         "credential_details" => credential_details
       }
-      method_url = "/v1/environments/%s/credentials/%s" % [url_encode(environment_id), url_encode(credential_id)]
+      method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
       response = request(
         method: "PUT",
         url: method_url,
@@ -1969,7 +2025,7 @@ module WatsonAPIs
       params = {
         "version" => @version
       }
-      method_url = "/v1/environments/%s/credentials/%s" % [url_encode(environment_id), url_encode(credential_id)]
+      method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
       response = request(
         method: "DELETE",
         url: method_url,
