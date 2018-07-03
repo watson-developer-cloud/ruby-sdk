@@ -132,8 +132,8 @@ discovery.password = "<password>"
 
 ## Sending requests asynchronously
 Requests can be sent asynchronously. There are two asynchronous methods available for the user, `async` & `await`. When used, these methods return an [Ivar][ivar] object.
-To call a method asynchronously, simply insert `.await` or `.async` into the call: `service.translate` would be `service.async.translate`
-To access the response from an [Ivar][ivar] object called `future`, simply call `future.value`
+* To call a method asynchronously, simply insert `.await` or `.async` into the call: `service.translate` would be `service.async.translate`
+* To access the response from an [Ivar][ivar] object called `future`, simply call `future.value`
 When `await` is used, the request is made synchronously.
 ```ruby
 speech_to_text = WatsonAPIs::SpeechToTextV1.new(
@@ -165,8 +165,7 @@ output = future.value
 ```
 
 ## Sending request headers
-Custom headers can be passed in any request in the form of a `Hash` as a parameter to the `headers` chainable method. For example, to send a header called `Custom-Header` to a call in Watson Assistant, pass
-the headers as a parameter to the `headers` chainable method:
+Custom headers can be passed in any request in the form of a `Hash` as a parameter to the `headers` chainable method. For example, to send a header called `Custom-Header` to a call in Watson Assistant, pass the headers as a parameter to the `headers` chainable method:
 ```ruby
 require "watson_apis"
 include WatsonAPIs
