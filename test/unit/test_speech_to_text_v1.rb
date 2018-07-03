@@ -620,4 +620,77 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
   end
+
+  def test_recognize_await
+    service = WatsonAPIs::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    recognize_response = {
+      "results" => [
+        {
+          "alternatives" => [
+            {
+              "transcript" => "thunderstorms could produce large hail isolated tornadoes and heavy rain"
+            }
+          ],
+          "final" => true
+        }
+      ],
+      "result_index" => 0
+    }
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "audio/l16; rate=44100",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: recognize_response.to_json, headers: { "Content-Type" => "application/json" })
+    future = service.await.recognize(
+      audio: audio_file,
+      content_type: "audio/l16; rate=44100"
+    )
+    output = future.value.body
+    assert_equal(recognize_response["results"][0]["alternatives"][0]["transcript"], output["results"][0]["alternatives"][0]["transcript"])
+  end
+
+  def test_recognize_async
+    service = WatsonAPIs::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    recognize_response = {
+      "results" => [
+        {
+          "alternatives" => [
+            {
+              "transcript" => "thunderstorms could produce large hail isolated tornadoes and heavy rain"
+            }
+          ],
+          "final" => true
+        }
+      ],
+      "result_index" => 0
+    }
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "audio/l16; rate=44100",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: recognize_response.to_json, headers: { "Content-Type" => "application/json" })
+    future = service.async.recognize(
+      audio: audio_file,
+      content_type: "audio/l16; rate=44100"
+    )
+    future.wait!
+    output = future.value.body
+    assert_equal(recognize_response["results"][0]["alternatives"][0]["transcript"], output["results"][0]["alternatives"][0]["transcript"])
+  end
 end

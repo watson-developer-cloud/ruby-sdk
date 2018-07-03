@@ -59,12 +59,24 @@ class SpeechToTextV1Test < Minitest::Test
     end
   end
 
-  def test_recognize
+  def test_recognize_await
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-    output = @service.recognize(
+    future = @service.await.recognize(
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
-    ).body
+    )
+    output = future.value.body
+    refute_nil(output["results"][0]["alternatives"][0]["transcript"])
+  end
+
+  def test_recognize_async
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    future = @service.async.recognize(
+      audio: audio_file,
+      content_type: "audio/l16; rate=44100"
+    )
+    future.wait!
+    output = future.value.body
     refute_nil(output["results"][0]["alternatives"][0]["transcript"])
   end
 
