@@ -18,12 +18,13 @@ Ruby gem to quickly get started with the various [Watson APIs][wdc] services.
     * [Getting credentials](#getting-credentials)
     * [IAM](#iam)
     * [Username and password](#username-and-password)
-  * [Ruby version](#ruby-version)
+  * [Sending requests asynchronously](#sending-requests-asynchronously)
   * [Sending request headers](#sending-request-headers)
   * [Parsing HTTP response info](#parsing-http-response-info)
   * [Using Websockets](#using-websockets)
-  * [License](#license)
+  * [Ruby version](#ruby-version)
   * [Contributing](#contributing)
+  * [License](#license)
 
 </details>
 
@@ -129,10 +130,39 @@ discovery.username = "<username>"
 discovery.password = "<password>"
 ```
 
-## Ruby version
+## Sending requests asynchronously
+Requests can be sent asynchronously. There are two asynchronous methods available for the user, `async` & `await`. When used, these methods return an [Ivar][ivar] object.
+To call a method asynchronously, simply insert `.await` or `.async` into the call: `service.translate` would be `service.async.translate`
+To access the response from an [Ivar][ivar] object called `future`, simply call `future.value`
+When `await` is used, the request is made synchronously.
+```ruby
+speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+  username: "username",
+  password: "password"
+)
+audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+future = speech_to_text.await.recognize(
+  audio: audio_file
+)
+p future.complete? # If the request is successful, then this will be true
+output = future.value # The response is accessible at future.value
+```
 
-Tested on Ruby 3.3, 3.4, 3.5
-
+When `async` is used, the request is made asynchronously
+```ruby
+speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+  username: "username",
+  password: "password"
+)
+audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+future = speech_to_text.async.recognize(
+  audio: audio_file
+)
+p future.complete? # Can be false if the request is still running
+future.wait # Wait for the asynchronous call to finish
+p future.complete? # If the request is successful, then this will now be true
+output = future.value
+```
 
 ## Sending request headers
 Custom headers can be passed in any request in the form of a `Hash` as a parameter to the `headers` chainable method. For example, to send a header called `Custom-Header` to a call in Watson Assistant, pass
@@ -205,6 +235,10 @@ end
 thr.join # Wait for the thread to finish before ending the program or running other code
 ```
 
+## Ruby version
+
+Tested on Ruby 3.3, 3.4, 3.5
+
 ## Contributing
 
 See [CONTRIBUTING.md][CONTRIBUTING].
@@ -221,3 +255,4 @@ This library is licensed under the [Apache 2.0 license][license].
 [license]: http://www.apache.org/licenses/LICENSE-2.0
 [vcap_services]: https://console.bluemix.net/docs/services/watson/getting-started-variables.html
 [ibm-cloud-onboarding]: http://console.bluemix.net/registration?target=/developer/watson&cm_sp=WatsonPlatform-WatsonServices-_-OnPageNavLink-IBMWatson_SDKs-_-Ruby
+[ivar]: http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/IVar.html
