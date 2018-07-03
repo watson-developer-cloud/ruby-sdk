@@ -103,7 +103,7 @@ module WatsonAPIs
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
-    def initialize(args)
+    def initialize(args = {})
       defaults = {}
       defaults[:url] = "https://stream.watsonplatform.net/speech-to-text/api"
       defaults[:username] = nil
