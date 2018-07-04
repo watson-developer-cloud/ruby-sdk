@@ -12,7 +12,7 @@ Ruby gem to quickly get started with the various [Watson APIs][wdc] services.
 
   * [Before you begin](#before-you-begin)
   * [Installation](#installation)
-  * [Examples] (#examples)
+  * [Examples](#examples)
   * [Running in IBM Cloud](#running-in-ibm-cloud)
   * [Authentication](#authentication)
     * [Getting credentials](#getting-credentials)
@@ -134,6 +134,7 @@ discovery.password = "<password>"
 Requests can be sent asynchronously. There are two asynchronous methods available for the user, `async` & `await`. When used, these methods return an [Ivar][ivar] object.
 * To call a method asynchronously, simply insert `.await` or `.async` into the call: `service.translate` would be `service.async.translate`
 * To access the response from an [Ivar][ivar] object called `future`, simply call `future.value`
+
 When `await` is used, the request is made synchronously.
 ```ruby
 speech_to_text = WatsonAPIs::SpeechToTextV1.new(
