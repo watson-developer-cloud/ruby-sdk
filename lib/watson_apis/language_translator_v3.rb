@@ -229,7 +229,7 @@ module WatsonAPIs
         "version" => @version
       }
       data = text
-      headers = { "Content-Type" => "text/plain" }
+      headers["Content-Type"] = "text/plain"
       method_url = "/v3/identify"
       response = request(
         method: "POST",
