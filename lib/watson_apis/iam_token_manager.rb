@@ -2,6 +2,7 @@
 
 require("http")
 require("json")
+require("rbconfig")
 require_relative("./version.rb")
 
 DEFAULT_IAM_URL = "https://iam.bluemix.net/identity/token".freeze
@@ -30,9 +31,8 @@ class IAMTokenManager
 
   def request(method:, url:, headers: nil, params: nil, data: nil)
     user_agent_string = "watson-apis-ruby-sdk-" + WatsonAPIs::VERSION
-    user_agent_string += " " + ENV["_system_name"]
-    user_agent_string += " " + ENV["_system_version"]
-    user_agent_string += " " + ENV["RUBY_VERSION"]
+    user_agent_string += " #{RbConfig::CONFIG["host"]}"
+    user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
     headers["User-Agent"] = user_agent_string
     response = nil
     if headers.key?("Content-Type") && headers["Content-Type"] == CONTENT_TYPE

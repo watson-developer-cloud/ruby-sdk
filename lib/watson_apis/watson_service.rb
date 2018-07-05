@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("http")
+require("rbconfig")
 require("stringio")
 require("json")
 require_relative("./detailed_response.rb")
@@ -41,9 +42,8 @@ class WatsonService
     @temp_headers = nil
 
     user_agent_string = "watson-apis-ruby-sdk-" + WatsonAPIs::VERSION
-    user_agent_string += " " + ENV["_system_name"]
-    user_agent_string += " " + ENV["_system_version"]
-    user_agent_string += " " + ENV["RUBY_VERSION"]
+    user_agent_string += " #{RbConfig::CONFIG["host"]}"
+    user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
 
     headers = {
       "User-Agent" => user_agent_string
