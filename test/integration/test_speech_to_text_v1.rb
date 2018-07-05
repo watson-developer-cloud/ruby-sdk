@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative("./../test_helper.rb")
-require_relative("./../../lib/watson_apis/websocket/recognize_abstract_callback.rb")
+require_relative("./../../lib/watson_apis/websocket/recognize_callback.rb")
 require_relative("./../../lib/watson_apis/websocket/speech_to_text_websocket_listener.rb")
 require("minitest/hooks/test")
 require("concurrent")

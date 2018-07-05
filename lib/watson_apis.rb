@@ -12,5 +12,5 @@ module WatsonAPIs
   require_relative("./watson_apis/visual_recognition_v3.rb")
   require_relative("./watson_apis/natural_language_classifier_v1.rb")
   require_relative("./watson_apis/language_translator_v3.rb")
-  require_relative("./watson_apis/websocket/recognize_abstract_callback.rb")
+  require_relative("./watson_apis/websocket/recognize_callback.rb")
 end

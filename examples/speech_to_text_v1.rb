@@ -1,5 +1,5 @@
 require("watson_apis/speech_to_text_v1")
-require("watson_apis/recognize_abstract_callback")
+require("watson_apis/recognize_callback")
 
 speech_to_text = WatsonAPIs::SpeechToTextV1.new(
   username: "YOUR SERVICE USERNAME",
