@@ -1,10 +1,15 @@
 require("watson_apis/natural_language_classifier_v1")
 
+# If using IAM
 natural_language_classifier = WatsonAPIs::NaturalLanguageClassifierV1.new(
-  # username: "YOUR SERVICE USERNAME",
-  # password: "YOUR SERVICE PASSWORD"
   iam_api_key: "IAM API KEY"
 )
+
+# If you have username & password in your credentials use:
+# natural_language_classifier = WatsonAPIs::NaturalLanguageClassifierV1.new(
+#   username: "YOUR SERVICE USERNAME",
+#   password: "YOUR SERVICE PASSWORD"
+# )
 
 classifiers = natural_language_classifier.list_classifiers.body
 p classifiers

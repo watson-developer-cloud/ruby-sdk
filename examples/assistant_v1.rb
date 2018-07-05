@@ -1,11 +1,17 @@
 require("watson_apis/assistant_v1")
 
+# If using IAM
 assistant = AssistantV1(
-  # username: "YOUR SERVICE USERNAME",
-  # password: "YOUR SERVICE PASSWORD",
   iam_api_key: "IAM API KEY",
   version: "2018-02-16"
 )
+
+# If you have username & password in your credentials use:
+# assistant = AssistantV1(
+#   username: "YOUR SERVICE USERNAME",
+#   password: "YOUR SERVICE PASSWORD",
+#   version: "2018-02-16"
+# )
 
 #########################
 # Workspaces

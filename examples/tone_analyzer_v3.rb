@@ -1,12 +1,18 @@
 require("watson_apis/tone_analyzer_v3")
 require("json")
 
+# If using IAM
 tone_analyzer = ToneAnalyzerV3(
-  # username: "YOUR SERVICE USERNAME",
-  # password: "YOUR SERVICE PASSWORD",
   iam_api_key: "IAM API KEY",
   version: "2017-09-21"
 )
+
+# If you have username & password in your credentials use:
+# tone_analyzer = ToneAnalyzerV3(
+#   username: "YOUR SERVICE USERNAME",
+#   password: "YOUR SERVICE PASSWORD",
+#   version: "2017-09-21"
+# )
 
 utterances = [
   {

@@ -1,5 +1,6 @@
 require("watson_apis/language_translator_v3")
 
+# If using IAM
 language_translator = WatsonAPIs::LanguageTranslatorV3.new(
   version: "2018-05-31",
   ### url is optional, and defaults to the URL below. Use the correct URL for your region.
@@ -7,11 +8,11 @@ language_translator = WatsonAPIs::LanguageTranslatorV3.new(
   iam_api_key: "your_api_key"
 )
 
-## Authenticate with username/password if your service instance doesn't provide an API key
+# If you have username & password in your credentials use:
 # language_translator = WatsonAPIs::LanguageTranslatorV3.new(
 #   version: "2018-05-31",
-#   username: "your_username",
-#   password: "your_password"
+#   username: "username",
+#   password: "password"
 # )
 
 ## Translate
