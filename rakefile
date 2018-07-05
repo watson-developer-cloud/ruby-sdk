@@ -8,6 +8,7 @@ task default: %w[def]
 namespace :test do
   Rake::TestTask.new do |t|
     t.name = "unit"
+    t.description = "Run unit tests"
     t.libs << "test"
     t.test_files = FileList["test/unit/*.rb"]
     t.verbose = true
@@ -16,22 +17,26 @@ namespace :test do
 
   Rake::TestTask.new do |t|
     t.name = "integration"
+    t.description = "Run integration tests (put credentials in a .env file)"
     t.libs << "test"
     t.test_files = FileList["test/integration/*.rb"]
     t.verbose = true
     t.warning = true
+    t.deps = [:dotenv]
   end
 end
 
+desc "Run unit & integration tests"
 task :test do
   Rake::Task["test:unit"].invoke
   Rake::Task["test:integration"].invoke
 end
 
+desc "Run tests and generate a code coverage report"
 task :coverage do
   ENV["COVERAGE"] = "true"
   Rake::Task["test"].execute
 end
 
-task def: %i[dotenv coverage] do
+task def: %i[coverage] do
 end
