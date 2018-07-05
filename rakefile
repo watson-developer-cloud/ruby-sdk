@@ -2,8 +2,11 @@
 
 require "dotenv/tasks"
 require "rake/testtask"
+require "rubocop/rake_task"
 
 task default: %w[def]
+
+RuboCop::RakeTask.new
 
 namespace :test do
   Rake::TestTask.new do |t|
@@ -38,5 +41,5 @@ task :coverage do
   Rake::Task["test"].execute
 end
 
-task def: %i[coverage] do
+task def: %i[rubocop coverage] do
 end

@@ -12,7 +12,6 @@
 .DS_Store
 lib/watson_apis/.swagger-codegen-ignore
 lib/watson_apis/.swagger-codegen
-.rubocop.yml
 
 # Used by dotenv library to load environment variables.
 .env
