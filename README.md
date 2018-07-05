@@ -237,7 +237,7 @@ thr.join # Wait for the thread to finish before ending the program or running ot
 
 ## Ruby version
 
-Tested on Ruby 3.3, 3.4, 3.5
+Tested on Ruby 2.3, 2.4, 2.5
 
 ## Contributing
 
