@@ -4,9 +4,10 @@ require("watson_apis/personality_insights_v3")
 #   ../resources/personality-v3-expect2.txt
 
 personality_insights = WatsonAPIs::PersonalityInsightsV3.new(
-  version: "2017-10-13",
-  username: "YOUR SERVICE USERNAME",
-  password: "YOUR SERVICE PASSWORD"
+  # username: "YOUR SERVICE USERNAME",
+  # password: "YOUR SERVICE PASSWORD",
+  iam_api_key: "IAM API KEY",
+  version: "2017-10-13"
 )
 profile = nil
 File.open(Dir.getwd + "/resources/personality-v3.json") do |profile_json|

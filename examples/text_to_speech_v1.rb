@@ -1,8 +1,9 @@
 require("watson_apis/text_to_speech_v1")
 
 text_to_speech = WatsonAPIs::TextToSpeechV1.new(
-  username: "YOUR SERVICE USERNAME",
-  password: "YOUR SERVICE PASSWORD"
+  # username: "YOUR SERVICE USERNAME",
+  # password: "YOUR SERVICE PASSWORD"
+  iam_api_key: "IAM API KEY"
 )
 
 p text_to_speech.list_voices.body

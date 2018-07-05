@@ -1,9 +1,10 @@
 require("watson_apis/discovery_v1")
 
 discovery = WatsonAPIs::DiscoveryV1.new(
-  version: "2018-03-05",
-  username: "username",
-  password: "password"
+  # username: "username",
+  # password: "password",
+  iam_api_key: "IAM API KEY",
+  version: "2018-03-05"
 )
 
 environments = discovery.list_environments.body

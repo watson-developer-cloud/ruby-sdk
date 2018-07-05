@@ -2,8 +2,9 @@ require("watson_apis/tone_analyzer_v3")
 require("json")
 
 tone_analyzer = ToneAnalyzerV3(
-  username: "YOUR SERVICE USERNAME",
-  password: "YOUR SERVICE PASSWORD",
+  # username: "YOUR SERVICE USERNAME",
+  # password: "YOUR SERVICE PASSWORD",
+  iam_api_key: "IAM API KEY",
   version: "2017-09-21"
 )
 

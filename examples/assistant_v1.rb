@@ -1,8 +1,9 @@
 require("watson_apis/assistant_v1")
 
 assistant = AssistantV1(
-  username: "YOUR SERVICE USERNAME",
-  password: "YOUR SERVICE PASSWORD",
+  # username: "YOUR SERVICE USERNAME",
+  # password: "YOUR SERVICE PASSWORD",
+  iam_api_key: "IAM API KEY",
   version: "2018-02-16"
 )
 

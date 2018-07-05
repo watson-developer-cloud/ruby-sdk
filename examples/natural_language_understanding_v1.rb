@@ -1,9 +1,10 @@
 require("watson_apis/natural_language_understanding_v1")
 
 natural_language_understanding = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
-  version: "2018-03-16",
-  username: "YOUR SERVICE USERNAME",
-  password: "YOUR SERVICE PASSWORD"
+  # username: "YOUR SERVICE USERNAME",
+  # password: "YOUR SERVICE PASSWORD",
+  iam_api_key: "IAM API KEY",
+  version: "2018-03-16"
 )
 
 response = natural_language_understanding.analyze(

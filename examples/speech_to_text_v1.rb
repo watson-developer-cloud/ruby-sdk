@@ -2,8 +2,9 @@ require("watson_apis/speech_to_text_v1")
 require("watson_apis/recognize_callback")
 
 speech_to_text = WatsonAPIs::SpeechToTextV1.new(
-  username: "YOUR SERVICE USERNAME",
-  password: "YOUR SERVICE PASSWORD"
+  # username: "YOUR SERVICE USERNAME",
+  # password: "YOUR SERVICE PASSWORD"
+  iam_api_key: "IAM API KEY"
 )
 
 p speech_to_text.list_models.body
