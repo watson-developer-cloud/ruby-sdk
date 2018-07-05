@@ -12,6 +12,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.create_workspace(
       name: "Pizza app",
       description: "Pizza app",
@@ -42,6 +48,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_workspace(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       export: false
@@ -55,6 +67,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_workspaces
     assert((200..299).cover?(service_response.status))
   end
@@ -64,6 +82,12 @@ class AssistantV1Test < Minitest::Test
       version: "2018-02-16",
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"]
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_counterexample(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -91,6 +115,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_counterexample(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       text: "what is your nickname"
@@ -104,6 +134,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_counterexamples(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"]
     )
@@ -115,6 +151,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_entity(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -146,6 +188,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_entity(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       entity: "holiday",
@@ -160,6 +208,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_entities(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       export: true
@@ -172,6 +226,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_example(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -202,6 +262,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_example(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       intent: "Cancel",
@@ -216,6 +282,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_examples(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       intent: "Cancel"
@@ -228,6 +300,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_intent(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -257,6 +335,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_intent(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       intent: "Cancel",
@@ -271,6 +355,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_intents(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       export: false
@@ -284,6 +374,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_logs(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"]
     )
@@ -295,6 +391,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.list_all_logs(
       filter: "language::en,request.context.metadata.deployment::deployment_1"
@@ -308,7 +410,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
-    # service.set_default_headers("x-watson-learning-opt-out" => true)
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.message(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       input: { "text" => "Turn on the lights" },
@@ -330,6 +437,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_synonym(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -363,6 +476,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_synonym(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       entity: "holiday",
@@ -378,6 +497,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_synonyms(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       entity: "holiday",
@@ -391,6 +516,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_value(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -423,6 +554,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_value(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       entity: "holiday",
@@ -438,6 +575,12 @@ class AssistantV1Test < Minitest::Test
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_values(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       entity: "holiday",
@@ -451,6 +594,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
 
     service_response = service.create_dialog_node(
@@ -482,6 +631,12 @@ class AssistantV1Test < Minitest::Test
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.delete_user_data(
       customer_id: "id"

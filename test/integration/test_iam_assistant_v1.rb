@@ -11,6 +11,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.create_workspace(
       name: "Pizza app",
       description: "Pizza app",
@@ -41,6 +47,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_workspace(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       export: false
@@ -54,6 +66,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_workspaces
     assert((200..299).cover?(service_response.status))
   end
@@ -63,6 +81,12 @@ class IAMAssistantV1Test < Minitest::Test
       version: "2018-02-16",
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"]
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_counterexample(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
@@ -90,6 +114,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_counterexample(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       text: "what is your nickname"
@@ -103,6 +133,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_counterexamples(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"]
     )
@@ -114,6 +150,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_entity(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
@@ -145,6 +187,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_entity(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       entity: "holiday",
@@ -159,6 +207,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_entities(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       export: true
@@ -171,6 +225,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_example(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
@@ -201,6 +261,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_example(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       intent: "Cancel",
@@ -215,6 +281,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_examples(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       intent: "Cancel"
@@ -227,6 +299,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_intent(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
@@ -256,6 +334,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_intent(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       intent: "Cancel",
@@ -270,6 +354,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_intents(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       export: false
@@ -283,6 +373,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_logs(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"]
     )
@@ -294,6 +390,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.list_all_logs(
       filter: "language::en,request.context.metadata.deployment::deployment_1"
@@ -307,7 +409,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
-    # service.set_default_headers("x-watson-learning-opt-out" => true)
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.message(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       input: { "text" => "Turn on the lights" },
@@ -329,6 +436,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_synonym(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
@@ -362,6 +475,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_synonym(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       entity: "holiday",
@@ -377,6 +496,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_synonyms(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       entity: "holiday",
@@ -390,6 +515,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.create_value(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
@@ -422,6 +553,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_value(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       entity: "holiday",
@@ -437,6 +574,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.list_values(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       entity: "holiday",
@@ -450,6 +593,12 @@ class IAMAssistantV1Test < Minitest::Test
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
 
     service_response = service.create_dialog_node(
@@ -482,6 +631,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.delete_user_data(
       customer_id: "id"
     )
@@ -495,6 +650,12 @@ class IAMAssistantV1Test < Minitest::Test
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.get_workspace(
       workspace_id: ENV["ASSISTANT_IAM_WORKSPACE_ID"],
       export: false
@@ -506,6 +667,12 @@ class IAMAssistantV1Test < Minitest::Test
     service = WatsonAPIs::AssistantV1.new(
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service.username = "apikey"
     service.password = ENV["ASSISTANT_IAM_APIKEY"]

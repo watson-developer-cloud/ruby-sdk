@@ -13,6 +13,12 @@ class PersonalityInsightsV3Test < Minitest::Test
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.profile(
       content: personality_text,
       content_type: "text/plain;charset=utf-8"
@@ -26,6 +32,12 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.profile(
       content: personality_text,
@@ -42,6 +54,12 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.profile(
       content: personality_text,
@@ -60,6 +78,12 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     service_response = service.profile(
       content: personality_text,

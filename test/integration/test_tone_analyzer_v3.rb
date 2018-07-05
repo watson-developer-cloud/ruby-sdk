@@ -13,6 +13,12 @@ class ToneAnalyzerV3Test < Minitest::Test
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.tone(
       tone_input: tone_text,
       content_type: "text/plain"
@@ -27,6 +33,12 @@ class ToneAnalyzerV3Test < Minitest::Test
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
     )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
     service_response = service.tone(
       tone_input: tone_text,
       content_type: "text/plain",
@@ -40,6 +52,12 @@ class ToneAnalyzerV3Test < Minitest::Test
       version: "2017-09-21",
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
     )
     utterances = [
       {
