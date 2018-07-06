@@ -8,7 +8,7 @@ class DiscoveryV1Test < Minitest::Test
   include Minitest::Hooks
   attr_accessor :service, :environment_id, :collection_id
   def before_all
-    @service = WatsonAPIs::DiscoveryV1.new(
+    @service = IBMWatson::DiscoveryV1.new(
       username: ENV["DISCOVERY_USERNAME"],
       password: ENV["DISCOVERY_PASSWORD"],
       version: "2018-03-05"

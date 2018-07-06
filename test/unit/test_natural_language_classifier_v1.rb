@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Natural Language Classifier V1 Service
 class NaturalLanguageClassifierV1Test < Minitest::Test
   def test_success
-    service = WatsonAPIs::NaturalLanguageClassifierV1.new(
+    service = IBMWatson::NaturalLanguageClassifierV1.new(
       username: "username",
       password: "password"
     )
@@ -128,7 +128,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
   end
 
   def test_classify_collection
-    service = WatsonAPIs::NaturalLanguageClassifierV1.new(
+    service = IBMWatson::NaturalLanguageClassifierV1.new(
       username: "username",
       password: "password"
     )

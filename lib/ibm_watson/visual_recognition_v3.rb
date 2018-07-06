@@ -25,7 +25,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonAPIs
+module IBMWatson
   ##
   # The Visual Recognition V3 service.
   class VisualRecognitionV3

@@ -26,7 +26,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonAPIs
+module IBMWatson
   ##
   # The Natural Language Classifier V1 service.
   class NaturalLanguageClassifierV1

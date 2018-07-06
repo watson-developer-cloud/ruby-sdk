@@ -1,12 +1,12 @@
-require("watson_apis/text_to_speech_v1")
+require("ibm_watson/text_to_speech_v1")
 
 # If using IAM
-text_to_speech = WatsonAPIs::TextToSpeechV1.new(
+text_to_speech = IBMWatson::TextToSpeechV1.new(
   iam_api_key: "IAM API KEY"
 )
 
 # If you have username & password in your credentials use:
-# text_to_speech = WatsonAPIs::TextToSpeechV1.new(
+# text_to_speech = IBMWatson::TextToSpeechV1.new(
 #   username: "YOUR SERVICE USERNAME",
 #   password: "YOUR SERVICE PASSWORD"
 # )

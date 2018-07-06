@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require_relative("./../test_helper.rb")
-require_relative("./../../lib/watson_apis/websocket/recognize_callback.rb")
-require_relative("./../../lib/watson_apis/websocket/speech_to_text_websocket_listener.rb")
+require_relative("./../../lib/ibm_watson/websocket/recognize_callback.rb")
+require_relative("./../../lib/ibm_watson/websocket/speech_to_text_websocket_listener.rb")
 require("minitest/hooks/test")
 require("concurrent")
 
 # Recognize Callback class
-class MyRecognizeCallback < WatsonAPIs::RecognizeCallback
+class MyRecognizeCallback < IBMWatson::RecognizeCallback
   def initialize(atomic_boolean: nil)
     super
     @atomic_boolean = atomic_boolean
@@ -28,7 +28,7 @@ class SpeechToTextV1Test < Minitest::Test
 
   attr_accessor :service
   def before_all
-    @service = WatsonAPIs::SpeechToTextV1.new(
+    @service = IBMWatson::SpeechToTextV1.new(
       username: ENV["SPEECH_TO_TEXT_USERNAME"],
       password: ENV["SPEECH_TO_TEXT_PASSWORD"]
     )

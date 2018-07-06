@@ -7,7 +7,7 @@ require_relative("./../test_helper.rb")
 class PersonalityInsightsV3Test < Minitest::Test
   def test_plain_to_json
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.txt")
-    service = WatsonAPIs::PersonalityInsightsV3.new(
+    service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
@@ -27,7 +27,7 @@ class PersonalityInsightsV3Test < Minitest::Test
 
   def test_json_to_json
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
-    service = WatsonAPIs::PersonalityInsightsV3.new(
+    service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
@@ -49,7 +49,7 @@ class PersonalityInsightsV3Test < Minitest::Test
 
   def test_json_to_csv
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
-    service = WatsonAPIs::PersonalityInsightsV3.new(
+    service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
@@ -73,7 +73,7 @@ class PersonalityInsightsV3Test < Minitest::Test
 
   def test_plain_to_json_es
     personality_text = File.read(Dir.getwd + "/resources/personality-v3-es.txt")
-    service = WatsonAPIs::PersonalityInsightsV3.new(
+    service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
       password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]

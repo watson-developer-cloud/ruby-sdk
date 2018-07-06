@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Visual Recognition V3 Service
 class VisualRecognitionV3Test < Minitest::Test
   def test_get_classifier
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19"
     )
     service._iam_access_token(iam_access_token: "bogus_access_token")
@@ -41,7 +41,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_classifier
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -60,7 +60,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_list_classifiers
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -92,7 +92,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_create_classifier
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -133,7 +133,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_update_classifier
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -175,7 +175,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_classify
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -245,7 +245,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_detect_faces
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -309,7 +309,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )
@@ -328,7 +328,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_get_core_ml_model
-    service = WatsonAPIs::VisualRecognitionV3.new(
+    service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
       iam_access_token: "bogus_access_token"
     )

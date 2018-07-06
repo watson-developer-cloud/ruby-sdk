@@ -5,7 +5,7 @@ require_relative("./../test_helper.rb")
 # Integration tests for the Watson Assistant V1 Service
 class IAMAssistantV1Test < Minitest::Test
   def test_create_update_delete_workspace
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
@@ -42,7 +42,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_workspace
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -61,7 +61,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_workspaces
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -77,7 +77,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_counterexample
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       version: "2018-02-16",
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"]
@@ -109,7 +109,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_counterexample
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -128,7 +128,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_counterexamples
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -146,7 +146,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_entity
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -182,7 +182,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_entity
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -202,7 +202,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_entities
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -221,7 +221,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_example
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -256,7 +256,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_example
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -276,7 +276,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_examples
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -295,7 +295,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_intent
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -329,7 +329,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_intent
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -349,7 +349,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_intents
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -368,7 +368,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_logs
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -386,7 +386,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_all_logs
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -404,7 +404,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_message
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -432,7 +432,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_synonym
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -470,7 +470,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_synonym
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -491,7 +491,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_synonyms
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -511,7 +511,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_value
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -548,7 +548,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_value
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -569,7 +569,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_list_values
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -589,7 +589,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_dialog_nodes
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -626,7 +626,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
@@ -644,7 +644,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_workspace_with_iam_user_pass_params
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: "apikey",
       password: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
@@ -664,7 +664,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_get_workspace_with_iam_user_pass_non_params
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
@@ -684,7 +684,7 @@ class IAMAssistantV1Test < Minitest::Test
   end
 
   def test_receive_error
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )

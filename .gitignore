@@ -10,8 +10,8 @@
 /test/version_tmp/
 /tmp/
 .DS_Store
-lib/watson_apis/.swagger-codegen-ignore
-lib/watson_apis/.swagger-codegen
+lib/ibm_watson/.swagger-codegen-ignore
+lib/ibm_watson/.swagger-codegen
 
 # Used by dotenv library to load environment variables.
 .env

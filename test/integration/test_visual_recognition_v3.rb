@@ -9,7 +9,7 @@ class VisualRecognitionV3Test < Minitest::Test
   include Minitest::Hooks
   attr_accessor :service, :classifier_id
   def before_all
-    @service = WatsonAPIs::VisualRecognitionV3.new(
+    @service = IBMWatson::VisualRecognitionV3.new(
       iam_api_key: ENV["VISUAL_RECOGNITION_IAM_APIKEY"],
       version: "2018-03-19",
       url: ENV["VISUAL_RECOGNITION_IAM_URL"]

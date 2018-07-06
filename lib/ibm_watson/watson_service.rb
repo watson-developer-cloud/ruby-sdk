@@ -41,7 +41,7 @@ class WatsonService
     @token_manager = nil
     @temp_headers = nil
 
-    user_agent_string = "watson-apis-ruby-sdk-" + WatsonAPIs::VERSION
+    user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
     user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
 

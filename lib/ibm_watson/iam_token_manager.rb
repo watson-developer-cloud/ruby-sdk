@@ -30,7 +30,7 @@ class IAMTokenManager
   end
 
   def request(method:, url:, headers: nil, params: nil, data: nil)
-    user_agent_string = "watson-apis-ruby-sdk-" + WatsonAPIs::VERSION
+    user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
     user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
     headers["User-Agent"] = user_agent_string

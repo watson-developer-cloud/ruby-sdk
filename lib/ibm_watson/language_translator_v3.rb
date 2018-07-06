@@ -27,7 +27,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonAPIs
+module IBMWatson
   ##
   # The Language Translator V3 service.
   class LanguageTranslatorV3

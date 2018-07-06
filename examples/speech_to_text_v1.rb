@@ -1,13 +1,13 @@
-require("watson_apis/speech_to_text_v1")
-require("watson_apis/recognize_callback")
+require("ibm_watson/speech_to_text_v1")
+require("ibm_watson/recognize_callback")
 
 # If using IAM
-speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+speech_to_text = IBMWatson::SpeechToTextV1.new(
   iam_api_key: "IAM API KEY"
 )
 
 # If you have username & password in your credentials use:
-# speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+# speech_to_text = IBMWatson::SpeechToTextV1.new(
 #   username: "YOUR SERVICE USERNAME",
 #   password: "YOUR SERVICE PASSWORD"
 # )
@@ -27,7 +27,7 @@ File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
 end
 
 # Example using websockets
-class MyRecognizeCallback < WatsonAPIs::RecognizeCallback
+class MyRecognizeCallback < IBMWatson::RecognizeCallback
   def initialize
     super
   end

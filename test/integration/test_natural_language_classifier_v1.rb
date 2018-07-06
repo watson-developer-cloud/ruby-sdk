@@ -9,7 +9,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
   include Minitest::Hooks
   attr_accessor :service
   def before_all
-    @service = WatsonAPIs::NaturalLanguageClassifierV1.new(
+    @service = IBMWatson::NaturalLanguageClassifierV1.new(
       username: ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"],
       password: ENV["NATURAL_LANGUAGE_CLASSIFIER_PASSWORD"]
     )

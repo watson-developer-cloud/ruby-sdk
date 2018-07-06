@@ -1,16 +1,16 @@
-require("watson_apis/personality_insights_v3")
+require("ibm_watson/personality_insights_v3")
 
 # The example returns a JSON response whose content is the same as that in
 #   ../resources/personality-v3-expect2.txt
 
 # If using IAM
-personality_insights = WatsonAPIs::PersonalityInsightsV3.new(
+personality_insights = IBMWatson::PersonalityInsightsV3.new(
   iam_api_key: "IAM API KEY",
   version: "2017-10-13"
 )
 
 # If you have username & password in your credentials use:
-# personality_insights = WatsonAPIs::PersonalityInsightsV3.new(
+# personality_insights = IBMWatson::PersonalityInsightsV3.new(
 #   username: "YOUR SERVICE USERNAME",
 #   password: "YOUR SERVICE PASSWORD",
 #   version: "2017-10-13"

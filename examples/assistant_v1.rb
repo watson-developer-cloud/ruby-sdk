@@ -1,4 +1,4 @@
-require("watson_apis/assistant_v1")
+require("ibm_watson/assistant_v1")
 
 # If using IAM
 assistant = AssistantV1(

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/watson_apis/iam_token_manager.rb")
+require_relative("./../../lib/ibm_watson/iam_token_manager.rb")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
 

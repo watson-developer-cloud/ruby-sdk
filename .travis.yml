@@ -27,7 +27,7 @@ deploy:
 
   - provider: rubygems
     api_key: $RUBYGEMS_API_KEY
-    gem: watson_apis
+    gem: ibm_watson
     on:
       branch: master
       rvm: 2.5.1

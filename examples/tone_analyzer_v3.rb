@@ -1,4 +1,4 @@
-require("watson_apis/tone_analyzer_v3")
+require("ibm_watson/tone_analyzer_v3")
 require("json")
 
 # If using IAM

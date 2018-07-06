@@ -1,15 +1,15 @@
-require("watson_apis/visual_recognition_v3")
+require("ibm_watson/visual_recognition_v3")
 
 test_url = "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg".freeze
 
 # If using IAM
-visual_recognition = WatsonAPIs::VisualRecognitionV3.new(
+visual_recognition = IBMWatson::VisualRecognitionV3.new(
   version: "2018-03-19",
   iam_api_key: "IAM API KEY"
 )
 
 # If you have username & password in your credentials use:
-# visual_recognition = WatsonAPIs::VisualRecognitionV3.new(
+# visual_recognition = IBMWatson::VisualRecognitionV3.new(
 #   version: "2018-03-19",
 #   username: "YOUR SERVICE USERNAME",
 #   password: "YOUR SERVICE PASSWORD"

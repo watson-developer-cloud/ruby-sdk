@@ -1,13 +1,13 @@
-require("watson_apis/natural_language_understanding_v1")
+require("ibm_watson/natural_language_understanding_v1")
 
 # If using IAM
-natural_language_understanding = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
+natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
   iam_api_key: "IAM API KEY",
   version: "2018-03-16"
 )
 
 # If you have username & password in your credentials use:
-# natural_language_understanding = WatsonAPIs::NaturalLanguageUnderstandingV1.new(
+# natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
 #   username: "YOUR SERVICE USERNAME",
 #   password: "YOUR SERVICE PASSWORD",
 #   version: "2018-03-16"

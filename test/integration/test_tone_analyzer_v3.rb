@@ -7,7 +7,7 @@ require_relative("./../test_helper.rb")
 class ToneAnalyzerV3Test < Minitest::Test
   def test_tone
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    service = WatsonAPIs::ToneAnalyzerV3.new(
+    service = IBMWatson::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
@@ -27,7 +27,7 @@ class ToneAnalyzerV3Test < Minitest::Test
 
   def test_tone_with_args
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    service = WatsonAPIs::ToneAnalyzerV3.new(
+    service = IBMWatson::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]
@@ -47,7 +47,7 @@ class ToneAnalyzerV3Test < Minitest::Test
   end
 
   def test_tone_chat
-    service = WatsonAPIs::ToneAnalyzerV3.new(
+    service = IBMWatson::ToneAnalyzerV3.new(
       version: "2017-09-21",
       username: ENV["TONE_ANALYZER_USERNAME"],
       password: ENV["TONE_ANALYZER_PASSWORD"]

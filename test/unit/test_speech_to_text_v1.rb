@@ -20,7 +20,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -66,7 +66,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_get_model
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -95,7 +95,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -154,7 +154,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_callbacks
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -186,7 +186,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_model
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -258,7 +258,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_acoustic_model
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -331,7 +331,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_corpora
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -402,7 +402,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_words
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -546,7 +546,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_audio_resources
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -611,7 +611,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -630,7 +630,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_await
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -666,7 +666,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_async
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -703,7 +703,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_reset_language_model
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -720,7 +720,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_upgrade_language_model
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )
@@ -737,7 +737,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_upgrade_acoustic_model
-    service = WatsonAPIs::SpeechToTextV1.new(
+    service = IBMWatson::SpeechToTextV1.new(
       username: "username",
       password: "password"
     )

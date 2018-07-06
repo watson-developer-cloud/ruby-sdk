@@ -8,7 +8,7 @@ class TextToSpeechV1Test < Minitest::Test
   include Minitest::Hooks
   attr_accessor :service
   def before_all
-    @service = WatsonAPIs::TextToSpeechV1.new(
+    @service = IBMWatson::TextToSpeechV1.new(
       username: ENV["TEXT_TO_SPEECH_USERNAME"],
       password: ENV["TEXT_TO_SPEECH_PASSWORD"]
     )

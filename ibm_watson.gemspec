@@ -1,10 +1,10 @@
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "watson_apis/version"
+require "ibm_watson/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "watson_apis"
-  spec.version = WatsonAPIs::VERSION
+  spec.name = "ibm_watson"
+  spec.version = IBMWatson::VERSION
   spec.authors = ["Max Nussbaum"]
 
   spec.summary = "Client library to use the IBM Watson Services"

@@ -74,7 +74,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
-module WatsonAPIs
+module IBMWatson
   ##
   # The Speech to Text V1 service.
   class SpeechToTextV1

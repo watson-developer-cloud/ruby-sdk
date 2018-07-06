@@ -46,7 +46,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -64,7 +64,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -86,7 +86,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -109,7 +109,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -131,7 +131,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -151,7 +151,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -163,7 +163,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collection
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -249,7 +249,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -281,7 +281,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -305,7 +305,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -327,7 +327,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -408,7 +408,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_document
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -560,7 +560,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_all_training_data
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -581,7 +581,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_data
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -645,7 +645,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -671,7 +671,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_data
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -713,7 +713,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -735,7 +735,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -762,7 +762,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_example
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -790,7 +790,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -820,7 +820,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -847,7 +847,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_expansions
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -904,7 +904,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -924,7 +924,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_notices
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -945,7 +945,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -966,7 +966,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query_notices
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -987,7 +987,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_examples
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -1009,7 +1009,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_credentials
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -1029,7 +1029,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_credentials
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -1052,7 +1052,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_credentials
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -1073,7 +1073,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_credentials
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -1097,7 +1097,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_credentials
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
@@ -1118,7 +1118,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_collection
-    service = WatsonAPIs::DiscoveryV1.new(
+    service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"

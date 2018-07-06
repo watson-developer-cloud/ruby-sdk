@@ -1,11 +1,11 @@
-# Watson APIs Ruby SDK
+# IBM Watson Ruby SDK
 
 [![Build Status](https://travis-ci.org/watson-developer-cloud/ruby-sdk.svg?branch=master)](https://travis-ci.org/watson-developer-cloud/ruby-sdk)
 [![Slack](https://wdc-slack-inviter.mybluemix.net/badge.svg)](https://wdc-slack-inviter.mybluemix.net)
 [![codecov.io](https://codecov.io/github/watson-developer-cloud/ruby-sdk/coverage.svg?branch=master)](https://codecov.io/github/watson-developer-cloud/ruby-sdk?branch=master)
-[![Gem Version](https://badge.fury.io/rb/watson_apis.svg)](https://badge.fury.io/rb/watson_apis)
+[![Gem Version](https://badge.fury.io/rb/ibm_watson.svg)](https://badge.fury.io/rb/ibm_watson)
 
-Ruby gem to quickly get started with the various [Watson APIs][wdc] services.
+Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
 <details>
   <summary>Table of Contents</summary>
@@ -36,19 +36,19 @@ Ruby gem to quickly get started with the various [Watson APIs][wdc] services.
 Install the gem:
 
 ```bash
-gem install watson_apis
+gem install ibm_watson
 ```
 
 Install with development dependencies:
 
 ```bash
-gem install --dev watson_apis
+gem install --dev ibm_watson
 ```
 
 Inside of your Ruby program do:
 
 ```ruby
-require "watson_apis"
+require "ibm_watson"
 ```
 
 ## Examples
@@ -87,7 +87,7 @@ You supply either an IAM service **API key** or an **access token**:
 
 ```ruby
 # In the constructor, letting the SDK manage the IAM token
-discovery = WatsonAPIs::DiscoveryV1.new(
+discovery = IBMWatson::DiscoveryV1.new(
   version: "2017-10-16",
   iam_api_key: "<iam_api_key>",
   iam_url: "<iam_url>" # optional - the default value is https://iam.ng.bluemix.net/identity/token
@@ -96,14 +96,14 @@ discovery = WatsonAPIs::DiscoveryV1.new(
 
 ```ruby
 # after instantiation, letting the SDK manage the IAM token
-discovery = WatsonAPIs::DiscoveryV1.new(version: "2017-10-16")
+discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
 discovery._iam_api_key(iam_api_key: "<iam_api_key>")
 ```
 
 #### Supplying the access token
 ```ruby
 # in the constructor, assuming control of managing IAM token
-discovery = WatsonAPIs::DiscoveryV1.new(
+discovery = IBMWatson::DiscoveryV1.new(
   version: "2017-10-16",
   iam_access_token: "<iam_access_token>"
 )
@@ -111,14 +111,14 @@ discovery = WatsonAPIs::DiscoveryV1.new(
 
 ```ruby
 # after instantiation, assuming control of managing IAM token
-discovery = WatsonAPIs::DiscoveryV1.new(version: "2017-10-16")
+discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
 discovery._iam_access_token(iam_access_token: "<access_token>")
 ```
 
 ### Username and password
 ```ruby
-require "watson_apis"
-include WatsonAPIs
+require "ibm_watson"
+include IBMWatson
 # In the constructor
 discovery = DiscoveryV1.new(version: "2017-10-16", username: "<username>", password: "<password>")
 ```
@@ -137,7 +137,7 @@ Requests can be sent asynchronously. There are two asynchronous methods availabl
 
 When `await` is used, the request is made synchronously.
 ```ruby
-speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+speech_to_text = IBMWatson::SpeechToTextV1.new(
   username: "username",
   password: "password"
 )
@@ -151,7 +151,7 @@ output = future.value # The response is accessible at future.value
 
 When `async` is used, the request is made asynchronously
 ```ruby
-speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+speech_to_text = IBMWatson::SpeechToTextV1.new(
   username: "username",
   password: "password"
 )
@@ -168,8 +168,8 @@ output = future.value
 ## Sending request headers
 Custom headers can be passed in any request in the form of a `Hash` as a parameter to the `headers` chainable method. For example, to send a header called `Custom-Header` to a call in Watson Assistant, pass the headers as a parameter to the `headers` chainable method:
 ```ruby
-require "watson_apis"
-include WatsonAPIs
+require "ibm_watson"
+include IBMWatson
 
 assistant = AssistantV1.new(
   username: "xxx",
@@ -185,8 +185,8 @@ response = assistant.headers(
 ## Parsing HTTP response info
 HTTP requests all return `DetailedResponse` objects that have a `body`, `status`, and `headers`
 ```ruby
-require "watson_apis"
-include WatsonAPIs
+require "ibm_watson"
+include IBMWatson
 
 assistant = AssistantV1.new(
   username: "xxx",
@@ -215,11 +215,11 @@ Body: <response returned by service>
 The Speech-to-Text service supports websockets with the `recognize-with-websockets` method. The method accepts a custom callback class. The `eventmachine` loop that the websocket uses blocks the main thread by default. Here is an example of using the websockets method:
 
 ```ruby
-require "watson_apis"
+require "ibm_watson"
 
-callback = WatsonAPIs::RecognizeCallback.new
+callback = IBMWatson::RecognizeCallback.new
 audio_file = "<Audio File for Analysis>"
-speech_to_text = WatsonAPIs::SpeechToTextV1.new(
+speech_to_text = IBMWatson::SpeechToTextV1.new(
   username: "<username>",
   password: "<password>"
 )

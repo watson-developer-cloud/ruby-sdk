@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module WatsonAPIs
+module IBMWatson
   # Abstract class for Recognize Callbacks
   class RecognizeCallback
     def initialize(*); end

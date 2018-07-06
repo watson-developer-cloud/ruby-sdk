@@ -6,7 +6,7 @@ SimpleCov.command_name "test:integration"
 # Integration tests for the Watson Assistant V1 Service
 class AssistantV1Test < Minitest::Test
   def test_create_update_delete_workspace
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -42,7 +42,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_workspace
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -61,7 +61,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_workspaces
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -77,7 +77,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_counterexample
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       version: "2018-02-16",
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"]
@@ -109,7 +109,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_counterexample
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -128,7 +128,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_counterexamples
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -146,7 +146,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_entity
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -182,7 +182,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_entity
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -202,7 +202,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_entities
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -221,7 +221,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_example
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -256,7 +256,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_example
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -276,7 +276,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_examples
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -295,7 +295,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_intent
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -329,7 +329,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_intent
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -349,7 +349,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_intents
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -368,7 +368,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_logs
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -386,7 +386,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_all_logs
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -404,7 +404,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_message
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -432,7 +432,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_synonym
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -470,7 +470,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_synonym
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -491,7 +491,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_synonyms
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -511,7 +511,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_create_update_delete_value
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -548,7 +548,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_get_value
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -569,7 +569,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_values
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -589,7 +589,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_dialog_nodes
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"
@@ -626,7 +626,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = WatsonAPIs::AssistantV1.new(
+    service = IBMWatson::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],
       password: ENV["ASSISTANT_PASSWORD"],
       version: "2018-02-16"

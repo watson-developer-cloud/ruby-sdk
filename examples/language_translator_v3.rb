@@ -1,7 +1,7 @@
-require("watson_apis/language_translator_v3")
+require("ibm_watson/language_translator_v3")
 
 # If using IAM
-language_translator = WatsonAPIs::LanguageTranslatorV3.new(
+language_translator = IBMWatson::LanguageTranslatorV3.new(
   version: "2018-05-31",
   ### url is optional, and defaults to the URL below. Use the correct URL for your region.
   # url: "https://gateway.watsonplatform.net/language-translator/api",
@@ -9,7 +9,7 @@ language_translator = WatsonAPIs::LanguageTranslatorV3.new(
 )
 
 # If you have username & password in your credentials use:
-# language_translator = WatsonAPIs::LanguageTranslatorV3.new(
+# language_translator = IBMWatson::LanguageTranslatorV3.new(
 #   version: "2018-05-31",
 #   username: "username",
 #   password: "password"

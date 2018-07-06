@@ -29,7 +29,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -77,7 +77,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -128,7 +128,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -185,7 +185,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -250,7 +250,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -322,7 +322,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -364,7 +364,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )
@@ -415,7 +415,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }.to_json,
         headers: {}
       )
-    service = WatsonAPIs::LanguageTranslatorV3.new(
+    service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
       iam_api_key: "iam_api_key"
     )

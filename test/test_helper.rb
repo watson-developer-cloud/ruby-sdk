@@ -19,4 +19,4 @@ if ENV["COVERAGE"]
 end
 
 require("minitest/autorun")
-require_relative("./../lib/watson_apis.rb")
+require_relative("./../lib/ibm_watson.rb")

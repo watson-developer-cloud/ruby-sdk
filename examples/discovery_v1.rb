@@ -1,13 +1,13 @@
-require("watson_apis/discovery_v1")
+require("ibm_watson/discovery_v1")
 
 # If using IAM
-discovery = WatsonAPIs::DiscoveryV1.new(
+discovery = IBMWatson::DiscoveryV1.new(
   iam_api_key: "IAM API KEY",
   version: "2018-03-05"
 )
 
 # If you have username & password in your credentials use:
-# discovery = WatsonAPIs::DiscoveryV1.new(
+# discovery = IBMWatson::DiscoveryV1.new(
 #   username: "username",
 #   password: "password",
 #   version: "2018-03-05"
