@@ -425,7 +425,15 @@ class DiscoveryV1Test < Minitest::Test
       service_response = service.test_configuration_in_environment(
         environment_id: "envid",
         configuration_id: "bogus",
-        file: file_info
+        file: file_info,
+        filename: "simple.html"
+      )
+      refute(service_response.nil?)
+
+      service_response = service.test_configuration_in_environment(
+        environment_id: "envid",
+        configuration_id: "bogus",
+        file: "file_info"
       )
       refute(service_response.nil?)
 
@@ -494,7 +502,8 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.update_document(
       environment_id: "envid",
       collection_id: "collid",
-      document_id: "docid"
+      document_id: "docid",
+      file: "file"
     )
     assert_equal({ "body" => [] }, service_response.body)
 
@@ -516,7 +525,7 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.add_document(
       environment_id: "envid",
       collection_id: "collid",
-      file: StringIO.new("my string of file"),
+      file: "my string of file",
       filename: "file.txt"
     )
     refute(service_response.nil?)
@@ -903,5 +912,199 @@ class DiscoveryV1Test < Minitest::Test
       customer_id: "id"
     )
     assert_nil(service_response)
+  end
+
+  def test_query_notices
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/notices?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.query_notices(
+      environment_id: "envid",
+      collection_id: "collid"
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_federated_query
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?collection_ids=collid&version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.federated_query(
+      environment_id: "envid",
+      collection_ids: ["collid"]
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_federated_query_notices
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/notices?collection_ids=collid&version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.federated_query_notices(
+      environment_id: "envid",
+      collection_ids: ["collid"]
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_list_training_examples
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_training_examples(
+      environment_id: "envid",
+      collection_id: "collid",
+      query_id: "queryid"
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_list_credentials
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_credentials(
+      environment_id: "envid"
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_create_credentials
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
+      .with(
+        body: "{\"source_type\":\"salesforce\"}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_credentials(
+      environment_id: "envid",
+      source_type: "salesforce"
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_get_credentials
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_credentials(
+      environment_id: "envid",
+      credential_id: "credid"
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_update_credentials
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
+      .with(
+        body: "{\"source_type\":\"salesforce\"}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.update_credentials(
+      environment_id: "envid",
+      credential_id: "credid",
+      source_type: "salesforce"
+    )
+    assert_equal({ "received" => "true" }, service_response.body)
+  end
+
+  def test_delete_credentials
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "deleted" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_credentials(
+      environment_id: "envid",
+      credential_id: "credid"
+    )
+    assert_equal({ "deleted" => "true" }, service_response.body)
   end
 end
