@@ -40,6 +40,22 @@ class PersonalityInsightsV3Test < Minitest::Test
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
     end
+
+    stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
+      .with(
+        body: { "personality" => "text" }.to_json,
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "profile" => "response" }.to_json, headers: headers)
+    service_response = service.profile(
+      content: { "personality" => "text" },
+      content_type: "application/json"
+    )
+    assert_equal({ "profile" => "response" }, service_response.body)
   end
 
   def test_json_to_json
