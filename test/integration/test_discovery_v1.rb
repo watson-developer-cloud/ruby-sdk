@@ -74,6 +74,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collections_and_expansions
+    skip "Time consuming"
     name = "Example collection for ruby" + ("A".."Z").to_a.sample
     new_collection_id = @service.create_collection(
       environment_id: @environment_id,
@@ -131,6 +132,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_documents
+    skip "Time consuming"
     add_doc = nil
     File.open(Dir.getwd + "/resources/simple.html") do |file_info|
       add_doc = @service.add_document(

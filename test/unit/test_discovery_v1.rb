@@ -503,6 +503,15 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid",
       document_id: "docid",
+      file: "file",
+      filename: "file.name"
+    )
+    assert_equal({ "body" => [] }, service_response.body)
+
+    service_response = service.update_document(
+      environment_id: "envid",
+      collection_id: "collid",
+      document_id: "docid",
       file: "file"
     )
     assert_equal({ "body" => [] }, service_response.body)
@@ -1106,5 +1115,30 @@ class DiscoveryV1Test < Minitest::Test
       credential_id: "credid"
     )
     assert_equal({ "deleted" => "true" }, service_response.body)
+  end
+
+  def test_update_collection
+    service = WatsonAPIs::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
+      .with(
+        body: "{\"name\":\"name\",\"description\":\"updated description\"}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "updated" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.update_collection(
+      environment_id: "envid",
+      collection_id: "collid",
+      name: "name",
+      description: "updated description"
+    )
+    assert_equal({ "updated" => "true" }, service_response.body)
   end
 end
