@@ -23,6 +23,18 @@ class LanguageTranslatorV3Test < Minitest::Test
     )
   end
 
+  def test_get_model
+    service_response = service.get_model(
+      model_id: "en-it"
+    ).body
+    refute(service_response.nil?)
+  end
+
+  def test_list_models
+    service_response = service.list_models.body
+    refute(service_response.nil?)
+  end
+
   def test_translate_source_target
     service_response = service.translate(
       text: "Hola, cómo estás? €",
@@ -66,17 +78,5 @@ class LanguageTranslatorV3Test < Minitest::Test
       model_id: model_id
     ).body
     assert_equal("OK", service_response["status"])
-  end
-
-  def test_get_model
-    service_response = service.get_model(
-      model_id: "en-it"
-    ).body
-    refute(service_response.nil?)
-  end
-
-  def test_list_models
-    service_response = service.list_models.body
-    refute(service_response.nil?)
   end
 end
