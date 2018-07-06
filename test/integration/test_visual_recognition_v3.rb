@@ -7,7 +7,6 @@ require("minitest/hooks/test")
 # Integration tests for the Visual Recognition V3 Service
 class VisualRecognitionV3Test < Minitest::Test
   include Minitest::Hooks
-  Minitest::Test.parallelize_me!
   attr_accessor :service, :classifier_id
   def before_all
     @service = WatsonAPIs::VisualRecognitionV3.new(

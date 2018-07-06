@@ -7,7 +7,6 @@ require("minitest/hooks/test")
 # Integration tests for the Natural Language Classifier V1 Service
 class NaturalLanguageClassifierV1Test < Minitest::Test
   include Minitest::Hooks
-  Minitest::Test.parallelize_me!
   attr_accessor :service
   def before_all
     @service = WatsonAPIs::NaturalLanguageClassifierV1.new(

@@ -4,7 +4,6 @@ require_relative("./../test_helper.rb")
 
 # Integration tests for the Watson Assistant V1 Service
 class IAMAssistantV1Test < Minitest::Test
-  Minitest::Test.parallelize_me!
   def test_create_update_delete_workspace
     service = WatsonAPIs::AssistantV1.new(
       url: ENV["ASSISTANT_IAM_URL"],

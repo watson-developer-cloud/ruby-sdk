@@ -7,7 +7,6 @@ require("minitest/hooks/test")
 # Integration tests for the Language Translator V3 Service
 class LanguageTranslatorV3Test < Minitest::Test
   include Minitest::Hooks
-  Minitest::Test.parallelize_me!
   attr_accessor :service
   def before_all
     @service = WatsonAPIs::LanguageTranslatorV3.new(

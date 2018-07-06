@@ -5,7 +5,6 @@ SimpleCov.command_name "test:integration"
 
 # Integration tests for the Watson Assistant V1 Service
 class AssistantV1Test < Minitest::Test
-  Minitest::Test.parallelize_me!
   def test_create_update_delete_workspace
     service = WatsonAPIs::AssistantV1.new(
       username: ENV["ASSISTANT_USERNAME"],

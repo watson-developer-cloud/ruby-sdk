@@ -5,7 +5,6 @@ require_relative("./../test_helper.rb")
 
 # Integration tests for the Tone Analyzer V3 Service
 class ToneAnalyzerV3Test < Minitest::Test
-  Minitest::Test.parallelize_me!
   def test_tone
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     service = WatsonAPIs::ToneAnalyzerV3.new(

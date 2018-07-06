@@ -6,7 +6,6 @@ require("minitest/hooks/test")
 # Integration tests for the Text to Speech V1 Service
 class TextToSpeechV1Test < Minitest::Test
   include Minitest::Hooks
-  Minitest::Test.parallelize_me!
   attr_accessor :service
   def before_all
     @service = WatsonAPIs::TextToSpeechV1.new(

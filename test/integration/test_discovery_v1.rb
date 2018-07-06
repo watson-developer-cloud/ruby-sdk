@@ -6,7 +6,6 @@ require("minitest/hooks/test")
 # Integration tests for the Discovery V1 Service
 class DiscoveryV1Test < Minitest::Test
   include Minitest::Hooks
-  Minitest::Test.parallelize_me!
   attr_accessor :service, :environment_id, :collection_id
   def before_all
     @service = WatsonAPIs::DiscoveryV1.new(
