@@ -53,7 +53,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       source: "es",
       target: "en"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_translate_model_id
@@ -104,7 +104,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       text: "Messi is the best ever",
       model_id: "en-es-conversational"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_identify
@@ -161,7 +161,7 @@ class LanguageTranslatorV3Test < Minitest::Test
     service_response = service.identify(
       text: "祝你有美好的一天"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_list_identifiable_languages
@@ -226,7 +226,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_identifiable_languages
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_create_model
@@ -280,7 +280,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       name: "test_glossary",
       forced_glossary: custom_model
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
 
     service_response = service.create_model(
       base_model_id: "en-fr",
@@ -289,7 +289,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       parallel_corpus: "parallel corpus",
       parallel_corpus_filename: "parallel_corpus_filename"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
 
     service_response = service.create_model(
       base_model_id: "en-fr",
@@ -298,7 +298,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       forced_glossary_filename: "language_translator_model.tmx",
       parallel_corpus: "parallel corpus"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_delete_model
@@ -340,7 +340,7 @@ class LanguageTranslatorV3Test < Minitest::Test
     service_response = service.delete_model(
       model_id: "en-es-conversational"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_get_model
@@ -391,7 +391,7 @@ class LanguageTranslatorV3Test < Minitest::Test
     service_response = service.get_model(
       model_id: "en-es-conversational"
     )
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 
   def test_list_models
@@ -456,6 +456,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_models
-    assert_equal(expected, service_response.body)
+    assert_equal(expected, service_response.result)
   end
 end

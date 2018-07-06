@@ -33,7 +33,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json")
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -64,7 +64,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json", sentences: false)
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -100,7 +100,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     ]
     service_response = service.tone_chat(utterances: utterances)
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -170,7 +170,7 @@ class ToneAnalyzerV3Test < Minitest::Test
       "Custom-Header-One" => "yes",
       "Content-Type" => "Custom/Type"
     ).tone(tone_input: tone_text, content_type: "application/json")
-    assert_equal(tone_response, service_response.body)
+    assert_equal(tone_response, service_response.result)
   end
 
   def test_tone_with_application_json
@@ -195,6 +195,6 @@ class ToneAnalyzerV3Test < Minitest::Test
       password: "password"
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json")
-    assert_equal(tone_response, service_response.body)
+    assert_equal(tone_response, service_response.result)
   end
 end

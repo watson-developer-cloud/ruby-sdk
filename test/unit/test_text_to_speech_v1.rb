@@ -60,7 +60,7 @@ class TextToSpeechV1Test < Minitest::Test
       password: "password"
     )
     service_response = service.list_voices
-    assert_equal(voices_response, service_response.body)
+    assert_equal(voices_response, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/voices/en-us_AllisonVoice")
       .with(
@@ -73,7 +73,7 @@ class TextToSpeechV1Test < Minitest::Test
     service_response = service.get_voice(
       voice: "en-us_AllisonVoice"
     )
-    assert_equal(voice_response, service_response.body)
+    assert_equal(voice_response, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize")
       .with(
@@ -87,7 +87,7 @@ class TextToSpeechV1Test < Minitest::Test
     service_response = service.synthesize(
       text: "hello"
     )
-    assert_equal(synthesize_response_body, service_response.body)
+    assert_equal(synthesize_response_body, service_response.result)
   end
 
   def test_get_pronunciation
@@ -109,7 +109,7 @@ class TextToSpeechV1Test < Minitest::Test
     service_response = service.get_pronunciation(
       text: "this is some text"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/pronunciation?text=yo&voice=VoiceEnUsLisa")
       .with(
@@ -123,7 +123,7 @@ class TextToSpeechV1Test < Minitest::Test
       text: "yo",
       voice: "VoiceEnUsLisa"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/pronunciation?format=ipa&text=yo&voice=VoiceEnUsLisa")
       .with(
@@ -138,7 +138,7 @@ class TextToSpeechV1Test < Minitest::Test
       voice: "VoiceEnUsLisa",
       format: "ipa"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_custom_voice_models
@@ -156,7 +156,7 @@ class TextToSpeechV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_voice_models
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations?language=en-US")
       .with(
@@ -169,7 +169,7 @@ class TextToSpeechV1Test < Minitest::Test
     service_response = service.list_voice_models(
       language: "en-US"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations")
       .with(
@@ -185,7 +185,7 @@ class TextToSpeechV1Test < Minitest::Test
       name: "name",
       description: "description"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid")
       .with(
@@ -198,7 +198,7 @@ class TextToSpeechV1Test < Minitest::Test
     service_response = service.get_voice_model(
       customization_id: "custid"
     )
-    assert_equal({ "customization" => "yep, just one" }, service_response.body)
+    assert_equal({ "customization" => "yep, just one" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid")
       .with(
@@ -248,7 +248,7 @@ class TextToSpeechV1Test < Minitest::Test
     service_response = service.list_words(
       customization_id: "custid"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words")
       .with(
@@ -281,7 +281,7 @@ class TextToSpeechV1Test < Minitest::Test
       customization_id: "custid",
       word: "word"
     )
-    assert_equal({ "customization" => "yep, just one" }, service_response.body)
+    assert_equal({ "customization" => "yep, just one" }, service_response.result)
 
     stub_request(:put, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words/word")
       .with(

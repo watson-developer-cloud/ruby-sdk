@@ -37,7 +37,7 @@ class VisualRecognitionV3Test < Minitest::Test
     service_response = service.get_classifier(
       classifier_id: "bogusnumber"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_delete_classifier
@@ -88,7 +88,7 @@ class VisualRecognitionV3Test < Minitest::Test
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_classifiers
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_create_classifier
@@ -120,7 +120,7 @@ class VisualRecognitionV3Test < Minitest::Test
       classname_positive_examples: cars,
       negative_examples: trucks
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     service_response = service.create_classifier(
       name: "Cars vs Trucks",
@@ -129,7 +129,7 @@ class VisualRecognitionV3Test < Minitest::Test
       negative_examples: "trucks",
       negative_examples_filename: "trucks"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_update_classifier
@@ -162,7 +162,7 @@ class VisualRecognitionV3Test < Minitest::Test
       classname_positive_examples: "positive examples classname",
       negative_examples: "negative examples"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     service_response = service.update_classifier(
       classifier_id: "bogusid",
@@ -171,7 +171,7 @@ class VisualRecognitionV3Test < Minitest::Test
       negative_examples: "negative examples",
       negative_examples_filename: "negative_filename"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_classify
@@ -217,31 +217,31 @@ class VisualRecognitionV3Test < Minitest::Test
     service_response = service.classify(
       url: "http://google.com"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     service_response = service.classify(
       url: "http://google.com",
       classifier_ids: %w[one two three]
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     service_response = service.classify(
       url: "http://google.com",
       owners: %w[me IBM]
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     image_file = File.open(Dir.getwd + "/resources/test.jpg")
     service_response = service.classify(
       images_file: image_file,
       images_filename: "test.jpg"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     service_response = service.classify(
       images_file: "image_file"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_detect_faces
@@ -293,19 +293,19 @@ class VisualRecognitionV3Test < Minitest::Test
     service_response = service.detect_faces(
       url: "http://google.com"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     image_file = File.open(Dir.getwd + "/resources/test.jpg")
     service_response = service.detect_faces(
       images_file: image_file,
       images_filename: "test.jpg"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
 
     service_response = service.detect_faces(
       images_file: "image_file"
     )
-    assert_equal(response, service_response.body)
+    assert_equal(response, service_response.result)
   end
 
   def test_delete_user_data
@@ -340,6 +340,6 @@ class VisualRecognitionV3Test < Minitest::Test
         }
       ).to_return(status: 200, body: "ml_model", headers: {})
     service_response = service.get_core_ml_model(classifier_id: "classifierid")
-    assert_equal("ml_model", service_response.body)
+    assert_equal("ml_model", service_response.result)
   end
 end

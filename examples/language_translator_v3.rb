@@ -19,23 +19,23 @@ language_translator = IBMWatson::LanguageTranslatorV3.new(
 translation = language_translator.translate(
   text: "Hello",
   model_id: "en-es"
-).body
+).result
 p translation
 
 ## List identifiable languages
-# languages = language_translator.list_identifiable_languages.body
+# languages = language_translator.list_identifiable_languages.result
 # p languages
 
 ## Identify
 # language = language_translator.identify(
 #   text: "Language translator translates text from one language to another"
-# ).body
+# ).result
 # p language
 
 ## List models
 # models = language_translator.list_models(
 #   source: "en"
-# ).body
+# ).result
 # p models
 
 ## Create model
@@ -44,12 +44,12 @@ p translation
 #   base_model_id: "en-es",
 #   name: "custom-english-to-spanish",
 #   forced_glossary: glossary
-# ).body
+# ).result
 # p response
 
 ## Delete model
-# p language_translator.delete_model(model_id: "9f8d9c6f-2123-462f-9793-f17fdcb77cd6").body
+# p language_translator.delete_model(model_id: "9f8d9c6f-2123-462f-9793-f17fdcb77cd6").result
 
 ## Get model details
-# model = language_translator.get_model(model_id: "fdadfc3b-0b96-4276-a6e5-f5c4a29711fc").body
+# model = language_translator.get_model(model_id: "fdadfc3b-0b96-4276-a6e5-f5c4a29711fc").result
 # p model

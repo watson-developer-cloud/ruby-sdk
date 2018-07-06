@@ -33,7 +33,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: models_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_models
-    assert_equal(models_response, service_response.body)
+    assert_equal(models_response, service_response.result)
 
     recognize_response = {
       "results" => [
@@ -62,7 +62,7 @@ class SpeechToTextV1Test < Minitest::Test
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     )
-    assert_equal(recognize_response, service_response.body)
+    assert_equal(recognize_response, service_response.result)
   end
 
   def test_get_model
@@ -81,7 +81,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.get_model(
       model_id: "modelid"
     )
-    assert_equal({ "bogus_response" => "yep" }, service_response.body)
+    assert_equal({ "bogus_response" => "yep" }, service_response.result)
   end
 
   def test_recognitions
@@ -108,7 +108,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: get_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.check_jobs
-    assert_equal("6193190c-0777-11e8-9b4b-43ad845196dd", service_response.body["recognitions"][0]["id"])
+    assert_equal("6193190c-0777-11e8-9b4b-43ad845196dd", service_response.result["recognitions"][0]["id"])
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions/jobid")
       .with(
@@ -121,7 +121,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.check_job(
       id: "jobid"
     )
-    assert_equal({ "status" => "waiting" }, service_response.body)
+    assert_equal({ "status" => "waiting" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions")
       .with(
@@ -137,7 +137,7 @@ class SpeechToTextV1Test < Minitest::Test
       audio: audio_file,
       content_type: "audio/basic"
     )
-    assert_equal({ "status" => "waiting" }, service_response.body)
+    assert_equal({ "status" => "waiting" }, service_response.result)
 
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions/jobid")
       .with(
@@ -169,7 +169,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.register_callback(
       callback_url: "monitorcalls.com"
     )
-    assert_equal({ "status" => "created", "url" => "monitorcalls.com" }, service_response.body)
+    assert_equal({ "status" => "created", "url" => "monitorcalls.com" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/unregister_callback?callback_url=monitorcalls.com")
       .with(
@@ -199,7 +199,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_language_models
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations")
       .with(
@@ -215,7 +215,7 @@ class SpeechToTextV1Test < Minitest::Test
       name: "Example model",
       base_model_name: "en-US_BroadbandModel"
     )
-    assert_equal({ "bogus_response" => "yep" }, service_response.body)
+    assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/train")
       .with(
@@ -241,7 +241,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.get_language_model(
       customization_id: "modelid"
     )
-    assert_equal({ "bogus_response" => "yep" }, service_response.body)
+    assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/modelid")
       .with(
@@ -271,7 +271,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_acoustic_models
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations")
       .with(
@@ -288,7 +288,7 @@ class SpeechToTextV1Test < Minitest::Test
       base_model_name: "en-US_BroadbandModel",
       description: "Example custom language model"
     )
-    assert_equal({ "bogus_response" => "yep" }, service_response.body)
+    assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customid/train")
       .with(
@@ -314,7 +314,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.get_acoustic_model(
       customization_id: "modelid"
     )
-    assert_equal({ "bogus_response" => "yep" }, service_response.body)
+    assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/modelid")
       .with(
@@ -346,7 +346,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.list_corpora(
       customization_id: "customid"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
       .with(
@@ -384,7 +384,7 @@ class SpeechToTextV1Test < Minitest::Test
       customization_id: "customid",
       corpus_name: "corpus"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
       .with(
@@ -487,7 +487,7 @@ class SpeechToTextV1Test < Minitest::Test
       customization_id: "custid",
       word_name: "IEEE"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/wordname")
       .with(
@@ -501,7 +501,7 @@ class SpeechToTextV1Test < Minitest::Test
       customization_id: "custid",
       word_name: "wordname"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words")
       .with(
@@ -514,7 +514,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.list_words(
       customization_id: "custid"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words?sort=alphabetical")
       .with(
@@ -528,7 +528,7 @@ class SpeechToTextV1Test < Minitest::Test
       customization_id: "custid",
       sort: "alphabetical"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words?word_type=all")
       .with(
@@ -542,7 +542,7 @@ class SpeechToTextV1Test < Minitest::Test
       customization_id: "custid",
       word_type: "all"
     )
-    assert_equal({ "get response" => "yep" }, service_response.body)
+    assert_equal({ "get response" => "yep" }, service_response.result)
   end
 
   def test_custom_audio_resources
@@ -594,7 +594,7 @@ class SpeechToTextV1Test < Minitest::Test
       customization_id: "custid",
       audio_name: "hiee"
     )
-    assert_equal({ "get response" => "done" }, service_response.body)
+    assert_equal({ "get response" => "done" }, service_response.result)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/custid/audio")
       .with(
@@ -607,7 +607,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.list_audio(
       customization_id: "custid"
     )
-    assert_equal({ "get response all" => "done" }, service_response.body)
+    assert_equal({ "get response all" => "done" }, service_response.result)
   end
 
   def test_delete_user_data
@@ -661,7 +661,7 @@ class SpeechToTextV1Test < Minitest::Test
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     )
-    output = future.value.body
+    output = future.value.result
     assert_equal(recognize_response["results"][0]["alternatives"][0]["transcript"], output["results"][0]["alternatives"][0]["transcript"])
   end
 
@@ -698,7 +698,7 @@ class SpeechToTextV1Test < Minitest::Test
       content_type: "audio/l16; rate=44100"
     )
     future.wait!
-    output = future.value.body
+    output = future.value.result
     assert_equal(recognize_response["results"][0]["alternatives"][0]["transcript"], output["results"][0]["alternatives"][0]["transcript"])
   end
 

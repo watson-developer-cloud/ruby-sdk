@@ -21,7 +21,7 @@ class TextToSpeechV1Test < Minitest::Test
   end
 
   def test_voices
-    output = @service.list_voices.body
+    output = @service.list_voices.result
     refute(output["voices"].nil?)
     voice = @service.get_voice(voice: output["voices"][0]["name"])
     refute(voice.nil?)
@@ -32,14 +32,14 @@ class TextToSpeechV1Test < Minitest::Test
       text: "my voice is my passport",
       accept: "audio/wav",
       voice: "en-US_AllisonVoice"
-    ).body
+    ).result
     refute(output.nil?)
   end
 
   def test_pronunciation
     output = @service.get_pronunciation(
       text: "hello"
-    ).body
+    ).result
     refute(output["pronunciation"].nil?)
   end
 
@@ -52,8 +52,8 @@ class TextToSpeechV1Test < Minitest::Test
     customization_id = @service.create_voice_model(
       name: "test_integration_customization",
       description: "customization for tests"
-    ).body["customization_id"]
-    words = @service.list_words(customization_id: customization_id).body["words"]
+    ).result["customization_id"]
+    words = @service.list_words(customization_id: customization_id).result["words"]
     assert(words.length.zero?)
     @service.add_word(
       customization_id: customization_id,
@@ -72,7 +72,7 @@ class TextToSpeechV1Test < Minitest::Test
     word = @service.get_word(
       customization_id: customization_id,
       word: "MACLs"
-    ).body
+    ).result
     assert(word["translation"] == "mackles")
     @service.delete_voice_model(
       customization_id: customization_id

@@ -11,7 +11,7 @@ natural_language_classifier = IBMWatson::NaturalLanguageClassifierV1.new(
 #   password: "YOUR SERVICE PASSWORD"
 # )
 
-classifiers = natural_language_classifier.list_classifiers.body
+classifiers = natural_language_classifier.list_classifiers.result
 p classifiers
 
 # create a classifier
@@ -23,20 +23,20 @@ metadata = {
 classifier = natural_language_classifier.create_classifier(
   metadata: metadata,
   training_data: training_data
-).body
+).result
 classifier_id = classifier["classifier_id"]
 p classifier
 
 status = natural_language_classifier.get_classifier(
   classifier_id: classifier_id
-).body
+).result
 p status
 
 if status["status"] == "Available"
   classes = natural_language_classifier.classify(
     classifier_id: classifier_id,
     text: "How hot will it be tomorrow?"
-  ).body
+  ).result
   p classes
 end
 
@@ -45,9 +45,9 @@ if status["status"] == "Available"
   classes = natural_language_classifier.classify_collection(
     classifier_id: classifier_id,
     collection: collection
-  ).body
+  ).result
   p classes
 end
 
-delete = natural_language_classifier.delete_classifier(classifier_id: classifier_id).body
+delete = natural_language_classifier.delete_classifier(classifier_id: classifier_id).result
 p delete

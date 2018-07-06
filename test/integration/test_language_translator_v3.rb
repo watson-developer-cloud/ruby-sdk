@@ -25,12 +25,12 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_get_model
     service_response = service.get_model(
       model_id: "en-it"
-    ).body
+    ).result
     refute(service_response.nil?)
   end
 
   def test_list_models
-    service_response = service.list_models.body
+    service_response = service.list_models.result
     refute(service_response.nil?)
   end
 
@@ -39,7 +39,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       text: "Hola, cómo estás? €",
       source: "es",
       target: "en"
-    ).body
+    ).result
     refute(service_response.nil?)
   end
 
@@ -47,19 +47,19 @@ class LanguageTranslatorV3Test < Minitest::Test
     service_response = service.translate(
       text: "Messi is the best ever",
       model_id: "en-es"
-    ).body
+    ).result
     refute(service_response.nil?)
   end
 
   def test_identify
     service_response = service.identify(
       text: "祝你有美好的一天"
-    ).body
+    ).result
     refute(service_response.nil?)
   end
 
   def test_list_identifiable_languages
-    service_response = service.list_identifiable_languages.body
+    service_response = service.list_identifiable_languages.result
     refute(service_response.nil?)
   end
 
@@ -70,12 +70,12 @@ class LanguageTranslatorV3Test < Minitest::Test
       base_model_id: "en-fr",
       name: "test_glossary_ruby_integration",
       forced_glossary: custom_model
-    ).body
+    ).result
     refute(service_response.nil?)
     model_id = service_response["model_id"]
     service_response = service.delete_model(
       model_id: model_id
-    ).body
+    ).result
     assert_equal("OK", service_response["status"])
   end
 end

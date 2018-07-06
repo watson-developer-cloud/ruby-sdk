@@ -183,7 +183,7 @@ response = assistant.headers(
 ```
 
 ## Parsing HTTP response info
-HTTP requests all return `DetailedResponse` objects that have a `body`, `status`, and `headers`
+HTTP requests all return `DetailedResponse` objects that have a `result`, `status`, and `headers`
 ```ruby
 require "ibm_watson"
 include IBMWatson
@@ -200,14 +200,14 @@ response = assistant.headers(
 
 p "Status: #{response.status}"
 p "Headers: #{response.headers}"
-p "Body: #{response.body}"
+p "Result: #{response.result}"
 ```
 
 This would give an output of `DetailedResponse` having the structure:
 ```ruby
 Status: 200
 Headers: <http response headers>
-Body: <response returned by service>
+Result: <response returned by service>
 ```
 
 ## Using Websockets

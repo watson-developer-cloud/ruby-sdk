@@ -52,7 +52,7 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-03-05"
     )
     service_response = service.list_environments
-    assert_equal(discovery_response_body, service_response.body)
+    assert_equal(discovery_response_body, service_response.result)
   end
 
   def test_get_environment
@@ -72,7 +72,7 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.get_environment(
       environment_id: "envid"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_create_environment
@@ -95,7 +95,7 @@ class DiscoveryV1Test < Minitest::Test
       name: "my name",
       description: "my description"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_update_environment
@@ -119,7 +119,7 @@ class DiscoveryV1Test < Minitest::Test
       name: "hello",
       description: "new"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_delete_environment
@@ -139,7 +139,7 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.delete_environment(
       environment_id: "envid"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_collections
@@ -159,7 +159,7 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.list_collections(
       environment_id: "envid"
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
   end
 
   def test_collection
@@ -185,7 +185,7 @@ class DiscoveryV1Test < Minitest::Test
       language: "",
       configuration_id: "confid"
     )
-    assert_equal({ "body" => "create" }, service_response.body)
+    assert_equal({ "body" => "create" }, service_response.result)
 
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections?version=2018-03-05")
       .with(
@@ -203,7 +203,7 @@ class DiscoveryV1Test < Minitest::Test
       language: "es",
       description: ""
     )
-    assert_equal({ "body" => "create" }, service_response.body)
+    assert_equal({ "body" => "create" }, service_response.result)
 
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
@@ -217,7 +217,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid"
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
 
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
@@ -231,7 +231,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid"
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
 
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/fields?version=2018-03-05")
       .with(
@@ -245,7 +245,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid"
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
   end
 
   def test_query
@@ -267,7 +267,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       count: 10
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
   end
 
   def test_query_relations
@@ -291,7 +291,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       count: 10
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
   end
 
   def test_query_entities
@@ -315,7 +315,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       count: 10
     )
-    assert_equal({ "body" => "hello" }, service_response.body)
+    assert_equal({ "body" => "hello" }, service_response.result)
   end
 
   def test_configs
@@ -343,7 +343,7 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.list_configurations(
       environment_id: "envid"
     )
-    assert_equal(results, service_response.body)
+    assert_equal(results, service_response.result)
 
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations/confid?version=2018-03-05")
       .with(
@@ -357,7 +357,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       configuration_id: "confid"
     )
-    assert_equal(results["configurations"][0], service_response.body)
+    assert_equal(results["configurations"][0], service_response.result)
 
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations?version=2018-03-05")
       .with(
@@ -373,7 +373,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       name: "my name"
     )
-    assert_equal(results["configurations"][0], service_response.body)
+    assert_equal(results["configurations"][0], service_response.result)
 
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations/confid?version=2018-03-05")
       .with(
@@ -390,7 +390,7 @@ class DiscoveryV1Test < Minitest::Test
       configuration_id: "confid",
       name: "my new name"
     )
-    assert_equal(results["configurations"][0], service_response.body)
+    assert_equal(results["configurations"][0], service_response.result)
 
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations/confid?version=2018-03-05")
       .with(
@@ -404,7 +404,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       configuration_id: "confid"
     )
-    assert_equal({ "deleted" => "bogus -- ok" }, service_response.body)
+    assert_equal({ "deleted" => "bogus -- ok" }, service_response.result)
   end
 
   def test_document
@@ -489,7 +489,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       document_id: "docid"
     )
-    assert_equal(doc_status, service_response.body)
+    assert_equal(doc_status, service_response.result)
 
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
       .with(
@@ -506,7 +506,7 @@ class DiscoveryV1Test < Minitest::Test
       file: "file",
       filename: "file.name"
     )
-    assert_equal({ "body" => [] }, service_response.body)
+    assert_equal({ "body" => [] }, service_response.result)
 
     service_response = service.update_document(
       environment_id: "envid",
@@ -514,7 +514,7 @@ class DiscoveryV1Test < Minitest::Test
       document_id: "docid",
       file: "file"
     )
-    assert_equal({ "body" => [] }, service_response.body)
+    assert_equal({ "body" => [] }, service_response.result)
 
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
       .with(
@@ -529,7 +529,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       document_id: "docid"
     )
-    assert_equal({ "body" => [] }, service_response.body)
+    assert_equal({ "body" => [] }, service_response.result)
 
     service_response = service.add_document(
       environment_id: "envid",
@@ -616,7 +616,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid"
     )
-    assert_equal(mock_response, service_response.body)
+    assert_equal(mock_response, service_response.result)
   end
 
   def test_add_training_data
@@ -667,7 +667,7 @@ class DiscoveryV1Test < Minitest::Test
       filter: filter,
       examples: examples
     )
-    assert_equal(mock_response, service_response.body)
+    assert_equal(mock_response, service_response.result)
   end
 
   def test_delete_training_data
@@ -723,7 +723,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       query_id: "queryid"
     )
-    assert_equal(mock_response, service_response.body)
+    assert_equal(mock_response, service_response.result)
   end
 
   def test_create_training_example
@@ -758,7 +758,7 @@ class DiscoveryV1Test < Minitest::Test
       relevance: relevance,
       cross_reference: cross_reference
     )
-    assert_equal(mock_response, service_response.body)
+    assert_equal(mock_response, service_response.result)
   end
 
   def test_delete_training_example
@@ -809,7 +809,7 @@ class DiscoveryV1Test < Minitest::Test
       query_id: "queryid",
       example_id: "exampleid"
     )
-    assert_equal(mock_response, service_response.body)
+    assert_equal(mock_response, service_response.result)
   end
 
   def test_update_training_example
@@ -843,7 +843,7 @@ class DiscoveryV1Test < Minitest::Test
       relevance: relevance,
       cross_reference: cross_reference
     )
-    assert_equal(mock_response, service_response.body)
+    assert_equal(mock_response, service_response.result)
   end
 
   def test_expansions
@@ -864,7 +864,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid"
     )
-    assert_equal({ "expansions" => "results" }, service_response.body)
+    assert_equal({ "expansions" => "results" }, service_response.result)
 
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
@@ -886,7 +886,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     )
-    assert_equal({ "expansions" => "success" }, service_response.body)
+    assert_equal({ "expansions" => "success" }, service_response.result)
 
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
@@ -941,7 +941,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_id: "collid"
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_federated_query
@@ -962,7 +962,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_ids: ["collid"]
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_federated_query_notices
@@ -983,7 +983,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       collection_ids: ["collid"]
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_list_training_examples
@@ -1005,7 +1005,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: "collid",
       query_id: "queryid"
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_list_credentials
@@ -1025,7 +1025,7 @@ class DiscoveryV1Test < Minitest::Test
     service_response = service.list_credentials(
       environment_id: "envid"
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_create_credentials
@@ -1048,7 +1048,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       source_type: "salesforce"
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_get_credentials
@@ -1069,7 +1069,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       credential_id: "credid"
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_update_credentials
@@ -1093,7 +1093,7 @@ class DiscoveryV1Test < Minitest::Test
       credential_id: "credid",
       source_type: "salesforce"
     )
-    assert_equal({ "received" => "true" }, service_response.body)
+    assert_equal({ "received" => "true" }, service_response.result)
   end
 
   def test_delete_credentials
@@ -1114,7 +1114,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: "envid",
       credential_id: "credid"
     )
-    assert_equal({ "deleted" => "true" }, service_response.body)
+    assert_equal({ "deleted" => "true" }, service_response.result)
   end
 
   def test_update_collection
@@ -1139,6 +1139,6 @@ class DiscoveryV1Test < Minitest::Test
       name: "name",
       description: "updated description"
     )
-    assert_equal({ "updated" => "true" }, service_response.body)
+    assert_equal({ "updated" => "true" }, service_response.result)
   end
 end

@@ -11,28 +11,28 @@ text_to_speech = IBMWatson::TextToSpeechV1.new(
 #   password: "YOUR SERVICE PASSWORD"
 # )
 
-p text_to_speech.list_voices.body
+p text_to_speech.list_voices.result
 
 File.new("output.wav", "w+") do |audio_file|
   response = text_to_speech.synthesize(
     text: "Hello world!",
     accept: "audio/wav",
     voice: "en-US_AllisonVoice"
-  ).body
+  ).result
   audio_file << response
 end
 
-# p text_to_speech.get_pronunciation(text: "Watson", format: "spr").body
+# p text_to_speech.get_pronunciation(text: "Watson", format: "spr").result
 
-# p text_to_speech.list_voice_models.body
+# p text_to_speech.list_voice_models.result
 
-# p text_to_speech.create_voice_model(name: "test-customization").body
+# p text_to_speech.create_voice_model(name: "test-customization").result
 
-# p text_to_speech.update_voice_model(customization_id: "YOUR CUSTOMIZATION ID", name: "new name").body
+# p text_to_speech.update_voice_model(customization_id: "YOUR CUSTOMIZATION ID", name: "new name").result
 
-# p text_to_speech.get_voice_model(customization_id: "YOUR CUSTOMIZATION ID").body
+# p text_to_speech.get_voice_model(customization_id: "YOUR CUSTOMIZATION ID").result
 
-# p text_to_speech.list_words(customization_id: "YOUR CUSTOMIZATION ID").body
+# p text_to_speech.list_words(customization_id: "YOUR CUSTOMIZATION ID").result
 
 # p text_to_speech.add_words( # rubocop:disable Style/AsciiComments
 #   customization_id: "YOUR CUSTOMIZATION ID",
@@ -42,15 +42,15 @@ end
 #       "translation" => "rɛzʊmeɪ"
 #     }
 #   ]
-# ).body
+# ).result
 
 # p text_to_speech.add_word(
 #   customization_id: "YOUR CUSTOMIZATION ID",
 #   word: "resume",
 #   translation: "rɛzʊmeɪ"
-# ).body # rubocop:enable Style/AsciiComments
+# ).result # rubocop:enable Style/AsciiComments
 
-# p text_to_speech.get_word(customization_id: "YOUR CUSTOMIZATION ID", word: "resume").body
+# p text_to_speech.get_word(customization_id: "YOUR CUSTOMIZATION ID", word: "resume").result
 
 # p text_to_speech.delete_word(customization_id: "YOUR CUSTOMIZATION ID", word: "resume")
 

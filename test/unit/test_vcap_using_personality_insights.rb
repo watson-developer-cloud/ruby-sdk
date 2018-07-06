@@ -35,7 +35,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       content_type: "text/plain;charset=utf-8"
     )
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -69,7 +69,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       consumption_preferences: true
     )
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -105,7 +105,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       consumption_preferences: true
     )
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])
@@ -141,7 +141,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       accept_language: "es"
     )
     assert_equal(expected_response.status, service_response.status)
-    assert_equal(expected_response.body, service_response.body)
+    assert_equal(expected_response.result, service_response.result)
     expected_response.headers.each_key do |key|
       assert(service_response.headers.key?(key))
       assert(expected_response.headers[key] == service_response.headers[key])

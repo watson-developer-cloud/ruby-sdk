@@ -41,12 +41,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_models
-    output = @service.list_models.body
+    output = @service.list_models.result
     refute_nil(output)
 
     model = @service.get_model(
       model_id: "ko-KR_BroadbandModel"
-    ).body
+    ).result
     model = model
     refute_nil(model)
 
@@ -65,7 +65,7 @@ class SpeechToTextV1Test < Minitest::Test
       audio: audio_file,
       content_type: "audio/l16; rate=44100"
     )
-    output = future.value.body
+    output = future.value.result
     refute_nil(output["results"][0]["alternatives"][0]["transcript"])
   end
 
@@ -76,12 +76,12 @@ class SpeechToTextV1Test < Minitest::Test
       content_type: "audio/l16; rate=44100"
     )
     future.wait!
-    output = future.value.body
+    output = future.value.result
     refute_nil(output["results"][0]["alternatives"][0]["transcript"])
   end
 
   def test_recognitions
-    output = @service.check_jobs.body
+    output = @service.check_jobs.result
     refute_nil(output)
   end
 
@@ -89,12 +89,12 @@ class SpeechToTextV1Test < Minitest::Test
     model = @service.create_language_model(
       name: "integration_test_model",
       base_model_name: "en-US_BroadbandModel"
-    ).body
+    ).result
     customization_id = model["customization_id"]
 
     output = @service.list_corpora(
       customization_id: customization_id
-    ).body
+    ).result
     refute_nil(output)
 
     @service.delete_language_model(
@@ -103,18 +103,18 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_acoustic_model
-    list_models = @service.list_acoustic_models.body
+    list_models = @service.list_acoustic_models.result
     refute_nil(list_models)
 
     create_acoustic_model = @service.create_acoustic_model(
       name: "integration_test_model_ruby",
       base_model_name: "en-US_BroadbandModel"
-    ).body
+    ).result
     refute_nil(create_acoustic_model)
 
     get_acoustic_model = @service.get_acoustic_model(
       customization_id: create_acoustic_model["customization_id"]
-    ).body
+    ).result
     refute_nil(get_acoustic_model)
 
     @service.reset_acoustic_model(

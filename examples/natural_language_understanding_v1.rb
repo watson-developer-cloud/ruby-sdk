@@ -20,5 +20,5 @@ response = natural_language_understanding.analyze(
     "entities" => {},
     "keywords" => {}
   }
-).body
+).result
 p response

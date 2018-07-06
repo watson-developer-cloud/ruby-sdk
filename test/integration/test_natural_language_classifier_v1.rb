@@ -22,7 +22,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
   end
 
   def test_list_classifier
-    list_classifiers = @service.list_classifiers.body
+    list_classifiers = @service.list_classifiers.result
     refute(list_classifiers.nil?)
   end
 
@@ -34,7 +34,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     classifier = @service.create_classifier(
       metadata: metadata,
       training_data: training_data
-    ).body
+    ).result
     classifier_id = classifier["classifier_id"]
     iterations = 0
     while iterations < 15
@@ -52,14 +52,14 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     classes = @service.classify(
       classifier_id: classifier_id,
       text: "How hot will it be tomorrow?"
-    ).body
+    ).result
     refute(classes.nil?)
 
     collection = [{ "text" => "How hot will it be today?" }, { "text" => "Is it hot outside?" }]
     classes = @service.classify_collection(
       classifier_id: classifier_id,
       collection: collection
-    ).body
+    ).result
     refute(classes.nil?)
 
     @service.delete_classifier(

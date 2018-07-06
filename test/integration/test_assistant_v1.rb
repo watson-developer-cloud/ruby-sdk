@@ -23,7 +23,7 @@ class AssistantV1Test < Minitest::Test
       language: "en",
       metadata: {}
     )
-    workspace_id = service_response.body["workspace_id"]
+    workspace_id = service_response.result["workspace_id"]
     assert((200..299).cover?(service_response.status))
 
     service_response = service.update_workspace(
@@ -422,7 +422,7 @@ class AssistantV1Test < Minitest::Test
     )
     assert((200..299).cover?(service_response.status))
 
-    context = service_response.body["context"]
+    context = service_response.result["context"]
     service_response = service.message(
       workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
       input: { "text" => "Turn on the lights" },

@@ -30,7 +30,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: list_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_classifiers
-    assert_equal(list_response, service_response.body)
+    assert_equal(list_response, service_response.result)
 
     status_response = {
       "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00",
@@ -49,7 +49,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     service_response = service.get_classifier(
       classifier_id: "497EF2-nlc-00"
     )
-    assert_equal(status_response, service_response.body)
+    assert_equal(status_response, service_response.result)
 
     classify_response = {
       "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1",
@@ -82,7 +82,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
       classifier_id: "497EF2-nlc-00",
       text: "test"
     )
-    assert_equal(classify_response, service_response.body)
+    assert_equal(classify_response, service_response.result)
 
     create_response = {
       "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00",
@@ -105,13 +105,13 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
       metadata: { "language" => "en" },
       metadata_filename: "metadata"
     )
-    assert_equal(create_response, service_response.body)
+    assert_equal(create_response, service_response.result)
 
     service_response = service.create_classifier(
       training_data: { "training" => "data" },
       metadata: { "language" => "en" }
     )
-    assert_equal(create_response, service_response.body)
+    assert_equal(create_response, service_response.result)
 
     stub_request(:delete, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00")
       .with(
@@ -182,6 +182,6 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
       classifier_id: classifier_id,
       collection: collection
     )
-    assert_equal(classify_collection_response, service_response.body)
+    assert_equal(classify_collection_response, service_response.result)
   end
 end

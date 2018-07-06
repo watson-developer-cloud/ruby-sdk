@@ -21,37 +21,37 @@ visual_recognition = IBMWatson::VisualRecognitionV3.new(
 #   name: "Cars vs Trucks",
 #   classname_positive_examples: cars,
 #   negative_examples: trucks
-# ).body
+# ).result
 
 File.open(Dir.getwd + "/resources/cars.zip") do |images_file|
   car_results = visual_recognition.classify(
     images_file: images_file,
     threshold: 0.1,
     classifier_ids: ["defaults"]
-  ).body
+  ).result
   p car_results
 end
 
-# p visual_recognition.get_classifier(classifier_id: "YOUR CLASSIFIER ID").body
+# p visual_recognition.get_classifier(classifier_id: "YOUR CLASSIFIER ID").result
 
 # File.open(Dir.getwd + "/resources/car.jpg") do |image_file|
 #   p visual_recognition.update_classifier(
 #     classifier_id: "CarsvsTrucks_1479118188",
 #     classname_positive_examples: image_file
-#   ).body
+#   ).result
 # end
 
-url_result = visual_recognition.classify(url: test_url).body
+url_result = visual_recognition.classify(url: test_url).result
 p url_result
 
-faces_result = visual_recognition.detect_faces(url: test_url).body
+faces_result = visual_recognition.detect_faces(url: test_url).result
 p faces_result
 
 # p visual_recognition.delete_classifier(classifier_id: "YOUR CLASSIFIER ID")
 
-p visual_recognition.list_classifiers.body
+p visual_recognition.list_classifiers.result
 
 File.open(Dir.getwd + "/resources/face.jpg") do |image_file|
-  face_result = visual_recognition.detect_faces(images_file: image_file).body
+  face_result = visual_recognition.detect_faces(images_file: image_file).result
   p face_result
 end

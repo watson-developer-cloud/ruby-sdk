@@ -23,6 +23,6 @@ File.open(Dir.getwd + "/resources/personality-v3.json") do |profile_json|
     content_type: "application/json",
     raw_scores: true,
     consumption_preferences: true
-  ).body
+  ).result
 end
 p profile

@@ -29,14 +29,14 @@ class VisualRecognitionV3Test < Minitest::Test
       images_file: image_file,
       threshold: "0.1",
       classifier_ids: "default"
-    ).body
+    ).result
     refute(dog_results.nil?)
   end
 
   def test_detect_faces
     output = @service.detect_faces(
       url: "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg"
-    ).body
+    ).result
     refute(output.nil?)
   end
 
@@ -48,13 +48,13 @@ class VisualRecognitionV3Test < Minitest::Test
       name: "CarsVsTrucks",
       classname_positive_examples: cars,
       negative_examples: trucks
-    ).body
+    ).result
     refute(classifier.nil?)
 
     classifier_id = classifier["classifier_id"]
     output = @service.get_classifier(
       classifier_id: classifier_id
-    ).body
+    ).result
     refute(output.nil?)
 
     @service.delete_classifier(

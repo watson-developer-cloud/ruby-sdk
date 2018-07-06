@@ -12,9 +12,9 @@ speech_to_text = IBMWatson::SpeechToTextV1.new(
 #   password: "YOUR SERVICE PASSWORD"
 # )
 
-p speech_to_text.list_models.body
+p speech_to_text.list_models.result
 
-p speech_to_text.get_model(model_id: "en-US_BroadbandModel").body
+p speech_to_text.get_model(model_id: "en-US_BroadbandModel").result
 
 File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
   recognition = speech_to_text.recognize(
@@ -22,7 +22,7 @@ File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
     content_type: "audio/wav",
     timestamps: true,
     word_confidence: true
-  ).body
+  ).result
   p recognition
 end
 

@@ -30,7 +30,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       },
       text: "hello this is a test"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_html_analyze
@@ -58,7 +58,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       },
       html: "<span>hello this is a test </span>"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_url_analyze
@@ -88,7 +88,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       xpath: "/bogus/xpath",
       language: "en"
     )
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_list_models
@@ -106,7 +106,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
         }
       ).to_return(status: 200, body: { resulting_key: true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_models
-    assert_equal({ "resulting_key" => true }, service_response.body)
+    assert_equal({ "resulting_key" => true }, service_response.result)
   end
 
   def test_delete_model
@@ -127,6 +127,6 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
     service_response = service.delete_model(
       model_id: model_id
     )
-    assert_equal({ "deleted" => model_id }, service_response.body)
+    assert_equal({ "deleted" => model_id }, service_response.result)
   end
 end

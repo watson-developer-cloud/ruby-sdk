@@ -24,7 +24,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_environments
-    envs = @service.list_environments.body
+    envs = @service.list_environments.result
     refute(envs.nil?)
     env = @service.get_environment(
       environment_id: envs["environments"][0]["environment_id"]
@@ -40,7 +40,7 @@ class DiscoveryV1Test < Minitest::Test
   def test_configurations
     configs = @service.list_configurations(
       environment_id: @environment_id
-    ).body
+    ).result
     refute(configs.nil?)
 
     name = "test" + ("A".."Z").to_a.sample
@@ -48,7 +48,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: @environment_id,
       name: name,
       description: "creating new config for ruby sdk"
-    ).body
+    ).result
     new_configuration_id = new_configuration_id["configuration_id"]
     refute(new_configuration_id.nil?)
     @service.get_configuration(
@@ -60,14 +60,14 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: @environment_id,
       configuration_id: new_configuration_id,
       name: "lala"
-    ).body
+    ).result
     updated_config = updated_config
     assert_equal("lala", updated_config["name"])
 
     deleted_config = @service.delete_configuration(
       environment_id: @environment_id,
       configuration_id: new_configuration_id
-    ).body
+    ).result
     deleted_config = deleted_config
     assert_equal("deleted", deleted_config["status"])
   end
@@ -79,7 +79,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: @environment_id,
       name: name,
       description: "Integration test for ruby sdk"
-    ).body
+    ).result
     new_collection_id = new_collection_id["collection_id"]
     refute(new_collection_id.nil?)
 
@@ -89,7 +89,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_status = @service.get_collection(
         environment_id: @environment_id,
         collection_id: new_collection_id
-      ).body
+      ).result
       collection_status = collection_status
     end
     updated_collection = @service.update_collection(
@@ -97,7 +97,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: new_collection_id,
       name: name,
       description: "Updating description"
-    ).body
+    ).result
     updated_collection = updated_collection
     assert_equal("Updating description", updated_collection["description"])
 
@@ -114,7 +114,7 @@ class DiscoveryV1Test < Minitest::Test
     expansions = @service.list_expansions(
       environment_id: @environment_id,
       collection_id: new_collection_id
-    ).body
+    ).result
     expansions = expansions
     refute(expansions["expansions"].nil?)
 
@@ -125,7 +125,7 @@ class DiscoveryV1Test < Minitest::Test
     deleted_collection = @service.delete_collection(
       environment_id: @environment_id,
       collection_id: new_collection_id
-    ).body
+    ).result
     deleted_collection = deleted_collection
     assert_equal("deleted", deleted_collection["status"])
   end
@@ -138,7 +138,7 @@ class DiscoveryV1Test < Minitest::Test
         environment_id: @environment_id,
         collection_id: @collection_id,
         file: file_info
-      ).body
+      ).result
     end
     add_doc = add_doc
     refute(add_doc["document_id"].nil?)
@@ -150,7 +150,7 @@ class DiscoveryV1Test < Minitest::Test
         environment_id: @environment_id,
         collection_id: @collection_id,
         document_id: add_doc["document_id"]
-      ).body
+      ).result
       doc_status = doc_status
     end
     assert_equal("available", doc_status["status"])
@@ -163,7 +163,7 @@ class DiscoveryV1Test < Minitest::Test
         document_id: add_doc["document_id"],
         file: file_info,
         filename: "newname.html"
-      ).body
+      ).result
     end
     refute(update_doc.nil?)
 
@@ -174,7 +174,7 @@ class DiscoveryV1Test < Minitest::Test
         environment_id: @environment_id,
         collection_id: @collection_id,
         document_id: add_doc["document_id"]
-      ).body
+      ).result
       doc_status = doc_status
     end
     assert_equal("available", doc_status["status"])
@@ -183,7 +183,7 @@ class DiscoveryV1Test < Minitest::Test
       environment_id: @environment_id,
       collection_id: @collection_id,
       document_id: add_doc["document_id"]
-    ).body
+    ).result
     delete_doc = delete_doc
     assert_equal("deleted", delete_doc["status"])
   end
@@ -194,7 +194,7 @@ class DiscoveryV1Test < Minitest::Test
       collection_id: @collection_id,
       filter: "extracted_metadata.sha1::9181d244*",
       return_fields: ["extracted_metadata.sha1"]
-    ).body
+    ).result
     refute(query_results.nil?)
   end
 end
