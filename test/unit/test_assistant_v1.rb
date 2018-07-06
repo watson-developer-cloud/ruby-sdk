@@ -73,6 +73,7 @@ class AssistantV1Test < Minitest::Test
     rescue WatsonApiException => e
       assert_equal(error_code, e.code)
       assert_equal(error_msg, e.error)
+      assert(e.to_s.instance_of?(String))
     end
   end
 
@@ -1569,5 +1570,29 @@ class AssistantV1Test < Minitest::Test
       customer_id: "id"
     )
     assert(service_response.nil?)
+  end
+
+  def test_update_dialog_node
+    service = WatsonAPIs::AssistantV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-02-16"
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/dialog_nodes/dialog_node?version=2018-02-16")
+      .with(
+        body: "{\"description\":\"A new description\"}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "Pseudo update dialog node response", headers: {})
+    service_response = service.update_dialog_node(
+      workspace_id: "workspace_id",
+      dialog_node: "dialog_node",
+      new_description: "A new description"
+    )
+    assert_equal("Pseudo update dialog node response", service_response.body)
   end
 end
