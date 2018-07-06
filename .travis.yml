@@ -30,3 +30,7 @@ deploy:
     gem: watson_apis
     on:
       branch: master
+      rvm: 2.5.1
+
+matrix:
+  fast_finish: true
