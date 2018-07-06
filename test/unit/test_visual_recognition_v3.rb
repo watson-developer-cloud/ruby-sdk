@@ -10,9 +10,10 @@ WebMock.disable_net_connect!(allow_localhost: true)
 class VisualRecognitionV3Test < Minitest::Test
   def test_get_classifier
     service = WatsonAPIs::VisualRecognitionV3.new(
-      version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      version: "2018-03-19"
     )
+    service._iam_access_token(iam_access_token: "bogus_access_token")
+    service._iam_access_token(iam_access_token: "bogus_access_token")
     response = {
       "classifier_id" => "bogusnumber",
       "name" => "Dog Breeds",
@@ -120,6 +121,15 @@ class VisualRecognitionV3Test < Minitest::Test
       negative_examples: trucks
     )
     assert_equal(response, service_response.body)
+
+    service_response = service.create_classifier(
+      name: "Cars vs Trucks",
+      classname_positive_examples: "cars",
+      classname_positive_examples_filename: "cars",
+      negative_examples: "trucks",
+      negative_examples_filename: "trucks"
+    )
+    assert_equal(response, service_response.body)
   end
 
   def test_update_classifier
@@ -143,13 +153,23 @@ class VisualRecognitionV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "gateway.watsonplatform.net",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_classifier(
-      classifier_id: "bogusid"
+      classifier_id: "bogusid",
+      classname_positive_examples: "positive examples classname",
+      negative_examples: "negative examples"
+    )
+    assert_equal(response, service_response.body)
+
+    service_response = service.update_classifier(
+      classifier_id: "bogusid",
+      classname_positive_examples: "positive examples file",
+      classname_positive_examples_filename: "positive_filename",
+      negative_examples: "negative examples",
+      negative_examples_filename: "negative_filename"
     )
     assert_equal(response, service_response.body)
   end
@@ -213,7 +233,13 @@ class VisualRecognitionV3Test < Minitest::Test
 
     image_file = File.open(Dir.getwd + "/resources/test.jpg")
     service_response = service.classify(
-      images_file: image_file
+      images_file: image_file,
+      images_filename: "test.jpg"
+    )
+    assert_equal(response, service_response.body)
+
+    service_response = service.classify(
+      images_file: "image_file"
     )
     assert_equal(response, service_response.body)
   end
@@ -271,7 +297,13 @@ class VisualRecognitionV3Test < Minitest::Test
 
     image_file = File.open(Dir.getwd + "/resources/test.jpg")
     service_response = service.detect_faces(
-      images_file: image_file
+      images_file: image_file,
+      images_filename: "test.jpg"
+    )
+    assert_equal(response, service_response.body)
+
+    service_response = service.detect_faces(
+      images_file: "image_file"
     )
     assert_equal(response, service_response.body)
   end
@@ -293,5 +325,21 @@ class VisualRecognitionV3Test < Minitest::Test
       customer_id: "id"
     )
     assert_nil(service_response)
+  end
+
+  def test_get_core_ml_model
+    service = WatsonAPIs::VisualRecognitionV3.new(
+      version: "2018-03-19",
+      iam_access_token: "bogus_access_token"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/classifierid/core_ml_model?version=2018-03-19")
+      .with(
+        headers: {
+          "Authorization" => "Bearer bogus_access_token",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "ml_model", headers: {})
+    service_response = service.get_core_ml_model(classifier_id: "classifierid")
+    assert_equal("ml_model", service_response.body)
   end
 end
