@@ -65,7 +65,7 @@ class IAMTokenManager
   # If this class is managing tokens and has a valid token stored, send it
   def _token
     return @user_access_token unless @user_access_token.nil? || (@user_access_token.respond_to?(:empty?) && @user_access_token.empty?)
-    if @token_info.nil?
+    if @token_info.all? { |_k, v| v.nil? }
       token_info = _request_token
       _save_token_info(
         token_info: token_info

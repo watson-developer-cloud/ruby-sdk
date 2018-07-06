@@ -104,7 +104,7 @@ class WatsonService
   end
 
   def _iam_access_token(iam_access_token:)
-    @token_manager._access_token(iam_access_token) unless @token_manager.nil?
+    @token_manager._access_token(iam_access_token: iam_access_token) unless @token_manager.nil?
     @token_manager = IAMTokenManager.new(iam_access_token: iam_access_token) if @token_manager.nil?
     @iam_access_token = iam_access_token
   end
@@ -120,9 +120,7 @@ class WatsonService
     defaults = { method: nil, url: nil, accept_json: false, headers: nil, params: nil, json: {}, data: nil }
     args = defaults.merge(args)
     args[:data].delete_if { |_k, v| v.nil? } if args[:data].instance_of?(Hash)
-    if args[:data].respond_to?(:merge)
-      args[:json] = args[:data].merge(args[:json]) unless args[:data].instance_of?(String)
-    end
+    args[:json] = args[:data].merge(args[:json]) if args[:data].respond_to?(:merge)
     args[:json] = args[:data] if args[:json].empty? || (args[:data].instance_of?(String) && !args[:data].empty?)
     args[:json].delete_if { |_k, v| v.nil? } if args[:json].instance_of?(Hash)
     args[:headers]["Accept"] = "application/json" if args[:accept_json]

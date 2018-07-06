@@ -7,10 +7,11 @@ class IAMAssistantV1Test < Minitest::Test
   Minitest::Test.parallelize_me!
   def test_create_update_delete_workspace
     service = WatsonAPIs::AssistantV1.new(
-      iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
       url: ENV["ASSISTANT_IAM_URL"],
       version: "2018-02-16"
     )
+    service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
+    service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
     service.add_default_headers(
       headers: {
         "X-Watson-Learning-Opt-Out" => "1",
@@ -681,5 +682,27 @@ class IAMAssistantV1Test < Minitest::Test
       export: false
     )
     assert((200..299).cover?(service_response.status))
+  end
+
+  def test_receive_error
+    service = WatsonAPIs::AssistantV1.new(
+      url: ENV["ASSISTANT_IAM_URL"],
+      version: "2018-02-16"
+    )
+    service.add_default_headers(
+      headers: {
+        "X-Watson-Learning-Opt-Out" => "1",
+        "X-Watson-Test" => "1"
+      }
+    )
+    error_received = false
+    begin
+      service._iam_api_key(iam_api_key: "bogus_api_key")
+      service.list_workspaces
+    rescue WatsonApiException => e
+      assert_equal("Provided API key could not be found", e.info["errorMessage"])
+      error_received = true
+    end
+    assert(error_received)
   end
 end
