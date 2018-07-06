@@ -360,7 +360,15 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.add_corpus(
       customization_id: "customid",
       corpus_name: "corpus",
-      corpus_file: corpus_file
+      corpus_file: corpus_file,
+      corpus_filename: "corpus-short-1.txt"
+    )
+    assert_nil(service_response)
+
+    service_response = service.add_corpus(
+      customization_id: "customid",
+      corpus_name: "corpus",
+      corpus_file: "corpus_file"
     )
     assert_nil(service_response)
 
@@ -692,5 +700,56 @@ class SpeechToTextV1Test < Minitest::Test
     future.wait!
     output = future.value.body
     assert_equal(recognize_response["results"][0]["alternatives"][0]["transcript"], output["results"][0]["alternatives"][0]["transcript"])
+  end
+
+  def test_reset_language_model
+    service = WatsonAPIs::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customization_id/reset")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.reset_language_model(customization_id: "customization_id")
+    assert_nil(service_response)
+  end
+
+  def test_upgrade_language_model
+    service = WatsonAPIs::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customization_id/upgrade_model")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.upgrade_language_model(customization_id: "customization_id")
+    assert_nil(service_response)
+  end
+
+  def test_upgrade_acoustic_model
+    service = WatsonAPIs::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customization_id/upgrade_model")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.upgrade_acoustic_model(customization_id: "customization_id")
+    assert_nil(service_response)
   end
 end

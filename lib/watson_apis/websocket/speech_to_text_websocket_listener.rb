@@ -27,7 +27,8 @@ class WebSocketClient
   end
 
   def start
-    on_open = lambda do |_event|
+    on_open = lambda do |event|
+      on_connect(event)
       @client.send(build_start_message(options: @options))
       @mic_running = true if @chunk_data
       send_audio(data: @audio)
@@ -84,6 +85,7 @@ class WebSocketClient
       @client.add_listener(Faye::WebSocket::API::Event.create("open"))
       @client.add_listener(Faye::WebSocket::API::Event.create("message"))
       @client.add_listener(Faye::WebSocket::API::Event.create("close"))
+      @client.add_listener(Faye::WebSocket::API::Event.create("error"))
     end
   end
 

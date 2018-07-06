@@ -126,6 +126,30 @@ class SpeechToTextV1Test < Minitest::Test
     )
   end
 
+  def test_recognize_websocket_as_chunks
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    mycallback = MyRecognizeCallback.new
+    speech = @service.recognize_with_websocket(
+      chunk_data: true,
+      recognize_callback: mycallback,
+      interim_results: true,
+      timestamps: true,
+      max_alternatives: 2,
+      word_alternatives_threshold: 0.5,
+      model: "en-US_BroadbandModel"
+    )
+    Thread.new do
+      until audio_file.eof?
+        chunk = audio_file.read(1024)
+        speech.add_audio_chunk(chunk: chunk)
+      end
+      sleep(1)
+      speech.stop_audio # Tell the websocket object that no more audio will be added
+    end
+    thr = Thread.new { speech.start }
+    thr.join
+  end
+
   def test_recognize_websocket
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
     mycallback = MyRecognizeCallback.new
