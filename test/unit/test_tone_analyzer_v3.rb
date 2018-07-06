@@ -172,4 +172,29 @@ class ToneAnalyzerV3Test < Minitest::Test
     ).tone(tone_input: tone_text, content_type: "application/json")
     assert_equal(tone_response, service_response.body)
   end
+
+  def test_tone_with_application_json
+    tone_response = JSON.parse(File.read(Dir.getwd + "/resources/tone-v3-expect1.json"))
+    headers = {
+      "Content-Type" => "application/json"
+    }
+    tone_text = { "text" => "This is the text to be analyzed" }
+    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
+      .with(
+        body: tone_text,
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: tone_response.to_json, headers: headers)
+    service = WatsonAPIs::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      username: "username",
+      password: "password"
+    )
+    service_response = service.tone(tone_input: tone_text, content_type: "application/json")
+    assert_equal(tone_response, service_response.body)
+  end
 end
