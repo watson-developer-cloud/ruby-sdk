@@ -117,13 +117,12 @@ class WebSocketClient
     if @chunk_data
       if @mic_running
         @queue.empty? ? send_chunk(chunk: nil, final: false) : send_chunk(chunk: @queue.pop(true), final: false)
+      elsif @queue.length == 1
+        send_chunk(chunk: @queue.pop(true), final: true)
+        @queue.close
+        @timer.cancel if @timer.respond_to?(:cancel)
+        return
       else
-        if @queue.length == 1
-          send_chunk(chunk: @queue.pop(true), final: true)
-          @queue.close
-          @timer.cancel if @timer.respond_to?(:cancel)
-          return
-        end
         send_chunk(chunk: @queue.pop(true), final: false) unless @queue.empty?
       end
     else
