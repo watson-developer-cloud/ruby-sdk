@@ -16,14 +16,18 @@ class WatsonApiException < StandardError
         %w[code error_code error error_message].each { |k| body_hash.delete(k) }
         @info = body_hash
       end
+      @transaction_id = transaction_id
+      @global_transaction_id = global_transaction_id
       @transaction_id = response.headers["X-DP-Watson-Tran-ID"] if response.headers.include?("X-DP-Watson-Tran-ID")
       @global_transaction_id = response.headers["X-Global-Transaction-ID"] if response.headers.include?("X-Global-Transaction-ID")
     else
+      # :nocov:
       @code = code
       @error = error
       @info = info
       @transaction_id = transaction_id
       @global_transaction_id = global_transaction_id
+      # :nocov:
     end
   end
 
