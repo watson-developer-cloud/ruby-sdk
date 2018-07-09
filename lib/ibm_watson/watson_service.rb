@@ -104,13 +104,13 @@ class WatsonService
   end
 
   def _iam_access_token(iam_access_token:)
-    @token_manager._access_token(iam_access_token: iam_access_token) unless @token_manager.nil?
+    @token_manager&._access_token(iam_access_token: iam_access_token)
     @token_manager = IAMTokenManager.new(iam_access_token: iam_access_token) if @token_manager.nil?
     @iam_access_token = iam_access_token
   end
 
   def _iam_api_key(iam_api_key:)
-    @token_manager._iam_api_key(iam_api_key: iam_api_key) unless @token_manager.nil?
+    @token_manager&._iam_api_key(iam_api_key: iam_api_key)
     @token_manager = IAMTokenManager.new(iam_api_key: iam_api_key) if @token_manager.nil?
     @iam_api_key = iam_api_key
   end

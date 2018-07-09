@@ -75,7 +75,7 @@ class WebSocketClient
       p event.message
     end
 
-    EM.reactor_thread.join unless EM.reactor_thread.nil?
+    EM&.reactor_thread&.join
     EM.run do
       @client = Faye::WebSocket::Client.new(@url, nil, headers: @headers)
       @client.onclose = on_close
@@ -141,7 +141,7 @@ class WebSocketClient
 
   def extract_transcripts(alternatives:)
     transcripts = []
-    unless alternatives.nil?
+    unless alternatives&.nil?.nil?
       alternatives.each do |alternative|
         transcript = {}
         transcript["confidence"] = alternative["confidence"] if alternative.key?("confidence")
