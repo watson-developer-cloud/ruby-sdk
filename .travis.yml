@@ -15,6 +15,7 @@ before_install:
 
 install:
   - pip install --user bumpversion
+  - npm install -g semantic-release
   - npm install -g @semantic-release/exec
   - bundle install
 
