@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "ibm_watson/version"
@@ -7,9 +9,10 @@ Gem::Specification.new do |spec|
   spec.version = IBMWatson::VERSION
   spec.authors = ["Max Nussbaum"]
 
-  spec.summary = "Client library to use the IBM Watson Services"
+  spec.summary = "Official client library to use the IBM Watson Services"
   spec.homepage = "https://www.github.com/watson-developer-cloud"
   spec.licenses = ["Apache-2.0"]
+  spec.required_ruby_version = ">= 2.3"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -33,7 +36,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "eventmachine", "~> 1.2"
   spec.add_runtime_dependency "faye-websocket", "~> 0.10"
   spec.add_runtime_dependency "http", "~> 3.3"
-  spec.add_runtime_dependency "json", "~> 2.1"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "codecov", "~> 0.1"

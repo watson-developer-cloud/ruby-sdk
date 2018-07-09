@@ -5,7 +5,7 @@ require("faye/websocket")
 require("json")
 
 ONE_KB = 1024
-TIMEOUT_PREFIX = "No speech detected for".freeze
+TIMEOUT_PREFIX = "No speech detected for"
 CLOSE_SIGNAL = 1000
 TEN_MILLISECONDS = 0.01
 
@@ -75,7 +75,7 @@ class WebSocketClient
       p event.message
     end
 
-    EM.reactor_thread.join unless EM.reactor_thread.nil?
+    EM&.reactor_thread&.join
     EM.run do
       @client = Faye::WebSocket::Client.new(@url, nil, headers: @headers)
       @client.onclose = on_close
@@ -141,7 +141,7 @@ class WebSocketClient
 
   def extract_transcripts(alternatives:)
     transcripts = []
-    unless alternatives.nil?
+    unless alternatives&.nil?.nil?
       alternatives.each do |alternative|
         transcript = {}
         transcript["confidence"] = alternative["confidence"] if alternative.key?("confidence")
