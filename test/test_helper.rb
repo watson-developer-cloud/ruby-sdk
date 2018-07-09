@@ -12,7 +12,6 @@ if ENV["COVERAGE"]
         File.basename(src_file.filename) == "version.rb"
       end
 
-      add_group "lib", "/lib/"
       command_name "Minitest"
     end
   end
