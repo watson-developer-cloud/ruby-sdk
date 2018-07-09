@@ -5,7 +5,7 @@ require("faye/websocket")
 require("json")
 
 ONE_KB = 1024
-TIMEOUT_PREFIX = "No speech detected for".freeze
+TIMEOUT_PREFIX = "No speech detected for"
 CLOSE_SIGNAL = 1000
 TEN_MILLISECONDS = 0.01
 

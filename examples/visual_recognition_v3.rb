@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require("ibm_watson/visual_recognition_v3")
 
-test_url = "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg".freeze
+test_url = "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg"
 
 # If using IAM
 visual_recognition = IBMWatson::VisualRecognitionV3.new(
