@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require("ibm_watson/language_translator_v3")
 
 # If using IAM

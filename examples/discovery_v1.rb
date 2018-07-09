@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require("ibm_watson/discovery_v1")
 
 # If using IAM

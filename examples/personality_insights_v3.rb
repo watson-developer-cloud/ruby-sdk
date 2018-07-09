@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require("ibm_watson/personality_insights_v3")
 
 # The example returns a JSON response whose content is the same as that in
