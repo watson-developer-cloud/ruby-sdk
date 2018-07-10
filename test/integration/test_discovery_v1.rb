@@ -45,6 +45,7 @@ unless ENV["DISCOVERY_USERNAME"].nil? || ENV["DISCOVERY_PASSWORD"].nil?
       ).result
       refute(configs.nil?)
 
+      skip "Skip to allow for concurrent travis jobs"
       name = "test" + ("A".."Z").to_a.sample
       new_configuration_id = @service.create_configuration(
         environment_id: @environment_id,

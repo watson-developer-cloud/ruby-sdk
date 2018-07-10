@@ -6,6 +6,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
   # Integration tests for the Watson Assistant V1 Service
   class IAMAssistantV1Test < Minitest::Test
     def test_create_update_delete_workspace
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
@@ -44,10 +45,11 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_workspace
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
+      service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
+      service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -78,6 +80,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_create_update_delete_counterexample
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         version: "2018-02-16",
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
@@ -147,6 +150,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_create_update_delete_entity
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
@@ -222,6 +226,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_create_update_delete_example
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
@@ -296,6 +301,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_create_update_delete_intent
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
@@ -433,6 +439,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_create_update_delete_synonym
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
@@ -512,6 +519,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_create_update_delete_value
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
@@ -590,6 +598,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     end
 
     def test_dialog_nodes
+      skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
