@@ -13,8 +13,8 @@ class MyRecognizeCallback < IBMWatson::RecognizeCallback
     @atomic_boolean = atomic_boolean
   end
 
-  def on_error(error:)
-    puts "Error received: #{error}"
+  def on_error(*)
+    @atomic_boolean.make_true
   end
 
   def on_inactivity_timeout(*)
@@ -86,6 +86,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
     end
 
     def test_custom_corpora
+      skip "Skip to allow for concurrent travis jobs"
       model = @service.create_language_model(
         name: "integration_test_model",
         base_model_name: "en-US_BroadbandModel"
@@ -106,6 +107,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
       list_models = @service.list_acoustic_models.result
       refute_nil(list_models)
 
+      skip "Skip to allow for concurrent travis jobs"
       create_acoustic_model = @service.create_acoustic_model(
         name: "integration_test_model_ruby",
         base_model_name: "en-US_BroadbandModel"
@@ -175,6 +177,52 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
         recognize_callback: mycallback,
         interim_results: true,
         inactivity_timeout: 3,
+        timestamps: true,
+        max_alternatives: 2,
+        word_alternatives_threshold: 0.5,
+        model: "en-US_BroadbandModel"
+      )
+      thr = Thread.new { speech.start }
+      thr.join
+      assert(atomic_boolean.true?)
+    end
+
+    def test_broken_audio_with_websocket
+      audio_file = File.open(Dir.getwd + "/resources/car.jpg")
+      atomic_boolean = Concurrent::AtomicBoolean.new
+      mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
+      speech = @service.recognize_with_websocket(
+        audio: audio_file,
+        recognize_callback: mycallback,
+        interim_results: true,
+        timestamps: true,
+        max_alternatives: 2,
+        word_alternatives_threshold: 0.5,
+        model: "en-US_BroadbandModel"
+      )
+      thr = Thread.new { speech.start }
+      thr.join
+      assert(atomic_boolean.true?)
+    end
+
+    def test_invalid_auth_with_websocket
+      audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+      atomic_boolean = Concurrent::AtomicBoolean.new
+      mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
+      temp_service = IBMWatson::SpeechToTextV1.new(
+        username: "username",
+        password: "password"
+      )
+      temp_service.add_default_headers(
+        headers: {
+          "X-Watson-Learning-Opt-Out" => "1",
+          "X-Watson-Test" => "1"
+        }
+      )
+      speech = temp_service.recognize_with_websocket(
+        audio: audio_file,
+        recognize_callback: mycallback,
+        interim_results: true,
         timestamps: true,
         max_alternatives: 2,
         word_alternatives_threshold: 0.5,

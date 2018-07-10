@@ -752,4 +752,21 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.upgrade_acoustic_model(customization_id: "customization_id")
     assert_nil(service_response)
   end
+
+  def test_reset_acoustic_model
+    service = IBMWatson::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customization_id/reset")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.reset_acoustic_model(customization_id: "customization_id")
+    assert_nil(service_response)
+  end
 end
