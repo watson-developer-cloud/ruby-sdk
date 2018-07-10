@@ -210,8 +210,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
       atomic_boolean = Concurrent::AtomicBoolean.new
       mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
       temp_service = IBMWatson::SpeechToTextV1.new(
-        username: "username",
-        password: "password"
+        iam_access_token: "bogus_iam_access_token"
       )
       temp_service.add_default_headers(
         headers: {

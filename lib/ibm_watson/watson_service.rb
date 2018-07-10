@@ -21,7 +21,7 @@ require_relative("./version.rb")
 # Class for interacting with the Watson API
 class WatsonService
   attr_accessor :password, :url, :username
-  attr_reader :conn
+  attr_reader :conn, :token_manager
   def initialize(vars)
     defaults = {
       vcap_services_name: nil,
