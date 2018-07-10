@@ -50,6 +50,7 @@ unless ENV["TEXT_TO_SPEECH_USERNAME"].nil? || ENV["TEXT_TO_SPEECH_PASSWORD"].nil
     end
 
     def test_custom_words
+      skip "Skip to allow for concurrent travis jobs"
       customization_id = @service.create_voice_model(
         name: "test_integration_customization",
         description: "customization for tests"

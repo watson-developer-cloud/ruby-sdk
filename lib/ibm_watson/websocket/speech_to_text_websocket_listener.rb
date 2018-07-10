@@ -72,7 +72,7 @@ class WebSocketClient
     end
 
     on_error = lambda do |event|
-      p event.message
+      @callback.on_error(error: event)
     end
 
     EM&.reactor_thread&.join
@@ -127,12 +127,9 @@ class WebSocketClient
       end
     else
       if @bytes_sent + ONE_KB >= @data_size
-        if @data_size > @bytes_sent
-          send_chunk(chunk: data.read(ONE_KB), final: true)
-          @timer.cancel if @timer.respond_to?(:cancel)
-          return
-        end
+        send_chunk(chunk: data.read(ONE_KB), final: true)
         @timer.cancel if @timer.respond_to?(:cancel)
+        return
       end
       send_chunk(chunk: data.read(ONE_KB), final: false)
     end

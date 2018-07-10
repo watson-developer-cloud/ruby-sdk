@@ -43,15 +43,6 @@ class IAMTokenManager
         headers: headers,
         params: params
       )
-    else
-      data = data.to_json if data.respond_to?(:to_json)
-      response = HTTP.request(
-        method,
-        url,
-        headers: headers,
-        body: data,
-        params: params
-      )
     end
     return JSON.parse(response.body.to_s) if (200..299).cover?(response.code)
     require_relative("./watson_api_exception.rb")
