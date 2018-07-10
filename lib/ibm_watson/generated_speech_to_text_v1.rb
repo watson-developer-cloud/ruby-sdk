@@ -230,7 +230,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize_sessionless(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
+    # @!method recognize(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a sessionless recognition
     #   request. Returns only the final results; to enable interim results, use
@@ -372,7 +372,7 @@ module IBMWatson
     #   You can also refer to [Speaker
     #   labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def recognize_sessionless(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
+    def recognize(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
       raise ArgumentError("content_type must be provided") if content_type.nil?
       headers = {

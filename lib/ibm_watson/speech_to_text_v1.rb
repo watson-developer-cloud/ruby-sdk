@@ -5,8 +5,6 @@ require_relative("./generated_speech_to_text_v1.rb")
 module IBMWatson
   # The Speech to Text V1 service.
   class SpeechToTextV1
-    alias recognize recognize_sessionless
-
     # @!method recognize_with_websocket(audio: nil,chunk_data: false,content_type: "audio/l16; rate=44100",model: "en-US_BroadbandModel",recognize_callback: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,version: nil,inactivity_timeout: 30,interim_results: false,keywords: nil,keywords_threshold: nil,max_alternatives: 1,word_alternatives_threshold: nil,word_confidence: false,timestamps: false,profanity_filter: nil,smart_formatting: false,speaker_labels: nil)
     # Sends audio for speech recognition using web sockets.
     # @param audio [IO] Audio to transcribe in the format specified by the `Content-Type` header.
