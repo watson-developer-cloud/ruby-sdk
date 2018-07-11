@@ -123,7 +123,7 @@ class WatsonService
     args[:json] = args[:data].merge(args[:json]) if args[:data].respond_to?(:merge)
     args[:json] = args[:data] if args[:json].empty? || (args[:data].instance_of?(String) && !args[:data].empty?)
     args[:json].delete_if { |_k, v| v.nil? } if args[:json].instance_of?(Hash)
-    args[:headers]["Accept"] = "application/json" if args[:accept_json]
+    args[:headers]["Accept"] = "application/json" if args[:accept_json] && args[:headers]["Accept"].nil?
     args[:headers]["Content-Type"] = "application/json" unless args[:headers].key?("Content-Type")
     args[:json] = args[:json].to_json if args[:json].instance_of?(Hash)
     args[:headers].delete_if { |_k, v| v.nil? } if args[:headers].instance_of?(Hash)

@@ -105,7 +105,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       .with(
         body: personality_text,
         headers: {
-          "Accept" => "application/json",
+          "Accept" => "text/csv",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
