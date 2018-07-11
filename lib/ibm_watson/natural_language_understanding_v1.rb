@@ -38,7 +38,7 @@ module IBMWatson
   class NaturalLanguageUnderstandingV1
     if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_natural_language_understanding_v1.rb")
       require_relative("./service_extensions/patch_natural_language_understanding_v1.rb")
-      NaturalLanguageUnderstandingV1.include NaturalLanguageUnderstandingV1Patch
+      NaturalLanguageUnderstandingV1.prepend NaturalLanguageUnderstandingV1Patch
     end
     include Concurrent::Async
     ##

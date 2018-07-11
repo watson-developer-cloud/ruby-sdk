@@ -32,7 +32,7 @@ module IBMWatson
   class AssistantV1
     if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_assistant_v1.rb")
       require_relative("./service_extensions/patch_assistant_v1.rb")
-      AssistantV1.include AssistantV1Patch
+      AssistantV1.prepend AssistantV1Patch
     end
     include Concurrent::Async
     ##
