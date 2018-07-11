@@ -47,7 +47,7 @@ unless ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? || ENV["VISUAL_RECOGNITION_IAM_
       trucks = File.open(Dir.getwd + "/resources/trucks.zip")
       classifier = @service.create_classifier(
         name: "CarsVsTrucks",
-        classname_positive_examples: cars,
+        cars_positive_examples: cars,
         negative_examples: trucks
       ).result
       refute(classifier.nil?)
