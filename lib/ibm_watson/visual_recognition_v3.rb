@@ -30,6 +30,10 @@ module IBMWatson
   ##
   # The Visual Recognition V3 service.
   class VisualRecognitionV3
+    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_visual_recognition_v3.rb")
+      require_relative("./service_extensions/patch_visual_recognition_v3.rb")
+      VisualRecognitionV3.include VisualRecognitionV3Patch
+    end
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -576,9 +580,5 @@ module IBMWatson
       )
       nil
     end
-  end
-  if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_visual_recognition_v3.rb")
-    require_relative("./service_extensions/patch_visual_recognition_v3.rb")
-    VisualRecognitionV3.prepend VisualRecognitionV3Patch
   end
 end

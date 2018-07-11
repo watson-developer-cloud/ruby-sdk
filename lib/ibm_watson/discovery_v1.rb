@@ -32,6 +32,10 @@ module IBMWatson
   ##
   # The Discovery V1 service.
   class DiscoveryV1
+    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_discovery_v1.rb")
+      require_relative("./service_extensions/patch_discovery_v1.rb")
+      DiscoveryV1.include DiscoveryV1Patch
+    end
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -2036,9 +2040,5 @@ module IBMWatson
       )
       response
     end
-  end
-  if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_discovery_v1.rb")
-    require_relative("./service_extensions/patch_discovery_v1.rb")
-    DiscoveryV1.prepend DiscoveryV1Patch
   end
 end

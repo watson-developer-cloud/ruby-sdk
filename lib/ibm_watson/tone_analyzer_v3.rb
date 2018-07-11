@@ -38,6 +38,10 @@ module IBMWatson
   ##
   # The Tone Analyzer V3 service.
   class ToneAnalyzerV3
+    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_tone_analyzer_v3.rb")
+      require_relative("./service_extensions/patch_tone_analyzer_v3.rb")
+      ToneAnalyzerV3.include ToneAnalyzerV3Patch
+    end
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -284,9 +288,5 @@ module IBMWatson
       )
       response
     end
-  end
-  if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_tone_analyzer_v3.rb")
-    require_relative("./service_extensions/patch_tone_analyzer_v3.rb")
-    ToneAnalyzerV3.prepend ToneAnalyzerV3Patch
   end
 end

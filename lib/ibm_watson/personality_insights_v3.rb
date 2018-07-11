@@ -47,6 +47,10 @@ module IBMWatson
   ##
   # The Personality Insights V3 service.
   class PersonalityInsightsV3
+    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_personality_insights_v3.rb")
+      require_relative("./service_extensions/patch_personality_insights_v3.rb")
+      PersonalityInsightsV3.include PersonalityInsightsV3Patch
+    end
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -257,9 +261,5 @@ module IBMWatson
       )
       response
     end
-  end
-  if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_personality_insights_v3.rb")
-    require_relative("./service_extensions/patch_personality_insights_v3.rb")
-    PersonalityInsightsV3.prepend PersonalityInsightsV3Patch
   end
 end
