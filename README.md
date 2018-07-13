@@ -207,8 +207,8 @@ p "Result: #{response.result}"
 This would give an output of `DetailedResponse` having the structure:
 ```ruby
 Status: 200
-Headers: <http response headers>
-Result: <response returned by service>
+Headers: "<http response headers>"
+Result: "<response returned by service>"
 ```
 
 ## Using Websockets
