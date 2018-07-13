@@ -92,4 +92,87 @@ module SpeechToTextV1Patch
     options.delete_if { |_, v| v.nil? }
     WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
   end
+
+  ##
+  # @!method add_word(customization_id:, word_name:, word: nil, sounds_like: nil, display_as: nil)
+  # Add a custom word.
+  # Adds a custom word to a custom language model. The service populates the words
+  #   resource for a custom model with out-of-vocabulary (OOV) words found in each
+  #   corpus added to the model. You can use this method to add a word or to modify an
+  #   existing word in the words resource. The words resource for a model can contain a
+  #   maximum of 30 thousand custom (OOV) words, including words that the service
+  #   extracts from corpora and words that you add directly.
+  #
+  #   You must use credentials for the instance of the service that owns a model to add
+  #   or modify a custom word for the model. Adding or modifying a custom word does not
+  #   affect the custom model until you train the model for the new data by using the
+  #   **Train a custom language model** method.
+  #
+  #   Use the `word_name` parameter to specify the custom word that is to be added or
+  #   modified. Use the `CustomWord` object to provide one or both of the optional
+  #   `sounds_like` and `display_as` fields for the word.
+  #   * The `sounds_like` field provides an array of one or more pronunciations for the
+  #   word. Use the parameter to specify how the word can be pronounced by users. Use
+  #   the parameter for words that are difficult to pronounce, foreign words, acronyms,
+  #   and so on. For example, you might specify that the word `IEEE` can sound like `i
+  #   triple e`. You can specify a maximum of five sounds-like pronunciations for a
+  #   word. For information about pronunciation rules, see [Using the sounds_like
+  #   field](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#soundsLike).
+  #   * The `display_as` field provides a different way of spelling the word in a
+  #   transcript. Use the parameter when you want the word to appear different from its
+  #   usual representation or from its spelling in corpora training data. For example,
+  #   you might indicate that the word `IBM(trademark)` is to be displayed as
+  #   `IBM&trade;`. For more information, see [Using the display_as
+  #   field](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#displayAs).
+  #
+  #
+  #   If you add a custom word that already exists in the words resource for the custom
+  #   model, the new definition overwrites the existing data for the word. If the
+  #   service encounters an error, it does not add the word to the words resource. Use
+  #   the **List a custom word** method to review the word that you add.
+  # @param customization_id [String] The customization ID (GUID) of the custom language model. You must make the
+  #   request with service credentials created for the instance of the service that owns
+  #   the custom model.
+  # @param word_name [String] The custom word for the custom language model. When you add or update a custom
+  #   word with the **Add a custom word** method, do not include spaces in the word. Use
+  #   a `-` (dash) or `_` (underscore) to connect the tokens of compound words.
+  # @param word [String] For the **Add custom words** method, you must specify the custom word that is to
+  #   be added to or updated in the custom model. Do not include spaces in the word. Use
+  #   a `-` (dash) or `_` (underscore) to connect the tokens of compound words.
+  #
+  #   Omit this field for the **Add a custom word** method.
+  # @param sounds_like [Array[String]] An array of sounds-like pronunciations for the custom word. Specify how words that
+  #   are difficult to pronounce, foreign words, acronyms, and so on can be pronounced
+  #   by users. For a word that is not in the service's base vocabulary, omit the
+  #   parameter to have the service automatically generate a sounds-like pronunciation
+  #   for the word. For a word that is in the service's base vocabulary, use the
+  #   parameter to specify additional pronunciations for the word. You cannot override
+  #   the default pronunciation of a word; pronunciations you add augment the
+  #   pronunciation from the base vocabulary. A word can have at most five sounds-like
+  #   pronunciations, and a pronunciation can include at most 40 characters not
+  #   including spaces.
+  # @param display_as [String] An alternative spelling for the custom word when it appears in a transcript. Use
+  #   the parameter when you want the word to have a spelling that is different from its
+  #   usual representation or from its spelling in corpora training data.
+  # @return [nil]
+  def add_word(customization_id:, word_name:, sounds_like: nil, display_as: nil)
+    raise ArgumentError("customization_id must be provided") if customization_id.nil?
+    raise ArgumentError("word_name must be provided") if word_name.nil?
+    headers = {
+    }
+    data = {
+      "word" => word_name,
+      "sounds_like" => sounds_like,
+      "display_as" => display_as
+    }
+    method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
+    request(
+      method: "PUT",
+      url: method_url,
+      headers: headers,
+      json: data,
+      accept_json: true
+    )
+    nil
+  end
 end
