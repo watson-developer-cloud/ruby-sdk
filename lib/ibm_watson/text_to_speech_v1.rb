@@ -80,10 +80,6 @@ module IBMWatson
   ##
   # The Text to Speech V1 service.
   class TextToSpeechV1
-    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_text_to_speech_v1.rb")
-      require_relative("./service_extensions/patch_text_to_speech_v1.rb")
-      TextToSpeechV1.prepend TextToSpeechV1Patch
-    end
     include Concurrent::Async
     ##
     # @!method initialize(args)

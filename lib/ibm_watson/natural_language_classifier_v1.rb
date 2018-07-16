@@ -31,10 +31,6 @@ module IBMWatson
   ##
   # The Natural Language Classifier V1 service.
   class NaturalLanguageClassifierV1
-    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_natural_language_classifier_v1.rb")
-      require_relative("./service_extensions/patch_natural_language_classifier_v1.rb")
-      NaturalLanguageClassifierV1.prepend NaturalLanguageClassifierV1Patch
-    end
     include Concurrent::Async
     ##
     # @!method initialize(args)

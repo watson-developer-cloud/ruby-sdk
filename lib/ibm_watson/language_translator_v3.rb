@@ -32,10 +32,6 @@ module IBMWatson
   ##
   # The Language Translator V3 service.
   class LanguageTranslatorV3
-    if File.exist?(Dir.getwd + "/lib/ibm_watson/service_extensions/patch_language_translator_v3.rb")
-      require_relative("./service_extensions/patch_language_translator_v3.rb")
-      LanguageTranslatorV3.prepend LanguageTranslatorV3Patch
-    end
     include Concurrent::Async
     ##
     # @!method initialize(args)
