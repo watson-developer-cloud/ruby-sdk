@@ -11,9 +11,9 @@ class WatsonApiException < StandardError
       @error = response.reason
       unless response.body.empty?
         body_hash = JSON.parse(response.body.to_s)
-        @code = body_hash["code"] || body_hash["error_code"]
-        @error = body_hash["error"] || body_hash["error_message"]
-        %w[code error_code error error_message].each { |k| body_hash.delete(k) }
+        @code = body_hash["code"] || body_hash["error_code"] || body_hash["status"]
+        @error = body_hash["error"] || body_hash["error_message"] || body_hash["statusInfo"] || body_hash["description"]
+        %w[code error_code status error error_message statusInfo description].each { |k| body_hash.delete(k) }
         @info = body_hash
       end
       @transaction_id = transaction_id
