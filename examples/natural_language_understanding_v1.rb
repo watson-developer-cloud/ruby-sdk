@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("ibm_watson/natural_language_understanding_v1")
+require("json")
 
 # If using IAM
 natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
@@ -23,4 +24,4 @@ response = natural_language_understanding.analyze(
     "keywords" => {}
   }
 ).result
-p response
+puts JSON.pretty_generate(response)

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("ibm_watson/assistant_v1")
+require("json")
 
 # If using IAM
 assistant = AssistantV1(
@@ -60,7 +61,7 @@ response = assistant.create_workspace(
   counterexamples: create_workspace_data["counterexamples"],
   metadata: create_workspace_data["metadata"]
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 workspace_id = response["workspace_id"]
 p "Workspace id #{workspace_id}"
@@ -69,7 +70,7 @@ response = assistant.get_workspace(
   workspace_id: workspace_id,
   export: true
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 #  message
 response = assistant.message(
@@ -83,16 +84,16 @@ response = assistant.message(
     }
   }
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_workspaces.result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_workspace(
   workspace_id: workspace_id,
   description: "Updated test workspace."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 # see cleanup section below for delete_workspace example
 
@@ -107,20 +108,20 @@ response = assistant.create_intent(
   description: "Test intent.",
   examples: examples
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_intent(
   workspace_id: workspace_id,
   intent: "test_intent",
   export: true
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_intents(
   workspace_id: workspace_id,
   export: true
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_intent(
   workspace_id: workspace_id,
@@ -128,7 +129,7 @@ response = assistant.update_intent(
   new_intent: "updated_test_intent",
   new_description: "Updated test intent."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 # see cleanup section below for delete_intent example
 
@@ -141,20 +142,20 @@ response = assistant.create_example(
   intent: "updated_test_intent",
   text: "Gimme a pizza with pepperoni"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_example(
   workspace_id: workspace_id,
   intent: "updated_test_intent",
   text: "Gimme a pizza with pepperoni"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_examples(
   workspace_id: workspace_id,
   intent: "updated_test_intent"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_example(
   workspace_id: workspace_id,
@@ -162,14 +163,14 @@ response = assistant.update_example(
   text: "Gimme a pizza with pepperoni",
   new_text: "Gimme a pizza with pepperoni"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_example(
   workspace_id: workspace_id,
   intent: "updated_test_intent",
   text: "Gimme a pizza with pepperoni"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 #########################
 # Counter Examples
@@ -179,29 +180,29 @@ response = assistant.create_counterexample(
   workspace_id: workspace_id,
   text: "I want financial advice today."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_counterexample(
   workspace_id: workspace_id,
   text: "I want financial advice today."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_counterexamples(workspace_id: workspace_id).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_counterexample(
   workspace_id: workspace_id,
   text: "I want financial advice today.",
   new_text: "I want financial advice today."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_counterexample(
   workspace_id: workspace_id,
   text: "I want financial advice today."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 #########################
 # Entities
@@ -214,7 +215,7 @@ response = assistant.create_entity(
   description: "A test entity.",
   values: values
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 entities = [
   {
@@ -256,30 +257,30 @@ response = assistant.create_entity(
   entity: entities[0]["entity"],
   values: entities[0]["values"]
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_entity(
   workspace_id: workspace_id,
   entity: entities[0]["entity"],
   export: true
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_entities(workspace_id: workspace_id).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_entity(
   workspace_id: workspace_id,
   entity: "test_entity",
   new_description: "An updated test entity."
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_entity(
   workspace_id: workspace_id,
   entity: "test_entity"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 #########################
 # Synonyms
@@ -298,7 +299,7 @@ response = assistant.create_synonym(
   value: "orange juice",
   synonym: "oj"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_synonym(
   workspace_id: workspace_id,
@@ -306,14 +307,14 @@ response = assistant.get_synonym(
   value: "orange juice",
   synonym: "oj"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_synonyms(
   workspace_id: workspace_id,
   entity: "beverage",
   value: "orange juice"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_synonym(
   workspace_id: workspace_id,
@@ -322,7 +323,7 @@ response = assistant.update_synonym(
   synonym: "oj",
   new_synonym: "OJ"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_synonym(
   workspace_id: workspace_id,
@@ -330,7 +331,7 @@ response = assistant.delete_synonym(
   value: "orange juice",
   synonym: "OJ"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 assistant.delete_entity(workspace_id: workspace_id, entity: "beverage")
 
@@ -345,20 +346,20 @@ response = assistant.create_value(
   entity: "test_entity",
   value: "test"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_value(
   workspace_id: workspace_id,
   entity: "test_entity",
   value: "test"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_values(
   workspace_id: workspace_id,
   entity: "test_entity"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_value(
   workspace_id: workspace_id,
@@ -366,14 +367,14 @@ response = assistant.update_value(
   value: "test",
   new_value: "example"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_value(
   workspace_id: workspace_id,
   entity: "test_entity",
   value: "example"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 assistant.delete_entity(workspace_id: workspace_id, entity: "test_entity")
 
@@ -399,33 +400,33 @@ response = assistant.create_dialog_node(
   description: create_dialog_node["description"],
   actions: create_dialog_node["actions"]
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.get_dialog_node(
   workspace_id: workspace_id,
   dialog_node: create_dialog_node["dialog_node"]
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.list_dialog_nodes(workspace_id: workspace_id).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.update_dialog_node(
   workspace_id: workspace_id,
   dialog_node: create_dialog_node["dialog_node"],
   new_dialog_node: "updated_node"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_dialog_node(workspace_id: workspace_id, dialog_node: "updated_node").result
-p response
+puts JSON.pretty_generate(response)
 
 #########################
 # Logs
 #########################
 
 response = assistant.list_logs(workspace_id: workspace_id).result
-p response
+puts JSON.pretty_generate(response)
 
 #########################
 # Clean-up
@@ -435,7 +436,7 @@ response = assistant.delete_intent(
   workspace_id: workspace_id,
   intent: "updated_test_intent"
 ).result
-p response
+puts JSON.pretty_generate(response)
 
 response = assistant.delete_workspace(workspace_id: workspace_id).result
-p response
+puts JSON.pretty_generate(response)

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("ibm_watson/personality_insights_v3")
+require("json")
 
 # The example returns a JSON response whose content is the same as that in
 #   ../resources/personality-v3-expect2.txt
@@ -27,4 +28,4 @@ File.open(Dir.getwd + "/resources/personality-v3.json") do |profile_json|
     consumption_preferences: true
   ).result
 end
-p profile
+puts JSON.pretty_generate(profile)
