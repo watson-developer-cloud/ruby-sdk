@@ -64,7 +64,7 @@ class PersonalityInsightsV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = DetailedResponse.new(status: 200, body: profile_response, headers: headers)
+    expected_response = DetailedResponse.new(status: 200, body: JSON.parse(profile_response), headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&raw_scores=true&version=2017-10-13")
       .with(
         body: personality_text,
