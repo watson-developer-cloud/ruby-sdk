@@ -42,6 +42,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
+# Module for the Watson APIs
 module IBMWatson
   ##
   # The Personality Insights V3 service.

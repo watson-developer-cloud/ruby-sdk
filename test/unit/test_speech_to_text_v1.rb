@@ -408,7 +408,7 @@ class SpeechToTextV1Test < Minitest::Test
     )
     stub_request(:put, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/IEEE")
       .with(
-        body: "{\"sounds_like\":[\"i triple e\"],\"display_as\":\"IEEE\"}",
+        body: "{\"word\":\"IEEE\",\"sounds_like\":[\"i triple e\"],\"display_as\":\"IEEE\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",

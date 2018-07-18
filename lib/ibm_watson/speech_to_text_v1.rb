@@ -74,6 +74,7 @@ require_relative "./detailed_response"
 
 require_relative "./watson_service"
 
+# Module for the Watson APIs
 module IBMWatson
   ##
   # The Speech to Text V1 service.
@@ -408,6 +409,7 @@ module IBMWatson
       response
     end
 
+    ##
     # @!method recognize_with_websocket(audio: nil,chunk_data: false,content_type: "audio/l16; rate=44100",model: "en-US_BroadbandModel",recognize_callback: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,version: nil,inactivity_timeout: 30,interim_results: false,keywords: nil,keywords_threshold: nil,max_alternatives: 1,word_alternatives_threshold: nil,word_confidence: false,timestamps: false,profanity_filter: nil,smart_formatting: false,speaker_labels: nil)
     # Sends audio for speech recognition using web sockets.
     # @param audio [IO] Audio to transcribe in the format specified by the `Content-Type` header.
@@ -455,13 +457,16 @@ module IBMWatson
     )
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
-      raise TypeError("Callback is not a derived class of RecognizeCallback") unless recognize_callback.is_a?(RecognizeCallback)
-
+      raise TypeError("Callback is not a derived class of RecognizeCallback") unless recognize_callback.is_a?(IBMWatson::RecognizeCallback)
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
-
       headers = {}
       headers = @watson_service.conn.default_options.headers.to_hash unless @watson_service.conn.default_options.headers.to_hash.empty?
-      headers["Authorization"] = "Basic " + Base64.strict_encode64("#{@watson_service.username}:#{@watson_service.password}")
+      if !@watson_service.token_manager.nil?
+        access_token = @watson_service.token_manager._token
+        headers["Authorization"] = "Bearer #{access_token}"
+      elsif !@watson_service.username.nil? && !@watson_service.password.nil?
+        headers["Authorization"] = "Basic " + Base64.strict_encode64("#{@watson_service.username}:#{@watson_service.password}")
+      end
       url = @watson_service.url.gsub("https:", "wss:")
       params = {
         "model" => model,
@@ -472,7 +477,6 @@ module IBMWatson
       }
       params.delete_if { |_, v| v.nil? }
       url += "/v1/recognize?" + HTTP::URI.form_encode(params)
-
       options = {
         "content_type" => content_type,
         "inactivity_timeout" => inactivity_timeout,
@@ -490,7 +494,6 @@ module IBMWatson
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
     end
-
     #########################
     # Asynchronous
     #########################
@@ -1467,7 +1470,7 @@ module IBMWatson
     end
 
     ##
-    # @!method add_word(customization_id:, word_name:, word: nil, sounds_like: nil, display_as: nil)
+    # @!method add_word(customization_id:, word_name:, sounds_like: nil, display_as: nil)
     # Add a custom word.
     # Adds a custom word to a custom language model. The service populates the words
     #   resource for a custom model with out-of-vocabulary (OOV) words found in each
@@ -1509,11 +1512,6 @@ module IBMWatson
     # @param word_name [String] The custom word for the custom language model. When you add or update a custom
     #   word with the **Add a custom word** method, do not include spaces in the word. Use
     #   a `-` (dash) or `_` (underscore) to connect the tokens of compound words.
-    # @param word [String] For the **Add custom words** method, you must specify the custom word that is to
-    #   be added to or updated in the custom model. Do not include spaces in the word. Use
-    #   a `-` (dash) or `_` (underscore) to connect the tokens of compound words.
-    #
-    #   Omit this field for the **Add a custom word** method.
     # @param sounds_like [Array[String]] An array of sounds-like pronunciations for the custom word. Specify how words that
     #   are difficult to pronounce, foreign words, acronyms, and so on can be pronounced
     #   by users. For a word that is not in the service's base vocabulary, omit the
@@ -1528,13 +1526,13 @@ module IBMWatson
     #   the parameter when you want the word to have a spelling that is different from its
     #   usual representation or from its spelling in corpora training data.
     # @return [nil]
-    def add_word(customization_id:, word_name:, word: nil, sounds_like: nil, display_as: nil)
+    def add_word(customization_id:, word_name:, sounds_like: nil, display_as: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
       raise ArgumentError("word_name must be provided") if word_name.nil?
       headers = {
       }
       data = {
-        "word" => word,
+        "word" => word_name,
         "sounds_like" => sounds_like,
         "display_as" => display_as
       }

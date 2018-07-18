@@ -200,5 +200,12 @@ unless ENV["DISCOVERY_USERNAME"].nil? || ENV["DISCOVERY_PASSWORD"].nil?
       ).result
       refute(query_results.nil?)
     end
+
+    def test_list_credentials
+      credentials = @service.list_credentials(
+        environment_id: @environment_id
+      ).result
+      refute(credentials.nil?)
+    end
   end
 end

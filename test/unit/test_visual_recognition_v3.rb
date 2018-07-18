@@ -124,8 +124,8 @@ class VisualRecognitionV3Test < Minitest::Test
 
     service_response = service.create_classifier(
       name: "Cars vs Trucks",
-      classname_positive_examples: "cars",
-      classname_positive_examples_filename: "cars",
+      cars_positive_examples: "cars",
+      cars_positive_examples_filename: "cars",
       negative_examples: "trucks",
       negative_examples_filename: "trucks"
     )
@@ -159,15 +159,15 @@ class VisualRecognitionV3Test < Minitest::Test
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_classifier(
       classifier_id: "bogusid",
-      classname_positive_examples: "positive examples classname",
+      positive_positive_examples: "positive examples classname",
       negative_examples: "negative examples"
     )
     assert_equal(response, service_response.result)
 
     service_response = service.update_classifier(
       classifier_id: "bogusid",
-      classname_positive_examples: "positive examples file",
-      classname_positive_examples_filename: "positive_filename",
+      positive_positive_examples: "positive examples file",
+      positive_positive_examples_filename: "positive_filename",
       negative_examples: "negative examples",
       negative_examples_filename: "negative_filename"
     )

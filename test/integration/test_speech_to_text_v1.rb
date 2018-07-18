@@ -210,8 +210,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
       atomic_boolean = Concurrent::AtomicBoolean.new
       mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
       temp_service = IBMWatson::SpeechToTextV1.new(
-        username: "username",
-        password: "password"
+        iam_access_token: "bogus_iam_access_token"
       )
       temp_service.add_default_headers(
         headers: {
@@ -231,6 +230,24 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
       thr = Thread.new { speech.start }
       thr.join
       assert(atomic_boolean.true?)
+    end
+
+    def test_add_word
+      model = @service.create_language_model(
+        name: "integration_test_model",
+        base_model_name: "en-US_BroadbandModel"
+      ).result
+      customization_id = model["customization_id"]
+      service_response = @service.add_word(
+        customization_id: customization_id,
+        word_name: "IEEE",
+        sounds_like: ["i triple e"],
+        display_as: "IEEE"
+      )
+      assert_nil(service_response)
+      @service.delete_language_model(
+        customization_id: customization_id
+      )
     end
   end
 end
