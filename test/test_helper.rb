@@ -12,9 +12,6 @@ if ENV["COVERAGE"]
         File.basename(src_file.filename) == "version.rb"
       end
 
-      lib_proc = proc { |file| !file.filename.include?("service_extensions") }
-      add_group "Services", "/lib/", &lib_proc
-      add_group "Patches", "/lib/ibm_watson/service_extensions/"
       command_name "Minitest"
     end
   end
