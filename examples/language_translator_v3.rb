@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("ibm_watson/language_translator_v3")
+require("json")
 
 # If using IAM
 language_translator = IBMWatson::LanguageTranslatorV3.new(
@@ -22,23 +23,23 @@ translation = language_translator.translate(
   text: "Hello",
   model_id: "en-es"
 ).result
-p translation
+puts JSON.pretty_generate(translation)
 
 ## List identifiable languages
 # languages = language_translator.list_identifiable_languages.result
-# p languages
+# puts JSON.pretty_generate(languages)
 
 ## Identify
 # language = language_translator.identify(
 #   text: "Language translator translates text from one language to another"
 # ).result
-# p language
+# puts JSON.pretty_generate(language)
 
 ## List models
 # models = language_translator.list_models(
 #   source: "en"
 # ).result
-# p models
+# puts JSON.pretty_generate(models)
 
 ## Create model
 # glossary = File.open(Dir.getwd + "/resources/glossary.tmx")
@@ -47,11 +48,11 @@ p translation
 #   name: "custom-english-to-spanish",
 #   forced_glossary: glossary
 # ).result
-# p response
+# puts JSON.pretty_generate(response)
 
 ## Delete model
-# p language_translator.delete_model(model_id: "9f8d9c6f-2123-462f-9793-f17fdcb77cd6").result
+# puts JSON.pretty_generate(language_translator.delete_model(model_id: "9f8d9c6f-2123-462f-9793-f17fdcb77cd6").result)
 
 ## Get model details
 # model = language_translator.get_model(model_id: "fdadfc3b-0b96-4276-a6e5-f5c4a29711fc").result
-# p model
+# puts JSON.pretty_generate(model)

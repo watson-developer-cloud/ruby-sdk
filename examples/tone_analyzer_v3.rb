@@ -27,13 +27,13 @@ utterances = [
   }
 ]
 p "\ntone_chat example 1:\n"
-p tone_analyzer.tone_chat(utterances: utterances).result
+puts JSON.pretty_generate(tone_analyzer.tone_chat(utterances: utterances).result)
 
 p "\ntone example 1:\n"
-p tone_analyzer.tone(
+puts JSON.pretty_generate(tone_analyzer.tone(
   tone_input: "I am very happy. It is a good day.",
   content_type: "text/plain"
-).result
+).result)
 
 p "\ntone example 2:\n"
 File.open(Dir.getwd + "/resources/tone-example.json") do |tone_json|
@@ -41,7 +41,7 @@ File.open(Dir.getwd + "/resources/tone-example.json") do |tone_json|
     tone_input: JSON.parse(tone_json.read)["text"],
     content_type: "text/plain"
   ).result
-  p tone
+  puts JSON.pretty_generate(tone)
 end
 
 p "\ntone example 3:\n"
@@ -51,7 +51,7 @@ File.open(Dir.getwd + "/resources/tone-example.json") do |tone_json|
     content_type: "text/plain",
     sentences: true
   ).result
-  p tone
+  puts JSON.pretty_generate(tone)
 end
 
 p "\ntone example 4:\n"
@@ -60,7 +60,7 @@ File.open(Dir.getwd + "/resources/tone-example.json") do |tone_json|
     tone_input: JSON.parse(tone_json.read),
     content_type: "application/json"
   ).result
-  p tone
+  puts JSON.pretty_generate(tone)
 end
 
 p "\ntone example 5:\n"
@@ -69,5 +69,5 @@ File.open(Dir.getwd + "/resources/tone-example-html.json") do |tone_html|
     tone_input: JSON.parse(tone_html.read)["text"],
     content_type: "text/html"
   ).result
-  p tone
+  puts JSON.pretty_generate(tone)
 end

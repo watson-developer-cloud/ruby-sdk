@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("ibm_watson/speech_to_text_v1")
+require("json")
 
 # If using IAM
 speech_to_text = IBMWatson::SpeechToTextV1.new(
@@ -13,9 +14,9 @@ speech_to_text = IBMWatson::SpeechToTextV1.new(
 #   password: "YOUR SERVICE PASSWORD"
 # )
 
-p speech_to_text.list_models.result
+puts JSON.pretty_generate(speech_to_text.list_models.result)
 
-p speech_to_text.get_model(model_id: "en-US_BroadbandModel").result
+puts JSON.pretty_generate(speech_to_text.get_model(model_id: "en-US_BroadbandModel").result)
 
 File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
   recognition = speech_to_text.recognize(
@@ -24,7 +25,7 @@ File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
     timestamps: true,
     word_confidence: true
   ).result
-  p recognition
+  puts JSON.pretty_generate(recognition)
 end
 
 # Example using websockets
@@ -34,7 +35,7 @@ class MyRecognizeCallback < IBMWatson::RecognizeCallback
   end
 
   def on_transcription(transcript:)
-    puts transcript
+    puts JSON.pretty_generate(transcript)
   end
 
   def on_connected
