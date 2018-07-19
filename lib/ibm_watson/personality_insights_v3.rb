@@ -241,7 +241,7 @@ module IBMWatson
         "csv_headers" => csv_headers,
         "consumption_preferences" => consumption_preferences
       }
-      if content_type == "application/json" && content.instance_of?(Hash)
+      if content_type.start_with?("application/json") && content.instance_of?(Hash)
         data = content.to_json
       else
         data = content
