@@ -214,7 +214,7 @@ module IBMWatson
         "sentences" => sentences,
         "tones" => tones.to_a
       }
-      if content_type == "application/json" && tone_input.instance_of?(Hash)
+      if content_type.start_with?("application/json") && tone_input.instance_of?(Hash)
         data = tone_input.to_json
       else
         data = tone_input
