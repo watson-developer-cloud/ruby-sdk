@@ -8,7 +8,7 @@ require("json")
 
 # If using IAM
 personality_insights = IBMWatson::PersonalityInsightsV3.new(
-  iam_api_key: "IAM API KEY",
+  iam_apikey: "IAM API KEY",
   version: "2017-10-13"
 )
 

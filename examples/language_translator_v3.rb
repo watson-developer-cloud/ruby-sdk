@@ -8,7 +8,7 @@ language_translator = IBMWatson::LanguageTranslatorV3.new(
   version: "2018-05-31",
   ### url is optional, and defaults to the URL below. Use the correct URL for your region.
   # url: "https://gateway.watsonplatform.net/language-translator/api",
-  iam_api_key: "your_api_key"
+  iam_apikey: "your_api_key"
 )
 
 # If you have username & password in your credentials use:

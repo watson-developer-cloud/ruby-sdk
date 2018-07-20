@@ -5,7 +5,7 @@ require("json")
 
 # If using IAM
 assistant = AssistantV1(
-  iam_api_key: "IAM API KEY",
+  iam_apikey: "IAM API KEY",
   version: "2018-02-16"
 )
 

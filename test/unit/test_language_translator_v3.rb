@@ -11,7 +11,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_translate_source_target
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -31,7 +31,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "character_count" => 19,
@@ -59,7 +59,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_translate_model_id
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -79,7 +79,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "character_count" => 22,
@@ -110,7 +110,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_identify
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -130,7 +130,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "languages" => [
@@ -167,7 +167,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_list_identifiable_languages
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -187,7 +187,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "languages" => [
@@ -232,7 +232,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_create_model
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -252,7 +252,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "status" => "available",
@@ -304,7 +304,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_delete_model
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -324,7 +324,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "status" => "OK"
@@ -346,7 +346,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_get_model
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -366,7 +366,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "status" => "available",
@@ -397,7 +397,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   def test_list_models
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -417,7 +417,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_api_key: "iam_api_key"
+      iam_apikey: "iam_apikey"
     )
     expected = {
       "models" => [

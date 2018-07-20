@@ -5,7 +5,7 @@ require("json")
 
 # If using IAM
 discovery = IBMWatson::DiscoveryV1.new(
-  iam_api_key: "IAM API KEY",
+  iam_apikey: "IAM API KEY",
   version: "2018-03-05"
 )
 

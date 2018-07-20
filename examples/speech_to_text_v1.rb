@@ -5,7 +5,7 @@ require("json")
 
 # If using IAM
 speech_to_text = IBMWatson::SpeechToTextV1.new(
-  iam_api_key: "IAM API KEY"
+  iam_apikey: "IAM API KEY"
 )
 
 # If you have username & password in your credentials use:

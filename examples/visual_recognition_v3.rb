@@ -8,7 +8,7 @@ test_url = "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.j
 # If using IAM
 visual_recognition = IBMWatson::VisualRecognitionV3.new(
   version: "2018-03-19",
-  iam_api_key: "IAM API KEY"
+  iam_apikey: "IAM API KEY"
 )
 
 # If you have username & password in your credentials use:
