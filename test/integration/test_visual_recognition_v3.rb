@@ -11,7 +11,7 @@ unless ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? || ENV["VISUAL_RECOGNITION_IAM_
     attr_accessor :service, :classifier_id
     def before_all
       @service = IBMWatson::VisualRecognitionV3.new(
-        iam_api_key: ENV["VISUAL_RECOGNITION_IAM_APIKEY"],
+        iam_apikey: ENV["VISUAL_RECOGNITION_IAM_APIKEY"],
         version: "2018-03-19",
         url: ENV["VISUAL_RECOGNITION_IAM_URL"]
       )

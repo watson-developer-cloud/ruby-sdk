@@ -19,13 +19,13 @@ class IAMTokenManagerTest < Minitest::Test
     }
 
     token_manager = IAMTokenManager.new(
-      iam_api_key: "iam_api_key",
+      iam_apikey: "iam_apikey",
       iam_access_token: "iam_access_token",
       iam_url: iam_url
     )
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
@@ -47,7 +47,7 @@ class IAMTokenManagerTest < Minitest::Test
       "refresh_token" => "jy4gl91BQ"
     }
     token_manager = IAMTokenManager.new(
-      iam_api_key: "iam_api_key",
+      iam_apikey: "iam_apikey",
       iam_access_token: "iam_access_token",
       iam_url: iam_url
     )
@@ -67,7 +67,7 @@ class IAMTokenManagerTest < Minitest::Test
 
   def test_is_token_expired
     token_manager = IAMTokenManager.new(
-      iam_api_key: "iam_api_key",
+      iam_apikey: "iam_apikey",
       iam_access_token: "iam_access_token",
       iam_url: "iam_url"
     )
@@ -86,7 +86,7 @@ class IAMTokenManagerTest < Minitest::Test
 
   def test_is_refresh_token_expired
     token_manager = IAMTokenManager.new(
-      iam_api_key: "iam_api_key",
+      iam_apikey: "iam_apikey",
       iam_access_token: "iam_access_token",
       iam_url: "iam_url"
     )
@@ -106,7 +106,7 @@ class IAMTokenManagerTest < Minitest::Test
   def test_get_token
     iam_url = "https://iam.bluemix.net/identity/token"
     token_manager = IAMTokenManager.new(
-      iam_api_key: "iam_api_key",
+      iam_apikey: "iam_apikey",
       iam_url: iam_url
     )
     token_manager.user_access_token = "user_access_token"
@@ -123,7 +123,7 @@ class IAMTokenManagerTest < Minitest::Test
     }
     stub_request(:post, "https://iam.bluemix.net/identity/token")
       .with(
-        body: { "apikey" => "iam_api_key", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",

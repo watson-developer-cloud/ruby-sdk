@@ -11,8 +11,8 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
-      service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
-      service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
+      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
+      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -48,8 +48,8 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
-      service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
-      service._iam_api_key(iam_api_key: ENV["ASSISTANT_IAM_APIKEY"])
+      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
+      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -65,7 +65,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_workspaces
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -83,7 +83,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
         version: "2018-02-16",
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"]
       )
       service.add_default_headers(
@@ -114,7 +114,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_counterexample
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -133,7 +133,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_counterexamples
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -152,7 +152,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     def test_create_update_delete_entity
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -188,7 +188,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_entity
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -208,7 +208,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_entities
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -228,7 +228,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     def test_create_update_delete_example
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -263,7 +263,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_example
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -283,7 +283,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_examples
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -303,7 +303,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     def test_create_update_delete_intent
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -337,7 +337,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_intent
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -357,7 +357,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_intents
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -376,7 +376,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_logs
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -394,7 +394,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_all_logs
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -412,7 +412,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_message
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -441,7 +441,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     def test_create_update_delete_synonym
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -479,7 +479,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_synonym
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -500,7 +500,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_synonyms
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -521,7 +521,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     def test_create_update_delete_value
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -558,7 +558,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_get_value
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -579,7 +579,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_list_values
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -600,7 +600,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
     def test_dialog_nodes
       skip "Skip to allow for concurrent travis jobs"
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -637,7 +637,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
 
     def test_delete_user_data
       service = IBMWatson::AssistantV1.new(
-        iam_api_key: ENV["ASSISTANT_IAM_APIKEY"],
+        iam_apikey: ENV["ASSISTANT_IAM_APIKEY"],
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
@@ -706,7 +706,7 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
       )
       error_received = false
       begin
-        service._iam_api_key(iam_api_key: "bogus_api_key")
+        service._iam_apikey(iam_apikey: "bogus_api_key")
         service.list_workspaces
       rescue WatsonApiException => e
         assert_equal("Provided API key could not be found", e.info["errorMessage"])

@@ -90,7 +90,7 @@ You supply either an IAM service **API key** or an **access token**:
 # In the constructor, letting the SDK manage the IAM token
 discovery = IBMWatson::DiscoveryV1.new(
   version: "2017-10-16",
-  iam_api_key: "<iam_api_key>",
+  iam_apikey: "<iam_apikey>",
   iam_url: "<iam_url>" # optional - the default value is https://iam.ng.bluemix.net/identity/token
 )
 ```
@@ -98,7 +98,7 @@ discovery = IBMWatson::DiscoveryV1.new(
 ```ruby
 # after instantiation, letting the SDK manage the IAM token
 discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
-discovery._iam_api_key(iam_api_key: "<iam_api_key>")
+discovery._iam_apikey(iam_apikey: "<iam_apikey>")
 ```
 
 #### Supplying the access token

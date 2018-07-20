@@ -5,7 +5,7 @@ require("json")
 
 # If using IAM
 tone_analyzer = ToneAnalyzerV3(
-  iam_api_key: "IAM API KEY",
+  iam_apikey: "IAM API KEY",
   version: "2017-09-21"
 )
 

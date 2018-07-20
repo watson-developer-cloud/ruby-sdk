@@ -16,8 +16,8 @@ REFRESH_TOKEN_GRANT_TYPE = "refresh_token"
 # Class to manage IAM Token Authentication
 class IAMTokenManager
   attr_accessor :token_info, :user_access_token
-  def initialize(iam_api_key: nil, iam_access_token: nil, iam_url: nil)
-    @iam_api_key = iam_api_key
+  def initialize(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
+    @iam_apikey = iam_apikey
     @user_access_token = iam_access_token
     @iam_url = iam_url.nil? ? DEFAULT_IAM_URL : iam_url
     @token_info = {
@@ -82,7 +82,7 @@ class IAMTokenManager
     }
     data = {
       "grant_type" => REQUEST_TOKEN_GRANT_TYPE,
-      "apikey" => @iam_api_key,
+      "apikey" => @iam_apikey,
       "response_type" => REQUEST_TOKEN_RESPONSE_TYPE
     }
     response = request(
@@ -121,8 +121,8 @@ class IAMTokenManager
   end
 
   # Set the IAM api key
-  def _iam_api_key(iam_api_key:)
-    @iam_api_key = iam_api_key
+  def _iam_apikey(iam_apikey:)
+    @iam_apikey = iam_apikey
   end
 
   # Check if currently stored token is expired.

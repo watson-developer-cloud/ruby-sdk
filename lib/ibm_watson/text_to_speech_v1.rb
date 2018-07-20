@@ -99,7 +99,7 @@ module IBMWatson
     #   application locally or outside of Bluemix. When running on
     #   Bluemix, the credentials will be automatically loaded from the
     #   `VCAP_SERVICES` environment variable.
-    # @option args iam_api_key [String] An API key that can be used to request IAM tokens. If
+    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
     #   this API key is provided, the SDK will manage the token and handle the
     #   refreshing.
     # @option args iam_access_token [String] An IAM access token is fully managed by the application.
@@ -115,7 +115,7 @@ module IBMWatson
       defaults[:url] = "https://stream.watsonplatform.net/text-to-speech/api"
       defaults[:username] = nil
       defaults[:password] = nil
-      defaults[:iam_api_key] = nil
+      defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
@@ -124,7 +124,7 @@ module IBMWatson
         url: args[:url],
         username: args[:username],
         password: args[:password],
-        iam_api_key: args[:iam_api_key],
+        iam_apikey: args[:iam_apikey],
         iam_access_token: args[:iam_access_token],
         iam_url: args[:iam_url],
         use_vcap_services: true
@@ -140,8 +140,8 @@ module IBMWatson
       @watson_service._iam_access_token(iam_access_token: iam_access_token)
     end
 
-    def _iam_api_key(iam_api_key:)
-      @watson_service._iam_api_key(iam_api_key: iam_api_key)
+    def _iam_apikey(iam_apikey:)
+      @watson_service._iam_apikey(iam_apikey: iam_apikey)
     end
 
     # @return [DetailedResponse]

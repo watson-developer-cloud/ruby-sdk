@@ -30,7 +30,7 @@ class WatsonService
       use_vcap_services: true,
       api_key: nil,
       x_watson_learning_opt_out: false,
-      iam_api_key: nil,
+      iam_apikey: nil,
       iam_access_token: nil,
       iam_url: nil
     }
@@ -55,17 +55,17 @@ class WatsonService
         @url = @vcap_service_credentials["url"]
         @username = @vcap_service_credentials["username"] if @vcap_service_credentials.key?("username")
         @password = @vcap_service_credentials["password"] if @vcap_service_credentials.key?("password")
-        @iam_api_key = @vcap_service_credentials["iam_api_key"] if @vcap_service_credentials.key?("iam_api_key")
+        @iam_apikey = @vcap_service_credentials["iam_apikey"] if @vcap_service_credentials.key?("iam_apikey")
         @iam_access_token = @vcap_service_credentials["iam_access_token"] if @vcap_service_credentials.key?("iam_access_token")
         @iam_url = @vcap_service_credentials["iam_url"] if @vcap_service_credentials.key?("iam_url")
       end
     end
 
-    if !vars[:iam_access_token].nil? || !vars[:iam_api_key].nil?
-      _token_manager(iam_api_key: vars[:iam_api_key], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
+    if !vars[:iam_access_token].nil? || !vars[:iam_apikey].nil?
+      _token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
       if vars[:username] == "apikey"
-        _iam_api_key(iam_api_key: vars[:password])
+        _iam_apikey(iam_apikey: vars[:password])
       else
         @username = vars[:username]
         @password = vars[:password]
@@ -96,11 +96,11 @@ class WatsonService
     headers.each_pair { |k, v| @conn.default_options.headers.add(k, v) }
   end
 
-  def _token_manager(iam_api_key: nil, iam_access_token: nil, iam_url: nil)
-    @iam_api_key = iam_api_key
+  def _token_manager(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
+    @iam_apikey = iam_apikey
     @iam_access_token = iam_access_token
     @iam_url = iam_url
-    @token_manager = IAMTokenManager.new(iam_api_key: iam_api_key, iam_access_token: iam_access_token, iam_url: iam_url)
+    @token_manager = IAMTokenManager.new(iam_apikey: iam_apikey, iam_access_token: iam_access_token, iam_url: iam_url)
   end
 
   def _iam_access_token(iam_access_token:)
@@ -109,10 +109,10 @@ class WatsonService
     @iam_access_token = iam_access_token
   end
 
-  def _iam_api_key(iam_api_key:)
-    @token_manager&._iam_api_key(iam_api_key: iam_api_key)
-    @token_manager = IAMTokenManager.new(iam_api_key: iam_api_key) if @token_manager.nil?
-    @iam_api_key = iam_api_key
+  def _iam_apikey(iam_apikey:)
+    @token_manager&._iam_apikey(iam_apikey: iam_apikey)
+    @token_manager = IAMTokenManager.new(iam_apikey: iam_apikey) if @token_manager.nil?
+    @iam_apikey = iam_apikey
   end
 
   # @return [DetailedResponse]
@@ -133,7 +133,7 @@ class WatsonService
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
 
     if @username == "apikey"
-      _iam_api_key(iam_api_key: @password)
+      _iam_apikey(iam_apikey: @password)
       @username = nil
     end
 
