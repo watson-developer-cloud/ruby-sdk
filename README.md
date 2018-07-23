@@ -5,6 +5,7 @@
 [![codecov.io](https://codecov.io/github/watson-developer-cloud/ruby-sdk/coverage.svg)](https://codecov.io/github/watson-developer-cloud/ruby-sdk)
 [![Gem Version](https://badge.fury.io/rb/ibm_watson.svg)](https://badge.fury.io/rb/ibm_watson)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwatson-developer-cloud%2Fruby-sdk.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwatson-developer-cloud%2Fruby-sdk?ref=badge_shield)
 
 Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
@@ -28,6 +29,9 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
   * [License](#license)
 
 </details>
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwatson-developer-cloud%2Fruby-sdk.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwatson-developer-cloud%2Fruby-sdk?ref=badge_large)
 
 ## Before you begin
 * You need an [IBM Cloud][ibm-cloud-onboarding] account.
