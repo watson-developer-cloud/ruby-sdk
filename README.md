@@ -213,7 +213,7 @@ Result: "<response returned by service>"
 ```
 
 ## Configuring the http client
-To set client configs like timeout or proxy use the `http_config` function and pass in the configurations.
+To set client configs like timeout or proxy use the `configure_http_client` function and pass in the configurations.
 
 ```ruby
 require "ibm_watson/assistant_v1"
@@ -225,7 +225,7 @@ assistant = AssistantV1.new(
   version: "2018-07-10"
 )
 
-assistant.http_config(
+assistant.configure_http_client(
   timeout: {
     # Accepts either :per_operation or :global
     per_operation: { # The individual timeouts for each operation

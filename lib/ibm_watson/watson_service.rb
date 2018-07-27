@@ -173,7 +173,7 @@ class WatsonService
     self
   end
 
-  # @!method http_config(proxy: {}, timeout: {})
+  # @!method configure_http_client(proxy: {}, timeout: {})
   # Sets the http client config, currently works with timeout and proxies
   # @param proxy [Hash] The hash of proxy configurations
   # @option proxy address [String] The address of the proxy
@@ -184,7 +184,7 @@ class WatsonService
   # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
   # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
   # @option timeout global [Integer] Upper bound on total request time
-  def http_config(proxy: {}, timeout: {})
+  def configure_http_client(proxy: {}, timeout: {})
     raise TypeError("proxy parameter must be a Hash") unless proxy.empty? || proxy.instance_of?(Hash)
     raise TypeError("timeout parameter must be a Hash") unless timeout.empty? || timeout.instance_of?(Hash)
     add_proxy(proxy) unless proxy.empty? || !proxy.dig(:address).is_a?(String) || !proxy.dig(:port).is_a?(Integer)

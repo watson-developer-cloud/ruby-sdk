@@ -140,7 +140,7 @@ module IBMWatson
       @watson_service.url
     end
 
-    # @!method http_config(proxy: {}, timeout: {})
+    # @!method configure_http_client(proxy: {}, timeout: {})
     # Sets the http client config, currently works with timeout and proxies
     # @param proxy [Hash] The hash of proxy configurations
     # @option proxy address [String] The address of the proxy
@@ -151,8 +151,8 @@ module IBMWatson
     # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
     # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
     # @option timeout global [Integer] Upper bound on total request time
-    def http_config(proxy: {}, timeout: {})
-      @watson_service.http_config(proxy: proxy, timeout: timeout)
+    def configure_http_client(proxy: {}, timeout: {})
+      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
     end
     # :nocov:
     #########################

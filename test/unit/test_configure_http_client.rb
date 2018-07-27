@@ -6,7 +6,7 @@ require("webmock/minitest")
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-# Unit tests for the http_config customizations, such as proxies and timeouts
+# Unit tests for the configure_http_client customizations, such as proxies and timeouts
 class HTTPConfigTest < Minitest::Test
   def test_proxy_address_port
     service = IBMWatson::NaturalLanguageUnderstandingV1.new(
@@ -17,7 +17,7 @@ class HTTPConfigTest < Minitest::Test
     def service.conn
       @watson_service.conn
     end
-    service.http_config(
+    service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
         port: 9999
@@ -37,7 +37,7 @@ class HTTPConfigTest < Minitest::Test
     def service.conn
       @watson_service.conn
     end
-    service.http_config(
+    service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
         port: 9999,
@@ -61,7 +61,7 @@ class HTTPConfigTest < Minitest::Test
     def service.conn
       @watson_service.conn
     end
-    service.http_config(
+    service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
         port: 9999,
@@ -85,7 +85,7 @@ class HTTPConfigTest < Minitest::Test
     def service.conn
       @watson_service.conn
     end
-    service.http_config(
+    service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
         port: 9999,
@@ -113,7 +113,7 @@ class HTTPConfigTest < Minitest::Test
     def service.conn
       @watson_service.conn
     end
-    service.http_config(
+    service.configure_http_client(
       timeout: {
         per_operation: {
           read: 5,
@@ -143,7 +143,7 @@ class HTTPConfigTest < Minitest::Test
     def service.conn
       @watson_service.conn
     end
-    service.http_config(
+    service.configure_http_client(
       timeout: {
         global: 20
       }
