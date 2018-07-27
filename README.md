@@ -227,6 +227,7 @@ assistant = AssistantV1.new(
 
 assistant.http_config(
   timeout: {
+    # Accepts either :per_operation or :global
     per_operation: { # The individual timeouts for each operation
       read: 5,
       write: 7,
