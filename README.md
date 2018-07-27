@@ -22,7 +22,7 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
   * [Sending requests asynchronously](#sending-requests-asynchronously)
   * [Sending request headers](#sending-request-headers)
   * [Parsing HTTP response info](#parsing-http-response-info)
-  * [Configuring the http client](#configuring-the-http-client)
+  * [Configuring the HTTP client](#configuring-the-http-client)
   * [Using Websockets](#using-websockets)
   * [Ruby version](#ruby-version)
   * [Contributing](#contributing)
@@ -212,7 +212,7 @@ Headers: "<http response headers>"
 Result: "<response returned by service>"
 ```
 
-## Configuring the http client
+## Configuring the HTTP client
 To set client configs like timeout or proxy use the `configure_http_client` function and pass in the configurations.
 
 ```ruby
