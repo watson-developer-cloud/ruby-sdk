@@ -29,7 +29,6 @@ class WatsonService
       password: nil,
       use_vcap_services: true,
       api_key: nil,
-      x_watson_learning_opt_out: false,
       iam_apikey: nil,
       iam_access_token: nil,
       iam_url: nil
@@ -48,7 +47,6 @@ class WatsonService
     headers = {
       "User-Agent" => user_agent_string
     }
-    headers["x-watson-learning-opt-out"] = true if vars[:x_watson_learning_opt_out]
     if vars[:use_vcap_services]
       @vcap_service_credentials = load_from_vcap_services(service_name: vars[:vcap_services_name])
       if !@vcap_service_credentials.nil? && @vcap_service_credentials.instance_of?(Hash)

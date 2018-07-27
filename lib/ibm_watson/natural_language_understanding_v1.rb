@@ -74,12 +74,6 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.ng.bluemix.net/identity/token'.
-    # @option args x_watson_learning_opt_out [Boolean] Set to `true` to opt-out of data collection.
-    #   By default, all IBM Watson services log requests and their results.
-    #   Logging is done only to improve the services for future users. The logged data
-    #   is not shared or made public. If you are concerned with protecting the
-    #   privacy of users' personal information or otherwise do not want
-    #   your requests to be logged, you can opt out of logging.
     def initialize(args = {})
       @__async_initialized__ = false
       super()
@@ -91,7 +85,6 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
-      defaults[:x_watson_learning_opt_out] = false
       args = defaults.merge(args)
       @watson_service = WatsonService.new(
         vcap_services_name: "natural-language-understanding",
@@ -101,7 +94,6 @@ module IBMWatson
         iam_apikey: args[:iam_apikey],
         iam_access_token: args[:iam_access_token],
         iam_url: args[:iam_url],
-        x_watson_learning_opt_out: args[:x_watson_learning_opt_out],
         use_vcap_services: true
       )
       @version = args[:version]
