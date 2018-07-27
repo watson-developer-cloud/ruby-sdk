@@ -22,6 +22,7 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
   * [Sending requests asynchronously](#sending-requests-asynchronously)
   * [Sending request headers](#sending-request-headers)
   * [Parsing HTTP response info](#parsing-http-response-info)
+  * [Configuring the http client](#configuring-the-http-client)
   * [Using Websockets](#using-websockets)
   * [Ruby version](#ruby-version)
   * [Contributing](#contributing)
@@ -71,9 +72,9 @@ Watson services are migrating to token-based Identity and Access Management (IAM
 To find out which authentication to use, view the service credentials. You find the service credentials for authentication the same way for all Watson services:
 
 1.  Go to the IBM Cloud **[Dashboard][watson-dashboard]** page.
-1.  Either click an existing Watson service instance or click **Create**.
-1.  Click **Show** to view your service credentials.
-1.  Copy the `url` and either `apikey` or `username` and `password`.
+2.  Either click an existing Watson service instance or click **Create**.
+3.  Click **Show** to view your service credentials.
+4.  Copy the `url` and either `apikey` or `username` and `password`.
 
 ### IAM
 
@@ -209,6 +210,40 @@ This would give an output of `DetailedResponse` having the structure:
 Status: 200
 Headers: "<http response headers>"
 Result: "<response returned by service>"
+```
+
+## Configuring the http client
+To set client configs like timeout or proxy use the `http_config` function and pass in the configurations.
+
+```ruby
+require "ibm_watson/assistant_v1"
+include IBMWatson
+
+assistant = AssistantV1.new(
+  username: "{username}",
+  password: "{password}",
+  version: "2018-07-10"
+)
+
+assistant.http_config(
+  timeout: {
+    per_operation: { # The individual timeouts for each operation
+      read: 5,
+      write: 7,
+      connect: 10
+    }
+    # global: 30 # The total timeout time
+  },
+  proxy: {
+    address: "bogus_address.com",
+    port: 9999,
+    username: "username",
+    password: "password",
+    headers: {
+      bogus_header: true
+    }
+  }
+)
 ```
 
 ## Using Websockets
