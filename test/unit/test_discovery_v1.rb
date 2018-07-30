@@ -259,13 +259,15 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "X-Watson-Logging-Opt-Out" => true
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.query(
       environment_id: "envid",
       collection_id: "collid",
-      count: 10
+      count: 10,
+      logging_opt_out: true
     )
     assert_equal({ "body" => "hello" }, service_response.result)
   end
