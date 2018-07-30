@@ -1602,7 +1602,7 @@ class AssistantV1Test < Minitest::Test
     assert_equal("Pseudo update dialog node response", service_response.result)
   end
 
-  def test_list_entity_mentions
+  def test_list_mentions
     service = IBMWatson::AssistantV1.new(
       username: "username",
       password: "password",
@@ -1615,13 +1615,13 @@ class AssistantV1Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
-      ).to_return(status: 200, body: { "list_entity_mentions_response" => "yes" }.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.list_entity_mentions(
+      ).to_return(status: 200, body: { "list_mentions_response" => "yes" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_mentions(
       workspace_id: "workspace_id",
       entity: "entity",
       export: true,
       include_audit: true
     )
-    assert_equal({ "list_entity_mentions_response" => "yes" }, service_response.result)
+    assert_equal({ "list_mentions_response" => "yes" }, service_response.result)
   end
 end
