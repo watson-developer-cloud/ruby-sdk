@@ -1213,6 +1213,46 @@ module IBMWatson
       nil
     end
     #########################
+    # Mentions
+    #########################
+
+    ##
+    # @!method list_entity_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
+    # List entity mentions.
+    # List mentions for a contextual entity. An entity mention is an occurrence of a
+    #   contextual entity in the context of an intent user input example.
+    #
+    #   This operation is limited to 200 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def list_entity_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
+      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError("entity must be provided") if entity.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "export" => export,
+        "include_audit" => include_audit
+      }
+      method_url = "/v1/workspaces/%s/entities/%s/mentions" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
     # Values
     #########################
 
