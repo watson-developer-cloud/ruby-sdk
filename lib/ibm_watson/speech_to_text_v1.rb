@@ -349,35 +349,36 @@ module IBMWatson
     #   useful for stopping audio submission from a live microphone when a user simply
     #   walks away. Use `-1` for infinity.
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
-    #   one or more tokens. Keywords are spotted only in the final results, not in interim
-    #   hypotheses. If you specify any keywords, you must also specify a keywords
+    #   one or more string tokens. Keywords are spotted only in the final results, not in
+    #   interim hypotheses. If you specify any keywords, you must also specify a keywords
     #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
     #   an empty array if you do not need to spot keywords.
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
-    #   threshold. Specify a probability between 0 and 1 inclusive. No keyword spotting is
+    #   threshold. Specify a probability between 0.0 and 1.0. No keyword spotting is
     #   performed if you omit the parameter. If you specify a threshold, you must also
     #   specify one or more keywords.
-    # @param max_alternatives [Fixnum] The maximum number of alternative transcripts to be returned. By default, a single
-    #   transcription is returned.
+    # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
+    #   default, a single transcription is returned.
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as \"Confusion Networks\"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
-    #   Specify a probability between 0 and 1 inclusive. No alternative words are computed
-    #   if you omit the parameter.
-    # @param word_confidence [Boolean] If `true`, a confidence measure in the range of 0 to 1 is returned for each word.
-    #   By default, no word confidence measures are returned.
-    # @param timestamps [Boolean] If `true`, time alignment is returned for each word. By default, no timestamps are
-    #   returned.
-    # @param profanity_filter [Boolean] If `true` (the default), filters profanity from all output except for keyword
+    #   Specify a probability between 0.0 and 1.0. No alternative words are computed if
+    #   you omit the parameter.
+    # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
+    #   each word. By default, no word confidence measures are returned.
+    # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
+    #   timestamps are returned.
+    # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
     #   transcription only.
-    # @param smart_formatting [Boolean] If `true`, converts dates, times, series of digits and numbers, phone numbers,
-    #   currency values, and internet addresses into more readable, conventional
+    # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
+    #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
-    #   also converts certain keyword strings to punctuation symbols. By default, no smart
-    #   formatting is performed. Applies to US English and Spanish transcription only.
+    #   the service also converts certain keyword strings to punctuation symbols. By
+    #   default, no smart formatting is performed. Applies to US English and Spanish
+    #   transcription only.
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, no speaker labels are
     #   returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to
@@ -794,35 +795,36 @@ module IBMWatson
     #   useful for stopping audio submission from a live microphone when a user simply
     #   walks away. Use `-1` for infinity.
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
-    #   one or more tokens. Keywords are spotted only in the final results, not in interim
-    #   hypotheses. If you specify any keywords, you must also specify a keywords
+    #   one or more string tokens. Keywords are spotted only in the final results, not in
+    #   interim hypotheses. If you specify any keywords, you must also specify a keywords
     #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
     #   an empty array if you do not need to spot keywords.
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
-    #   threshold. Specify a probability between 0 and 1 inclusive. No keyword spotting is
+    #   threshold. Specify a probability between 0.0 and 1.0. No keyword spotting is
     #   performed if you omit the parameter. If you specify a threshold, you must also
     #   specify one or more keywords.
-    # @param max_alternatives [Fixnum] The maximum number of alternative transcripts to be returned. By default, a single
-    #   transcription is returned.
+    # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
+    #   default, a single transcription is returned.
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as \"Confusion Networks\"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
-    #   Specify a probability between 0 and 1 inclusive. No alternative words are computed
-    #   if you omit the parameter.
-    # @param word_confidence [Boolean] If `true`, a confidence measure in the range of 0 to 1 is returned for each word.
-    #   By default, no word confidence measures are returned.
-    # @param timestamps [Boolean] If `true`, time alignment is returned for each word. By default, no timestamps are
-    #   returned.
-    # @param profanity_filter [Boolean] If `true` (the default), filters profanity from all output except for keyword
+    #   Specify a probability between 0.0 and 1.0. No alternative words are computed if
+    #   you omit the parameter.
+    # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
+    #   each word. By default, no word confidence measures are returned.
+    # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
+    #   timestamps are returned.
+    # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
     #   transcription only.
-    # @param smart_formatting [Boolean] If `true`, converts dates, times, series of digits and numbers, phone numbers,
-    #   currency values, and internet addresses into more readable, conventional
+    # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
+    #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
-    #   also converts certain keyword strings to punctuation symbols. By default, no smart
-    #   formatting is performed. Applies to US English and Spanish transcription only.
+    #   the service also converts certain keyword strings to punctuation symbols. By
+    #   default, no smart formatting is performed. Applies to US English and Spanish
+    #   transcription only.
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, no speaker labels are
     #   returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to
@@ -1307,9 +1309,9 @@ module IBMWatson
     #   if it encounters non-ASCII characters. With cURL, use the `--data-binary` option
     #   to upload the file for the request.
     # @param allow_overwrite [Boolean] If `true`, the specified corpus or audio resource overwrites an existing corpus or
-    #   audio resource with the same name. If `false` (the default), the request fails if
-    #   a corpus or audio resource with the same name already exists. The parameter has no
-    #   effect if a corpus or audio resource with the same name does not already exist.
+    #   audio resource with the same name. If `false`, the request fails if a corpus or
+    #   audio resource with the same name already exists. The parameter has no effect if a
+    #   corpus or audio resource with the same name does not already exist.
     # @param corpus_filename [String] The filename for corpus_file.
     # @return [nil]
     def add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil, corpus_filename: nil)
@@ -2071,9 +2073,9 @@ module IBMWatson
     #   parameters that are used with some formats. For a complete list of supported audio
     #   formats, see [Audio formats](/docs/services/speech-to-text/input.html#formats).
     # @param allow_overwrite [Boolean] If `true`, the specified corpus or audio resource overwrites an existing corpus or
-    #   audio resource with the same name. If `false` (the default), the request fails if
-    #   a corpus or audio resource with the same name already exists. The parameter has no
-    #   effect if a corpus or audio resource with the same name does not already exist.
+    #   audio resource with the same name. If `false`, the request fails if a corpus or
+    #   audio resource with the same name already exists. The parameter has no effect if a
+    #   corpus or audio resource with the same name does not already exist.
     # @return [nil]
     def add_audio(customization_id:, audio_name:, audio_resource:, content_type:, contained_content_type: nil, allow_overwrite: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
