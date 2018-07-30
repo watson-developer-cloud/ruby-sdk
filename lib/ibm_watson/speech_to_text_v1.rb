@@ -425,7 +425,7 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_with_websocket(audio: nil,chunk_data: false,content_type: "audio/l16; rate=44100",model: "en-US_BroadbandModel",recognize_callback: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,version: nil,inactivity_timeout: 30,interim_results: false,keywords: nil,keywords_threshold: nil,max_alternatives: 1,word_alternatives_threshold: nil,word_confidence: false,timestamps: false,profanity_filter: nil,smart_formatting: false,speaker_labels: nil)
+    # @!method recognize_using_websocket(audio: nil,chunk_data: false,content_type: "audio/l16; rate=44100",model: "en-US_BroadbandModel",recognize_callback: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,version: nil,inactivity_timeout: 30,interim_results: false,keywords: nil,keywords_threshold: nil,max_alternatives: 1,word_alternatives_threshold: nil,word_confidence: false,timestamps: false,profanity_filter: nil,smart_formatting: false,speaker_labels: nil)
     # Sends audio for speech recognition using web sockets.
     # @param audio [IO] Audio to transcribe in the format specified by the `Content-Type` header.
     # @param chunk_data [Boolean] If true, then the WebSocketClient will expect to receive data in chunks rather than as a single audio file
@@ -448,7 +448,7 @@ module IBMWatson
     # @param smart_formatting [Boolean] If `true`, converts dates, times, series of digits and numbers, phone numbers, currency values, and Internet addresses into more readable, conventional representations in the final transcript of a recognition request. If `false` (the default), no formatting is performed. Applies to US English transcription only.
     # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
     # @return [WebSocketClient] Returns a new WebSocketClient object
-    def recognize_with_websocket(
+    def recognize_using_websocket(
       audio: nil,
       chunk_data: false,
       content_type: "audio/l16; rate=44100",
@@ -509,6 +509,56 @@ module IBMWatson
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
     end
+
+    # :nocov:
+    # @deprecated This will method be removed in the next major release. Use {#recognize_using_websocket} instead.
+    def recognize_with_websocket(
+      audio: nil,
+      chunk_data: false,
+      content_type: "audio/l16; rate=44100",
+      model: "en-US_BroadbandModel",
+      recognize_callback: nil,
+      customization_id: nil,
+      acoustic_customization_id: nil,
+      customization_weight: nil,
+      version: nil,
+      inactivity_timeout: 30,
+      interim_results: false,
+      keywords: nil,
+      keywords_threshold: nil,
+      max_alternatives: 1,
+      word_alternatives_threshold: nil,
+      word_confidence: false,
+      timestamps: false,
+      profanity_filter: nil,
+      smart_formatting: false,
+      speaker_labels: nil
+    )
+      Kernel.warn("[DEPRECATION] `recognize_with_websocket` is deprecated and will be removed in the next major release. Please use `recognize_using_websocket` instead.")
+      recognize_using_websocket(
+        audio: audio,
+        chunk_data: chunk_data,
+        content_type: content_type,
+        model: model,
+        recognize_callback: recognize_callback,
+        customization_id: customization_id,
+        acoustic_customization_id: acoustic_customization_id,
+        customization_weight: customization_weight,
+        version: version,
+        inactivity_timeout: inactivity_timeout,
+        interim_results: interim_results,
+        keywords: keywords,
+        keywords_threshold: keywords_threshold,
+        max_alternatives: max_alternatives,
+        word_alternatives_threshold: word_alternatives_threshold,
+        word_confidence: word_confidence,
+        timestamps: timestamps,
+        profanity_filter: profanity_filter,
+        smart_formatting: smart_formatting,
+        speaker_labels: speaker_labels
+      )
+    end
+    # :nocov:
     #########################
     # Asynchronous
     #########################
