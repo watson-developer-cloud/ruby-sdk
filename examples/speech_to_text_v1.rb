@@ -69,7 +69,7 @@ end
 
 mycallback = MyRecognizeCallback.new
 File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
-  speech_to_text.recognize_with_websocket(
+  speech_to_text.recognize_using_websocket(
     audio: audio_file,
     recognize_callback: mycallback
   ).start
@@ -78,7 +78,7 @@ end
 # Example using websockets and a pseudo audio stream
 # The websocket method has the ability to accept audio in chunks
 # This example uses chunks of an audio file to simulate an audio stream, such as a microphone
-speech = speech_to_text.recognize_with_websocket(
+speech = speech_to_text.recognize_using_websocket(
   chunk_data: true, # Tell the websocket object that audio will be given in chunks
   recognize_callback: mycallback,
   interim_results: true,
