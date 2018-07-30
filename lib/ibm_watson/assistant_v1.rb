@@ -1686,7 +1686,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil)
+    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
     # Create dialog node.
     # Create a new dialog node.
     #
@@ -1704,7 +1704,7 @@ module IBMWatson
     #   characters.
     # @param parent [String] The ID of the parent dialog node.
     # @param previous_sibling [String] The ID of the previous dialog node.
-    # @param output [Object] The output of the dialog node. For more information about how to specify dialog
+    # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
     # @param context [Object] The context for the dialog node.
@@ -1722,8 +1722,10 @@ module IBMWatson
     # @param digress_in [String] Whether this top-level dialog node can be digressed into.
     # @param digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
+    # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
+    #   users.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil)
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
       headers = {
@@ -1748,7 +1750,8 @@ module IBMWatson
         "variable" => variable,
         "digress_in" => digress_in,
         "digress_out" => digress_out,
-        "digress_out_slots" => digress_out_slots
+        "digress_out_slots" => digress_out_slots,
+        "user_label" => user_label
       }
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
       response = request(
@@ -1795,7 +1798,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil)
+    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
     # Update dialog node.
     # Update an existing dialog node with new or modified data.
     #
@@ -1814,7 +1817,7 @@ module IBMWatson
     #   characters.
     # @param new_parent [String] The ID of the parent dialog node.
     # @param new_previous_sibling [String] The ID of the previous sibling dialog node.
-    # @param new_output [Object] The output of the dialog node. For more information about how to specify dialog
+    # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
     # @param new_context [Object] The context for the dialog node.
@@ -1832,8 +1835,10 @@ module IBMWatson
     # @param new_digress_in [String] Whether this top-level dialog node can be digressed into.
     # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
+    # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
+    #   users.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil)
+    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
       headers = {
@@ -1858,7 +1863,8 @@ module IBMWatson
         "actions" => new_actions,
         "digress_in" => new_digress_in,
         "digress_out" => new_digress_out,
-        "digress_out_slots" => new_digress_out_slots
+        "digress_out_slots" => new_digress_out_slots,
+        "user_label" => new_user_label
       }
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
       response = request(
