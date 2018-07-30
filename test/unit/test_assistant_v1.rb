@@ -425,7 +425,7 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples?version=2018-02-16")
       .with(
-        body: "{\"text\":\"Gimme a pizza with pepperoni\"}",
+        body: "{\"text\":\"Gimme a pizza with pepperoni\",\"mentions\":[{\"mentioned\":\"yes\"}]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -441,7 +441,8 @@ class AssistantV1Test < Minitest::Test
     service_response = service.create_example(
       workspace_id: "boguswid",
       intent: "pizza_order",
-      text: "Gimme a pizza with pepperoni"
+      text: "Gimme a pizza with pepperoni",
+      mentions: [{ "mentioned" => "yes" }]
     )
     assert_equal(response, service_response.result)
   end
@@ -553,7 +554,7 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
-        body: "{\"text\":\"Gimme a pizza with pepperoni\"}",
+        body: "{\"text\":\"Gimme a pizza with pepperoni\",\"mentions\":[{\"mentioned\":\"yes\"}]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -570,7 +571,8 @@ class AssistantV1Test < Minitest::Test
       workspace_id: "boguswid",
       intent: "pizza_order",
       text: "Gimme a pizza with pepperoni",
-      new_text: "Gimme a pizza with pepperoni"
+      new_text: "Gimme a pizza with pepperoni",
+      new_mentions: [{ "mentioned" => "yes" }]
     )
     assert_equal(response, service_response.result)
   end
@@ -1325,7 +1327,7 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces?version=2018-02-16")
       .with(
-        body: "{\"name\":\"Pizza app\",\"description\":\"Pizza app\",\"language\":\"en\",\"metadata\":{}}",
+        body: "{\"name\":\"Pizza app\",\"description\":\"Pizza app\",\"language\":\"en\",\"metadata\":{},\"system_settings\":{\"system_settings\":\"yes\"}}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -1342,7 +1344,8 @@ class AssistantV1Test < Minitest::Test
       name: "Pizza app",
       description: "Pizza app",
       language: "en",
-      metadata: {}
+      metadata: {},
+      system_settings: { "system_settings" => "yes" }
     )
     assert_equal(response, service_response.result)
   end
@@ -1458,7 +1461,7 @@ class AssistantV1Test < Minitest::Test
     }
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/pizza_app-e0f3?version=2018-02-16")
       .with(
-        body: "{\"name\":\"Pizza app\",\"description\":\"Pizza app\",\"language\":\"en\",\"metadata\":{}}",
+        body: "{\"name\":\"Pizza app\",\"description\":\"Pizza app\",\"language\":\"en\",\"metadata\":{},\"system_settings\":{\"system_settings\":\"yes\"}}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -1476,7 +1479,8 @@ class AssistantV1Test < Minitest::Test
       name: "Pizza app",
       description: "Pizza app",
       language: "en",
-      metadata: {}
+      metadata: {},
+      system_settings: { "system_settings" => "yes" }
     )
     assert_equal(response, service_response.result)
   end
@@ -1493,7 +1497,7 @@ class AssistantV1Test < Minitest::Test
 
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes?version=2018-02-16")
       .with(
-        body: "{\"dialog_node\":\"location-done\"}",
+        body: "{\"dialog_node\":\"location-done\",\"user_label\":\"labeled\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -1503,7 +1507,8 @@ class AssistantV1Test < Minitest::Test
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-done" } }.to_json, headers: headers)
     service_response = service.create_dialog_node(
       workspace_id: "id",
-      dialog_node: "location-done"
+      dialog_node: "location-done",
+      user_label: "labeled"
     )
     assert_equal("location-done", service_response.result["application/json"]["dialog_node"])
 
@@ -1580,7 +1585,7 @@ class AssistantV1Test < Minitest::Test
     )
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/dialog_nodes/dialog_node?version=2018-02-16")
       .with(
-        body: "{\"description\":\"A new description\"}",
+        body: "{\"description\":\"A new description\",\"user_label\":\"new_label\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -1591,8 +1596,32 @@ class AssistantV1Test < Minitest::Test
     service_response = service.update_dialog_node(
       workspace_id: "workspace_id",
       dialog_node: "dialog_node",
-      new_description: "A new description"
+      new_description: "A new description",
+      new_user_label: "new_label"
     )
     assert_equal("Pseudo update dialog node response", service_response.result)
+  end
+
+  def test_list_entity_mentions
+    service = IBMWatson::AssistantV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-02-16"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/entities/entity/mentions?export=true&include_audit=true&version=2018-02-16")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "list_entity_mentions_response" => "yes" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_entity_mentions(
+      workspace_id: "workspace_id",
+      entity: "entity",
+      export: true,
+      include_audit: true
+    )
+    assert_equal({ "list_entity_mentions_response" => "yes" }, service_response.result)
   end
 end
