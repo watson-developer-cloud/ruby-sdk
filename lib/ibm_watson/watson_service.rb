@@ -29,7 +29,6 @@ class WatsonService
       password: nil,
       use_vcap_services: true,
       api_key: nil,
-      x_watson_learning_opt_out: false,
       iam_apikey: nil,
       iam_access_token: nil,
       iam_url: nil
@@ -48,7 +47,6 @@ class WatsonService
     headers = {
       "User-Agent" => user_agent_string
     }
-    headers["x-watson-learning-opt-out"] = true if vars[:x_watson_learning_opt_out]
     if vars[:use_vcap_services]
       @vcap_service_credentials = load_from_vcap_services(service_name: vars[:vcap_services_name])
       if !@vcap_service_credentials.nil? && @vcap_service_credentials.instance_of?(Hash)
@@ -74,11 +72,6 @@ class WatsonService
 
     @conn = HTTP::Client.new(
       headers: headers
-    ).timeout(
-      :per_operation,
-      read: 60,
-      write: 60,
-      connect: 60
     )
   end
 
@@ -176,5 +169,53 @@ class WatsonService
     raise TypeError("Expected Hash type, received #{headers.class}") unless headers.instance_of?(Hash)
     @temp_headers = headers
     self
+  end
+
+  # @!method configure_http_client(proxy: {}, timeout: {})
+  # Sets the http client config, currently works with timeout and proxies
+  # @param proxy [Hash] The hash of proxy configurations
+  # @option proxy address [String] The address of the proxy
+  # @option proxy port [Integer] The port of the proxy
+  # @option proxy username [String] The username of the proxy, if authentication is needed
+  # @option proxy password [String] The password of the proxy, if authentication is needed
+  # @option proxy headers [Hash] The headers to be used with the proxy
+  # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
+  # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
+  # @option timeout global [Integer] Upper bound on total request time
+  def configure_http_client(proxy: {}, timeout: {})
+    raise TypeError("proxy parameter must be a Hash") unless proxy.empty? || proxy.instance_of?(Hash)
+    raise TypeError("timeout parameter must be a Hash") unless timeout.empty? || timeout.instance_of?(Hash)
+    add_proxy(proxy) unless proxy.empty? || !proxy.dig(:address).is_a?(String) || !proxy.dig(:port).is_a?(Integer)
+    add_timeout(timeout) unless timeout.empty? || (!timeout.key?(:per_operation) && !timeout.key?(:global))
+  end
+
+  private
+
+  def add_timeout(timeout)
+    if timeout.key?(:per_operation)
+      raise TypeError("per_operation in timeout must be a Hash") unless timeout[:per_operation].instance_of?(Hash)
+      defaults = {
+        write: 0,
+        connect: 0,
+        read: 0
+      }
+      time = defaults.merge(timeout[:per_operation])
+      @conn = @conn.timeout(:per_operation, write: time[:write], connect: time[:connect], read: time[:read])
+    else
+      raise TypeError("global in timeout must be an Integer") unless timeout[:global].is_a?(Integer)
+      @conn = @conn.timeout(:global, write: timeout[:global], connect: 0, read: 0)
+    end
+  end
+
+  def add_proxy(proxy)
+    if (proxy[:username].nil? || proxy[:password].nil?) && proxy[:headers].nil?
+      @conn = @conn.via(proxy[:address], proxy[:port])
+    elsif !proxy[:username].nil? && !proxy[:password].nil? && proxy[:headers].nil?
+      @conn = @conn.via(proxy[:address], proxy[:port], proxy[:username], proxy[:password])
+    elsif !proxy[:headers].nil? && (proxy[:username].nil? || proxy[:password].nil?)
+      @conn = @conn.via(proxy[:address], proxy[:port], proxy[:headers])
+    else
+      @conn = @conn.via(proxy[:address], proxy[:port], proxy[:username], proxy[:password], proxy[:headers])
+    end
   end
 end
