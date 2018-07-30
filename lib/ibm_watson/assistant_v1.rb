@@ -255,7 +255,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil)
+    # @!method create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
@@ -275,8 +275,9 @@ module IBMWatson
     # @param metadata [Object] Any metadata related to the workspace.
     # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
+    # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil)
+    def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
       headers = {
       }
       params = {
@@ -291,7 +292,8 @@ module IBMWatson
         "dialog_nodes" => dialog_nodes,
         "counterexamples" => counterexamples,
         "metadata" => metadata,
-        "learning_opt_out" => learning_opt_out
+        "learning_opt_out" => learning_opt_out,
+        "system_settings" => system_settings
       }
       method_url = "/v1/workspaces"
       response = request(
@@ -341,7 +343,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, append: nil)
+    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
     # Update workspace.
     # Update an existing workspace with new or modified data. You must provide component
     #   objects defining the content of the updated workspace.
@@ -362,6 +364,7 @@ module IBMWatson
     # @param metadata [Object] Any metadata related to the workspace.
     # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
+    # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
     # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
     #   **append**=`false`, elements included in the new data completely replace the
     #   corresponding existing elements, including all subelements. For example, if the
@@ -372,7 +375,7 @@ module IBMWatson
     #   added. If any elements in the new data collide with existing elements, the update
     #   request fails.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, append: nil)
+    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       headers = {
       }
@@ -389,7 +392,8 @@ module IBMWatson
         "dialog_nodes" => dialog_nodes,
         "counterexamples" => counterexamples,
         "metadata" => metadata,
-        "learning_opt_out" => learning_opt_out
+        "learning_opt_out" => learning_opt_out,
+        "system_settings" => system_settings
       }
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
       response = request(
