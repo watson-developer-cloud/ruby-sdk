@@ -639,7 +639,8 @@ module IBMWatson
     ##
     # @!method list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List user input examples.
-    # List the user input examples for an intent.
+    # List the user input examples for an intent, optionally including contextual entity
+    #   mentions.
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
@@ -679,7 +680,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_example(workspace_id:, intent:, text:)
+    # @!method create_example(workspace_id:, intent:, text:, mentions: nil)
     # Create user input example.
     # Add a new user input example to an intent.
     #
@@ -692,8 +693,9 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
+    # @param mentions [Array[Mentions]] An array of contextual entity mentions.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_example(workspace_id:, intent:, text:)
+    def create_example(workspace_id:, intent:, text:, mentions: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("intent must be provided") if intent.nil?
       raise ArgumentError("text must be provided") if text.nil?
@@ -703,7 +705,8 @@ module IBMWatson
         "version" => @version
       }
       data = {
-        "text" => text
+        "text" => text,
+        "mentions" => mentions
       }
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       response = request(
@@ -752,7 +755,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_example(workspace_id:, intent:, text:, new_text: nil)
+    # @!method update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
     # Update user input example.
     # Update the text of a user input example.
     #
@@ -766,8 +769,9 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
+    # @param new_mentions [Array[Mentions]] An array of contextual entity mentions.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_example(workspace_id:, intent:, text:, new_text: nil)
+    def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("intent must be provided") if intent.nil?
       raise ArgumentError("text must be provided") if text.nil?
@@ -777,7 +781,8 @@ module IBMWatson
         "version" => @version
       }
       data = {
-        "text" => new_text
+        "text" => new_text,
+        "mentions" => new_mentions
       }
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
       response = request(
