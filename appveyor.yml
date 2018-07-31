@@ -14,8 +14,7 @@ init:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
-  - bundle install
-  - gem install eventmachine --platform ruby
+  - bundle install --force
 
 build: off
 
