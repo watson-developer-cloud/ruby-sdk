@@ -14,9 +14,7 @@ init:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
-  - bundle config build.eventmachine --platform=ruby
-  - bundle config --local path vendor/bundle
-  - bundle install
+  - bundle install --force
 
 build: off
 
