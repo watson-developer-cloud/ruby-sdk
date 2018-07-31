@@ -1,5 +1,4 @@
 version: 1.0.{build}-{branch}
-max_jobs: 3
 skip_tags: true
 
 cache:
