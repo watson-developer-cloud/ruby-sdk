@@ -16,6 +16,7 @@ namespace :test do
     t.test_files = FileList["test/unit/*.rb"]
     t.verbose = true
     t.warning = true
+    t.deps = [:rubocop]
   end
 
   Rake::TestTask.new do |t|
@@ -25,7 +26,7 @@ namespace :test do
     t.test_files = FileList["test/integration/*.rb"]
     t.verbose = true
     t.warning = true
-    t.deps = [:dotenv]
+    t.deps = [:dotenv, :rubocop]
   end
 end
 
@@ -41,5 +42,5 @@ task :coverage do
   Rake::Task["test"].execute
 end
 
-task def: %i[rubocop coverage] do
+task def: %i[coverage] do
 end
