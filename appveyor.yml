@@ -11,14 +11,10 @@ environment:
     - RUBY_VERSION: 25
 
 init:
-  - set PATH=C:\Ruby%RUBY_VERSION%\bin;C:\Program Files\7-Zip;C:\Program Files\AppVeyor\BuildAgent;C:\Program Files\Git\cmd;C:\Windows\system32
+  - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
-  - appveyor DownloadFile https://dl.bintray.com/oneclick/OpenKnapsack/x86/openssl-1.0.2j-x86-windows.tar.lzma &
-      7z e openssl-1.0.2j-x86-windows.tar.lzma &
-      7z x -y openssl-1.0.2j-x86-windows.tar -oC:\ruby23\DevKit\mingw &
-      set b_config="--with-ssl-dir=C:/ruby23/DevKit/mingw --with-opt-include=C:/ruby23/DevKit/mingw/include" &
-      set SSL_CERT_FILE=C:/ruby24-x64/ssl/cert.pem
+  - bundle config build.eventmachine --platform=ruby
   - bundle config --local path vendor/bundle
   - bundle install
 
