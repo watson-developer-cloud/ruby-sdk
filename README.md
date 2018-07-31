@@ -249,7 +249,7 @@ assistant.configure_http_client(
 
 ## Using Websockets
 
-The Speech-to-Text service supports websockets with the `recognize-with-websockets` method. The method accepts a custom callback class. The `eventmachine` loop that the websocket uses blocks the main thread by default. Here is an example of using the websockets method:
+The Speech-to-Text service supports websockets with the `recognize_using_websocket` method. The method accepts a custom callback class. The `eventmachine` loop that the websocket uses blocks the main thread by default. Here is an example of using the websockets method:
 
 ```ruby
 require "ibm_watson"
@@ -260,7 +260,7 @@ speech_to_text = IBMWatson::SpeechToTextV1.new(
   username: "<username>",
   password: "<password>"
 )
-websocket = speech_to_text.recognize_with_websocket(
+websocket = speech_to_text.recognize_using_websocket(
   audio: audio_file,
   recognize_callback: callback,
   interim_results: true
@@ -271,6 +271,7 @@ thr = Thread.new do # Start the websocket inside of a thread
 end
 thr.join # Wait for the thread to finish before ending the program or running other code
 ```
+Note: `recognize_with_websocket` has been **deprecated** in favor of **`recognize_using_websocket`**
 
 ## Ruby version
 

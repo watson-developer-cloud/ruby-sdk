@@ -255,7 +255,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil)
+    # @!method create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
@@ -275,8 +275,9 @@ module IBMWatson
     # @param metadata [Object] Any metadata related to the workspace.
     # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
+    # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil)
+    def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
       headers = {
       }
       params = {
@@ -291,7 +292,8 @@ module IBMWatson
         "dialog_nodes" => dialog_nodes,
         "counterexamples" => counterexamples,
         "metadata" => metadata,
-        "learning_opt_out" => learning_opt_out
+        "learning_opt_out" => learning_opt_out,
+        "system_settings" => system_settings
       }
       method_url = "/v1/workspaces"
       response = request(
@@ -341,7 +343,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, append: nil)
+    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
     # Update workspace.
     # Update an existing workspace with new or modified data. You must provide component
     #   objects defining the content of the updated workspace.
@@ -362,6 +364,7 @@ module IBMWatson
     # @param metadata [Object] Any metadata related to the workspace.
     # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
+    # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
     # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
     #   **append**=`false`, elements included in the new data completely replace the
     #   corresponding existing elements, including all subelements. For example, if the
@@ -372,7 +375,7 @@ module IBMWatson
     #   added. If any elements in the new data collide with existing elements, the update
     #   request fails.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, append: nil)
+    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       headers = {
       }
@@ -389,7 +392,8 @@ module IBMWatson
         "dialog_nodes" => dialog_nodes,
         "counterexamples" => counterexamples,
         "metadata" => metadata,
-        "learning_opt_out" => learning_opt_out
+        "learning_opt_out" => learning_opt_out,
+        "system_settings" => system_settings
       }
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
       response = request(
@@ -635,7 +639,8 @@ module IBMWatson
     ##
     # @!method list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List user input examples.
-    # List the user input examples for an intent.
+    # List the user input examples for an intent, optionally including contextual entity
+    #   mentions.
     #
     #   This operation is limited to 2500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
@@ -675,7 +680,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_example(workspace_id:, intent:, text:)
+    # @!method create_example(workspace_id:, intent:, text:, mentions: nil)
     # Create user input example.
     # Add a new user input example to an intent.
     #
@@ -688,8 +693,9 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
+    # @param mentions [Array[Mentions]] An array of contextual entity mentions.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_example(workspace_id:, intent:, text:)
+    def create_example(workspace_id:, intent:, text:, mentions: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("intent must be provided") if intent.nil?
       raise ArgumentError("text must be provided") if text.nil?
@@ -699,7 +705,8 @@ module IBMWatson
         "version" => @version
       }
       data = {
-        "text" => text
+        "text" => text,
+        "mentions" => mentions
       }
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
       response = request(
@@ -748,7 +755,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_example(workspace_id:, intent:, text:, new_text: nil)
+    # @!method update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
     # Update user input example.
     # Update the text of a user input example.
     #
@@ -762,8 +769,9 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
+    # @param new_mentions [Array[Mentions]] An array of contextual entity mentions.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_example(workspace_id:, intent:, text:, new_text: nil)
+    def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("intent must be provided") if intent.nil?
       raise ArgumentError("text must be provided") if text.nil?
@@ -773,7 +781,8 @@ module IBMWatson
         "version" => @version
       }
       data = {
-        "text" => new_text
+        "text" => new_text,
+        "mentions" => new_mentions
       }
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
       response = request(
@@ -1202,6 +1211,46 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+    #########################
+    # Mentions
+    #########################
+
+    ##
+    # @!method list_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
+    # List entity mentions.
+    # List mentions for a contextual entity. An entity mention is an occurrence of a
+    #   contextual entity in the context of an intent user input example.
+    #
+    #   This operation is limited to 200 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def list_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
+      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError("entity must be provided") if entity.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "export" => export,
+        "include_audit" => include_audit
+      }
+      method_url = "/v1/workspaces/%s/entities/%s/mentions" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
     end
     #########################
     # Values
@@ -1677,7 +1726,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil)
+    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
     # Create dialog node.
     # Create a new dialog node.
     #
@@ -1695,7 +1744,7 @@ module IBMWatson
     #   characters.
     # @param parent [String] The ID of the parent dialog node.
     # @param previous_sibling [String] The ID of the previous dialog node.
-    # @param output [Object] The output of the dialog node. For more information about how to specify dialog
+    # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
     # @param context [Object] The context for the dialog node.
@@ -1713,8 +1762,10 @@ module IBMWatson
     # @param digress_in [String] Whether this top-level dialog node can be digressed into.
     # @param digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
+    # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
+    #   users.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil)
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
       headers = {
@@ -1739,7 +1790,8 @@ module IBMWatson
         "variable" => variable,
         "digress_in" => digress_in,
         "digress_out" => digress_out,
-        "digress_out_slots" => digress_out_slots
+        "digress_out_slots" => digress_out_slots,
+        "user_label" => user_label
       }
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
       response = request(
@@ -1786,7 +1838,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil)
+    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
     # Update dialog node.
     # Update an existing dialog node with new or modified data.
     #
@@ -1805,7 +1857,7 @@ module IBMWatson
     #   characters.
     # @param new_parent [String] The ID of the parent dialog node.
     # @param new_previous_sibling [String] The ID of the previous sibling dialog node.
-    # @param new_output [Object] The output of the dialog node. For more information about how to specify dialog
+    # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
     # @param new_context [Object] The context for the dialog node.
@@ -1823,8 +1875,10 @@ module IBMWatson
     # @param new_digress_in [String] Whether this top-level dialog node can be digressed into.
     # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
+    # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
+    #   users.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil)
+    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
       headers = {
@@ -1849,7 +1903,8 @@ module IBMWatson
         "actions" => new_actions,
         "digress_in" => new_digress_in,
         "digress_out" => new_digress_out,
-        "digress_out_slots" => new_digress_out_slots
+        "digress_out_slots" => new_digress_out_slots,
+        "user_label" => new_user_label
       }
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
       response = request(

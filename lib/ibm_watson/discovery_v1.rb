@@ -1072,7 +1072,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, logging_opt_out: nil)
     # Query your collection.
     # After your content is uploaded and enriched by the Discovery service, you can
     #   build queries to search your content. For details, see the [Discovery service
@@ -1130,11 +1130,13 @@ module IBMWatson
     # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
     #   to identify similar documents. If not specified, the entire document is used for
     #   comparison.
+    # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, logging_opt_out: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
       headers = {
+        "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
       params = {
         "version" => @version,
