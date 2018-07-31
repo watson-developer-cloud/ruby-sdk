@@ -1,4 +1,5 @@
 version: 1.0.{build}-{branch}
+max_jobs: 3
 skip_tags: true
 
 cache:
@@ -6,8 +7,11 @@ cache:
 
 environment:
   matrix:
+    - RUBY_VERSION: 23
     - RUBY_VERSION: 23-x64
+    - RUBY_VERSION: 24
     - RUBY_VERSION: 24-x64
+    - RUBY_VERSION: 25
     - RUBY_VERSION: 25-x64
 
 init:
@@ -16,7 +20,7 @@ init:
 install:
   - bundle install
   - gem uninstall -a -x --force eventmachine
-  - gem install eventmachine --platform ruby
+  - gem install eventmachine --platform ruby --no-rdoc --no-ri
 
 build: off
 
