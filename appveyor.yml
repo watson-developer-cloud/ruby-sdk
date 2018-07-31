@@ -14,8 +14,8 @@ init:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
+  - bundle config build.eventmachine --platform ruby
   - bundle install
-  - gem pristine --all
 
 build: off
 
