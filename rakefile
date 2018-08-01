@@ -26,7 +26,7 @@ namespace :test do
     t.test_files = FileList["test/integration/*.rb"]
     t.verbose = true
     t.warning = true
-    t.deps = [:dotenv, :rubocop]
+    t.deps = %i[dotenv rubocop]
   end
 end
 

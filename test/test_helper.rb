@@ -18,4 +18,7 @@ if ENV["COVERAGE"]
 end
 
 require("minitest/autorun")
+require("minitest/reporters")
 require_relative("./../lib/ibm_watson.rb")
+
+Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new, Minitest::Reporters::HtmlReporter.new]
