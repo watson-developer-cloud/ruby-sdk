@@ -22,7 +22,7 @@ If you want to contribute to the repository, follow these steps:
 
 1. Fork the repo.
 2. Test your code changes: `rake` or `rake test`.
-3. Travis-CI will run the tests for all services once your changes are merged.
+3. Travis-CI and AppVeyor will run the tests for all services once your changes are merged.
 4. Add a test for your changes. Only refactoring and documentation changes require no new tests.
 5. Make the test pass.
 6. Commit your changes.
@@ -36,4 +36,4 @@ Ideally, we'd like to see both unit and integration tests on each method.
 Out of the box, `rake` runs integration and unit tests. Put the corresponding credentials in a `.env` file in the root directory for the integration tests to work as intended.
 To just run unit or integration tests, run `rake test:unit` or `rake test:integration`
 
-Currently this enables integration tests for all services so, unless all credentials are supplied, some tests will fail.
+For the integration tests, tests will only be run for services that have credentials defined in a `.env` file.
