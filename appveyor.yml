@@ -27,7 +27,7 @@ install:
       }
   - bundle install
   - gem uninstall -a -x --force eventmachine
-  - gem install eventmachine --platform ruby --no-rdoc --no-ri --with-ssl-dir=%openssl_dir%
+  - gem install eventmachine --platform ruby --no-rdoc --no-ri -- --with-ssl-dir=%openssl_dir%
 
 build: off
 
