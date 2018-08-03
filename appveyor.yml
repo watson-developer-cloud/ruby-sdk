@@ -11,12 +11,14 @@ environment:
     - RUBY_VERSION: 25-x64
 
 init:
-  - if "%RUBY_VERSION%"=="23-x64"(
-      set SSL_CERT_FILE=C:/ruby24-x64/ssl/cert.pem
-    )
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
+  - ps: >-
+        appveyor DownloadFile https://dl.bintray.com/oneclick/OpenKnapsack/x64/openssl-1.0.2j-x64-windows.tar.lzma
+        7z e openssl-1.0.2j-x64-windows.tar.lzma
+        7z x -y openssl-1.0.2j-x64-windows.tar -oC:\ruby23-x64\DevKit\mingw\x86_64-w64-mingw32
+        # $env:b_config = "--with-ssl-dir=C:/Ruby23-x64/DevKit/mingw --with-opt-include=C:/Ruby23-x64/DevKit/mingw/include"
   - bundle install
   - gem uninstall -a -x --force eventmachine
   - gem install eventmachine --platform ruby --no-rdoc --no-ri
