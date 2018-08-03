@@ -17,7 +17,7 @@ install:
   - ps: >-
         appveyor DownloadFile https://dl.bintray.com/oneclick/OpenKnapsack/x64/openssl-1.0.2j-x64-windows.tar.lzma
         7z e openssl-1.0.2j-x64-windows.tar.lzma
-        7z x -y openssl-1.0.2j-x64-windows.tar -oC:\ruby23-x64\DevKit\mingw\x86_64-w64-mingw32
+        7z x -y openssl-1.0.2j-x64-windows.tar -o C:\ruby23-x64\DevKit\mingw\x86_64-w64-mingw32
         # $env:b_config = "--with-ssl-dir=C:/Ruby23-x64/DevKit/mingw --with-opt-include=C:/Ruby23-x64/DevKit/mingw/include"
   - bundle install
   - gem uninstall -a -x --force eventmachine
