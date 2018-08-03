@@ -11,6 +11,9 @@ environment:
     - RUBY_VERSION: 25-x64
 
 init:
+  - if "%RUBY_VERSION%"=="23-x64"(
+      set SSL_CERT_FILE=C:/ruby24-x64/ssl/cert.pem
+    )
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
