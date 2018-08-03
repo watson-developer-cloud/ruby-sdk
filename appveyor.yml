@@ -14,11 +14,17 @@ init:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
 
 install:
-  - ps: >-
-        appveyor DownloadFile https://dl.bintray.com/oneclick/OpenKnapsack/x64/openssl-1.0.2j-x64-windows.tar.lzma
+  - ps: |
+      if ($Env:RUBY_VERSION -match "^23" ) {
+        # RubyInstaller; download OpenSSL headers from OpenKnapsack Project
+        $Env:openssl_dir = "C:\Ruby${Env:RUBY_VERSION}"
+        appveyor DownloadFile http://dl.bintray.com/oneclick/OpenKnapsack/x64/openssl-1.0.2j-x64-windows.tar.lzma
         7z e openssl-1.0.2j-x64-windows.tar.lzma
-        7z x -y openssl-1.0.2j-x64-windows.tar -o C:\ruby23-x64\DevKit\mingw\x86_64-w64-mingw32
-        # $env:b_config = "--with-ssl-dir=C:/Ruby23-x64/DevKit/mingw --with-opt-include=C:/Ruby23-x64/DevKit/mingw/include"
+        7z x -y -oC:\Ruby${Env:RUBY_VERSION} openssl-1.0.2j-x64-windows.tar
+      } else {
+        # RubyInstaller2; openssl package seems to be installed already
+        $Env:openssl_dir = "C:\msys64\mingw64"
+      }
   - bundle install
   - gem uninstall -a -x --force eventmachine
   - gem install eventmachine --platform ruby --no-rdoc --no-ri
