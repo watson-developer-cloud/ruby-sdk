@@ -28,6 +28,15 @@ namespace :test do
     t.warning = true
     t.deps = %i[dotenv rubocop]
   end
+
+  Rake::TestTask.new do |t|
+    t.name = "appveyor_status"
+    t.description = "Checks to ensure that AppVeyor tests pass before deploying from Travis"
+    t.libs << "test"
+    t.test_files = FileList["test/appveyor_status.rb"]
+    t.verbose = false
+    t.warning = false
+  end
 end
 
 desc "Run unit & integration tests"

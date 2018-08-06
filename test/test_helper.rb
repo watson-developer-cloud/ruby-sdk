@@ -24,5 +24,5 @@ require("minitest/retry")
 
 Minitest::Retry.use!
 
-Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new, Minitest::Reporters::HtmlReporter.new] if ENV["CI"].nil?
-Minitest::Reporters.use!(Minitest::Reporters::SpecReporter.new) if ENV["CI"]
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true, slow_count: 10), Minitest::Reporters::SpecReporter.new, Minitest::Reporters::HtmlReporter.new] if ENV["CI"].nil?
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true, slow_count: 10), Minitest::Reporters::SpecReporter.new] if ENV["CI"]
