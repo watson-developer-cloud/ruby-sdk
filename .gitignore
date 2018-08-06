@@ -12,6 +12,7 @@
 .DS_Store
 lib/ibm_watson/.swagger-codegen-ignore
 lib/ibm_watson/.swagger-codegen
+test/html_reports/
 
 # Used by dotenv library to load environment variables.
 .env

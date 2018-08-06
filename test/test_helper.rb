@@ -2,6 +2,7 @@
 
 require("simplecov")
 require("codecov")
+require("minitest/reporters")
 
 if ENV["COVERAGE"]
   SimpleCov.formatter = SimpleCov::Formatter::Codecov if ENV["CI"]
@@ -19,3 +20,9 @@ end
 
 require("minitest/autorun")
 require_relative("./../lib/ibm_watson.rb")
+require("minitest/retry")
+
+Minitest::Retry.use!
+
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true, slow_count: 10), Minitest::Reporters::SpecReporter.new, Minitest::Reporters::HtmlReporter.new] if ENV["CI"].nil?
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true, slow_count: 10), Minitest::Reporters::SpecReporter.new] if ENV["CI"]
