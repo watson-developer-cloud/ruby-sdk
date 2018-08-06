@@ -1,6 +1,7 @@
 # IBM Watson Ruby SDK
 
 [![Build Status](https://travis-ci.org/watson-developer-cloud/ruby-sdk.svg)](https://travis-ci.org/watson-developer-cloud/ruby-sdk)
+[![Build status](https://ci.appveyor.com/api/projects/status/ir3k0ue138o4u67e?svg=true)](https://ci.appveyor.com/project/maxnussbaum/ruby-sdk)
 [![Slack](https://wdc-slack-inviter.mybluemix.net/badge.svg)](https://wdc-slack-inviter.mybluemix.net)
 [![codecov.io](https://codecov.io/github/watson-developer-cloud/ruby-sdk/coverage.svg)](https://codecov.io/github/watson-developer-cloud/ruby-sdk)
 [![Gem Version](https://badge.fury.io/rb/ibm_watson.svg)](https://badge.fury.io/rb/ibm_watson)
@@ -275,7 +276,9 @@ Note: `recognize_with_websocket` has been **deprecated** in favor of **`recogniz
 
 ## Ruby version
 
-Tested on Ruby 2.3, 2.4, 2.5
+Tested on:
+* MRI Ruby (RVM): 2.3.7, 2.4.4, 2.5.1
+* RubyInstaller (Windows x64): 2.3.3, 2.4.4, 2.5.1
 
 ## Contributing
 
