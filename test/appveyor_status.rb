@@ -14,10 +14,14 @@ class AppVeyorStatusTest < Minitest::Test
   def test_appveyor_status
     skip "Branch is NOT master and/or Ruby != 2.5.1, so AppVeyor check before deployment will not be run." if ENV["TRAVIS_BRANCH"] != "master" || ENV["TRAVIS_RUBY_VERSION"] != "2.5.1"
     client = HTTP::Client.new
+    attempts = 0
     status = JSON.parse(client.get("https://ci.appveyor.com/api/projects/maxnussbaum/ruby-sdk").body.to_s)["build"]["status"]
+    puts("0 AppVeyor Status: #{status}")
     while status != "success" && status != "failed" && status != "cancelled"
-      sleep(3)
+      attempts += 1
+      sleep(15)
       status = JSON.parse(client.get("https://ci.appveyor.com/api/projects/maxnussbaum/ruby-sdk").body.to_s)["build"]["status"]
+      puts("#{attempts} AppVeyor Status: #{status}")
     end
     if status == "success"
       assert(true)
