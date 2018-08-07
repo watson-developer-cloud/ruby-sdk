@@ -82,6 +82,7 @@ unless ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? || ENV["NATURAL_LANGU
     end
 
     def test_list_models
+      skip
       service = IBMWatson::NaturalLanguageUnderstandingV1.new(
         version: "2018-03-16",
         username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
