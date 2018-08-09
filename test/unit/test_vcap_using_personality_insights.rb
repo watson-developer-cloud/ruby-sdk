@@ -80,7 +80,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
     profile_response = File.read(Dir.getwd + "/resources/personality-v3-expect3.txt")
     personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
     headers = {
-      "Content-Type" => "application/json"
+      "Content-Type" => "text/csv"
     }
     expected_response = DetailedResponse.new(status: 200, body: profile_response, headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&csv_headers=true&raw_scores=true&version=2017-10-13")
@@ -92,7 +92,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
-      ).to_return(status: 200, body: profile_response.to_json, headers: headers)
+      ).to_return(status: 200, body: profile_response, headers: headers)
     service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13"
     )
