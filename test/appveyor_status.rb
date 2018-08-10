@@ -15,18 +15,25 @@ class AppVeyorStatusTest < Minitest::Test
     skip "Branch is NOT master and/or Ruby != 2.5.1, so AppVeyor check before deployment will not be run." if ENV["TRAVIS_BRANCH"] != "master" || ENV["TRAVIS_RUBY_VERSION"] != "2.5.1"
     client = HTTP::Client.new
     attempts = 0
-    status = JSON.parse(client.get("https://ci.appveyor.com/api/projects/maxnussbaum/ruby-sdk").body.to_s)["build"]["status"]
+    builds = JSON.parse(client.get("https://ci.appveyor.com/api/projects/maxnussbaum/ruby-sdk/history?recordsNumber=25&branch=master").body.to_s)["builds"]
+    index = builds.index { |build| build["commitId"] == ENV["TRAVIS_COMMIT"] }
+    flunk("An AppVeyor build for commit #{ENV["TRAVIS_COMMIT"]} could not be found") unless index.is_a?(Integer)
+    current_build = builds[index]
+    status = current_build["status"]
     puts("0 AppVeyor Status: #{status}")
     while status != "success" && status != "failed" && status != "cancelled"
       attempts += 1
       sleep(15)
-      status = JSON.parse(client.get("https://ci.appveyor.com/api/projects/maxnussbaum/ruby-sdk").body.to_s)["build"]["status"]
+      builds = JSON.parse(client.get("https://ci.appveyor.com/api/projects/maxnussbaum/ruby-sdk/history?recordsNumber=25&branch=master").body.to_s)["builds"]
+      index = builds.index { |build| build["commitId"] == ENV["TRAVIS_COMMIT"] }
+      current_build = builds[index]
+      status = current_build["status"]
       puts("#{attempts} AppVeyor Status: #{status}")
     end
     if status == "success"
       assert(true)
     else
-      assert(false, "AppVeyor tests have NOT passed! Please ensure that AppVeyor passes before deploying")
+      flunk("AppVeyor tests have NOT passed! Please ensure that AppVeyor passes before deploying")
     end
   end
 end
