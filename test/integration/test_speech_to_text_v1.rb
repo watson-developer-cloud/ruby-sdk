@@ -138,7 +138,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
         timestamps: true,
         max_alternatives: 2,
         word_alternatives_threshold: 0.5,
-        model: "en-US_BroadbandModel"
+        content_type: "audio/wav"
       )
       Thread.new do
         until audio_file.eof?
@@ -162,7 +162,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
         timestamps: true,
         max_alternatives: 2,
         word_alternatives_threshold: 0.5,
-        model: "en-US_BroadbandModel"
+        content_type: "audio/wav"
       )
       thr = Thread.new { speech.start }
       thr.join
@@ -180,7 +180,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
         timestamps: true,
         max_alternatives: 2,
         word_alternatives_threshold: 0.5,
-        model: "en-US_BroadbandModel"
+        content_type: "audio/wav"
       )
       thr = Thread.new { speech.start }
       thr.join
@@ -198,7 +198,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
         timestamps: true,
         max_alternatives: 2,
         word_alternatives_threshold: 0.5,
-        model: "en-US_BroadbandModel"
+        content_type: "audio/wav"
       )
       thr = Thread.new { speech.start }
       thr.join
@@ -225,7 +225,7 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
         timestamps: true,
         max_alternatives: 2,
         word_alternatives_threshold: 0.5,
-        model: "en-US_BroadbandModel"
+        content_type: "audio/wav"
       )
       thr = Thread.new { speech.start }
       thr.join
