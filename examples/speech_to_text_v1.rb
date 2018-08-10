@@ -72,7 +72,8 @@ mycallback = MyRecognizeCallback.new
 File.open(Dir.getwd + "/resources/speech.wav") do |audio_file|
   speech_to_text.recognize_using_websocket(
     audio: audio_file,
-    recognize_callback: mycallback
+    recognize_callback: mycallback,
+    content_type: "audio/wav"
   ).start
 end
 
@@ -83,7 +84,8 @@ speech = speech_to_text.recognize_using_websocket(
   chunk_data: true, # Tell the websocket object that audio will be given in chunks
   recognize_callback: mycallback,
   interim_results: true,
-  inactivity_timeout: 3
+  inactivity_timeout: 3,
+  content_type: "audio/wav"
 )
 audio_file = File.open(Dir.getwd + "/resources/speech.wav")
 Thread.new do
