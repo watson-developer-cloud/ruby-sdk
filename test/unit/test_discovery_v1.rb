@@ -1010,6 +1010,171 @@ class DiscoveryV1Test < Minitest::Test
     assert_equal({ "received" => "true" }, service_response.result)
   end
 
+  def test_create_event
+    data_create_event = {
+      environment_id: "envid",
+      session_token: "token",
+      collection_id: "collid",
+      document_id: "docid"
+    }
+    mock_response = {
+      "type" => "click",
+      "data" => "data"
+    }
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/events?version=2018-05-23")
+      .with(
+        body: "{\"type\":\"click\",\"data\":{\"environment_id\":\"envid\",\"session_token\":\"token\",\"collection_id\":\"collid\",\"document_id\":\"docid\"}}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 201, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_event(
+      type: "click",
+      data: data_create_event
+    )
+    assert_equal(mock_response, service_response.result)
+  end
+
+  def test_query_log
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/logs?count=10&query=test&version=2018-05-23")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.query_log(
+      query: "test",
+      count: 10
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_metrics_query
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_metrics_query(
+      start_time: "2018-01-01T00:00:00Z",
+      end_time: "2018-01-01T00:10:00Z"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_metrics_query_event
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries_with_event?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_metrics_query_event(
+      start_time: "2018-01-01T00:00:00Z",
+      end_time: "2018-01-01T00:10:00Z"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_metrics_query_token_event
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/top_query_tokens_with_event_rate?count=10&version=2018-05-23")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_metrics_query_token_event(
+      count: 10
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_metrics_event_rate
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/event_rate?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_metrics_event_rate(
+      start_time: "2018-01-01T00:00:00Z",
+      end_time: "2018-01-01T00:10:00Z"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_metrics_query_no_results
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-05-23"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries_with_no_search_results?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      )
+      .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_metrics_query_no_results(
+      start_time: "2018-01-01T00:00:00Z",
+      end_time: "2018-01-01T00:10:00Z"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
   def test_list_credentials
     service = IBMWatson::DiscoveryV1.new(
       username: "username",
