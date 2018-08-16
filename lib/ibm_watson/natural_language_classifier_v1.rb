@@ -157,7 +157,7 @@ module IBMWatson
     # Returns label information for the input. The status must be `Available` before you
     #   can use the classifier to classify text.
     # @param classifier_id [String] Classifier ID to use.
-    # @param text [String] The submitted phrase.
+    # @param text [String] The submitted phrase. The maximum length is 2048 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def classify(classifier_id:, text:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
