@@ -34,6 +34,12 @@
 # HTTP REST interface](https://console.bluemix.net/docs/services/speech-to-text/http.html)
 # and [The asynchronous HTTP
 # interface](https://console.bluemix.net/docs/services/speech-to-text/async.html).
+#
+#   **Important:** The session-based interface is deprecated as of August 8, 2018, and
+# will be removed from service on September 7, 2018. Use the sessionless, asynchronous, or
+# WebSocket interface instead. For more information, see the August 8 service update in
+# the [Release
+# notes](https://console.bluemix.net/docs/services/speech-to-text/release-notes.html#August2018).
 # * **WebSocket interface:** The service also offers a WebSocket interface for speech
 # recognition. The WebSocket interface provides a full-duplex, low-latency communication
 # channel. Clients send requests and audio to the service and receive results over a
@@ -2069,7 +2075,7 @@ module IBMWatson
     # @param audio_name [String] The name of the audio resource for the custom acoustic model. When adding an audio
     #   resource, do not include spaces in the name; use a localized name that matches the
     #   language of the custom model.
-    # @param audio_resource [Array[String]] The audio resource that is to be added to the custom acoustic model, an individual
+    # @param audio_resource [String] The audio resource that is to be added to the custom acoustic model, an individual
     #   audio file or an archive file.
     # @param content_type [String] The type of the input.
     # @param contained_content_type [String] For an archive-type resource, specifies the format of the audio files contained in
