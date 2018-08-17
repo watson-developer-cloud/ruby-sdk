@@ -174,7 +174,7 @@ module IBMWatson
     #   instance. An attempt to create another environment results in an error.
     # @param name [String] Name that identifies the environment.
     # @param description [String] Description of the environment.
-    # @param size [Fixnum] **Deprecated**: Size of the environment.
+    # @param size [String] Size of the environment.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
       raise ArgumentError("name must be provided") if name.nil?
@@ -1094,7 +1094,7 @@ module IBMWatson
     #   exact answer. Aggregations are useful for building applications, because you can
     #   use them to build lists, tables, and time series. For a full list of possible
     #   aggregrations, see the Query reference.
-    # @param count [Fixnum] Number of documents to return.
+    # @param count [Fixnum] Number of results to return.
     # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10, and the offset is 8, it returns the
@@ -1195,7 +1195,7 @@ module IBMWatson
     #   exact answer. Aggregations are useful for building applications, because you can
     #   use them to build lists, tables, and time series. For a full list of possible
     #   aggregrations, see the Query reference.
-    # @param count [Fixnum] Number of documents to return.
+    # @param count [Fixnum] Number of results to return.
     # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10, and the offset is 8, it returns the
@@ -1286,7 +1286,7 @@ module IBMWatson
     #   exact answer. Aggregations are useful for building applications, because you can
     #   use them to build lists, tables, and time series. For a full list of possible
     #   aggregrations, see the Query reference.
-    # @param count [Fixnum] Number of documents to return.
+    # @param count [Fixnum] Number of results to return.
     # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10, and the offset is 8, it returns the
@@ -1386,7 +1386,7 @@ module IBMWatson
     #   exact answer. Aggregations are useful for building applications, because you can
     #   use them to build lists, tables, and time series. For a full list of possible
     #   aggregrations, see the Query reference.
-    # @param count [Fixnum] Number of documents to return.
+    # @param count [Fixnum] Number of results to return.
     # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10, and the offset is 8, it returns the
@@ -1882,6 +1882,239 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+    #########################
+    # Events and feedback
+    #########################
+
+    ##
+    # @!method create_event(type:, data:)
+    # Create event.
+    # The **Events** API can be used to create log entries that are associated with
+    #   specific queries. For example, you can record which documents in the results set
+    #   were \"clicked\" by a user and when that click occured.
+    # @param type [String] The event type to be created.
+    # @param data [EventData] Data object used to create a query event.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def create_event(type:, data:)
+      raise ArgumentError("type must be provided") if type.nil?
+      raise ArgumentError("data must be provided") if data.nil?
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      data = {
+        "type" => type,
+        "data" => data
+      }
+      method_url = "/v1/events"
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
+    # Search the query and event log.
+    # Searches the query and event log to find query sessions that match the specified
+    #   criteria. Searching the **logs** endpoint uses the standard Discovery query syntax
+    #   for the parameters that are supported.
+    # @param filter [String] A cacheable query that limits the documents returned to exclude any documents that
+    #   don't mention the query content. Filter searches are better for metadata type
+    #   searches and when you are trying to get a sense of concepts in the data set.
+    # @param query [String] A query search returns all documents in your data set with full enrichments and
+    #   full text, but with the most relevant documents listed first. Use a query search
+    #   when you want to find the most relevant search results. You cannot use
+    #   **natural_language_query** and **query** at the same time.
+    # @param count [Fixnum] Number of results to return.
+    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
+    #   number of results that are returned is 10, and the offset is 8, it returns the
+    #   last two results.
+    # @param sort [Array[String]] A comma separated list of fields in the document to sort on. You can optionally
+    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
+    #   ascending. Ascending is the default sort direction if no prefix is specified.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "filter" => filter,
+        "query" => query,
+        "count" => count,
+        "offset" => offset,
+        "sort" => sort.to_a
+      }
+      method_url = "/v1/logs"
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
+    # Number of queries over time.
+    # Total number of queries using the **natural_language_query** parameter over a
+    #   specific time window.
+    # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param result_type [String] The type of result to consider when calculating the metric.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "start_time" => start_time,
+        "end_time" => end_time,
+        "result_type" => result_type
+      }
+      method_url = "/v1/metrics/number_of_queries"
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
+    # Number of queries with an event over time.
+    # Total number of queries using the **natural_language_query** parameter that have a
+    #   corresponding \"click\" event over a specified time window. This metric requires
+    #   having integrated event tracking in your application using the **Events** API.
+    # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param result_type [String] The type of result to consider when calculating the metric.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "start_time" => start_time,
+        "end_time" => end_time,
+        "result_type" => result_type
+      }
+      method_url = "/v1/metrics/number_of_queries_with_event"
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
+    # Number of queries with no search results over time.
+    # Total number of queries using the **natural_language_query** parameter that have
+    #   no results returned over a specified time window.
+    # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param result_type [String] The type of result to consider when calculating the metric.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "start_time" => start_time,
+        "end_time" => end_time,
+        "result_type" => result_type
+      }
+      method_url = "/v1/metrics/number_of_queries_with_no_search_results"
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
+    # Percentage of queries with an associated event.
+    # The percentage of queries using the **natural_language_query** parameter that have
+    #   a corresponding \"click\" event over a specified time window.  This metric
+    #   requires having integrated event tracking in your application using the **Events**
+    #   API.
+    # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param result_type [String] The type of result to consider when calculating the metric.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "start_time" => start_time,
+        "end_time" => end_time,
+        "result_type" => result_type
+      }
+      method_url = "/v1/metrics/event_rate"
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_metrics_query_token_event(count: nil)
+    # Most frequent query tokens with an event.
+    # The most frequent query tokens parsed from the **natural_language_query**
+    #   parameter and their corresponding \"click\" event rate within the recording period
+    #   (queries and events are stored for 30 days). A query token is an individual word
+    #   or unigram within the query string.
+    # @param count [Fixnum] Number of results to return.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_metrics_query_token_event(count: nil)
+      headers = {
+      }
+      params = {
+        "version" => @version,
+        "count" => count
+      }
+      method_url = "/v1/metrics/top_query_tokens_with_event_rate"
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
     end
     #########################
     # Credentials

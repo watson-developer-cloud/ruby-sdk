@@ -72,10 +72,9 @@ Watson services are migrating to token-based Identity and Access Management (IAM
 ### Getting credentials
 To find out which authentication to use, view the service credentials. You find the service credentials for authentication the same way for all Watson services:
 
-1.  Go to the IBM Cloud **[Dashboard][watson-dashboard]** page.
-2.  Either click an existing Watson service instance or click **Create**.
-3.  Click **Show** to view your service credentials.
-4.  Copy the `url` and either `apikey` or `username` and `password`.
+1. Go to the IBM Cloud [Dashboard][watson-dashboard] page.
+1. Either click an existing Watson service instance or click [**Create resource > AI**](https://console.bluemix.net/catalog/?category=ai) and create a service instance.
+1. Copy the `url` and either `apikey` or `username` and `password`. Click **Show** if the credentials are masked.
 
 ### IAM
 
@@ -290,7 +289,7 @@ This library is licensed under the [Apache 2.0 license][license].
 
 [wdc]: http://www.ibm.com/watson/developercloud/
 [ibm_cloud]: https://console.bluemix.net
-[watson-dashboard]: https://console.bluemix.net/dashboard/apps?category=watson
+[watson-dashboard]: https://console.bluemix.net/dashboard/apps?category=ai
 [examples]: https://github.com/watson-developer-cloud/ruby-sdk/tree/master/examples
 [CONTRIBUTING]: https://github.com/watson-developer-cloud/ruby-sdk/blob/master/CONTRIBUTING.md
 [license]: http://www.apache.org/licenses/LICENSE-2.0
