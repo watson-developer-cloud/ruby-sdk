@@ -4,7 +4,7 @@ require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-unless ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"].nil? || ENV["NATURAL_LANGUAGE_CLASSIFIER_PASSWORD"].nil?
+if !ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"].nil? && !ENV["NATURAL_LANGUAGE_CLASSIFIER_PASSWORD"].nil?
   # Integration tests for the Natural Language Classifier V1 Service
   class NaturalLanguageClassifierV1Test < Minitest::Test
     include Minitest::Hooks
@@ -66,6 +66,12 @@ unless ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"].nil? || ENV["NATURAL_LANGUAGE
       @service.delete_classifier(
         classifier_id: classifier_id
       )
+    end
+  end
+else
+  class NaturalLanguageClassifierV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip natural language classifier integration tests because credentials have not been provided"
     end
   end
 end

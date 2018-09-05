@@ -3,7 +3,7 @@
 require_relative("./../test_helper.rb")
 SimpleCov.command_name "test:integration"
 
-unless ENV["ASSISTANT_USERNAME"].nil? || ENV["ASSISTANT_PASSWORD"].nil?
+if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
   # Integration tests for the Watson Assistant V1 Service
   class AssistantV1Test < Minitest::Test
     def test_create_update_delete_workspace
@@ -650,6 +650,12 @@ unless ENV["ASSISTANT_USERNAME"].nil? || ENV["ASSISTANT_PASSWORD"].nil?
         customer_id: "id"
       )
       assert(service_response.nil?)
+    end
+  end
+else
+  class AssistantV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip assistant integration tests because credentials have not been provided"
     end
   end
 end

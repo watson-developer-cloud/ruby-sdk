@@ -3,7 +3,7 @@
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-unless ENV["DISCOVERY_USERNAME"].nil? || ENV["DISCOVERY_PASSWORD"].nil?
+if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
   # Integration tests for the Discovery V1 Service
   class DiscoveryV1Test < Minitest::Test
     include Minitest::Hooks
@@ -206,6 +206,12 @@ unless ENV["DISCOVERY_USERNAME"].nil? || ENV["DISCOVERY_PASSWORD"].nil?
         environment_id: @environment_id
       ).result
       refute(credentials.nil?)
+    end
+  end
+else
+  class DiscoveryV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip discovery integration tests because credentials have not been provided"
     end
   end
 end

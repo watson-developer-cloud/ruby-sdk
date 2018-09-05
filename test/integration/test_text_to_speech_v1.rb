@@ -3,7 +3,7 @@
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-unless ENV["TEXT_TO_SPEECH_USERNAME"].nil? || ENV["TEXT_TO_SPEECH_PASSWORD"].nil?
+if !ENV["TEXT_TO_SPEECH_USERNAME"].nil? && !ENV["TEXT_TO_SPEECH_PASSWORD"].nil?
   # Integration tests for the Text to Speech V1 Service
   class TextToSpeechV1Test < Minitest::Test
     include Minitest::Hooks
@@ -79,6 +79,12 @@ unless ENV["TEXT_TO_SPEECH_USERNAME"].nil? || ENV["TEXT_TO_SPEECH_PASSWORD"].nil
       @service.delete_voice_model(
         customization_id: customization_id
       )
+    end
+  end
+else
+  class TextToSpeechV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip text to speech integration tests because credentials have not been provided"
     end
   end
 end

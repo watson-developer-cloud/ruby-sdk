@@ -3,7 +3,7 @@
 require("json")
 require_relative("./../test_helper.rb")
 
-unless ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? || ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"].nil?
+if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? && !ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"].nil?
   # Integration tests for the Natural Language Understanding V1 Service
   class NaturalLanguageUnderstandingV1Test < Minitest::Test
     def test_text_analyze
@@ -96,6 +96,12 @@ unless ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? || ENV["NATURAL_LANGU
       )
       service_response = service.list_models
       assert((200..299).cover?(service_response.status))
+    end
+  end
+else
+  class NaturalLanguageUnderstandingV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip natural language understanding integration tests because credentials have not been provided"
     end
   end
 end
