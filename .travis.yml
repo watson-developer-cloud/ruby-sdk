@@ -1,5 +1,6 @@
 language: ruby
 cache: bundler
+dist: trusty
 sudo: required
 
 rvm:
@@ -18,9 +19,15 @@ install:
   - npm install -g semantic-release
   - npm install -g @semantic-release/exec
   - bundle install
-
+  # - 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then cd appscan; make asoc-tool; cd ../; fi'
+  - cd appscan; make asoc-tool; cd ../;
+before_script:
+# - 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then chmod a+x ./appscan/ASOC.sh; fi'
+- chmod a+x ./appscan/ASOC.sh;
 script:
 - bundle exec rake
+# - 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then ./appscan/ASOC.sh; fi'
+- ./appscan/ASOC.sh;
 
 before_deploy:
   - bundle exec rake test:appveyor_status

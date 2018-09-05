@@ -1,5 +1,5 @@
 {
-    "Id": "1cbcdce1-a87a-4f28-a9d1-98e4b482b848",
+    "Id": "121195cc-ce37-41e9-83ff-9b730d7ae969",
     "AssetGroupName": "IBM Watson and Cloud Platform",
     "DateCreated": null,
     "LastUpdated": null,
@@ -20,7 +20,7 @@
     "ComplianceStatuses": [],
     "CanBeDeleted": true,
     "LockedToSubscription": false,
-    "Name": "Watson Node SDK",
+    "Name": "Watson Ruby SDK",
     "AssetGroupId": null,
     "BusinessImpact": "Unspecified",
     "Url": null,
