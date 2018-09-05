@@ -4,7 +4,7 @@ require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-unless ENV["LANGUAGE_TRANSLATOR_V3_USERNAME"].nil? || ENV["LANGUAGE_TRANSLATOR_V3_PASSWORD"].nil?
+if !ENV["LANGUAGE_TRANSLATOR_V3_USERNAME"].nil? && !ENV["LANGUAGE_TRANSLATOR_V3_PASSWORD"].nil?
   # Integration tests for the Language Translator V3 Service
   class LanguageTranslatorV3Test < Minitest::Test
     include Minitest::Hooks
@@ -78,6 +78,12 @@ unless ENV["LANGUAGE_TRANSLATOR_V3_USERNAME"].nil? || ENV["LANGUAGE_TRANSLATOR_V
         model_id: model_id
       ).result
       assert_equal("OK", service_response["status"])
+    end
+  end
+else
+  class LanguageTranslatorV3Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip language translator integration tests because credentials have not been provided"
     end
   end
 end

@@ -4,7 +4,7 @@ require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-unless ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? || ENV["VISUAL_RECOGNITION_IAM_URL"].nil?
+if !ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_IAM_URL"].nil?
   # Integration tests for the Visual Recognition V3 Service
   class VisualRecognitionV3Test < Minitest::Test
     include Minitest::Hooks
@@ -61,6 +61,12 @@ unless ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? || ENV["VISUAL_RECOGNITION_IAM_
       @service.delete_classifier(
         classifier_id: classifier_id
       )
+    end
+  end
+else
+  class VisualRecognitionV3Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip visual recognition integration tests because credentials have not been provided"
     end
   end
 end

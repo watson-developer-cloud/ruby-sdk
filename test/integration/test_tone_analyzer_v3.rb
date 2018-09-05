@@ -3,7 +3,7 @@
 require("json")
 require_relative("./../test_helper.rb")
 
-unless ENV["TONE_ANALYZER_USERNAME"].nil? || ENV["TONE_ANALYZER_PASSWORD"].nil?
+if !ENV["TONE_ANALYZER_USERNAME"].nil? && !ENV["TONE_ANALYZER_PASSWORD"].nil?
   # Integration tests for the Tone Analyzer V3 Service
   class ToneAnalyzerV3Test < Minitest::Test
     def test_tone
@@ -69,6 +69,12 @@ unless ENV["TONE_ANALYZER_USERNAME"].nil? || ENV["TONE_ANALYZER_PASSWORD"].nil?
         utterances: utterances
       )
       assert((200..299).cover?(service_response.status))
+    end
+  end
+else
+  class ToneAnalyzerV3Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip tone analyzer integration tests because credentials have not been provided"
     end
   end
 end

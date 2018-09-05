@@ -22,7 +22,7 @@ class MyRecognizeCallback < IBMWatson::RecognizeCallback
   end
 end
 
-unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
+if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
   # Integration tests for the Speech to Text V1 Service
   class SpeechToTextV1Test < Minitest::Test
     include Minitest::Hooks
@@ -248,6 +248,12 @@ unless ENV["SPEECH_TO_TEXT_USERNAME"].nil? || ENV["SPEECH_TO_TEXT_PASSWORD"].nil
       @service.delete_language_model(
         customization_id: customization_id
       )
+    end
+  end
+else
+  class SpeechToTextV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip speech to text integration tests because credentials have not been provided"
     end
   end
 end
