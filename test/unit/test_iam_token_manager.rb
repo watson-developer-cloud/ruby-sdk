@@ -162,4 +162,14 @@ class IAMTokenManagerTest < Minitest::Test
     token = token_manager._token
     assert_equal("dummy", token)
   end
+
+  def test_dont_leak_constants
+    assert_nil(defined? DEFAULT_IAM_URL)
+    assert_nil(defined? CONTENT_TYPE)
+    assert_nil(defined? ACCEPT)
+    assert_nil(defined? DEFAULT_AUTHORIZATION)
+    assert_nil(defined? REQUEST_TOKEN_GRANT_TYPE)
+    assert_nil(defined? REQUEST_TOKEN_RESPONSE_TYPE)
+    assert_nil(defined? REFRESH_TOKEN_GRANT_TYPE)
+  end
 end

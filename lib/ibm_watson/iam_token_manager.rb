@@ -5,16 +5,16 @@ require("json")
 require("rbconfig")
 require_relative("./version.rb")
 
-DEFAULT_IAM_URL = "https://iam.bluemix.net/identity/token"
-CONTENT_TYPE = "application/x-www-form-urlencoded"
-ACCEPT = "application/json"
-DEFAULT_AUTHORIZATION = "Basic Yng6Yng="
-REQUEST_TOKEN_GRANT_TYPE = "urn:ibm:params:oauth:grant-type:apikey"
-REQUEST_TOKEN_RESPONSE_TYPE = "cloud_iam"
-REFRESH_TOKEN_GRANT_TYPE = "refresh_token"
-
 # Class to manage IAM Token Authentication
 class IAMTokenManager
+  DEFAULT_IAM_URL = "https://iam.bluemix.net/identity/token"
+  CONTENT_TYPE = "application/x-www-form-urlencoded"
+  ACCEPT = "application/json"
+  DEFAULT_AUTHORIZATION = "Basic Yng6Yng="
+  REQUEST_TOKEN_GRANT_TYPE = "urn:ibm:params:oauth:grant-type:apikey"
+  REQUEST_TOKEN_RESPONSE_TYPE = "cloud_iam"
+  REFRESH_TOKEN_GRANT_TYPE = "refresh_token"
+
   attr_accessor :token_info, :user_access_token
   def initialize(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
     @iam_apikey = iam_apikey
