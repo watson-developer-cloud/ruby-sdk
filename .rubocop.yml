@@ -1584,6 +1584,9 @@ Lint/UnusedMethodArgument:
 Lint/Void:
   CheckForMethodsWithNoSideEffects: false
 
+Rails:
+  Enabled: false
+
 #################### Performance ###########################
 
 Performance/DoubleStartEndWith:

@@ -2,7 +2,7 @@
 
 require_relative("./../test_helper.rb")
 
-unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
+if !ENV["ASSISTANT_IAM_URL"].nil? && !ENV["ASSISTANT_IAM_APIKEY"].nil?
   # Integration tests for the Watson Assistant V1 Service
   class IAMAssistantV1Test < Minitest::Test
     def test_create_update_delete_workspace
@@ -713,6 +713,12 @@ unless ENV["ASSISTANT_IAM_URL"].nil? || ENV["ASSISTANT_IAM_APIKEY"].nil?
         error_received = true
       end
       assert(error_received)
+    end
+  end
+else
+  class IAMAssistantV1Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip iam assistant integration tests because credentials have not been provided"
     end
   end
 end

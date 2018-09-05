@@ -3,7 +3,7 @@
 require("json")
 require_relative("./../test_helper.rb")
 
-unless ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? || ENV["PERSONALITY_INSIGHTS_PASSWORD"].nil?
+if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASSWORD"].nil?
   # Integration tests for the Personality Insights V3 Service
   class PersonalityInsightsV3Test < Minitest::Test
     def test_plain_to_json
@@ -92,6 +92,12 @@ unless ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? || ENV["PERSONALITY_INSIGHTS_PA
         accept_language: "es"
       )
       assert((200..299).cover?(service_response.status))
+    end
+  end
+else
+  class PersonalityInsightsV3Test < Minitest::Test
+    def test_missing_credentials_skip_integration
+      skip "Skip personality insights integration tests because credentials have not been provided"
     end
   end
 end
