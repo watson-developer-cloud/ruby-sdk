@@ -63,7 +63,7 @@ class WatsonService
       _token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
       if vars[:username] == "apikey"
-        _iam_apikey(iam_apikey: vars[:password])
+        iam_apikey(iam_apikey: vars[:password])
       else
         @username = vars[:username]
         @password = vars[:password]
@@ -89,21 +89,12 @@ class WatsonService
     headers.each_pair { |k, v| @conn.default_options.headers.add(k, v) }
   end
 
-  def _token_manager(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
-    @iam_apikey = iam_apikey
-    @iam_access_token = iam_access_token
-    @iam_url = iam_url
-    @token_manager = IAMTokenManager.new(iam_apikey: iam_apikey, iam_access_token: iam_access_token, iam_url: iam_url)
-  end
-
-  def _iam_access_token(iam_access_token:)
-    @token_manager&._access_token(iam_access_token: iam_access_token)
+  def iam_access_token(iam_access_token:)
     @token_manager = IAMTokenManager.new(iam_access_token: iam_access_token) if @token_manager.nil?
     @iam_access_token = iam_access_token
   end
 
-  def _iam_apikey(iam_apikey:)
-    @token_manager&._iam_apikey(iam_apikey: iam_apikey)
+  def iam_apikey(iam_apikey:)
     @token_manager = IAMTokenManager.new(iam_apikey: iam_apikey) if @token_manager.nil?
     @iam_apikey = iam_apikey
   end
@@ -126,13 +117,13 @@ class WatsonService
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
 
     if @username == "apikey"
-      _iam_apikey(iam_apikey: @password)
+      iam_apikey(iam_apikey: @password)
       @username = nil
     end
 
     conn = @conn
     if !@token_manager.nil?
-      access_token = @token_manager._token
+      access_token = @token_manager.token
       args[:headers]["Authorization"] = "Bearer #{access_token}"
     elsif !@username.nil? && !@password.nil?
       conn = @conn.basic_auth(user: @username, pass: @password)
@@ -190,6 +181,13 @@ class WatsonService
   end
 
   private
+
+  def _token_manager(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
+    @iam_apikey = iam_apikey
+    @iam_access_token = iam_access_token
+    @iam_url = iam_url
+    @token_manager = IAMTokenManager.new(iam_apikey: iam_apikey, iam_access_token: iam_access_token, iam_url: iam_url)
+  end
 
   def add_timeout(timeout)
     if timeout.key?(:per_operation)
