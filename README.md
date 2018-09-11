@@ -100,7 +100,7 @@ discovery = IBMWatson::DiscoveryV1.new(
 ```ruby
 # after instantiation, letting the SDK manage the IAM token
 discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
-discovery._iam_apikey(iam_apikey: "<iam_apikey>")
+discovery.iam_apikey(iam_apikey: "<iam_apikey>")
 ```
 
 #### Supplying the access token
@@ -115,7 +115,7 @@ discovery = IBMWatson::DiscoveryV1.new(
 ```ruby
 # after instantiation, assuming control of managing IAM token
 discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
-discovery._iam_access_token(iam_access_token: "<access_token>")
+discovery.iam_access_token(iam_access_token: "<access_token>")
 ```
 
 ### Username and password
