@@ -54,7 +54,7 @@ class IAMTokenManager
   #   2. If this class is managing tokens and does not yet have one, make a request for one
   #   3. If this class is managing tokens and the token has expired refresh it. In case the refresh token is expired, get a new one
   # If this class is managing tokens and has a valid token stored, send it
-  def _token
+  def token
     return @user_access_token unless @user_access_token.nil? || (@user_access_token.respond_to?(:empty?) && @user_access_token.empty?)
     if @token_info.all? { |_k, v| v.nil? }
       token_info = _request_token
@@ -72,6 +72,8 @@ class IAMTokenManager
       @token_info["access_token"]
     end
   end
+
+  private
 
   # Request an IAM token using an API key
   def _request_token
@@ -112,17 +114,6 @@ class IAMTokenManager
       data: data
     )
     response
-  end
-
-  # Set a self-managed IAM access token.
-  # The access token should be valid and not yet expired.
-  def _access_token(iam_access_token:)
-    @user_access_token = iam_access_token
-  end
-
-  # Set the IAM api key
-  def _iam_apikey(iam_apikey:)
-    @iam_apikey = iam_apikey
   end
 
   # Check if currently stored token is expired.
