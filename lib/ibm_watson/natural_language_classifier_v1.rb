@@ -87,7 +87,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def classify(classifier_id:, text:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       data = {
@@ -116,7 +118,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def classify_collection(classifier_id:, collection:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       raise ArgumentError("collection must be provided") if collection.nil?
+
       headers = {
       }
       data = {
@@ -156,7 +160,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_classifier(metadata:, training_data:, metadata_filename: nil, training_data_filename: nil)
       raise ArgumentError("metadata must be provided") if metadata.nil?
+
       raise ArgumentError("training_data must be provided") if training_data.nil?
+
       headers = {
       }
       mime_type = "application/json"
@@ -217,6 +223,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
@@ -236,6 +243,7 @@ module IBMWatson
     # @return [nil]
     def delete_classifier(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]

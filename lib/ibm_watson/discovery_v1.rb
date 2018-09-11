@@ -104,6 +104,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       headers = {
       }
       params = {
@@ -157,6 +158,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_environment(environment_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -184,6 +186,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_environment(environment_id:, name: nil, description: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -212,6 +215,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_environment(environment_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -238,7 +242,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_fields(environment_id:, collection_ids:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
+
       headers = {
       }
       params = {
@@ -286,7 +292,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("name must be provided") if name.nil?
+
       headers = {
       }
       params = {
@@ -321,6 +329,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_configurations(environment_id:, name: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -346,7 +355,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_configuration(environment_id:, configuration_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
+
       headers = {
       }
       params = {
@@ -388,8 +399,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
+
       raise ArgumentError("name must be provided") if name.nil?
+
       headers = {
       }
       params = {
@@ -429,7 +443,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_configuration(environment_id:, configuration_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
+
       headers = {
       }
       params = {
@@ -484,6 +500,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def test_configuration_in_environment(environment_id:, configuration: nil, step: nil, configuration_id: nil, file: nil, metadata: nil, file_content_type: nil, filename: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -533,7 +550,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_collection(environment_id:, name:, description: nil, configuration_id: nil, language: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("name must be provided") if name.nil?
+
       headers = {
       }
       params = {
@@ -566,6 +585,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_collections(environment_id:, name: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -591,7 +611,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_collection(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -619,7 +641,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_collection(environment_id:, collection_id:, name:, description: nil, configuration_id: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -650,7 +674,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_collection(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -676,7 +702,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_collection_fields(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -706,7 +734,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_expansions(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -750,8 +780,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_expansions(environment_id:, collection_id:, expansions:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("expansions must be provided") if expansions.nil?
+
       headers = {
       }
       params = {
@@ -782,7 +815,9 @@ module IBMWatson
     # @return [nil]
     def delete_expansions(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -846,7 +881,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def add_document(environment_id:, collection_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -891,8 +928,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_document_status(environment_id:, collection_id:, document_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("document_id must be provided") if document_id.nil?
+
       headers = {
       }
       params = {
@@ -931,8 +971,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_document(environment_id:, collection_id:, document_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("document_id must be provided") if document_id.nil?
+
       headers = {
       }
       params = {
@@ -976,8 +1019,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_document(environment_id:, collection_id:, document_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("document_id must be provided") if document_id.nil?
+
       headers = {
       }
       params = {
@@ -1060,7 +1106,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, logging_opt_out: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
@@ -1156,7 +1204,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -1252,7 +1302,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, passages: nil, passages_fields: nil, passages_count: nil, passages_characters: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
+
       headers = {
       }
       params = {
@@ -1341,7 +1393,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
+
       headers = {
       }
       params = {
@@ -1392,7 +1446,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -1439,7 +1495,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -1477,7 +1535,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_training_data(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -1507,7 +1567,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def add_training_data(environment_id:, collection_id:, natural_language_query: nil, filter: nil, examples: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -1539,7 +1601,9 @@ module IBMWatson
     # @return [nil]
     def delete_all_training_data(environment_id:, collection_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       headers = {
       }
       params = {
@@ -1567,8 +1631,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_training_data(environment_id:, collection_id:, query_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       headers = {
       }
       params = {
@@ -1596,8 +1663,11 @@ module IBMWatson
     # @return [nil]
     def delete_training_data(environment_id:, collection_id:, query_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       headers = {
       }
       params = {
@@ -1624,8 +1694,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_training_examples(environment_id:, collection_id:, query_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       headers = {
       }
       params = {
@@ -1655,8 +1728,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       headers = {
       }
       params = {
@@ -1690,9 +1766,13 @@ module IBMWatson
     # @return [nil]
     def delete_training_example(environment_id:, collection_id:, query_id:, example_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       raise ArgumentError("example_id must be provided") if example_id.nil?
+
       headers = {
       }
       params = {
@@ -1722,9 +1802,13 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_training_example(environment_id:, collection_id:, query_id:, example_id:, cross_reference: nil, relevance: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       raise ArgumentError("example_id must be provided") if example_id.nil?
+
       headers = {
       }
       params = {
@@ -1757,9 +1841,13 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_training_example(environment_id:, collection_id:, query_id:, example_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
       raise ArgumentError("query_id must be provided") if query_id.nil?
+
       raise ArgumentError("example_id must be provided") if example_id.nil?
+
       headers = {
       }
       params = {
@@ -1793,6 +1881,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {
@@ -1824,7 +1913,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_event(type:, data:)
       raise ArgumentError("type must be provided") if type.nil?
+
       raise ArgumentError("data must be provided") if data.nil?
+
       headers = {
       }
       params = {
@@ -2057,6 +2148,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_credentials(environment_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -2094,6 +2186,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       headers = {
       }
       params = {
@@ -2127,7 +2220,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_credentials(environment_id:, credential_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("credential_id must be provided") if credential_id.nil?
+
       headers = {
       }
       params = {
@@ -2165,7 +2260,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("credential_id must be provided") if credential_id.nil?
+
       headers = {
       }
       params = {
@@ -2196,7 +2293,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_credentials(environment_id:, credential_id:)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
       raise ArgumentError("credential_id must be provided") if credential_id.nil?
+
       headers = {
       }
       params = {

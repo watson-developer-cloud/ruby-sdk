@@ -169,7 +169,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def profile(content:, content_type:, accept: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
       raise ArgumentError("content must be provided") if content.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type,
         "Accept" => accept,

@@ -162,6 +162,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
+
       headers = {
       }
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
@@ -323,7 +324,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def recognize(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type
       }
@@ -406,9 +409,10 @@ module IBMWatson
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
       raise TypeError("Callback is not a derived class of RecognizeCallback") unless recognize_callback.is_a?(IBMWatson::RecognizeCallback)
+
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {}
-      headers = @conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
+      headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
       if !token_manager.nil?
         access_token = token_manager.token
         headers["Authorization"] = "Bearer #{access_token}"
@@ -544,6 +548,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def register_callback(callback_url:, user_secret: nil)
       raise ArgumentError("callback_url must be provided") if callback_url.nil?
+
       headers = {
       }
       params = {
@@ -571,6 +576,7 @@ module IBMWatson
     # @return [nil]
     def unregister_callback(callback_url:)
       raise ArgumentError("callback_url must be provided") if callback_url.nil?
+
       headers = {
       }
       params = {
@@ -769,7 +775,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_job(audio:, content_type:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type
       }
@@ -849,6 +857,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def check_job(id:)
       raise ArgumentError("id must be provided") if id.nil?
+
       headers = {
       }
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
@@ -873,6 +882,7 @@ module IBMWatson
     # @return [nil]
     def delete_job(id:)
       raise ArgumentError("id must be provided") if id.nil?
+
       headers = {
       }
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
@@ -922,7 +932,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_language_model(name:, base_model_name:, dialect: nil, description: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       raise ArgumentError("base_model_name must be provided") if base_model_name.nil?
+
       headers = {
       }
       data = {
@@ -982,6 +994,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1007,6 +1020,7 @@ module IBMWatson
     # @return [nil]
     def delete_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1074,6 +1088,7 @@ module IBMWatson
     # @return [nil]
     def train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1105,6 +1120,7 @@ module IBMWatson
     # @return [nil]
     def reset_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
@@ -1144,6 +1160,7 @@ module IBMWatson
     # @return [nil]
     def upgrade_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
@@ -1172,6 +1189,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_corpora(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
@@ -1248,8 +1266,11 @@ module IBMWatson
     # @return [nil]
     def add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil, corpus_filename: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
+
       raise ArgumentError("corpus_file must be provided") if corpus_file.nil?
+
       headers = {
       }
       params = {
@@ -1295,7 +1316,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_corpus(customization_id:, corpus_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
@@ -1328,7 +1351,9 @@ module IBMWatson
     # @return [nil]
     def delete_corpus(customization_id:, corpus_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
@@ -1371,6 +1396,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_words(customization_id:, word_type: nil, sort: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1451,7 +1477,9 @@ module IBMWatson
     # @return [nil]
     def add_words(customization_id:, words:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("words must be provided") if words.nil?
+
       headers = {
       }
       data = {
@@ -1532,7 +1560,9 @@ module IBMWatson
     # @return [nil]
     def add_word(customization_id:, word_name:, word: nil, sounds_like: nil, display_as: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word_name must be provided") if word_name.nil?
+
       headers = {
       }
       data = {
@@ -1566,7 +1596,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word_name must be provided") if word_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
@@ -1598,7 +1630,9 @@ module IBMWatson
     # @return [nil]
     def delete_word(customization_id:, word_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word_name must be provided") if word_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
@@ -1636,7 +1670,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_acoustic_model(name:, base_model_name:, description: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       raise ArgumentError("base_model_name must be provided") if base_model_name.nil?
+
       headers = {
       }
       data = {
@@ -1695,6 +1731,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_acoustic_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1720,6 +1757,7 @@ module IBMWatson
     # @return [nil]
     def delete_acoustic_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1784,6 +1822,7 @@ module IBMWatson
     # @return [nil]
     def train_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1814,6 +1853,7 @@ module IBMWatson
     # @return [nil]
     def reset_acoustic_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
@@ -1863,6 +1903,7 @@ module IBMWatson
     # @return [nil]
     def upgrade_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1897,6 +1938,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_audio(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
@@ -2016,9 +2058,13 @@ module IBMWatson
     # @return [nil]
     def add_audio(customization_id:, audio_name:, audio_resource:, content_type:, contained_content_type: nil, allow_overwrite: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
+
       raise ArgumentError("audio_resource must be provided") if audio_resource.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type,
         "Contained-Content-Type" => contained_content_type
@@ -2071,7 +2117,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_audio(customization_id:, audio_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
@@ -2103,7 +2151,9 @@ module IBMWatson
     # @return [nil]
     def delete_audio(customization_id:, audio_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
@@ -2136,6 +2186,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

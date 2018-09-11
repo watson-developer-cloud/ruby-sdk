@@ -151,6 +151,7 @@ class WebSocketClient
 
   def send_chunk(chunk:, final: false)
     return if chunk.nil?
+
     @bytes_sent += chunk.size
     @client.send(chunk.bytes)
     @client.send({ "action" => "stop" }.to_json) if final

@@ -45,6 +45,7 @@ class IAMTokenManager
       )
     end
     return JSON.parse(response.body.to_s) if (200..299).cover?(response.code)
+
     require_relative("./watson_api_exception.rb")
     raise WatsonApiException.new(response: response)
   end
@@ -56,6 +57,7 @@ class IAMTokenManager
   # If this class is managing tokens and has a valid token stored, send it
   def token
     return @user_access_token unless @user_access_token.nil? || (@user_access_token.respond_to?(:empty?) && @user_access_token.empty?)
+
     if @token_info.all? { |_k, v| v.nil? }
       token_info = _request_token
       _save_token_info(
@@ -122,6 +124,7 @@ class IAMTokenManager
   # The buffer will be a fraction of the total TTL. Using 80%.
   def _is_token_expired?
     return true if @token_info["expiration"].nil? || @token_info["expires_in"].nil?
+
     fraction_of_ttl = 0.8
     time_to_live = @token_info["expires_in"].nil? ? 0 : @token_info["expires_in"]
     expire_time = @token_info["expiration"].nil? ? 0 : @token_info["expiration"]
@@ -135,6 +138,7 @@ class IAMTokenManager
   # if it has been at least 7 days and 1 hour since the last token was set
   def _is_refresh_token_expired?
     return true if @token_info["expiration"].nil?
+
     seven_days = 7 * 24 * 3600
     current_time = Time.now.to_i
     new_token_time = @token_info["expiration"] + seven_days

@@ -86,6 +86,7 @@ class WatsonService
 
   def add_default_headers(headers: {})
     raise TypeError unless headers.instance_of?(Hash)
+
     headers.each_pair { |k, v| @conn.default_options.headers.add(k, v) }
   end
 
@@ -150,6 +151,7 @@ class WatsonService
       )
     end
     return DetailedResponse.new(response: response) if (200..299).cover?(response.code)
+
     raise WatsonApiException.new(response: response)
   end
 
@@ -158,6 +160,7 @@ class WatsonService
   # @return [self]
   def headers(headers)
     raise TypeError("Expected Hash type, received #{headers.class}") unless headers.instance_of?(Hash)
+
     @temp_headers = headers
     self
   end
@@ -175,7 +178,9 @@ class WatsonService
   # @option timeout global [Integer] Upper bound on total request time
   def configure_http_client(proxy: {}, timeout: {})
     raise TypeError("proxy parameter must be a Hash") unless proxy.empty? || proxy.instance_of?(Hash)
+
     raise TypeError("timeout parameter must be a Hash") unless timeout.empty? || timeout.instance_of?(Hash)
+
     add_proxy(proxy) unless proxy.empty? || !proxy.dig(:address).is_a?(String) || !proxy.dig(:port).is_a?(Integer)
     add_timeout(timeout) unless timeout.empty? || (!timeout.key?(:per_operation) && !timeout.key?(:global))
   end
@@ -192,6 +197,7 @@ class WatsonService
   def add_timeout(timeout)
     if timeout.key?(:per_operation)
       raise TypeError("per_operation in timeout must be a Hash") unless timeout[:per_operation].instance_of?(Hash)
+
       defaults = {
         write: 0,
         connect: 0,
@@ -201,6 +207,7 @@ class WatsonService
       @conn = @conn.timeout(:per_operation, write: time[:write], connect: time[:connect], read: time[:read])
     else
       raise TypeError("global in timeout must be an Integer") unless timeout[:global].is_a?(Integer)
+
       @conn = @conn.timeout(:global, write: timeout[:global], connect: 0, read: 0)
     end
   end

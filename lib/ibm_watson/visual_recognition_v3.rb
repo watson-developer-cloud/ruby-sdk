@@ -264,7 +264,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_classifier(name:, **args)
       raise ArgumentError("name must be provided") if name.nil?
+
       raise ArgumentError("<classname>_positive_examples must be provided") unless args.keys.any? { |key| key.to_s.end_with?("_positive_examples") }
+
       positive_keys = args.keys
       positive_keys.keep_if { |key| key.to_s.end_with?("_positive_examples") }
       headers = {
@@ -341,6 +343,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -396,6 +399,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_classifier(classifier_id:, **args)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -447,6 +451,7 @@ module IBMWatson
     # @return [nil]
     def delete_classifier(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -475,6 +480,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_core_ml_model(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -508,6 +514,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

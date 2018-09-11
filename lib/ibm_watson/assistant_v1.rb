@@ -113,6 +113,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -249,6 +250,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_workspace(workspace_id:, export: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -302,6 +304,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -343,6 +346,7 @@ module IBMWatson
     # @return [nil]
     def delete_workspace(workspace_id:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -384,6 +388,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -425,7 +430,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_intent(workspace_id:, intent:, description: nil, examples: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       headers = {
       }
       params = {
@@ -466,7 +473,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       headers = {
       }
       params = {
@@ -505,7 +514,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       headers = {
       }
       params = {
@@ -540,7 +551,9 @@ module IBMWatson
     # @return [nil]
     def delete_intent(workspace_id:, intent:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       headers = {
       }
       params = {
@@ -580,7 +593,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       headers = {
       }
       params = {
@@ -620,8 +635,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_example(workspace_id:, intent:, text:, mentions: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -658,8 +676,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_example(workspace_id:, intent:, text:, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -696,8 +717,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -732,8 +756,11 @@ module IBMWatson
     # @return [nil]
     def delete_example(workspace_id:, intent:, text:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("intent must be provided") if intent.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -772,6 +799,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -810,7 +838,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_counterexample(workspace_id:, text:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -846,7 +876,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_counterexample(workspace_id:, text:, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -878,7 +910,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_counterexample(workspace_id:, text:, new_text: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -912,7 +946,9 @@ module IBMWatson
     # @return [nil]
     def delete_counterexample(workspace_id:, text:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -954,6 +990,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -996,7 +1033,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       headers = {
       }
       params = {
@@ -1039,7 +1078,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       headers = {
       }
       params = {
@@ -1080,7 +1121,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       headers = {
       }
       params = {
@@ -1117,7 +1160,9 @@ module IBMWatson
     # @return [nil]
     def delete_entity(workspace_id:, entity:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       headers = {
       }
       params = {
@@ -1155,7 +1200,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       headers = {
       }
       params = {
@@ -1199,7 +1246,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       headers = {
       }
       params = {
@@ -1252,8 +1301,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       headers = {
       }
       params = {
@@ -1296,8 +1348,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       headers = {
       }
       params = {
@@ -1348,8 +1403,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       headers = {
       }
       params = {
@@ -1387,8 +1445,11 @@ module IBMWatson
     # @return [nil]
     def delete_value(workspace_id:, entity:, value:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       headers = {
       }
       params = {
@@ -1428,8 +1489,11 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       headers = {
       }
       params = {
@@ -1468,9 +1532,13 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_synonym(workspace_id:, entity:, value:, synonym:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       raise ArgumentError("synonym must be provided") if synonym.nil?
+
       headers = {
       }
       params = {
@@ -1507,9 +1575,13 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       raise ArgumentError("synonym must be provided") if synonym.nil?
+
       headers = {
       }
       params = {
@@ -1545,9 +1617,13 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       raise ArgumentError("synonym must be provided") if synonym.nil?
+
       headers = {
       }
       params = {
@@ -1582,9 +1658,13 @@ module IBMWatson
     # @return [nil]
     def delete_synonym(workspace_id:, entity:, value:, synonym:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("entity must be provided") if entity.nil?
+
       raise ArgumentError("value must be provided") if value.nil?
+
       raise ArgumentError("synonym must be provided") if synonym.nil?
+
       headers = {
       }
       params = {
@@ -1622,6 +1702,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -1685,7 +1766,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+
       headers = {
       }
       params = {
@@ -1737,7 +1820,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+
       headers = {
       }
       params = {
@@ -1798,7 +1883,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+
       headers = {
       }
       params = {
@@ -1848,7 +1935,9 @@ module IBMWatson
     # @return [nil]
     def delete_dialog_node(workspace_id:, dialog_node:)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+
       headers = {
       }
       params = {
@@ -1887,6 +1976,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+
       headers = {
       }
       params = {
@@ -1927,6 +2017,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
       raise ArgumentError("filter must be provided") if filter.nil?
+
       headers = {
       }
       params = {
@@ -1964,6 +2055,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

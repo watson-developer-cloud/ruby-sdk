@@ -166,6 +166,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
       raise ArgumentError("features must be provided") if features.nil?
+
       headers = {
       }
       params = {
@@ -230,6 +231,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
+
       headers = {
       }
       params = {

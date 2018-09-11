@@ -161,6 +161,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_voice(voice:, customization_id: nil)
       raise ArgumentError("voice must be provided") if voice.nil?
+
       headers = {
       }
       params = {
@@ -215,6 +216,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
         "Accept" => accept
       }
@@ -265,6 +267,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_pronunciation(text:, voice: nil, format: nil, customization_id: nil)
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -304,6 +307,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_voice_model(name:, language: nil, description: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       headers = {
       }
       data = {
@@ -376,6 +380,7 @@ module IBMWatson
     # @return [nil]
     def update_voice_model(customization_id:, name: nil, description: nil, words: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       data = {
@@ -409,6 +414,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_voice_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -434,6 +440,7 @@ module IBMWatson
     # @return [nil]
     def delete_voice_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -473,7 +480,9 @@ module IBMWatson
     # @return [nil]
     def add_words(customization_id:, words:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("words must be provided") if words.nil?
+
       headers = {
       }
       data = {
@@ -505,6 +514,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_words(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
@@ -544,8 +554,11 @@ module IBMWatson
     # @return [nil]
     def add_word(customization_id:, word:, translation:, part_of_speech: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word must be provided") if word.nil?
+
       raise ArgumentError("translation must be provided") if translation.nil?
+
       headers = {
       }
       data = {
@@ -578,7 +591,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word must be provided") if word.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
@@ -606,7 +621,9 @@ module IBMWatson
     # @return [nil]
     def delete_word(customization_id:, word:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word must be provided") if word.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
@@ -639,6 +656,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

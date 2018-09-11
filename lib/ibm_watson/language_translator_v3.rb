@@ -108,6 +108,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def translate(text:, model_id: nil, source: nil, target: nil)
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -165,6 +166,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def identify(text:)
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -256,6 +258,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil)
       raise ArgumentError("base_model_id must be provided") if base_model_id.nil?
+
       headers = {
       }
       params = {
@@ -308,6 +311,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
+
       headers = {
       }
       params = {
@@ -334,6 +338,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
+
       headers = {
       }
       params = {

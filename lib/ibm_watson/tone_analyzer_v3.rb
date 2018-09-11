@@ -144,7 +144,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def tone(tone_input:, content_type:, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
       raise ArgumentError("tone_input must be provided") if tone_input.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type,
         "Content-Language" => content_language,
@@ -204,6 +206,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def tone_chat(utterances:, content_language: nil, accept_language: nil)
       raise ArgumentError("utterances must be provided") if utterances.nil?
+
       headers = {
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
