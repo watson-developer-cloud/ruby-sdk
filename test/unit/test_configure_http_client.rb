@@ -14,9 +14,6 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    def service.conn
-      @watson_service.conn
-    end
     service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
@@ -34,9 +31,6 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    def service.conn
-      @watson_service.conn
-    end
     service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
@@ -58,9 +52,6 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    def service.conn
-      @watson_service.conn
-    end
     service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
@@ -82,9 +73,6 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    def service.conn
-      @watson_service.conn
-    end
     service.configure_http_client(
       proxy: {
         address: "bogus_address.com",
@@ -110,9 +98,6 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    def service.conn
-      @watson_service.conn
-    end
     service.configure_http_client(
       timeout: {
         per_operation: {
@@ -140,9 +125,6 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    def service.conn
-      @watson_service.conn
-    end
     service.configure_http_client(
       timeout: {
         global: 20

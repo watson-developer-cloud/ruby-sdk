@@ -29,7 +29,7 @@ require_relative "./watson_service"
 module IBMWatson
   ##
   # The Assistant V1 service.
-  class AssistantV1
+  class AssistantV1 < WatsonService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -70,7 +70,6 @@ module IBMWatson
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
-      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/assistant/api"
@@ -80,84 +79,11 @@ module IBMWatson
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      @watson_service = WatsonService.new(
-        vcap_services_name: "conversation",
-        url: args[:url],
-        username: args[:username],
-        password: args[:password],
-        iam_apikey: args[:iam_apikey],
-        iam_access_token: args[:iam_access_token],
-        iam_url: args[:iam_url],
-        use_vcap_services: true
-      )
+      args[:vcap_services_name] = "conversation"
+      super
       @version = args[:version]
     end
 
-    # :nocov:
-    def add_default_headers(headers: {})
-      @watson_service.add_default_headers(headers: headers)
-    end
-
-    def _iam_access_token(iam_access_token:)
-      @watson_service._iam_access_token(iam_access_token: iam_access_token)
-    end
-
-    def _iam_apikey(iam_apikey:)
-      @watson_service._iam_apikey(iam_apikey: iam_apikey)
-    end
-
-    # @return [DetailedResponse]
-    def request(args)
-      @watson_service.request(args)
-    end
-
-    # @note Chainable
-    # @param headers [Hash] Custom headers to be sent with the request
-    # @return [self]
-    def headers(headers)
-      @watson_service.headers(headers)
-      self
-    end
-
-    def password=(password)
-      @watson_service.password = password
-    end
-
-    def password
-      @watson_service.password
-    end
-
-    def username=(username)
-      @watson_service.username = username
-    end
-
-    def username
-      @watson_service.username
-    end
-
-    def url=(url)
-      @watson_service.url = url
-    end
-
-    def url
-      @watson_service.url
-    end
-
-    # @!method configure_http_client(proxy: {}, timeout: {})
-    # Sets the http client config, currently works with timeout and proxies
-    # @param proxy [Hash] The hash of proxy configurations
-    # @option proxy address [String] The address of the proxy
-    # @option proxy port [Integer] The port of the proxy
-    # @option proxy username [String] The username of the proxy, if authentication is needed
-    # @option proxy password [String] The password of the proxy, if authentication is needed
-    # @option proxy headers [Hash] The headers to be used with the proxy
-    # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
-    # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
-    # @option timeout global [Integer] Upper bound on total request time
-    def configure_http_client(proxy: {}, timeout: {})
-      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
-    end
-    # :nocov:
     #########################
     # Message
     #########################
@@ -226,8 +152,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -452,8 +377,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -649,8 +573,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -842,8 +765,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -1025,8 +947,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -1271,8 +1192,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -1501,8 +1421,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -1696,8 +1615,7 @@ module IBMWatson
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -1763,7 +1681,7 @@ module IBMWatson
     # @param digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
-    #   users.
+    #   users. This string must be no longer than 512 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1876,7 +1794,7 @@ module IBMWatson
     # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
-    #   users.
+    #   users. This string must be no longer than 512 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
       raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
@@ -1959,9 +1877,8 @@ module IBMWatson
     #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
     #   more information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
+    #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. For more information, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/filter-reference.html#filter-query-syntax).
@@ -2003,9 +1920,8 @@ module IBMWatson
     #   well as a value for `workspace_id` or `request.context.metadata.deployment`. For
     #   more information, see the
     #   [documentation](https://console.bluemix.net/docs/services/conversation/filter-reference.html#filter-query-syntax).
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`). Supported values are `name`, `updated`,
-    #   and `workspace_id`.
+    # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
+    #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.

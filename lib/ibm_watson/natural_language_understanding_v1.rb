@@ -35,7 +35,7 @@ require_relative "./watson_service"
 module IBMWatson
   ##
   # The Natural Language Understanding V1 service.
-  class NaturalLanguageUnderstandingV1
+  class NaturalLanguageUnderstandingV1 < WatsonService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -76,7 +76,6 @@ module IBMWatson
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
-      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/natural-language-understanding/api"
@@ -86,84 +85,11 @@ module IBMWatson
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      @watson_service = WatsonService.new(
-        vcap_services_name: "natural-language-understanding",
-        url: args[:url],
-        username: args[:username],
-        password: args[:password],
-        iam_apikey: args[:iam_apikey],
-        iam_access_token: args[:iam_access_token],
-        iam_url: args[:iam_url],
-        use_vcap_services: true
-      )
+      args[:vcap_services_name] = "natural-language-understanding"
+      super
       @version = args[:version]
     end
 
-    # :nocov:
-    def add_default_headers(headers: {})
-      @watson_service.add_default_headers(headers: headers)
-    end
-
-    def _iam_access_token(iam_access_token:)
-      @watson_service._iam_access_token(iam_access_token: iam_access_token)
-    end
-
-    def _iam_apikey(iam_apikey:)
-      @watson_service._iam_apikey(iam_apikey: iam_apikey)
-    end
-
-    # @return [DetailedResponse]
-    def request(args)
-      @watson_service.request(args)
-    end
-
-    # @note Chainable
-    # @param headers [Hash] Custom headers to be sent with the request
-    # @return [self]
-    def headers(headers)
-      @watson_service.headers(headers)
-      self
-    end
-
-    def password=(password)
-      @watson_service.password = password
-    end
-
-    def password
-      @watson_service.password
-    end
-
-    def username=(username)
-      @watson_service.username = username
-    end
-
-    def username
-      @watson_service.username
-    end
-
-    def url=(url)
-      @watson_service.url = url
-    end
-
-    def url
-      @watson_service.url
-    end
-
-    # @!method configure_http_client(proxy: {}, timeout: {})
-    # Sets the http client config, currently works with timeout and proxies
-    # @param proxy [Hash] The hash of proxy configurations
-    # @option proxy address [String] The address of the proxy
-    # @option proxy port [Integer] The port of the proxy
-    # @option proxy username [String] The username of the proxy, if authentication is needed
-    # @option proxy password [String] The password of the proxy, if authentication is needed
-    # @option proxy headers [Hash] The headers to be used with the proxy
-    # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
-    # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
-    # @option timeout global [Integer] Upper bound on total request time
-    def configure_http_client(proxy: {}, timeout: {})
-      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
-    end
-    # :nocov:
     #########################
     # Analyze
     #########################
@@ -218,14 +144,24 @@ module IBMWatson
     #   \"Leonardo DiCaprio won an Oscar\" returns \"/art and entertainment/movies and
     #   tv/movies\" as the most confident classification.
     # @param features [Features] Specific features to analyze the document for.
-    # @param text [String] The plain text to analyze.
-    # @param html [String] The HTML file to analyze.
-    # @param url [String] The web page to analyze.
+    # @param text [String] The plain text to analyze. One of the `text`, `html`, or `url` parameters is
+    #   required.
+    # @param html [String] The HTML file to analyze. One of the `text`, `html`, or `url` parameters is
+    #   required.
+    # @param url [String] The web page to analyze. One of the `text`, `html`, or `url` parameters is
+    #   required.
     # @param clean [Boolean] Remove website elements, such as links, ads, etc.
-    # @param xpath [String] XPath query for targeting nodes in HTML.
+    # @param xpath [String] An [XPath query](https://www.w3.org/TR/xpath/) to perform on `html` or `url`
+    #   input. Results of the query will be appended to the cleaned webpage text before it
+    #   is analyzed. To analyze only the results of the XPath query, set the `clean`
+    #   parameter to `false`.
     # @param fallback_to_raw [Boolean] Whether to use raw HTML content if text cleaning fails.
     # @param return_analyzed_text [Boolean] Whether or not to return the analyzed text.
-    # @param language [String] ISO 639-1 code indicating the language to use in the analysis.
+    # @param language [String] ISO 639-1 code that specifies the language of your text. This overrides automatic
+    #   language detection. Language support differs depending on the features you include
+    #   in your analysis. See [Language
+    #   support](https://www.bluemix.net/docs/services/natural-language-understanding/language-support.html)
+    #   for more information.
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)

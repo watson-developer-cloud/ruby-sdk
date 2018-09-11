@@ -12,8 +12,7 @@ class VisualRecognitionV3Test < Minitest::Test
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19"
     )
-    service._iam_access_token(iam_access_token: "bogus_access_token")
-    service._iam_access_token(iam_access_token: "bogus_access_token")
+    service.iam_access_token(iam_access_token: "bogus_access_token")
     response = {
       "classifier_id" => "bogusnumber",
       "name" => "Dog Breeds",
