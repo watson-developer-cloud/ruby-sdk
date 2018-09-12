@@ -39,6 +39,7 @@ class WatsonService
     @password = nil
     @token_manager = nil
     @temp_headers = nil
+    @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
 
     user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
@@ -62,7 +63,7 @@ class WatsonService
     if !vars[:iam_access_token].nil? || !vars[:iam_apikey].nil?
       _token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
-      if vars[:username] == "apikey"
+      if vars[:username] == "apikey" && !@icp_prefix
         iam_apikey(iam_apikey: vars[:password])
       else
         @username = vars[:username]
@@ -117,7 +118,7 @@ class WatsonService
     args.delete_if { |_, v| v.nil? }
     args[:headers].delete("Content-Type") if args.key?(:form) || args[:json].nil?
 
-    if @username == "apikey"
+    if @username == "apikey" && !@icp_prefix
       iam_apikey(iam_apikey: @password)
       @username = nil
     end

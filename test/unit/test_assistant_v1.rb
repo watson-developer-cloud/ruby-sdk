@@ -40,6 +40,37 @@ class AssistantV1Test < Minitest::Test
     assert_equal(response, service_response.result)
   end
 
+  def test_plain_to_json_icp
+    response = {
+      "text" => "I want financial advice today.",
+      "created" => "2016-07-11T16:39:01.774Z",
+      "updated" => "2015-12-07T18:53:59.153Z"
+    }
+    headers = {
+      "Content-Type" => "application/json"
+    }
+    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
+      .with(
+        body: "{\"text\":\"I want financial advice today.\"}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic YXBpa2V5OmljcC14eXo=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 201, body: response.to_json, headers: headers)
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      username: "apikey",
+      password: "icp-xyz"
+    )
+    service_response = service.create_counterexample(
+      workspace_id: "boguswid",
+      text: "I want financial advice today."
+    )
+    assert_equal(response, service_response.result)
+  end
+
   def test_rate_limit_exceeded
     error_code = 429
     error_msg = "Rate limit exceeded"
