@@ -61,7 +61,7 @@ class WatsonService
     end
 
     if !vars[:iam_access_token].nil? || !vars[:iam_apikey].nil?
-      _token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
+      set_token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
       if vars[:username] == "apikey" && !@icp_prefix
         iam_apikey(iam_apikey: vars[:password])
@@ -188,7 +188,7 @@ class WatsonService
 
   private
 
-  def _token_manager(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
+  def set_token_manager(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
     @iam_apikey = iam_apikey
     @iam_access_token = iam_access_token
     @iam_url = iam_url

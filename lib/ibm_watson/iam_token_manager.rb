@@ -59,14 +59,14 @@ class IAMTokenManager
     return @user_access_token unless @user_access_token.nil? || (@user_access_token.respond_to?(:empty?) && @user_access_token.empty?)
 
     if @token_info.all? { |_k, v| v.nil? }
-      token_info = _request_token
-      _save_token_info(
+      token_info = request_token
+      save_token_info(
         token_info: token_info
       )
       return @token_info["access_token"]
-    elsif _is_token_expired?
-      token_info = _is_refresh_token_expired? ? _request_token : _refresh_token
-      _save_token_info(
+    elsif token_expired?
+      token_info = refresh_token_expired? ? request_token : refresh_token
+      save_token_info(
         token_info: token_info
       )
       return @token_info["access_token"]
@@ -78,7 +78,7 @@ class IAMTokenManager
   private
 
   # Request an IAM token using an API key
-  def _request_token
+  def request_token
     headers = {
       "Content-Type" => CONTENT_TYPE,
       "Authorization" => DEFAULT_AUTHORIZATION,
@@ -99,7 +99,7 @@ class IAMTokenManager
   end
 
   # Refresh an IAM token using a refresh token
-  def _refresh_token
+  def refresh_token
     headers = {
       "Content-Type" => CONTENT_TYPE,
       "Authorization" => DEFAULT_AUTHORIZATION,
@@ -122,7 +122,7 @@ class IAMTokenManager
   # Using a buffer to prevent the edge case of the
   # token expiring before the request could be made.
   # The buffer will be a fraction of the total TTL. Using 80%.
-  def _is_token_expired?
+  def token_expired?
     return true if @token_info["expiration"].nil? || @token_info["expires_in"].nil?
 
     fraction_of_ttl = 0.8
@@ -136,7 +136,7 @@ class IAMTokenManager
   # Used as a fail-safe to prevent the condition of a refresh token expiring,
   # which could happen after around 30 days. This function will return true
   # if it has been at least 7 days and 1 hour since the last token was set
-  def _is_refresh_token_expired?
+  def refresh_token_expired?
     return true if @token_info["expiration"].nil?
 
     seven_days = 7 * 24 * 3600
@@ -146,7 +146,7 @@ class IAMTokenManager
   end
 
   # Save the response from the IAM service request to the object's state
-  def _save_token_info(token_info:)
+  def save_token_info(token_info:)
     @token_info = token_info
   end
 end
