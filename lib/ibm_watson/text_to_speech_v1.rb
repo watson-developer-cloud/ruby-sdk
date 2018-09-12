@@ -79,7 +79,7 @@ require_relative "./watson_service"
 module IBMWatson
   ##
   # The Text to Speech V1 service.
-  class TextToSpeechV1
+  class TextToSpeechV1 < WatsonService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -110,7 +110,6 @@ module IBMWatson
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
-      super()
       defaults = {}
       defaults[:url] = "https://stream.watsonplatform.net/text-to-speech/api"
       defaults[:username] = nil
@@ -119,83 +118,10 @@ module IBMWatson
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      @watson_service = WatsonService.new(
-        vcap_services_name: "text_to_speech",
-        url: args[:url],
-        username: args[:username],
-        password: args[:password],
-        iam_apikey: args[:iam_apikey],
-        iam_access_token: args[:iam_access_token],
-        iam_url: args[:iam_url],
-        use_vcap_services: true
-      )
+      args[:vcap_services_name] = "text_to_speech"
+      super
     end
 
-    # :nocov:
-    def add_default_headers(headers: {})
-      @watson_service.add_default_headers(headers: headers)
-    end
-
-    def _iam_access_token(iam_access_token:)
-      @watson_service._iam_access_token(iam_access_token: iam_access_token)
-    end
-
-    def _iam_apikey(iam_apikey:)
-      @watson_service._iam_apikey(iam_apikey: iam_apikey)
-    end
-
-    # @return [DetailedResponse]
-    def request(args)
-      @watson_service.request(args)
-    end
-
-    # @note Chainable
-    # @param headers [Hash] Custom headers to be sent with the request
-    # @return [self]
-    def headers(headers)
-      @watson_service.headers(headers)
-      self
-    end
-
-    def password=(password)
-      @watson_service.password = password
-    end
-
-    def password
-      @watson_service.password
-    end
-
-    def username=(username)
-      @watson_service.username = username
-    end
-
-    def username
-      @watson_service.username
-    end
-
-    def url=(url)
-      @watson_service.url = url
-    end
-
-    def url
-      @watson_service.url
-    end
-
-    # @!method configure_http_client(proxy: {}, timeout: {})
-    # Sets the http client config, currently works with timeout and proxies
-    # @param proxy [Hash] The hash of proxy configurations
-    # @option proxy address [String] The address of the proxy
-    # @option proxy port [Integer] The port of the proxy
-    # @option proxy username [String] The username of the proxy, if authentication is needed
-    # @option proxy password [String] The password of the proxy, if authentication is needed
-    # @option proxy headers [Hash] The headers to be used with the proxy
-    # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
-    # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
-    # @option timeout global [Integer] Upper bound on total request time
-    def configure_http_client(proxy: {}, timeout: {})
-      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
-    end
-    # :nocov:
     #########################
     # Voices
     #########################
@@ -235,6 +161,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_voice(voice:, customization_id: nil)
       raise ArgumentError("voice must be provided") if voice.nil?
+
       headers = {
       }
       params = {
@@ -289,6 +216,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
         "Accept" => accept
       }
@@ -339,6 +267,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_pronunciation(text:, voice: nil, format: nil, customization_id: nil)
       raise ArgumentError("text must be provided") if text.nil?
+
       headers = {
       }
       params = {
@@ -378,6 +307,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_voice_model(name:, language: nil, description: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       headers = {
       }
       data = {
@@ -450,6 +380,7 @@ module IBMWatson
     # @return [nil]
     def update_voice_model(customization_id:, name: nil, description: nil, words: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       data = {
@@ -483,6 +414,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_voice_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -508,6 +440,7 @@ module IBMWatson
     # @return [nil]
     def delete_voice_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -547,7 +480,9 @@ module IBMWatson
     # @return [nil]
     def add_words(customization_id:, words:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("words must be provided") if words.nil?
+
       headers = {
       }
       data = {
@@ -579,6 +514,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_words(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
@@ -618,8 +554,11 @@ module IBMWatson
     # @return [nil]
     def add_word(customization_id:, word:, translation:, part_of_speech: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word must be provided") if word.nil?
+
       raise ArgumentError("translation must be provided") if translation.nil?
+
       headers = {
       }
       data = {
@@ -652,7 +591,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word must be provided") if word.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
@@ -680,7 +621,9 @@ module IBMWatson
     # @return [nil]
     def delete_word(customization_id:, word:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word must be provided") if word.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
@@ -713,6 +656,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

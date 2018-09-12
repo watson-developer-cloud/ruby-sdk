@@ -17,40 +17,34 @@
 # The IBM&reg; Speech to Text service provides an API that uses IBM's speech-recognition
 # capabilities to produce transcripts of spoken audio. The service can transcribe speech
 # from various languages and audio formats. It addition to basic transcription, the
-# service can produce detailed information about many aspects of the audio. For most
-# languages, the service supports two sampling rates, broadband and narrowband. It returns
-# all JSON response content in the UTF-8 character set. For more information about the
-# service, see the [IBM&reg; Cloud
+# service can produce detailed information about many different aspects of the audio. For
+# most languages, the service supports two sampling rates, broadband and narrowband. It
+# returns all JSON response content in the UTF-8 character set.
+#
+#  For more information about the service, see the [IBM&reg; Cloud
 # documentation](https://console.bluemix.net/docs/services/speech-to-text/index.html).
 #
 # ### API usage guidelines
 # * **Audio formats:** The service accepts audio in many formats (MIME types). See [Audio
 # formats](https://console.bluemix.net/docs/services/speech-to-text/audio-formats.html).
-# * **HTTP interfaces:** The service provides three HTTP interfaces for speech
-# recognition. The sessionless interface includes a single synchronous method. The
-# session-based interface includes multiple synchronous methods for maintaining a long,
-# multi-turn exchange with the service. And the asynchronous interface provides multiple
-# methods that use registered callbacks and polling for non-blocking recognition. See [The
-# HTTP REST interface](https://console.bluemix.net/docs/services/speech-to-text/http.html)
-# and [The asynchronous HTTP
+# * **HTTP interfaces:** The service provides two HTTP Representational State Transfer
+# (REST) interfaces for speech recognition. The basic interface includes a single
+# synchronous method. The asynchronous interface provides multiple methods that use
+# registered callbacks and polling for non-blocking recognition. See [The HTTP
+# interface](https://console.bluemix.net/docs/services/speech-to-text/http.html) and [The
+# asynchronous HTTP
 # interface](https://console.bluemix.net/docs/services/speech-to-text/async.html).
-#
-#   **Important:** The session-based interface is deprecated as of August 8, 2018, and
-# will be removed from service on September 7, 2018. Use the sessionless, asynchronous, or
-# WebSocket interface instead. For more information, see the August 8 service update in
-# the [Release
-# notes](https://console.bluemix.net/docs/services/speech-to-text/release-notes.html#August2018).
 # * **WebSocket interface:** The service also offers a WebSocket interface for speech
 # recognition. The WebSocket interface provides a full-duplex, low-latency communication
 # channel. Clients send requests and audio to the service and receive results over a
 # single connection in an asynchronous fashion. See [The WebSocket
 # interface](https://console.bluemix.net/docs/services/speech-to-text/websockets.html).
-# * **Customization:** Use language model customization to expand the vocabulary of a base
-# model with domain-specific terminology. Use acoustic model customization to adapt a base
-# model for the acoustic characteristics of your audio. Language model customization is
-# generally available for production use by most supported languages; acoustic model
-# customization is beta functionality that is available for all supported languages. See
-# [The customization
+# * **Customization:** The service offers two customization interfaces. Use language model
+# customization to expand the vocabulary of a base model with domain-specific terminology.
+# Use acoustic model customization to adapt a base model for the acoustic characteristics
+# of your audio. Language model customization is generally available for production use by
+# most supported languages; acoustic model customization is beta functionality that is
+# available for all supported languages. See [The customization
 # interface](https://console.bluemix.net/docs/services/speech-to-text/custom.html).
 # * **Customization IDs:** Many methods accept a customization ID to identify a custom
 # language or custom acoustic model. Customization IDs are Globally Unique Identifiers
@@ -84,7 +78,7 @@ require_relative "./watson_service"
 module IBMWatson
   ##
   # The Speech to Text V1 service.
-  class SpeechToTextV1
+  class SpeechToTextV1 < WatsonService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -115,7 +109,6 @@ module IBMWatson
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
-      super()
       defaults = {}
       defaults[:url] = "https://stream.watsonplatform.net/speech-to-text/api"
       defaults[:username] = nil
@@ -124,83 +117,10 @@ module IBMWatson
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      @watson_service = WatsonService.new(
-        vcap_services_name: "speech_to_text",
-        url: args[:url],
-        username: args[:username],
-        password: args[:password],
-        iam_apikey: args[:iam_apikey],
-        iam_access_token: args[:iam_access_token],
-        iam_url: args[:iam_url],
-        use_vcap_services: true
-      )
+      args[:vcap_services_name] = "speech_to_text"
+      super
     end
 
-    # :nocov:
-    def add_default_headers(headers: {})
-      @watson_service.add_default_headers(headers: headers)
-    end
-
-    def _iam_access_token(iam_access_token:)
-      @watson_service._iam_access_token(iam_access_token: iam_access_token)
-    end
-
-    def _iam_apikey(iam_apikey:)
-      @watson_service._iam_apikey(iam_apikey: iam_apikey)
-    end
-
-    # @return [DetailedResponse]
-    def request(args)
-      @watson_service.request(args)
-    end
-
-    # @note Chainable
-    # @param headers [Hash] Custom headers to be sent with the request
-    # @return [self]
-    def headers(headers)
-      @watson_service.headers(headers)
-      self
-    end
-
-    def password=(password)
-      @watson_service.password = password
-    end
-
-    def password
-      @watson_service.password
-    end
-
-    def username=(username)
-      @watson_service.username = username
-    end
-
-    def username
-      @watson_service.username
-    end
-
-    def url=(url)
-      @watson_service.url = url
-    end
-
-    def url
-      @watson_service.url
-    end
-
-    # @!method configure_http_client(proxy: {}, timeout: {})
-    # Sets the http client config, currently works with timeout and proxies
-    # @param proxy [Hash] The hash of proxy configurations
-    # @option proxy address [String] The address of the proxy
-    # @option proxy port [Integer] The port of the proxy
-    # @option proxy username [String] The username of the proxy, if authentication is needed
-    # @option proxy password [String] The password of the proxy, if authentication is needed
-    # @option proxy headers [Hash] The headers to be used with the proxy
-    # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
-    # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
-    # @option timeout global [Integer] Upper bound on total request time
-    def configure_http_client(proxy: {}, timeout: {})
-      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
-    end
-    # :nocov:
     #########################
     # Models
     #########################
@@ -236,6 +156,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError("model_id must be provided") if model_id.nil?
+
       headers = {
       }
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
@@ -248,27 +169,27 @@ module IBMWatson
       response
     end
     #########################
-    # Sessionless
+    # Synchronous
     #########################
 
     ##
     # @!method recognize(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
     # Recognize audio.
-    # Sends audio and returns transcription results for a sessionless recognition
-    #   request. Returns only the final results; to enable interim results, use
-    #   session-based requests or the WebSocket API. The service imposes a data size limit
-    #   of 100 MB. It automatically detects the endianness of the incoming audio and, for
-    #   audio that includes multiple channels, downmixes the audio to one-channel mono
-    #   during transcoding. (For the `audio/l16` format, you can specify the endianness.)
+    # Sends audio and returns transcription results for a recognition request. Returns
+    #   only the final results; to enable interim results, use the WebSocket API. The
+    #   service imposes a data size limit of 100 MB. It automatically detects the
+    #   endianness of the incoming audio and, for audio that includes multiple channels,
+    #   downmixes the audio to one-channel mono during transcoding. (For the `audio/l16`
+    #   format, you can specify the endianness.)
     #
     #   ### Streaming mode
     #
     #    For requests to transcribe live audio as it becomes available, you must set the
     #   `Transfer-Encoding` header to `chunked` to use streaming mode. In streaming mode,
     #   the server closes the connection (status code 408) if the service receives no data
-    #   chunk for 30 seconds and the service has no audio to transcribe for 30 seconds.
-    #   The server also closes the connection (status code 400) if no speech is detected
-    #   for `inactivity_timeout` seconds of audio (not processing time); use the
+    #   chunk for 30 seconds and it has no audio to transcribe for 30 seconds. The server
+    #   also closes the connection (status code 400) if no speech is detected for
+    #   `inactivity_timeout` seconds of audio (not processing time); use the
     #   `inactivity_timeout` parameter to change the default of 30 seconds.
     #
     #   ### Audio formats (content types)
@@ -307,38 +228,32 @@ module IBMWatson
     #   limit imposed by most HTTP servers and proxies. You can encounter this limit, for
     #   example, if you want to spot a very large number of keywords.
     #
-    #   For information about submitting a multipart request, see [Submitting multipart
-    #   requests as form
-    #   data](https://console.bluemix.net/docs/services/speech-to-text/http.html#HTTP-multi).
+    #   For information about submitting a multipart request, see [Making a multipart HTTP
+    #   request](https://console.bluemix.net/docs/services/speech-to-text/http.html#HTTP-multi).
     # @param audio [String] The audio to transcribe in the format specified by the `Content-Type` header.
     # @param content_type [String] The type of the input.
-    # @param model [String] The identifier of the model that is to be used for the recognition request or, for
-    #   the **Create a session** method, with the new session.
+    # @param model [String] The identifier of the model that is to be used for the recognition request.
     # @param customization_id [String] The customization ID (GUID) of a custom language model that is to be used with the
-    #   recognition request or, for the **Create a session** method, with the new session.
-    #   The base model of the specified custom language model must match the model
-    #   specified with the `model` parameter. You must make the request with service
-    #   credentials created for the instance of the service that owns the custom model. By
-    #   default, no custom language model is used.
+    #   recognition request. The base model of the specified custom language model must
+    #   match the model specified with the `model` parameter. You must make the request
+    #   with service credentials created for the instance of the service that owns the
+    #   custom model. By default, no custom language model is used.
     # @param acoustic_customization_id [String] The customization ID (GUID) of a custom acoustic model that is to be used with the
-    #   recognition request or, for the **Create a session** method, with the new session.
-    #   The base model of the specified custom acoustic model must match the model
-    #   specified with the `model` parameter. You must make the request with service
-    #   credentials created for the instance of the service that owns the custom model. By
-    #   default, no custom acoustic model is used.
+    #   recognition request. The base model of the specified custom acoustic model must
+    #   match the model specified with the `model` parameter. You must make the request
+    #   with service credentials created for the instance of the service that owns the
+    #   custom model. By default, no custom acoustic model is used.
     # @param base_model_version [String] The version of the specified base model that is to be used with recognition
-    #   request or, for the **Create a session** method, with the new session. Multiple
-    #   versions of a base model can exist when a model is updated for internal
-    #   improvements. The parameter is intended primarily for use with custom models that
-    #   have been upgraded for a new base model. The default value depends on whether the
-    #   parameter is used with or without a custom model. For more information, see [Base
-    #   model
+    #   request. Multiple versions of a base model can exist when a model is updated for
+    #   internal improvements. The parameter is intended primarily for use with custom
+    #   models that have been upgraded for a new base model. The default value depends on
+    #   whether the parameter is used with or without a custom model. For more
+    #   information, see [Base model
     #   version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
-    #   recognition request or, for sessions, with the **Create a session** method, the
-    #   customization weight tells the service how much weight to give to words from the
-    #   custom language model compared to those from the base model for the current
-    #   request.
+    #   recognition request, the customization weight tells the service how much weight to
+    #   give to words from the custom language model compared to those from the base model
+    #   for the current request.
     #
     #   Specify a value between 0.0 and 1.0. Unless a different customization weight was
     #   specified for the custom model when it was trained, the default value is 0.3. A
@@ -397,7 +312,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def recognize(audio:, content_type:, model: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type
       }
@@ -480,16 +397,17 @@ module IBMWatson
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
       raise TypeError("Callback is not a derived class of RecognizeCallback") unless recognize_callback.is_a?(IBMWatson::RecognizeCallback)
+
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {}
-      headers = @watson_service.conn.default_options.headers.to_hash unless @watson_service.conn.default_options.headers.to_hash.empty?
-      if !@watson_service.token_manager.nil?
-        access_token = @watson_service.token_manager._token
+      headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
+      if !token_manager.nil?
+        access_token = token_manager.token
         headers["Authorization"] = "Bearer #{access_token}"
-      elsif !@watson_service.username.nil? && !@watson_service.password.nil?
-        headers["Authorization"] = "Basic " + Base64.strict_encode64("#{@watson_service.username}:#{@watson_service.password}")
+      elsif !username.nil? && !password.nil?
+        headers["Authorization"] = "Basic " + Base64.strict_encode64("#{username}:#{password}")
       end
-      url = @watson_service.url.gsub("https:", "wss:")
+      url = @url.gsub("https:", "wss:")
       params = {
         "model" => model,
         "customization_id" => customization_id,
@@ -618,6 +536,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def register_callback(callback_url:, user_secret: nil)
       raise ArgumentError("callback_url must be provided") if callback_url.nil?
+
       headers = {
       }
       params = {
@@ -645,6 +564,7 @@ module IBMWatson
     # @return [nil]
     def unregister_callback(callback_url:)
       raise ArgumentError("callback_url must be provided") if callback_url.nil?
+
       headers = {
       }
       params = {
@@ -726,8 +646,7 @@ module IBMWatson
     #   formats](https://console.bluemix.net/docs/services/speech-to-text/audio-formats.html).
     # @param audio [String] The audio to transcribe in the format specified by the `Content-Type` header.
     # @param content_type [String] The type of the input.
-    # @param model [String] The identifier of the model that is to be used for the recognition request or, for
-    #   the **Create a session** method, with the new session.
+    # @param model [String] The identifier of the model that is to be used for the recognition request.
     # @param callback_url [String] A URL to which callback notifications are to be sent. The URL must already be
     #   successfully white-listed by using the **Register a callback** method. You can
     #   include the same callback URL with any number of job creation requests. Omit the
@@ -747,10 +666,12 @@ module IBMWatson
     #   * `recognitions.failed` generates a callback notification if the service
     #   experiences an error while processing the job.
     #
-    #   Omit the parameter to subscribe to the default events: `recognitions.started`,
-    #   `recognitions.completed`, and `recognitions.failed`. The `recognitions.completed`
-    #   and `recognitions.completed_with_results` events are incompatible; you can specify
-    #   only of the two events. If the job does not include a callback URL, omit the
+    #   The `recognitions.completed` and `recognitions.completed_with_results` events are
+    #   incompatible. You can specify only of the two events.
+    #
+    #   If the job includes a callback URL, omit the parameter to subscribe to the default
+    #   events: `recognitions.started`, `recognitions.completed`, and
+    #   `recognitions.failed`. If the job does not include a callback URL, omit the
     #   parameter.
     # @param user_token [String] If the job includes a callback URL, a user-specified string that the service is to
     #   include with each callback notification for the job; the token allows the user to
@@ -761,30 +682,26 @@ module IBMWatson
     #   this time. Omit the parameter to use a time to live of one week. The parameter is
     #   valid with or without a callback URL.
     # @param customization_id [String] The customization ID (GUID) of a custom language model that is to be used with the
-    #   recognition request or, for the **Create a session** method, with the new session.
-    #   The base model of the specified custom language model must match the model
-    #   specified with the `model` parameter. You must make the request with service
-    #   credentials created for the instance of the service that owns the custom model. By
-    #   default, no custom language model is used.
+    #   recognition request. The base model of the specified custom language model must
+    #   match the model specified with the `model` parameter. You must make the request
+    #   with service credentials created for the instance of the service that owns the
+    #   custom model. By default, no custom language model is used.
     # @param acoustic_customization_id [String] The customization ID (GUID) of a custom acoustic model that is to be used with the
-    #   recognition request or, for the **Create a session** method, with the new session.
-    #   The base model of the specified custom acoustic model must match the model
-    #   specified with the `model` parameter. You must make the request with service
-    #   credentials created for the instance of the service that owns the custom model. By
-    #   default, no custom acoustic model is used.
+    #   recognition request. The base model of the specified custom acoustic model must
+    #   match the model specified with the `model` parameter. You must make the request
+    #   with service credentials created for the instance of the service that owns the
+    #   custom model. By default, no custom acoustic model is used.
     # @param base_model_version [String] The version of the specified base model that is to be used with recognition
-    #   request or, for the **Create a session** method, with the new session. Multiple
-    #   versions of a base model can exist when a model is updated for internal
-    #   improvements. The parameter is intended primarily for use with custom models that
-    #   have been upgraded for a new base model. The default value depends on whether the
-    #   parameter is used with or without a custom model. For more information, see [Base
-    #   model
+    #   request. Multiple versions of a base model can exist when a model is updated for
+    #   internal improvements. The parameter is intended primarily for use with custom
+    #   models that have been upgraded for a new base model. The default value depends on
+    #   whether the parameter is used with or without a custom model. For more
+    #   information, see [Base model
     #   version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
-    #   recognition request or, for sessions, with the **Create a session** method, the
-    #   customization weight tells the service how much weight to give to words from the
-    #   custom language model compared to those from the base model for the current
-    #   request.
+    #   recognition request, the customization weight tells the service how much weight to
+    #   give to words from the custom language model compared to those from the base model
+    #   for the current request.
     #
     #   Specify a value between 0.0 and 1.0. Unless a different customization weight was
     #   specified for the custom model when it was trained, the default value is 0.3. A
@@ -843,7 +760,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_job(audio:, content_type:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type
       }
@@ -923,6 +842,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def check_job(id:)
       raise ArgumentError("id must be provided") if id.nil?
+
       headers = {
       }
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
@@ -947,6 +867,7 @@ module IBMWatson
     # @return [nil]
     def delete_job(id:)
       raise ArgumentError("id must be provided") if id.nil?
+
       headers = {
       }
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
@@ -996,7 +917,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_language_model(name:, base_model_name:, dialect: nil, description: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       raise ArgumentError("base_model_name must be provided") if base_model_name.nil?
+
       headers = {
       }
       data = {
@@ -1056,6 +979,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1081,6 +1005,7 @@ module IBMWatson
     # @return [nil]
     def delete_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1148,6 +1073,7 @@ module IBMWatson
     # @return [nil]
     def train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1179,6 +1105,7 @@ module IBMWatson
     # @return [nil]
     def reset_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
@@ -1218,6 +1145,7 @@ module IBMWatson
     # @return [nil]
     def upgrade_language_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
@@ -1246,6 +1174,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_corpora(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
@@ -1322,8 +1251,11 @@ module IBMWatson
     # @return [nil]
     def add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil, corpus_filename: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
+
       raise ArgumentError("corpus_file must be provided") if corpus_file.nil?
+
       headers = {
       }
       params = {
@@ -1369,7 +1301,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_corpus(customization_id:, corpus_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
@@ -1402,7 +1336,9 @@ module IBMWatson
     # @return [nil]
     def delete_corpus(customization_id:, corpus_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("corpus_name must be provided") if corpus_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
@@ -1445,6 +1381,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_words(customization_id:, word_type: nil, sort: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1525,7 +1462,9 @@ module IBMWatson
     # @return [nil]
     def add_words(customization_id:, words:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("words must be provided") if words.nil?
+
       headers = {
       }
       data = {
@@ -1592,21 +1531,25 @@ module IBMWatson
     #   Omit this field for the **Add a custom word** method.
     # @param sounds_like [Array[String]] An array of sounds-like pronunciations for the custom word. Specify how words that
     #   are difficult to pronounce, foreign words, acronyms, and so on can be pronounced
-    #   by users. For a word that is not in the service's base vocabulary, omit the
-    #   parameter to have the service automatically generate a sounds-like pronunciation
-    #   for the word. For a word that is in the service's base vocabulary, use the
-    #   parameter to specify additional pronunciations for the word. You cannot override
-    #   the default pronunciation of a word; pronunciations you add augment the
-    #   pronunciation from the base vocabulary. A word can have at most five sounds-like
-    #   pronunciations, and a pronunciation can include at most 40 characters not
-    #   including spaces.
+    #   by users.
+    #   * For a word that is not in the service's base vocabulary, omit the parameter to
+    #   have the service automatically generate a sounds-like pronunciation for the word.
+    #   * For a word that is in the service's base vocabulary, use the parameter to
+    #   specify additional pronunciations for the word. You cannot override the default
+    #   pronunciation of a word; pronunciations you add augment the pronunciation from the
+    #   base vocabulary.
+    #
+    #   A word can have at most five sounds-like pronunciations. A pronunciation can
+    #   include at most 40 characters not including spaces.
     # @param display_as [String] An alternative spelling for the custom word when it appears in a transcript. Use
     #   the parameter when you want the word to have a spelling that is different from its
     #   usual representation or from its spelling in corpora training data.
     # @return [nil]
     def add_word(customization_id:, word_name:, word: nil, sounds_like: nil, display_as: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word_name must be provided") if word_name.nil?
+
       headers = {
       }
       data = {
@@ -1640,7 +1583,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word_name must be provided") if word_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
@@ -1672,7 +1617,9 @@ module IBMWatson
     # @return [nil]
     def delete_word(customization_id:, word_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("word_name must be provided") if word_name.nil?
+
       headers = {
       }
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
@@ -1710,7 +1657,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_acoustic_model(name:, base_model_name:, description: nil)
       raise ArgumentError("name must be provided") if name.nil?
+
       raise ArgumentError("base_model_name must be provided") if base_model_name.nil?
+
       headers = {
       }
       data = {
@@ -1769,6 +1718,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_acoustic_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1794,6 +1744,7 @@ module IBMWatson
     # @return [nil]
     def delete_acoustic_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -1858,6 +1809,7 @@ module IBMWatson
     # @return [nil]
     def train_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1888,6 +1840,7 @@ module IBMWatson
     # @return [nil]
     def reset_acoustic_model(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
@@ -1937,6 +1890,7 @@ module IBMWatson
     # @return [nil]
     def upgrade_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       params = {
@@ -1971,6 +1925,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_audio(customization_id:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
@@ -2090,9 +2045,13 @@ module IBMWatson
     # @return [nil]
     def add_audio(customization_id:, audio_name:, audio_resource:, content_type:, contained_content_type: nil, allow_overwrite: nil)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
+
       raise ArgumentError("audio_resource must be provided") if audio_resource.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type,
         "Contained-Content-Type" => contained_content_type
@@ -2145,7 +2104,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_audio(customization_id:, audio_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
@@ -2177,7 +2138,9 @@ module IBMWatson
     # @return [nil]
     def delete_audio(customization_id:, audio_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
+
       raise ArgumentError("audio_name must be provided") if audio_name.nil?
+
       headers = {
       }
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
@@ -2210,6 +2173,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

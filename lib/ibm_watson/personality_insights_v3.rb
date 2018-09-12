@@ -46,7 +46,7 @@ require_relative "./watson_service"
 module IBMWatson
   ##
   # The Personality Insights V3 service.
-  class PersonalityInsightsV3
+  class PersonalityInsightsV3 < WatsonService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -87,7 +87,6 @@ module IBMWatson
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
-      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/personality-insights/api"
@@ -97,84 +96,11 @@ module IBMWatson
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      @watson_service = WatsonService.new(
-        vcap_services_name: "personality_insights",
-        url: args[:url],
-        username: args[:username],
-        password: args[:password],
-        iam_apikey: args[:iam_apikey],
-        iam_access_token: args[:iam_access_token],
-        iam_url: args[:iam_url],
-        use_vcap_services: true
-      )
+      args[:vcap_services_name] = "personality_insights"
+      super
       @version = args[:version]
     end
 
-    # :nocov:
-    def add_default_headers(headers: {})
-      @watson_service.add_default_headers(headers: headers)
-    end
-
-    def _iam_access_token(iam_access_token:)
-      @watson_service._iam_access_token(iam_access_token: iam_access_token)
-    end
-
-    def _iam_apikey(iam_apikey:)
-      @watson_service._iam_apikey(iam_apikey: iam_apikey)
-    end
-
-    # @return [DetailedResponse]
-    def request(args)
-      @watson_service.request(args)
-    end
-
-    # @note Chainable
-    # @param headers [Hash] Custom headers to be sent with the request
-    # @return [self]
-    def headers(headers)
-      @watson_service.headers(headers)
-      self
-    end
-
-    def password=(password)
-      @watson_service.password = password
-    end
-
-    def password
-      @watson_service.password
-    end
-
-    def username=(username)
-      @watson_service.username = username
-    end
-
-    def username
-      @watson_service.username
-    end
-
-    def url=(url)
-      @watson_service.url = url
-    end
-
-    def url
-      @watson_service.url
-    end
-
-    # @!method configure_http_client(proxy: {}, timeout: {})
-    # Sets the http client config, currently works with timeout and proxies
-    # @param proxy [Hash] The hash of proxy configurations
-    # @option proxy address [String] The address of the proxy
-    # @option proxy port [Integer] The port of the proxy
-    # @option proxy username [String] The username of the proxy, if authentication is needed
-    # @option proxy password [String] The password of the proxy, if authentication is needed
-    # @option proxy headers [Hash] The headers to be used with the proxy
-    # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
-    # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
-    # @option timeout global [Integer] Upper bound on total request time
-    def configure_http_client(proxy: {}, timeout: {})
-      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
-    end
-    # :nocov:
     #########################
     # Methods
     #########################
@@ -243,7 +169,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def profile(content:, content_type:, accept: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
       raise ArgumentError("content must be provided") if content.nil?
+
       raise ArgumentError("content_type must be provided") if content_type.nil?
+
       headers = {
         "Content-Type" => content_type,
         "Accept" => accept,

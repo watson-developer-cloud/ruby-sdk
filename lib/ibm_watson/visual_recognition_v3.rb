@@ -29,7 +29,7 @@ require_relative "./watson_service"
 module IBMWatson
   ##
   # The Visual Recognition V3 service.
-  class VisualRecognitionV3
+  class VisualRecognitionV3 < WatsonService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -61,7 +61,6 @@ module IBMWatson
     #   'https://iam.ng.bluemix.net/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
-      super()
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/visual-recognition/api"
@@ -70,83 +69,11 @@ module IBMWatson
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
       args = defaults.merge(args)
-      @watson_service = WatsonService.new(
-        vcap_services_name: "watson_vision_combined",
-        url: args[:url],
-        api_key: args[:api_key],
-        iam_apikey: args[:iam_apikey],
-        iam_access_token: args[:iam_access_token],
-        iam_url: args[:iam_url],
-        use_vcap_services: true
-      )
+      args[:vcap_services_name] = "watson_vision_combined"
+      super
       @version = args[:version]
     end
 
-    # :nocov:
-    def add_default_headers(headers: {})
-      @watson_service.add_default_headers(headers: headers)
-    end
-
-    def _iam_access_token(iam_access_token:)
-      @watson_service._iam_access_token(iam_access_token: iam_access_token)
-    end
-
-    def _iam_apikey(iam_apikey:)
-      @watson_service._iam_apikey(iam_apikey: iam_apikey)
-    end
-
-    # @return [DetailedResponse]
-    def request(args)
-      @watson_service.request(args)
-    end
-
-    # @note Chainable
-    # @param headers [Hash] Custom headers to be sent with the request
-    # @return [self]
-    def headers(headers)
-      @watson_service.headers(headers)
-      self
-    end
-
-    def password=(password)
-      @watson_service.password = password
-    end
-
-    def password
-      @watson_service.password
-    end
-
-    def username=(username)
-      @watson_service.username = username
-    end
-
-    def username
-      @watson_service.username
-    end
-
-    def url=(url)
-      @watson_service.url = url
-    end
-
-    def url
-      @watson_service.url
-    end
-
-    # @!method configure_http_client(proxy: {}, timeout: {})
-    # Sets the http client config, currently works with timeout and proxies
-    # @param proxy [Hash] The hash of proxy configurations
-    # @option proxy address [String] The address of the proxy
-    # @option proxy port [Integer] The port of the proxy
-    # @option proxy username [String] The username of the proxy, if authentication is needed
-    # @option proxy password [String] The password of the proxy, if authentication is needed
-    # @option proxy headers [Hash] The headers to be used with the proxy
-    # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
-    # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
-    # @option timeout global [Integer] Upper bound on total request time
-    def configure_http_client(proxy: {}, timeout: {})
-      @watson_service.configure_http_client(proxy: proxy, timeout: timeout)
-    end
-    # :nocov:
     #########################
     # General
     #########################
@@ -337,7 +264,9 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_classifier(name:, **args)
       raise ArgumentError("name must be provided") if name.nil?
+
       raise ArgumentError("<classname>_positive_examples must be provided") unless args.keys.any? { |key| key.to_s.end_with?("_positive_examples") }
+
       positive_keys = args.keys
       positive_keys.keep_if { |key| key.to_s.end_with?("_positive_examples") }
       headers = {
@@ -414,6 +343,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -469,6 +399,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_classifier(classifier_id:, **args)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -520,6 +451,7 @@ module IBMWatson
     # @return [nil]
     def delete_classifier(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -548,6 +480,7 @@ module IBMWatson
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_core_ml_model(classifier_id:)
       raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
       params = {
@@ -581,6 +514,7 @@ module IBMWatson
     # @return [nil]
     def delete_user_data(customer_id:)
       raise ArgumentError("customer_id must be provided") if customer_id.nil?
+
       headers = {
       }
       params = {

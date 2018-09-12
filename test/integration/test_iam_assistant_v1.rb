@@ -11,8 +11,7 @@ if !ENV["ASSISTANT_IAM_URL"].nil? && !ENV["ASSISTANT_IAM_APIKEY"].nil?
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
-      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
-      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
+      service.iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -48,8 +47,7 @@ if !ENV["ASSISTANT_IAM_URL"].nil? && !ENV["ASSISTANT_IAM_APIKEY"].nil?
         url: ENV["ASSISTANT_IAM_URL"],
         version: "2018-02-16"
       )
-      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
-      service._iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
+      service.iam_apikey(iam_apikey: ENV["ASSISTANT_IAM_APIKEY"])
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -706,7 +704,7 @@ if !ENV["ASSISTANT_IAM_URL"].nil? && !ENV["ASSISTANT_IAM_APIKEY"].nil?
       )
       error_received = false
       begin
-        service._iam_apikey(iam_apikey: "bogus_api_key")
+        service.iam_apikey(iam_apikey: "bogus_api_key")
         service.list_workspaces
       rescue WatsonApiException => e
         assert_equal("Provided API key could not be found", e.info["errorMessage"])

@@ -33,7 +33,7 @@ class IAMTokenManagerTest < Minitest::Test
           "Host" => "iam.bluemix.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: {})
-    token_response = token_manager._request_token
+    token_response = token_manager.send(:request_token)
     assert_equal(response, token_response)
   end
 
@@ -61,7 +61,7 @@ class IAMTokenManagerTest < Minitest::Test
           "Host" => "iam.bluemix.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: {})
-    token_response = token_manager._refresh_token
+    token_response = token_manager.send(:refresh_token)
     assert_equal(response, token_response)
   end
 
@@ -79,9 +79,9 @@ class IAMTokenManagerTest < Minitest::Test
       "refresh_token" => "jy4gl91BQ"
     }
 
-    refute(token_manager._is_token_expired?)
+    refute(token_manager.send(:token_expired?))
     token_manager.token_info["expiration"] = Time.now.to_i - 3600
-    assert(token_manager._is_token_expired?)
+    assert(token_manager.send(:token_expired?))
   end
 
   def test_is_refresh_token_expired
@@ -98,9 +98,9 @@ class IAMTokenManagerTest < Minitest::Test
       "refresh_token" => "jy4gl91BQ"
     }
 
-    refute(token_manager._is_refresh_token_expired?)
+    refute(token_manager.send(:refresh_token_expired?))
     token_manager.token_info["expiration"] = Time.now.to_i - (8 * 24 * 3600)
-    assert(token_manager._is_token_expired?)
+    assert(token_manager.send(:token_expired?))
   end
 
   def test_get_token
@@ -111,7 +111,7 @@ class IAMTokenManagerTest < Minitest::Test
     )
     token_manager.user_access_token = "user_access_token"
 
-    token = token_manager._token
+    token = token_manager.token
     assert_equal(token_manager.user_access_token, token)
 
     response = {
@@ -132,11 +132,11 @@ class IAMTokenManagerTest < Minitest::Test
         }
       ).to_return(status: 200, body: response.to_json, headers: {})
     token_manager.user_access_token = ""
-    token = token_manager._token
+    token = token_manager.token
     assert_equal("hellohello", token)
 
     token_manager.token_info["expiration"] = Time.now.to_i - (20 * 24 * 3600)
-    token = token_manager._token
+    token = token_manager.token
     assert_equal("hellohello", token)
 
     stub_request(:post, "https://iam.bluemix.net/identity/token")
@@ -149,7 +149,7 @@ class IAMTokenManagerTest < Minitest::Test
         }
       ).to_return(status: 200, body: response.to_json, headers: {})
     token_manager.token_info["expiration"] = Time.now.to_i - 4000
-    token = token_manager._token
+    token = token_manager.token
     assert_equal("hellohello", token)
 
     token_manager.token_info = {
@@ -159,7 +159,7 @@ class IAMTokenManagerTest < Minitest::Test
       "expiration" => Time.now.to_i + 3600,
       "refresh_token" => "jy4gl91BQ"
     }
-    token = token_manager._token
+    token = token_manager.token
     assert_equal("dummy", token)
   end
 

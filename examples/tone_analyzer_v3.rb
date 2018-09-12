@@ -4,7 +4,7 @@ require("ibm_watson/tone_analyzer_v3")
 require("json")
 
 # If using IAM
-tone_analyzer = ToneAnalyzerV3(
+tone_analyzer = IBMWatson::ToneAnalyzerV3.new(
   iam_apikey: "IAM API KEY",
   version: "2017-09-21"
 )

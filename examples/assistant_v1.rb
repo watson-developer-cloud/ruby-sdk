@@ -4,7 +4,7 @@ require("ibm_watson/assistant_v1")
 require("json")
 
 # If using IAM
-assistant = AssistantV1(
+assistant = IBMWatson::AssistantV1.new(
   iam_apikey: "IAM API KEY",
   version: "2018-02-16"
 )
