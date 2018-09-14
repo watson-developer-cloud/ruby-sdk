@@ -29,7 +29,7 @@ if !ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_IAM_UR
       dog_results = @service.classify(
         images_file: image_file,
         threshold: "0.1",
-        classifier_ids: "default"
+        classifier_ids: %w[default food]
       ).result
       refute(dog_results.nil?)
     end
