@@ -140,9 +140,6 @@ module IBMWatson
           images_file = images_file.instance_of?(StringIO) ? HTTP::FormData::File.new(images_file, content_type: mime_type) : HTTP::FormData::File.new(images_file.path, content_type: mime_type)
         end
       end
-      threshold = HTTP::FormData::Part.new(threshold, content_type: "text/plain") unless threshold.nil?
-      owners = HTTP::FormData::Part.new(owners, content_type: "text/plain") unless owners.nil?
-      classifier_ids = HTTP::FormData::Part.new(classifier_ids, content_type: "text/plain") unless classifier_ids.nil?
       method_url = "/v3/classify"
       response = request(
         method: "POST",
