@@ -31,7 +31,8 @@ class WatsonService
       api_key: nil,
       iam_apikey: nil,
       iam_access_token: nil,
-      iam_url: nil
+      iam_url: nil,
+      disable_ssl: false
     }
     vars = defaults.merge(vars)
     @url = vars[:url]
@@ -40,6 +41,7 @@ class WatsonService
     @token_manager = nil
     @temp_headers = nil
     @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
+    @disable_ssl = vars[:disable_ssl]
 
     user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
@@ -71,9 +73,18 @@ class WatsonService
       end
     end
 
-    @conn = HTTP::Client.new(
-      headers: headers
-    )
+    if @disable_ssl
+      ssl_context = OpenSSL::SSL::SSLContext.new
+      ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      @conn = HTTP::Client.new(
+        headers: headers,
+        ssl_context: ssl_context
+      )
+    else
+      @conn = HTTP::Client.new(
+        headers: headers
+      )
+    end
   end
 
   def load_from_vcap_services(service_name:)
