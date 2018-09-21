@@ -1235,10 +1235,14 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom language model. You must make the
     #   request with service credentials created for the instance of the service that owns
     #   the custom model.
-    # @param corpus_name [String] The name of the corpus for the custom language model. When adding a corpus, do not
-    #   include spaces in the name; use a localized name that matches the language of the
-    #   custom model; and do not use the name `user`, which is reserved by the service to
-    #   denote custom words added or modified by the user.
+    # @param corpus_name [String] The name of the new corpus for the custom language model. Use a localized name
+    #   that matches the language of the custom model and reflects the contents of the
+    #   corpus.
+    #   * Include a maximum of 128 characters in the name.
+    #   * Do not include spaces, slashes, or backslashes in the name.
+    #   * Do not use the name of a corpus that has already been added to the custom model.
+    #   * Do not use the name `user`, which is reserved by the service to denote custom
+    #   words that are added or modified by the user.
     # @param corpus_file [File] A plain text file that contains the training data for the corpus. Encode the file
     #   in UTF-8 if it contains non-ASCII characters; the service assumes UTF-8 encoding
     #   if it encounters non-ASCII characters. With cURL, use the `--data-binary` option
@@ -1294,10 +1298,7 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom language model. You must make the
     #   request with service credentials created for the instance of the service that owns
     #   the custom model.
-    # @param corpus_name [String] The name of the corpus for the custom language model. When adding a corpus, do not
-    #   include spaces in the name; use a localized name that matches the language of the
-    #   custom model; and do not use the name `user`, which is reserved by the service to
-    #   denote custom words added or modified by the user.
+    # @param corpus_name [String] The name of the corpus for the custom language model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_corpus(customization_id:, corpus_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
@@ -1329,10 +1330,7 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom language model. You must make the
     #   request with service credentials created for the instance of the service that owns
     #   the custom model.
-    # @param corpus_name [String] The name of the corpus for the custom language model. When adding a corpus, do not
-    #   include spaces in the name; use a localized name that matches the language of the
-    #   custom model; and do not use the name `user`, which is reserved by the service to
-    #   denote custom words added or modified by the user.
+    # @param corpus_name [String] The name of the corpus for the custom language model.
     # @return [nil]
     def delete_corpus(customization_id:, corpus_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
@@ -2024,12 +2022,26 @@ module IBMWatson
     #   speech recognition and with the `Content-Type` header, including the `rate`,
     #   `channels`, and `endianness` parameters that are used with some formats. The
     #   default contained audio format is `audio/wav`.
+    #
+    #   ### Naming restrictions for embedded audio files
+    #
+    #    The name of an audio file that is embedded within an archive-type resource must
+    #   meet the following restrictions:
+    #   * Include a maximum of 128 characters in the file name; this includes the file
+    #   extension.
+    #   * Do not include spaces, slashes, or backslashes in the file name.
+    #   * Do not use the name of an audio file that has already been added to the custom
+    #   model as part of an archive-type resource.
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model. You must make the
     #   request with service credentials created for the instance of the service that owns
     #   the custom model.
-    # @param audio_name [String] The name of the audio resource for the custom acoustic model. When adding an audio
-    #   resource, do not include spaces in the name; use a localized name that matches the
-    #   language of the custom model.
+    # @param audio_name [String] The name of the new audio resource for the custom acoustic model. Use a localized
+    #   name that matches the language of the custom model and reflects the contents of
+    #   the resource.
+    #   * Include a maximum of 128 characters in the name.
+    #   * Do not include spaces, slashes, or backslashes in the name.
+    #   * Do not use the name of an audio resource that has already been added to the
+    #   custom model.
     # @param audio_resource [String] The audio resource that is to be added to the custom acoustic model, an individual
     #   audio file or an archive file.
     # @param content_type [String] The type of the input.
@@ -2098,9 +2110,7 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model. You must make the
     #   request with service credentials created for the instance of the service that owns
     #   the custom model.
-    # @param audio_name [String] The name of the audio resource for the custom acoustic model. When adding an audio
-    #   resource, do not include spaces in the name; use a localized name that matches the
-    #   language of the custom model.
+    # @param audio_name [String] The name of the audio resource for the custom acoustic model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_audio(customization_id:, audio_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?
@@ -2132,9 +2142,7 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model. You must make the
     #   request with service credentials created for the instance of the service that owns
     #   the custom model.
-    # @param audio_name [String] The name of the audio resource for the custom acoustic model. When adding an audio
-    #   resource, do not include spaces in the name; use a localized name that matches the
-    #   language of the custom model.
+    # @param audio_name [String] The name of the audio resource for the custom acoustic model.
     # @return [nil]
     def delete_audio(customization_id:, audio_name:)
       raise ArgumentError("customization_id must be provided") if customization_id.nil?

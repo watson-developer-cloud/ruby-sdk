@@ -5,6 +5,7 @@ module IBMWatson
   require_relative("./ibm_watson/personality_insights_v3.rb")
   require_relative("./ibm_watson/tone_analyzer_v3.rb")
   require_relative("./ibm_watson/assistant_v1.rb")
+  require_relative("./ibm_watson/assistant_v2.rb")
   require_relative("./ibm_watson/text_to_speech_v1.rb")
   require_relative("./ibm_watson/discovery_v1.rb")
   require_relative("./ibm_watson/natural_language_understanding_v1.rb")
