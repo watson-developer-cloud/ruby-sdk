@@ -31,7 +31,7 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: npx travis-deploy-once "npx semantic-release"
+    script: npx semantic-release
     on:
       branch: master
       rvm: 2.5.1
