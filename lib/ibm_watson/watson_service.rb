@@ -31,8 +31,7 @@ class WatsonService
       api_key: nil,
       iam_apikey: nil,
       iam_access_token: nil,
-      iam_url: nil,
-      disable_ssl: false
+      iam_url: nil
     }
     vars = defaults.merge(vars)
     @url = vars[:url]
@@ -41,7 +40,6 @@ class WatsonService
     @token_manager = nil
     @temp_headers = nil
     @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
-    @disable_ssl = vars[:disable_ssl]
 
     user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
@@ -73,18 +71,9 @@ class WatsonService
       end
     end
 
-    if @disable_ssl
-      ssl_context = OpenSSL::SSL::SSLContext.new
-      ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      @conn = HTTP::Client.new(
-        headers: headers,
-        ssl_context: ssl_context
-      )
-    else
-      @conn = HTTP::Client.new(
-        headers: headers
-      )
-    end
+    @conn = HTTP::Client.new(
+      headers: headers
+    )
   end
 
   def load_from_vcap_services(service_name:)
@@ -177,7 +166,7 @@ class WatsonService
     self
   end
 
-  # @!method configure_http_client(proxy: {}, timeout: {})
+  # @!method configure_http_client(proxy: {}, timeout: {}, disable_ssl: false)
   # Sets the http client config, currently works with timeout and proxies
   # @param proxy [Hash] The hash of proxy configurations
   # @option proxy address [String] The address of the proxy
@@ -188,11 +177,17 @@ class WatsonService
   # @param timeout [Hash] The hash for configuring timeouts. `per_operation` has priority over `global`
   # @option timeout per_operation [Hash] Timeouts per operation. Requires `read`, `write`, `connect`
   # @option timeout global [Integer] Upper bound on total request time
-  def configure_http_client(proxy: {}, timeout: {})
+  # @param disable_ssl [Boolean] Disable the SSL verification (Note that this has serious security implications - only do this if you really mean to!)
+  def configure_http_client(proxy: {}, timeout: {}, disable_ssl: false)
     raise TypeError("proxy parameter must be a Hash") unless proxy.empty? || proxy.instance_of?(Hash)
 
     raise TypeError("timeout parameter must be a Hash") unless timeout.empty? || timeout.instance_of?(Hash)
 
+    if disable_ssl
+      ssl_context = OpenSSL::SSL::SSLContext.new
+      ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      @conn.default_options = { ssl_context: ssl_context }
+    end
     add_proxy(proxy) unless proxy.empty? || !proxy.dig(:address).is_a?(String) || !proxy.dig(:port).is_a?(Integer)
     add_timeout(timeout) unless timeout.empty? || (!timeout.key?(:per_operation) && !timeout.key?(:global))
   end

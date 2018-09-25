@@ -248,19 +248,21 @@ assistant.configure_http_client(
 )
 ```
 
-### Disable SSL
-
 The HTTP client can be configured to disable SSL verification. Note that this has serious security implications - only do this if you really mean to! ⚠️
 
-To do this, set `disable_ssl` to `true` in the service constructor, like below:
+To do this, pass `disable_ssl` as `true` in `configure_http_client()`, like below:
 
-```
-service = IBMWatson::AssistantV1.new(
-      version: "<version>",
-      username: "<username>",
-      password: "<password>",
-      disable_ssl: true
-    )
+```ruby
+require "ibm_watson/assistant_v1"
+include IBMWatson
+
+service = AssistantV1.new(
+  version: "<version>",
+  username: "<username>",
+  password: "<password>",
+)
+
+service.configure_http_client(disable_ssl: true)
 ```
 
 ## Using Websockets

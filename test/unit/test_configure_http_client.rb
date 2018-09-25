@@ -141,4 +141,14 @@ class HTTPConfigTest < Minitest::Test
     timeout = service.conn.default_options.timeout_options
     assert_equal(expected_timeouts, timeout)
   end
+
+  def test_disable_ssl
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      username: "username",
+      password: "password"
+    )
+    service.configure_http_client(disable_ssl: true)
+    refute_nil(service.conn.default_options.ssl_context)
+  end
 end
