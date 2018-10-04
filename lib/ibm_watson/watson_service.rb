@@ -40,6 +40,7 @@ class WatsonService
     @token_manager = nil
     @temp_headers = nil
     @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
+    @disable_ssl = false
 
     user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
@@ -183,6 +184,7 @@ class WatsonService
 
     raise TypeError("timeout parameter must be a Hash") unless timeout.empty? || timeout.instance_of?(Hash)
 
+    @disable_ssl = disable_ssl
     if disable_ssl
       ssl_context = OpenSSL::SSL::SSLContext.new
       ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE
