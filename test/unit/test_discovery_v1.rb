@@ -254,8 +254,9 @@ class DiscoveryV1Test < Minitest::Test
       password: "password",
       version: "2018-03-05"
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query?count=10&version=2018-03-05")
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query?version=2018-03-05")
       .with(
+        body: "{\"count\":10}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
@@ -952,12 +953,14 @@ class DiscoveryV1Test < Minitest::Test
       password: "password",
       version: "2018-03-05"
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?collection_ids=collid&version=2018-03-05")
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?&version=2018-03-05")
       .with(
+        body:  "{\"collection_ids\":[\"collid\"]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway.watsonplatform.net",
+          "Content-type" => "application/json"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.federated_query(
