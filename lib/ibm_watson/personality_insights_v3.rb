@@ -126,12 +126,12 @@ module IBMWatson
     #   to indicate the character encoding of the input text; for example: `Content-Type:
     #   text/plain;charset=utf-8`.
     #
-    #   For detailed information about calling the service and the responses it can
-    #   generate, see [Requesting a
-    #   profile](https://console.bluemix.net/docs/services/personality-insights/input.html),
-    #   [Understanding a JSON
-    #   profile](https://console.bluemix.net/docs/services/personality-insights/output.html),
-    #   and [Understanding a CSV
+    #   **See also:**
+    #   * [Requesting a
+    #   profile](https://console.bluemix.net/docs/services/personality-insights/input.html)
+    #   * [Understanding a JSON
+    #   profile](https://console.bluemix.net/docs/services/personality-insights/output.html)
+    #   * [Understanding a CSV
     #   profile](https://console.bluemix.net/docs/services/personality-insights/output-csv.html).
     # @param content [Content] A maximum of 20 MB of content to analyze, though the service requires much less
     #   text; for more information, see [Providing sufficient
