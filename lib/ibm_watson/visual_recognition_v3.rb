@@ -49,7 +49,6 @@ module IBMWatson
     # @option args url [String] The base url to use when contacting the service (e.g.
     #   "https://gateway.watsonplatform.net/visual-recognition/api").
     #   The base url may differ between Bluemix regions.
-    # @option args api_key [String] The API Key used to authenticate.
     # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
     #   this API key is provided, the SDK will manage the token and handle the
     #   refreshing.
@@ -64,7 +63,6 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/visual-recognition/api"
-      defaults[:api_key] = nil
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil

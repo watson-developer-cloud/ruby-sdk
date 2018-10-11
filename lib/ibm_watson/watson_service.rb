@@ -28,7 +28,6 @@ class WatsonService
       username: nil,
       password: nil,
       use_vcap_services: true,
-      api_key: nil,
       iam_apikey: nil,
       iam_access_token: nil,
       iam_url: nil

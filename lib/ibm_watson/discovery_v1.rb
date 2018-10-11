@@ -100,7 +100,8 @@ module IBMWatson
     #   instance. An attempt to create another environment results in an error.
     # @param name [String] Name that identifies the environment.
     # @param description [String] Description of the environment.
-    # @param size [String] Size of the environment.
+    # @param size [String] Size of the environment. In the Lite plan the default and only accepted value is
+    #   `LT`, in all other plans the default is `S`.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
       raise ArgumentError("name must be provided") if name.nil?
@@ -176,15 +177,18 @@ module IBMWatson
     end
 
     ##
-    # @!method update_environment(environment_id:, name: nil, description: nil)
+    # @!method update_environment(environment_id:, name: nil, description: nil, size: nil)
     # Update an environment.
     # Updates an environment. The environment's **name** and  **description** parameters
     #   can be changed. You must specify a **name** for the environment.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] Name that identifies the environment.
     # @param description [String] Description of the environment.
+    # @param size [String] Size that the environment should be increased to. Environment size cannot be
+    #   modified when using a Lite plan. Environment size can only increased and not
+    #   decreased.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_environment(environment_id:, name: nil, description: nil)
+    def update_environment(environment_id:, name: nil, description: nil, size: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -194,7 +198,8 @@ module IBMWatson
       }
       data = {
         "name" => name,
-        "description" => description
+        "description" => description,
+        "size" => size
       }
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
       response = request(
@@ -1044,16 +1049,17 @@ module IBMWatson
     #########################
 
     ##
-    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, logging_opt_out: nil)
-    # Query your collection.
-    # After your content is uploaded and enriched by the Discovery service, you can
-    #   build queries to search your content. For details, see the [Discovery service
+    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    # Long collection queries.
+    # Complex queries might be too long for a standard method query. By using this
+    #   method, you can construct longer queries. However, these queries may take longer
+    #   to complete than the standard method. For details, see the [Discovery service
     #   documentation](https://console.bluemix.net/docs/services/discovery/using.html).
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @param filter [String] A cacheable query that limits the documents returned to exclude any documents that
-    #   don't mention the query content. Filter searches are better for metadata type
-    #   searches and when you are trying to get a sense of concepts in the data set.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
@@ -1062,27 +1068,25 @@ module IBMWatson
     #   data and natural language understanding. You cannot use **natural_language_query**
     #   and **query** at the same time.
     # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
-    # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
-    #   exact answer. Aggregations are useful for building applications, because you can
-    #   use them to build lists, tables, and time series. For a full list of possible
-    #   aggregrations, see the Query reference.
+    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
+    #   filters. Useful for applications to build lists, tables, and time series. For a
+    #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
+    # @param return_fields [String] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10, and the offset is 8, it returns the
-    #   last two results.
-    # @param sort [Array[String]] A comma separated list of fields in the document to sort on. You can optionally
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results.
+    # @param sort [String] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
-    #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @param highlight [Boolean] When true a highlight field is returned for each result which contains the fields
-    #   that match the query with `<em></em>` tags around the matching query terms.
-    #   Defaults to false.
-    # @param passages_fields [Array[String]] A comma-separated list of fields that passages are drawn from. If this parameter
+    #   ascending. Ascending is the default sort direction if no prefix is specified. This
+    #   parameter cannot be used in the same query as the **bias** parameter.
+    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
+    #   which match the query with `<em></em>` tags around the matching query terms.
+    # @param passages_fields [String] A comma-separated list of fields that passages are drawn from. If this parameter
     #   not specified, then all top-level fields are included.
     # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
     #   requested total is not found. The default is `10`. The maximum is `100`.
-    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have. The default
-    #   is `400`. The minimum is `50`. The maximum is `2000`.
+    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
     # @param deduplicate [Boolean] When `true` and used with a Watson Discovery News collection, duplicate results
     #   (based on the contents of the **title** field) are removed. Duplicate comparison
     #   is limited to the current query only; **offset** is not considered. This parameter
@@ -1090,21 +1094,28 @@ module IBMWatson
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
     #   **offset** is not considered. This parameter is currently Beta functionality.
+    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against. Required when
+    #   querying multiple collections, invalid when performing a single collection query.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
     #   specified in the **similar.document_ids** parameter.
-    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
-    #   documents.
+    # @param similar_document_ids [String] A comma-separated list of document IDs to find similar documents.
     #
-    #   **Note:** If the **natural_language_query** parameter is also specified, it will
-    #   be used to expand the scope of the document similarity search to include the
-    #   natural language query. Other query parameters, such as **filter** and **query**
-    #   are subsequently applied and reduce the query scope.
-    # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
-    #   to identify similar documents. If not specified, the entire document is used for
+    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
+    #   the document similarity search with the natural language query. Other query
+    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
+    #   the scope.
+    # @param similar_fields [String] A comma-separated list of field names that are used as a basis for comparison to
+    #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
+    # @param bias [String] Field which the returned results will be biased against. The specified field must
+    #   be either a **date** or **number** format. When a **date** type field is specified
+    #   returned results are biased towards field values closer to the current date. When
+    #   a **number** type field is specified, returned results are biased towards higher
+    #   field values. This parameter cannot be used in the same query as the **sort**
+    #   parameter.
     # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, logging_opt_out: nil)
+    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError("collection_id must be provided") if collection_id.nil?
@@ -1113,32 +1124,37 @@ module IBMWatson
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
       params = {
-        "version" => @version,
+        "version" => @version
+      }
+      data = {
         "filter" => filter,
         "query" => query,
         "natural_language_query" => natural_language_query,
         "passages" => passages,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => return_fields.to_a,
+        "return" => return_fields,
         "offset" => offset,
-        "sort" => sort.to_a,
+        "sort" => sort,
         "highlight" => highlight,
-        "passages.fields" => passages_fields.to_a,
+        "passages.fields" => passages_fields,
         "passages.count" => passages_count,
         "passages.characters" => passages_characters,
         "deduplicate" => deduplicate,
         "deduplicate.field" => deduplicate_field,
+        "collection_ids" => collection_ids,
         "similar" => similar,
-        "similar.document_ids" => similar_document_ids.to_a,
-        "similar.fields" => similar_fields.to_a
+        "similar.document_ids" => similar_document_ids,
+        "similar.fields" => similar_fields,
+        "bias" => bias
       }
       method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
       response = request(
-        method: "GET",
+        method: "POST",
         url: method_url,
         headers: headers,
         params: params,
+        json: data,
         accept_json: true
       )
       response
@@ -1154,9 +1170,9 @@ module IBMWatson
     #   more details on the query language.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @param filter [String] A cacheable query that limits the documents returned to exclude any documents that
-    #   don't mention the query content. Filter searches are better for metadata type
-    #   searches and when you are trying to get a sense of concepts in the data set.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
@@ -1165,41 +1181,37 @@ module IBMWatson
     #   data and natural language understanding. You cannot use **natural_language_query**
     #   and **query** at the same time.
     # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
-    # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
-    #   exact answer. Aggregations are useful for building applications, because you can
-    #   use them to build lists, tables, and time series. For a full list of possible
-    #   aggregrations, see the Query reference.
+    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
+    #   filters. Useful for applications to build lists, tables, and time series. For a
+    #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
+    # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10, and the offset is 8, it returns the
-    #   last two results.
-    # @param sort [Array[String]] A comma separated list of fields in the document to sort on. You can optionally
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results.
+    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
     #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @param highlight [Boolean] When true a highlight field is returned for each result which contains the fields
-    #   that match the query with `<em></em>` tags around the matching query terms.
-    #   Defaults to false.
+    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
+    #   which match the query with `<em></em>` tags around the matching query terms.
     # @param passages_fields [Array[String]] A comma-separated list of fields that passages are drawn from. If this parameter
     #   not specified, then all top-level fields are included.
     # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
-    #   requested total is not found. The default is `10`. The maximum is `100`.
-    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have. The default
-    #   is `400`. The minimum is `50`. The maximum is `2000`.
+    #   requested total is not found.
+    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
     #   **offset** is not considered. This parameter is currently Beta functionality.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
     #   specified in the **similar.document_ids** parameter.
-    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
-    #   documents.
+    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs to find similar documents.
     #
-    #   **Note:** If the **natural_language_query** parameter is also specified, it will
-    #   be used to expand the scope of the document similarity search to include the
-    #   natural language query. Other query parameters, such as **filter** and **query**
-    #   are subsequently applied and reduce the query scope.
-    # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
-    #   to identify similar documents. If not specified, the entire document is used for
+    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
+    #   the document similarity search with the natural language query. Other query
+    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
+    #   the scope.
+    # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
+    #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
@@ -1241,16 +1253,16 @@ module IBMWatson
     end
 
     ##
-    # @!method federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, passages: nil, passages_fields: nil, passages_count: nil, passages_characters: nil)
-    # Query documents in multiple collections.
-    # See the [Discovery service
-    #   documentation](https://console.bluemix.net/docs/services/discovery/using.html) for
-    #   more details.
+    # @!method federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    # Long environment queries.
+    # Complex queries might be too long for a standard method query. By using this
+    #   method, you can construct longer queries. However, these queries may take longer
+    #   to complete than the standard method. For details, see the [Discovery service
+    #   documentation](https://console.bluemix.net/docs/services/discovery/using.html).
     # @param environment_id [String] The ID of the environment.
-    # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
-    # @param filter [String] A cacheable query that limits the documents returned to exclude any documents that
-    #   don't mention the query content. Filter searches are better for metadata type
-    #   searches and when you are trying to get a sense of concepts in the data set.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
@@ -1258,21 +1270,26 @@ module IBMWatson
     # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
     #   data and natural language understanding. You cannot use **natural_language_query**
     #   and **query** at the same time.
-    # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
-    #   exact answer. Aggregations are useful for building applications, because you can
-    #   use them to build lists, tables, and time series. For a full list of possible
-    #   aggregrations, see the Query reference.
+    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
+    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
+    #   filters. Useful for applications to build lists, tables, and time series. For a
+    #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
+    # @param return_fields [String] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10, and the offset is 8, it returns the
-    #   last two results.
-    # @param sort [Array[String]] A comma separated list of fields in the document to sort on. You can optionally
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results.
+    # @param sort [String] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
-    #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @param highlight [Boolean] When true a highlight field is returned for each result which contains the fields
-    #   that match the query with `<em></em>` tags around the matching query terms.
-    #   Defaults to false.
+    #   ascending. Ascending is the default sort direction if no prefix is specified. This
+    #   parameter cannot be used in the same query as the **bias** parameter.
+    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
+    #   which match the query with `<em></em>` tags around the matching query terms.
+    # @param passages_fields [String] A comma-separated list of fields that passages are drawn from. If this parameter
+    #   not specified, then all top-level fields are included.
+    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
+    #   requested total is not found. The default is `10`. The maximum is `100`.
+    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
     # @param deduplicate [Boolean] When `true` and used with a Watson Discovery News collection, duplicate results
     #   (based on the contents of the **title** field) are removed. Duplicate comparison
     #   is limited to the current query only; **offset** is not considered. This parameter
@@ -1280,61 +1297,65 @@ module IBMWatson
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
     #   **offset** is not considered. This parameter is currently Beta functionality.
+    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against. Required when
+    #   querying multiple collections, invalid when performing a single collection query.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
     #   specified in the **similar.document_ids** parameter.
-    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
-    #   documents.
+    # @param similar_document_ids [String] A comma-separated list of document IDs to find similar documents.
     #
-    #   **Note:** If the **natural_language_query** parameter is also specified, it will
-    #   be used to expand the scope of the document similarity search to include the
-    #   natural language query. Other query parameters, such as **filter** and **query**
-    #   are subsequently applied and reduce the query scope.
-    # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
-    #   to identify similar documents. If not specified, the entire document is used for
+    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
+    #   the document similarity search with the natural language query. Other query
+    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
+    #   the scope.
+    # @param similar_fields [String] A comma-separated list of field names that are used as a basis for comparison to
+    #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
-    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
-    # @param passages_fields [Array[String]] A comma-separated list of fields that passages are drawn from. If this parameter
-    #   not specified, then all top-level fields are included.
-    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
-    #   requested total is not found. The default is `10`. The maximum is `100`.
-    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have. The default
-    #   is `400`. The minimum is `50`. The maximum is `2000`.
+    # @param bias [String] Field which the returned results will be biased against. The specified field must
+    #   be either a **date** or **number** format. When a **date** type field is specified
+    #   returned results are biased towards field values closer to the current date. When
+    #   a **number** type field is specified, returned results are biased towards higher
+    #   field values. This parameter cannot be used in the same query as the **sort**
+    #   parameter.
+    # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, passages: nil, passages_fields: nil, passages_count: nil, passages_characters: nil)
+    def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
       raise ArgumentError("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
-
       headers = {
+        "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
       params = {
-        "version" => @version,
-        "collection_ids" => collection_ids.to_a,
+        "version" => @version
+      }
+      data = {
         "filter" => filter,
         "query" => query,
         "natural_language_query" => natural_language_query,
+        "passages" => passages,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => return_fields.to_a,
+        "return" => return_fields,
         "offset" => offset,
-        "sort" => sort.to_a,
+        "sort" => sort,
         "highlight" => highlight,
+        "passages.fields" => passages_fields,
+        "passages.count" => passages_count,
+        "passages.characters" => passages_characters,
         "deduplicate" => deduplicate,
         "deduplicate.field" => deduplicate_field,
+        "collection_ids" => collection_ids,
         "similar" => similar,
-        "similar.document_ids" => similar_document_ids.to_a,
-        "similar.fields" => similar_fields.to_a,
-        "passages" => passages,
-        "passages.fields" => passages_fields.to_a,
-        "passages.count" => passages_count,
-        "passages.characters" => passages_characters
+        "similar.document_ids" => similar_document_ids,
+        "similar.fields" => similar_fields,
+        "bias" => bias
       }
       method_url = "/v1/environments/%s/query" % [ERB::Util.url_encode(environment_id)]
       response = request(
-        method: "GET",
+        method: "POST",
         url: method_url,
         headers: headers,
         params: params,
+        json: data,
         accept_json: true
       )
       response
@@ -1350,9 +1371,9 @@ module IBMWatson
     #   more details on the query language.
     # @param environment_id [String] The ID of the environment.
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
-    # @param filter [String] A cacheable query that limits the documents returned to exclude any documents that
-    #   don't mention the query content. Filter searches are better for metadata type
-    #   searches and when you are trying to get a sense of concepts in the data set.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
@@ -1360,35 +1381,32 @@ module IBMWatson
     # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
     #   data and natural language understanding. You cannot use **natural_language_query**
     #   and **query** at the same time.
-    # @param aggregation [String] An aggregation search uses combinations of filters and query search to return an
-    #   exact answer. Aggregations are useful for building applications, because you can
-    #   use them to build lists, tables, and time series. For a full list of possible
-    #   aggregrations, see the Query reference.
+    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
+    #   filters. Useful for applications to build lists, tables, and time series. For a
+    #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param return_fields [Array[String]] A comma separated list of the portion of the document hierarchy to return.
+    # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10, and the offset is 8, it returns the
-    #   last two results.
-    # @param sort [Array[String]] A comma separated list of fields in the document to sort on. You can optionally
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results.
+    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
     #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @param highlight [Boolean] When true a highlight field is returned for each result which contains the fields
-    #   that match the query with `<em></em>` tags around the matching query terms.
-    #   Defaults to false.
+    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
+    #   which match the query with `<em></em>` tags around the matching query terms.
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
     #   **offset** is not considered. This parameter is currently Beta functionality.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
     #   specified in the **similar.document_ids** parameter.
-    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs that will be used to find similar
-    #   documents.
+    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs to find similar documents.
     #
-    #   **Note:** If the **natural_language_query** parameter is also specified, it will
-    #   be used to expand the scope of the document similarity search to include the
-    #   natural language query. Other query parameters, such as **filter** and **query**
-    #   are subsequently applied and reduce the query scope.
-    # @param similar_fields [Array[String]] A comma-separated list of field names that will be used as a basis for comparison
-    #   to identify similar documents. If not specified, the entire document is used for
+    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
+    #   the document similarity search with the natural language query. Other query
+    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
+    #   the scope.
+    # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
+    #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
@@ -1487,7 +1505,8 @@ module IBMWatson
     #   your query would look for `London` with the context of `England`.
     # @param sort [String] The sorting method for the relationships, can be `score` or `frequency`.
     #   `frequency` is the number of unique times each entity is identified. The default
-    #   is `score`.
+    #   is `score`. This parameter cannot be used in the same query as the **bias**
+    #   parameter.
     # @param filter [QueryRelationsFilter] Filters to apply to the relationship query.
     # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
     # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
@@ -1943,18 +1962,18 @@ module IBMWatson
     # Searches the query and event log to find query sessions that match the specified
     #   criteria. Searching the **logs** endpoint uses the standard Discovery query syntax
     #   for the parameters that are supported.
-    # @param filter [String] A cacheable query that limits the documents returned to exclude any documents that
-    #   don't mention the query content. Filter searches are better for metadata type
-    #   searches and when you are trying to get a sense of concepts in the data set.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
     # @param query [String] A query search returns all documents in your data set with full enrichments and
     #   full text, but with the most relevant documents listed first. Use a query search
     #   when you want to find the most relevant search results. You cannot use
     #   **natural_language_query** and **query** at the same time.
     # @param count [Fixnum] Number of results to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10, and the offset is 8, it returns the
-    #   last two results.
-    # @param sort [Array[String]] A comma separated list of fields in the document to sort on. You can optionally
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results.
+    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
     #   ascending. Ascending is the default sort direction if no prefix is specified.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.

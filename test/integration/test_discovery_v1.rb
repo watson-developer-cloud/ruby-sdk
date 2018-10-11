@@ -196,8 +196,9 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
         environment_id: @environment_id,
         collection_id: @collection_id,
         filter: "extracted_metadata.sha1::9181d244*",
-        return_fields: ["extracted_metadata.sha1"]
+        return_fields: "extracted_metadata.sha1"
       ).result
+      puts query_results
       refute(query_results.nil?)
     end
 
