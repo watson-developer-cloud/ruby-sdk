@@ -79,11 +79,10 @@ class WebSocketClient
     EM&.reactor_thread&.join
     EM.run do
       if @disable_ssl
-        @client = Faye::WebSocket::Client.new(@url, nil, tls: { verify_peer: false }, headers: @headers)
+        @client = Faye::WebSocket::Client.new(@url, nil, tls: { verify_peer: false, fail_if_no_peer_cert: false }, headers: @headers)
       else
         @client = Faye::WebSocket::Client.new(@url, nil, headers: @headers)
       end
-      # @client.ssl = false
       @client.onclose = on_close
       @client.onerror = on_error
       @client.onmessage = on_message
