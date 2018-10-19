@@ -35,6 +35,8 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 ## Before you begin
 * You need an [IBM Cloud][ibm-cloud-onboarding] account.
 
+> Watson Assistant v2 API is released in beta. For details, see the ["Introducing Watson Assistant"](https://www.ibm.com/blogs/watson/2018/03/the-future-of-watson-conversation-watson-assistant/) blog post.
+
 ## Installation
 
 Install the gem:
