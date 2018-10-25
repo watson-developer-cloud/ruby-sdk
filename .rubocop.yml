@@ -1249,7 +1249,7 @@ Style/PreferredHashMethods:
     - verbose
 
 Style/RaiseArgs:
-  EnforcedStyle: exploded
+  EnforcedStyle: compact
   SupportedStyles:
     - compact # raise Exception.new(msg)
     - exploded # raise Exception, msg

@@ -22,7 +22,7 @@ visual_recognition = IBMWatson::VisualRecognitionV3.new(
 # trucks = File.open(Dir.getwd + "/resources/trucks.zip")
 # puts JSON.pretty_generate(visual_recognition.create_classifier(
 #   name: "Cars vs Trucks",
-#   classname_positive_examples: cars,
+#   positive_examples: { cars: cars },
 #   negative_examples: trucks
 # ).result)
 
@@ -40,7 +40,7 @@ end
 # File.open(Dir.getwd + "/resources/car.jpg") do |image_file|
 #   puts JSON.pretty_generate(visual_recognition.update_classifier(
 #     classifier_id: "CarsvsTrucks_1479118188",
-#     classname_positive_examples: image_file
+#     positive_examples: { cars: image_file }
 #   ).result)
 # end
 

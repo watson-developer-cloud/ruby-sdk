@@ -226,7 +226,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method create_classifier(name:, **args)
+    # @!method create_classifier(name:, positive_examples:, negative_examples: nil, positive_examples_filename: {}, negative_examples_filename: nil)
     # Create a classifier.
     # Train a new multi-faceted classifier on the uploaded image data. Create your
     #   custom classifier with positive or negative examples. Include at least two sets of
@@ -237,8 +237,7 @@ module IBMWatson
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
     #   it encounters non-ASCII characters.
     # @param name [String] The name of the new classifier. Encode special characters in UTF-8.
-    # @param args [Hash] Hash for optional parameters
-    # @option args classname_positive_examples [File] A .zip file of images that depict the visual subject of a class in the new
+    # @param positive_examples [File] A .zip file of images that depict the visual subject of a class in the new
     #   classifier. You can include more than one positive example file in a call.
     #
     #   Specify the parameter name by appending `_positive_examples` to the class name.
@@ -254,53 +253,52 @@ module IBMWatson
     #   of the new classifier. Must contain a minimum of 10 images.
     #
     #   Encode special characters in the file name in UTF-8.
-    # @option args classname_positive_examples_filename [String] The filename for classname_positive_examples.
-    # @option args negative_examples_filename [String] The filename for negative_examples.
+    # @param positive_examples_filename [String] The filename for positive_examples.
+    # @param negative_examples_filename [String] The filename for negative_examples.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_classifier(name:, **args)
-      raise ArgumentError("name must be provided") if name.nil?
+    def create_classifier(name:, positive_examples:, negative_examples: nil, positive_examples_filename: {}, negative_examples_filename: nil)
+      raise ArgumentError.new("name must be provided") if name.nil?
+      raise ArgumentError.new("positive_examples must be a hash") unless positive_examples.is_a?(Hash)
+      raise ArgumentError.new("positive_examples must have at least one hash entry") if positive_examples.empty?
+      raise ArgumentError.new("positive_examples_filename must be a hash") unless positive_examples_filename.is_a?(Hash)
 
-      raise ArgumentError("<classname>_positive_examples must be provided") unless args.keys.any? { |key| key.to_s.end_with?("_positive_examples") }
-
-      positive_keys = args.keys
-      positive_keys.keep_if { |key| key.to_s.end_with?("_positive_examples") }
       headers = {
       }
+
       params = {
         "version" => @version
       }
-      mime_type = "application/octet-stream"
-      positive_keys.each do |k|
-        unless args[k].instance_of?(StringIO) || args[k].instance_of?(File)
-          args[k] = args[k].respond_to?(:to_json) ? StringIO.new(args[k].to_json) : StringIO.new(args[k])
+
+      form_data = {}
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain")
+
+      positive_examples.each do |key, value|
+        part_name = "%s_positive_examples" % key.to_s
+        unless value.instance_of?(StringIO) || value.instance_of?(File)
+          value = value.respond_to?(:to_json) ? StringIO.new(value.to_json) : StringIO.new(value)
         end
-        if !args[(k.to_s + "_filename").to_sym].nil?
-          args[k] = args[k].instance_of?(StringIO) ? HTTP::FormData::File.new(args[k], content_type: mime_type, filename: args[(k.to_s + "_filename").to_sym]) : HTTP::FormData::File.new(args[k].path, content_type: mime_type, filename: args[(k.to_s + "_filename").to_sym])
-        else
-          args[k] = args[k].instance_of?(StringIO) ? HTTP::FormData::File.new(args[k], content_type: mime_type) : HTTP::FormData::File.new(args[k].path, content_type: mime_type)
-        end
+        filename = positive_examples_filename[key] if positive_examples_filename.key?(key)
+        filename = value.path if filename.nil? && value.respond_to?(:path)
+        form_data[part_name.to_sym] = HTTP::FormData::File.new(value, content_type: "application/octet-stream", filename: filename)
       end
-      unless args[:negative_examples].nil?
-        mime_type = "application/octet-stream"
-        unless args[:negative_examples].instance_of?(StringIO) || args[:negative_examples].instance_of?(File)
-          args[:negative_examples] = args[:negative_examples].respond_to?(:to_json) ? StringIO.new(args[:negative_examples].to_json) : StringIO.new(args[:negative_examples])
+
+      unless negative_examples.nil?
+        unless negative_examples.instance_of?(StringIO) || negative_examples.instance_of?(File)
+          negative_examples = negative_examples.respond_to?(:to_json) ? StringIO.new(negative_examples.to_json) : StringIO.new(negative_examples)
         end
-        if args[:negative_examples_filename]
-          args[:negative_examples] = args[:negative_examples].instance_of?(StringIO) ? HTTP::FormData::File.new(args[:negative_examples], content_type: mime_type, filename: args[:negative_examples_filename]) : HTTP::FormData::File.new(args[:negative_examples].path, content_type: mime_type, filename: args[:negative_examples_filename])
-        else
-          args[:negative_examples] = args[:negative_examples].instance_of?(StringIO) ? HTTP::FormData::File.new(args[:negative_examples], content_type: mime_type) : HTTP::FormData::File.new(args[:negative_examples].path, content_type: mime_type)
-        end
+        negative_examples_filename = negative_examples.path if negative_examples_filename.nil? && negative_examples.respond_to?(:path)
+        form_data[:negative_examples] = HTTP::FormData::File.new(negative_examples, content_type: "application/octet-stream", filename: negative_examples_filename)
       end
-      form_hash = { name: name }
-      positive_keys.each { |k| form_hash[k] = args[k] }
-      form_hash[:negative_examples] = args[:negative_examples] unless args[:negative_examples].nil?
+
       method_url = "/v3/classifiers"
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
         params: params,
-        form: form_hash,
+        form: form_data,
         accept_json: true
       )
       response
@@ -356,7 +354,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_classifier(classifier_id:, **args)
+    # @!method update_classifier(classifier_id:, positive_examples: {}, negative_examples: nil, positive_examples_filename: {}, negative_examples_filename: nil)
     # Update a classifier.
     # Update a custom classifier by adding new positive or negative classes (examples)
     #   or by adding new images to existing classes. You must supply at least one set of
@@ -372,7 +370,7 @@ module IBMWatson
     #   previous requests. The retrained property shows the last time the classifier
     #   retraining finished.
     # @param classifier_id [String] The ID of the classifier.
-    # @option args classname_positive_examples [File] A .zip file of images that depict the visual subject of a class in the classifier.
+    # @param positive_examples [File] A .zip file of images that depict the visual subject of a class in the classifier.
     #   The positive examples create or update classes in the classifier. You can include
     #   more than one positive example file in a call.
     #
@@ -385,55 +383,53 @@ module IBMWatson
     #   MB per .zip file.
     #
     #   Encode special characters in the file name in UTF-8.
-    # @option args negative_examples [File] A .zip file of images that do not depict the visual subject of any of the classes
+    # @param negative_examples [File] A .zip file of images that do not depict the visual subject of any of the classes
     #   of the new classifier. Must contain a minimum of 10 images.
     #
     #   Encode special characters in the file name in UTF-8.
-    # @option args classname_positive_examples_filename [String] The filename for classname_positive_examples.
-    # @option args negative_examples_filename [String] The filename for negative_examples.
+    # @param positive_examples_filename [String] The filename for positive_examples.
+    # @param negative_examples_filename [String] The filename for negative_examples.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_classifier(classifier_id:, **args)
-      raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+    def update_classifier(classifier_id:, positive_examples: {}, negative_examples: nil, positive_examples_filename: {}, negative_examples_filename: nil)
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
+      raise ArgumentError.new("positive_examples must be a hash") unless positive_examples.is_a?(Hash)
+      raise ArgumentError.new("positive_examples_filename must be a hash") unless positive_examples_filename.is_a?(Hash)
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
-      positive_keys = args.keys
-      positive_keys.keep_if { |key| key.to_s.end_with?("_positive_examples") }
-      mime_type = "application/octet-stream"
-      positive_keys.each do |k|
-        unless args[k].instance_of?(StringIO) || args[k].instance_of?(File)
-          args[k] = args[k].respond_to?(:to_json) ? StringIO.new(args[k].to_json) : StringIO.new(args[k])
+
+      form_data = {}
+
+      positive_examples.each do |key, value|
+        part_name = "%s_positive_examples" % key.to_s
+        unless value.instance_of?(StringIO) || value.instance_of?(File)
+          value = value.respond_to?(:to_json) ? StringIO.new(value.to_json) : StringIO.new(value)
         end
-        if !args[(k.to_s + "_filename").to_sym].nil?
-          args[k] = args[k].instance_of?(StringIO) ? HTTP::FormData::File.new(args[k], content_type: mime_type, filename: args[(k.to_s + "_filename").to_sym]) : HTTP::FormData::File.new(args[k].path, content_type: mime_type, filename: args[(k.to_s + "_filename").to_sym])
-        else
-          args[k] = args[k].instance_of?(StringIO) ? HTTP::FormData::File.new(args[k], content_type: mime_type) : HTTP::FormData::File.new(args[k].path, content_type: mime_type)
-        end
+        filename = positive_examples_filename[key] if positive_examples_filename.key?(key)
+        filename = value.path if filename.nil? && value.respond_to?(:path)
+        form_data[part_name.to_sym] = HTTP::FormData::File.new(value, content_type: "application/octet-stream", filename: filename)
       end
-      unless args[:negative_examples].nil?
-        mime_type = "application/octet-stream"
-        unless args[:negative_examples].instance_of?(StringIO) || args[:negative_examples].instance_of?(File)
-          args[:negative_examples] = args[:negative_examples].respond_to?(:to_json) ? StringIO.new(args[:negative_examples].to_json) : StringIO.new(args[:negative_examples])
+
+      unless negative_examples.nil?
+        unless negative_examples.instance_of?(StringIO) || negative_examples.instance_of?(File)
+          negative_examples = negative_examples.respond_to?(:to_json) ? StringIO.new(negative_examples.to_json) : StringIO.new(negative_examples)
         end
-        if args[:negative_examples_filename]
-          args[:negative_examples] = args[:negative_examples].instance_of?(StringIO) ? HTTP::FormData::File.new(args[:negative_examples], content_type: mime_type, filename: args[:negative_examples_filename]) : HTTP::FormData::File.new(args[:negative_examples].path, content_type: mime_type, filename: args[:negative_examples_filename])
-        else
-          args[:negative_examples] = args[:negative_examples].instance_of?(StringIO) ? HTTP::FormData::File.new(args[:negative_examples], content_type: mime_type) : HTTP::FormData::File.new(args[:negative_examples].path, content_type: mime_type)
-        end
+        negative_examples_filename = negative_examples.path if negative_examples_filename.nil? && negative_examples.respond_to?(:path)
+        form_data[:negative_examples] = HTTP::FormData::File.new(negative_examples, content_type: "application/octet-stream", filename: negative_examples_filename)
       end
-      form_hash = {}
-      positive_keys.each { |k| form_hash[k] = args[k] }
-      form_hash[:negative_examples] = args[:negative_examples] unless args[:negative_examples].nil?
+
       method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
         params: params,
-        form: form_hash,
+        form: form_data,
         accept_json: true
       )
       response
