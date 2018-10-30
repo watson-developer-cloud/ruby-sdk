@@ -838,6 +838,98 @@ module IBMWatson
       )
       nil
     end
+
+    ##
+    # @!method get_tokenization_dictionary_status(environment_id:, collection_id:)
+    # Get tokenization dictionary status.
+    # Returns the current status of the tokenization dictionary for the specified
+    #   collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_tokenization_dictionary_status(environment_id:, collection_id:)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+    # Create tokenization dictionary.
+    # Upload a custom tokenization dictionary to use with the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param tokenization_rules [Array[TokenDictRule]] An array of tokenization rules. Each rule contains, the original `text` string,
+    #   component `tokens`, any alternate character set `readings`, and which
+    #   `part_of_speech` the text is from.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      data = {
+        "tokenization_rules" => tokenization_rules
+      }
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_tokenization_dictionary(environment_id:, collection_id:)
+    # Delete tokenization dictionary.
+    # Delete the tokenization dictionary from the collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [nil]
+    def delete_tokenization_dictionary(environment_id:, collection_id:)
+      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      params = {
+        "version" => @version
+      }
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      nil
+    end
     #########################
     # Documents
     #########################
