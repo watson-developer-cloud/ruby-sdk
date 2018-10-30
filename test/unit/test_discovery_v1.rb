@@ -1012,7 +1012,7 @@ class DiscoveryV1Test < Minitest::Test
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?&version=2018-03-05")
       .with(
-        body:  "{\"collection_ids\":[\"collid\"]}",
+        body: "{\"collection_ids\":[\"collid\"]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
