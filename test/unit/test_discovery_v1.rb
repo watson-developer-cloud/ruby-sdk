@@ -906,6 +906,63 @@ class DiscoveryV1Test < Minitest::Test
     assert_nil(service_response)
   end
 
+  def test_tokenization_dictionary
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { tokenization_dictionary: "results" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_tokenization_dictionary_status(
+      environment_id: "envid",
+      collection_id: "collid"
+    )
+    assert_equal({ "tokenization_dictionary" => "results" }, service_response.result)
+
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
+      .with(
+        body: "{\"tokenization_rules\":[{\"rule1\":\"messi\",\"rule2\":\"ronaldo\"}]}",
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { discription: "success" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_tokenization_dictionary(
+      environment_id: "envid",
+      collection_id: "collid",
+      tokenization_rules: [
+        {
+          "rule1" => "messi",
+          "rule2" => "ronaldo"
+        }
+      ]
+    )
+    assert_equal({ "discription" => "success" }, service_response.result)
+
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { description: "success" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_tokenization_dictionary(
+      environment_id: "envid",
+      collection_id: "collid"
+    )
+    assert_nil(service_response)
+  end
+
   def test_delete_user_data
     service = IBMWatson::DiscoveryV1.new(
       username: "username",
@@ -955,7 +1012,7 @@ class DiscoveryV1Test < Minitest::Test
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?&version=2018-03-05")
       .with(
-        body:  "{\"collection_ids\":[\"collid\"]}",
+        body: "{\"collection_ids\":[\"collid\"]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
