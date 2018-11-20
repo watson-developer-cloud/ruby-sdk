@@ -146,7 +146,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, content_type:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
+    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. Returns
     #   only the final results; to enable interim results, use the WebSocket API. The
@@ -322,10 +322,8 @@ module IBMWatson
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def recognize(audio:, content_type:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
+    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
-
-      raise ArgumentError("content_type must be provided") if content_type.nil?
 
       headers = {
         "Content-Type" => content_type
@@ -362,14 +360,15 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_using_websocket(content_type:,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,language_customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
     # @param audio [IO] Audio to transcribe in the format specified by the `Content-Type` header.
     # @param chunk_data [Boolean] If true, then the WebSocketClient will expect to receive data in chunks rather than as a single audio file
     # @param model [String] The identifier of the model to be used for the recognition request.
-    # @param customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
+    # @param language_customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
+    # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the customization ID (GUID) of a custom language model that is to be used with the recognition request. Do not specify both parameters with a request.
     # @param acoustic_customization_id [String] The GUID of a custom acoustic model that is to be used with the request. The base model of the specified custom acoustic model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom acoustic model is used.
     # @param customization_weight [Float] If you specify a `customization_id` with the request, you can use the `customization_weight` parameter to tell the service how much weight to give to words from the custom language model compared to those from the base model for speech recognition.   Specify a value between 0.0 and 1.0. Unless a different customization weight was specified for the custom model when it was trained, the default value is 0.3. A customization weight that you specify overrides a weight that was specified when the custom model was trained.   The default value yields the best performance in general. Assign a higher value if your audio makes frequent use of OOV words from the custom model. Use caution when setting the weight: a higher value can improve the accuracy of phrases from the custom model's domain, but it can negatively affect performance on non-domain phrases.
     # @param base_model_version [String] The version of the specified base `model` that is to be used for speech recognition. Multiple versions of a base model can exist when a model is updated for internal improvements. The parameter is intended primarily for use with custom models that have been upgraded for a new base model. The default value depends on whether the parameter is used with or without a custom model. For more information, see [Base model version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
@@ -386,11 +385,12 @@ module IBMWatson
     # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
     # @return [WebSocketClient] Returns a new WebSocketClient object
     def recognize_using_websocket(
-      content_type:,
+      content_type: nil,
       recognize_callback:,
       audio: nil,
       chunk_data: false,
       model: nil,
+      language_customization_id: nil,
       customization_id: nil,
       acoustic_customization_id: nil,
       customization_weight: nil,
@@ -424,6 +424,7 @@ module IBMWatson
       params = {
         "model" => model,
         "customization_id" => customization_id,
+        "langauge_customization_id" => language_customization_id,
         "acoustic_customization_id" => acoustic_customization_id,
         "customization_weight" => customization_weight,
         "base_model_version" => base_model_version
@@ -451,7 +452,7 @@ module IBMWatson
     # :nocov:
     # @deprecated This will method be removed in the next major release. Use {#recognize_using_websocket} instead.
     def recognize_with_websocket(
-      content_type:,
+      content_type: nil,
       recognize_callback:,
       audio: nil,
       chunk_data: false,
@@ -600,7 +601,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_job(audio:, content_type:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
+    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
     # Create a job.
     # Creates a job for a new asynchronous recognition request. The job is owned by the
     #   user whose service credentials are used to create it. How you learn the status and
@@ -822,10 +823,8 @@ module IBMWatson
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_job(audio:, content_type:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
+    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil)
       raise ArgumentError("audio must be provided") if audio.nil?
-
-      raise ArgumentError("content_type must be provided") if content_type.nil?
 
       headers = {
         "Content-Type" => content_type
