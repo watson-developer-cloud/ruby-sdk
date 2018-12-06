@@ -101,14 +101,17 @@ module IBMWatson
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_session(assistant_id:)
-      raise ArgumentError("assistant_id must be provided") if assistant_id.nil?
+      raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v2/assistants/%s/sessions" % [ERB::Util.url_encode(assistant_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -132,16 +135,19 @@ module IBMWatson
     # @param session_id [String] Unique identifier of the session.
     # @return [nil]
     def delete_session(assistant_id:, session_id:)
-      raise ArgumentError("assistant_id must be provided") if assistant_id.nil?
+      raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
-      raise ArgumentError("session_id must be provided") if session_id.nil?
+      raise ArgumentError.new("session_id must be provided") if session_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v2/assistants/%s/sessions/%s" % [ERB::Util.url_encode(assistant_id), ERB::Util.url_encode(session_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -168,24 +174,28 @@ module IBMWatson
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.
-    # @param input [MessageInput] An input object that includes the input text.
+    # @param input [MessageInput] The user input.
     # @param context [MessageContext] State information for the conversation.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def message(assistant_id:, session_id:, input: nil, context: nil)
-      raise ArgumentError("assistant_id must be provided") if assistant_id.nil?
+      raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
-      raise ArgumentError("session_id must be provided") if session_id.nil?
+      raise ArgumentError.new("session_id must be provided") if session_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "input" => input,
         "context" => context
       }
+
       method_url = "/v2/assistants/%s/sessions/%s/message" % [ERB::Util.url_encode(assistant_id), ERB::Util.url_encode(session_id)]
+
       response = request(
         method: "POST",
         url: method_url,

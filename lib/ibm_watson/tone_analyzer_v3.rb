@@ -22,9 +22,9 @@
 # to respond to each customer appropriately, or to understand and improve their customer
 # conversations.
 #
-# **Note:** Request logging is disabled for the Tone Analyzer service. The service neither
-# logs nor retains data from requests and responses, regardless of whether the
-# `X-Watson-Learning-Opt-Out` request header is set.
+# **Note:** Request logging is disabled for the Tone Analyzer service. Regardless of
+# whether you set the `X-Watson-Learning-Opt-Out` request header, the service does not log
+# or retain data from requests and responses.
 
 require "concurrent"
 require "erb"
@@ -97,7 +97,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method tone(tone_input:, content_type:, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
+    # @!method tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
     # Analyze general tone.
     # Use the general purpose endpoint to analyze the tone of your input content. The
     #   service analyzes the content for emotional and language tones. The method always
@@ -118,7 +118,7 @@ module IBMWatson
     #   analyzes only the textual content.
     #
     #   **See also:** [Using the general-purpose
-    #   endpoint](https://console.bluemix.net/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
+    #   endpoint](/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
     # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
     # @param content_type [String] The type of the input. A character encoding can be specified by including a
@@ -145,27 +145,29 @@ module IBMWatson
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def tone(tone_input:, content_type:, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
-      raise ArgumentError("tone_input must be provided") if tone_input.nil?
-
-      raise ArgumentError("content_type must be provided") if content_type.nil?
+    def tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
+      raise ArgumentError.new("tone_input must be provided") if tone_input.nil?
 
       headers = {
         "Content-Type" => content_type,
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
+
       params = {
         "version" => @version,
         "sentences" => sentences,
         "tones" => tones.to_a
       }
+
       if content_type.start_with?("application/json") && tone_input.instance_of?(Hash)
         data = tone_input.to_json
       else
         data = tone_input
       end
+
       method_url = "/v3/tone"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -193,7 +195,7 @@ module IBMWatson
     #   character encoding for JSON content is effectively always UTF-8.
     #
     #   **See also:** [Using the customer-engagement
-    #   endpoint](https://console.bluemix.net/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
+    #   endpoint](/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
     # @param utterances [Array[Utterance]] An array of `Utterance` objects that provides the input content that the service
     #   is to analyze.
     # @param content_language [String] The language of the input text for the request: English or French. Regional
@@ -209,19 +211,23 @@ module IBMWatson
     #   **Accept-Language**.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def tone_chat(utterances:, content_language: nil, accept_language: nil)
-      raise ArgumentError("utterances must be provided") if utterances.nil?
+      raise ArgumentError.new("utterances must be provided") if utterances.nil?
 
       headers = {
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "utterances" => utterances
       }
+
       method_url = "/v3/tone_chat"
+
       response = request(
         method: "POST",
         url: method_url,

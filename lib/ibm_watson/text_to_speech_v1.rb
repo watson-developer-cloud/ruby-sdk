@@ -99,12 +99,14 @@ module IBMWatson
     #   about a specific voice, use the **Get a voice** method.
     #
     #   **See also:** [Specifying a
-    #   voice](https://console.bluemix.net/docs/services/text-to-speech/http.html#voices).
+    #   voice](/docs/services/text-to-speech/http.html#voices).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_voices
       headers = {
       }
+
       method_url = "/v1/voices"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -123,7 +125,7 @@ module IBMWatson
     #   information about all available voices, use the **List voices** method.
     #
     #   **See also:** [Specifying a
-    #   voice](https://console.bluemix.net/docs/services/text-to-speech/http.html#voices).
+    #   voice](/docs/services/text-to-speech/http.html#voices).
     # @param voice [String] The voice for which information is to be returned.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model for which information is to be
     #   returned. You must make the request with service credentials created for the
@@ -131,14 +133,17 @@ module IBMWatson
     #   information about the specified voice with no customization.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_voice(voice:, customization_id: nil)
-      raise ArgumentError("voice must be provided") if voice.nil?
+      raise ArgumentError.new("voice must be provided") if voice.nil?
 
       headers = {
       }
+
       params = {
         "customization_id" => customization_id
       }
+
       method_url = "/v1/voices/%s" % [ERB::Util.url_encode(voice)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -155,28 +160,99 @@ module IBMWatson
     ##
     # @!method synthesize(text:, accept: nil, voice: nil, customization_id: nil)
     # Synthesize audio.
-    # Synthesizes text to spoken audio, returning the synthesized audio stream as an
-    #   array of bytes. You can pass a maximum of 5 KB of text.  Use the `Accept` header
-    #   or the `accept` query parameter to specify the requested format (MIME type) of the
-    #   response audio. By default, the service uses `audio/ogg;codecs=opus`.
+    # Synthesizes text to audio that is spoken in the specified voice. The service bases
+    #   its understanding of the language for the input text on the specified voice. Use a
+    #   voice that matches the language of the input text.
     #
-    #   If a request includes invalid query parameters, the service returns a `Warnings`
+    #   The service returns the synthesized audio stream as an array of bytes. You can
+    #   pass a maximum of 5 KB of text to the service.
+    #
+    #   **See also:** [Synthesizing text to
+    #   audio](/docs/services/text-to-speech/http.html#synthesize).
+    #
+    #   ### Audio formats (accept types)
+    #
+    #    The service can return audio in the following formats (MIME types).
+    #   * Where indicated, you can optionally specify the sampling rate (`rate`) of the
+    #   audio. You must specify a sampling rate for the `audio/l16` and `audio/mulaw`
+    #   formats. A specified sampling rate must lie in the range of 8 kHz to 192 kHz.
+    #   * For the `audio/l16` format, you can optionally specify the endianness
+    #   (`endianness`) of the audio: `endianness=big-endian` or
+    #   `endianness=little-endian`.
+    #
+    #   Use the `Accept` header or the `accept` parameter to specify the requested format
+    #   of the response audio. If you omit an audio format altogether, the service returns
+    #   the audio in Ogg format with the Opus codec (`audio/ogg;codecs=opus`). The service
+    #   always returns single-channel audio.
+    #   * `audio/basic`
+    #
+    #     The service returns audio with a sampling rate of 8000 Hz.
+    #   * `audio/flac`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #   * `audio/l16`
+    #
+    #     You must specify the `rate` of the audio. You can optionally specify the
+    #   `endianness` of the audio. The default endianness is `little-endian`.
+    #   * `audio/mp3`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #   * `audio/mpeg`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #   * `audio/mulaw`
+    #
+    #     You must specify the `rate` of the audio.
+    #   * `audio/ogg`
+    #
+    #     The service returns the audio in the `vorbis` codec. You can optionally specify
+    #   the `rate` of the audio. The default sampling rate is 22,050 Hz.
+    #   * `audio/ogg;codecs=opus`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #   * `audio/ogg;codecs=vorbis`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #   * `audio/wav`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #   * `audio/webm`
+    #
+    #     The service returns the audio in the `opus` codec. The service returns audio
+    #   with a sampling rate of 48,000 Hz.
+    #   * `audio/webm;codecs=opus`
+    #
+    #     The service returns audio with a sampling rate of 48,000 Hz.
+    #   * `audio/webm;codecs=vorbis`
+    #
+    #     You can optionally specify the `rate` of the audio. The default sampling rate is
+    #   22,050 Hz.
+    #
+    #   For more information about specifying an audio format, including additional
+    #   details about some of the formats, see [Specifying an audio
+    #   format](/docs/services/text-to-speech/http.html#format).
+    #
+    #   ### Warning messages
+    #
+    #    If a request includes invalid query parameters, the service returns a `Warnings`
     #   response header that provides messages about the invalid parameters. The warning
     #   includes a descriptive message and a list of invalid argument strings. For
     #   example, a message such as `\"Unknown arguments:\"` or `\"Unknown url query
-    #   arguments:\"` followed by a list of the form `\"invalid_arg_1, invalid_arg_2.\"`
-    #   The request succeeds despite the warnings.
-    #
-    #   **See also:** [Synthesizing text to
-    #   audio](https://console.bluemix.net/docs/services/text-to-speech/http.html#synthesize).
+    #   arguments:\"` followed by a list of the form `\"{invalid_arg_1},
+    #   {invalid_arg_2}.\"` The request succeeds despite the warnings.
     # @param text [String] The text to synthesize.
-    # @param accept [String] The requested audio format (MIME type) of the audio. You can use the `Accept`
-    #   header or the `accept` query parameter to specify the audio format. (For the
-    #   `audio/l16` format, you can optionally specify `endianness=big-endian` or
-    #   `endianness=little-endian`; the default is little endian.) For detailed
-    #   information about the supported audio formats and sampling rates, see [Specifying
-    #   an audio
-    #   format](https://console.bluemix.net/docs/services/text-to-speech/http.html#format).
+    # @param accept [String] The requested format (MIME type) of the audio. You can use the `Accept` header or
+    #   the `accept` parameter to specify the audio format. For more information about
+    #   specifying an audio format, see **Audio formats (accept types)** in the method
+    #   description.
+    #
+    #   Default: `audio/ogg;codecs=opus`.
     # @param voice [String] The voice to use for synthesis.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model to use for the synthesis. If a
     #   custom voice model is specified, it is guaranteed to work only if it matches the
@@ -185,19 +261,23 @@ module IBMWatson
     #   Omit the parameter to use the specified voice with no customization.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
         "Accept" => accept
       }
+
       params = {
         "voice" => voice,
         "customization_id" => customization_id
       }
+
       data = {
         "text" => text
       }
+
       method_url = "/v1/synthesize"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -223,7 +303,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a word from a
-    #   language](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordsQueryLanguage).
+    #   language](/docs/services/text-to-speech/custom-entries.html#cuWordsQueryLanguage).
     # @param text [String] The word for which the pronunciation is requested.
     # @param voice [String] A voice that specifies the language in which the pronunciation is to be returned.
     #   All voices for the same language (for example, `en-US`) return the same
@@ -239,17 +319,20 @@ module IBMWatson
     #   the specified voice with no customization.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_pronunciation(text:, voice: nil, format: nil, customization_id: nil)
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "text" => text,
         "voice" => voice,
         "format" => format,
         "customization_id" => customization_id
       }
+
       method_url = "/v1/pronunciation"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -274,7 +357,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Creating a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsCreate).
+    #   model](/docs/services/text-to-speech/custom-models.html#cuModelsCreate).
     # @param name [String] The name of the new custom voice model.
     # @param language [String] The language of the new custom voice model. Omit the parameter to use the the
     #   default language, `en-US`.
@@ -282,16 +365,19 @@ module IBMWatson
     #   recommended.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_voice_model(name:, language: nil, description: nil)
-      raise ArgumentError("name must be provided") if name.nil?
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
+
       data = {
         "name" => name,
         "language" => language,
         "description" => description
       }
+
       method_url = "/v1/customizations"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -315,7 +401,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying all custom
-    #   models](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsQueryAll).
+    #   models](/docs/services/text-to-speech/custom-models.html#cuModelsQueryAll).
     # @param language [String] The language for which custom voice models that are owned by the requesting
     #   service credentials are to be returned. Omit the parameter to see all custom voice
     #   models that are owned by the requester.
@@ -323,10 +409,13 @@ module IBMWatson
     def list_voice_models(language: nil)
       headers = {
       }
+
       params = {
         "language" => language
       }
+
       method_url = "/v1/customizations"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -365,11 +454,10 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Updating a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsUpdate)
+    #   model](/docs/services/text-to-speech/custom-models.html#cuModelsUpdate)
     #   * [Adding words to a Japanese custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
-    #   * [Understanding
-    #   customization](https://console.bluemix.net/docs/services/text-to-speech/custom-intro.html).
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
+    #   * [Understanding customization](/docs/services/text-to-speech/custom-intro.html).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -380,16 +468,19 @@ module IBMWatson
     #   additions or updates.
     # @return [nil]
     def update_voice_model(customization_id:, name: nil, description: nil, words: nil)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
+
       data = {
         "name" => name,
         "description" => description,
         "words" => words
       }
+
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
       request(
         method: "POST",
         url: method_url,
@@ -411,17 +502,19 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsQuery).
+    #   model](/docs/services/text-to-speech/custom-models.html#cuModelsQuery).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_voice_model(customization_id:)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
+
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -440,17 +533,19 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Deleting a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsDelete).
+    #   model](/docs/services/text-to-speech/custom-models.html#cuModelsDelete).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @return [nil]
     def delete_voice_model(customization_id:)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
+
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -490,11 +585,10 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Adding multiple words to a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordsAdd)
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuWordsAdd)
     #   * [Adding words to a Japanese custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
-    #   * [Understanding
-    #   customization](https://console.bluemix.net/docs/services/text-to-speech/custom-intro.html).
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
+    #   * [Understanding customization](/docs/services/text-to-speech/custom-intro.html).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -508,16 +602,19 @@ module IBMWatson
     #   array is empty if the custom model contains no words.
     # @return [nil]
     def add_words(customization_id:, words:)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
-      raise ArgumentError("words must be provided") if words.nil?
+      raise ArgumentError.new("words must be provided") if words.nil?
 
       headers = {
       }
+
       data = {
         "words" => words
       }
+
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+
       request(
         method: "POST",
         url: method_url,
@@ -539,17 +636,19 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying all words from a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordsQueryModel).
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuWordsQueryModel).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_words(customization_id:)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
+
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -586,11 +685,10 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Adding a single word to a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordAdd)
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuWordAdd)
     #   * [Adding words to a Japanese custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
-    #   * [Understanding
-    #   customization](https://console.bluemix.net/docs/services/text-to-speech/custom-intro.html).
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
+    #   * [Understanding customization](/docs/services/text-to-speech/custom-intro.html).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -604,22 +702,25 @@ module IBMWatson
     #   with or without a single part of speech, for any word; you cannot create multiple
     #   entries with different parts of speech for the same word. For more information,
     #   see [Working with Japanese
-    #   entries](https://console.bluemix.net/docs/services/text-to-speech/custom-rules.html#jaNotes).
+    #   entries](/docs/services/text-to-speech/custom-rules.html#jaNotes).
     # @return [nil]
     def add_word(customization_id:, word:, translation:, part_of_speech: nil)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
-      raise ArgumentError("word must be provided") if word.nil?
+      raise ArgumentError.new("word must be provided") if word.nil?
 
-      raise ArgumentError("translation must be provided") if translation.nil?
+      raise ArgumentError.new("translation must be provided") if translation.nil?
 
       headers = {
       }
+
       data = {
         "translation" => translation,
         "part_of_speech" => part_of_speech
       }
+
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
+
       request(
         method: "PUT",
         url: method_url,
@@ -640,20 +741,22 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a single word from a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordQueryModel).
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuWordQueryModel).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @param word [String] The word that is to be queried from the custom voice model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word:)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
-      raise ArgumentError("word must be provided") if word.nil?
+      raise ArgumentError.new("word must be provided") if word.nil?
 
       headers = {
       }
+
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -673,20 +776,22 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Deleting a word from a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordDelete).
+    #   model](/docs/services/text-to-speech/custom-entries.html#cuWordDelete).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @param word [String] The word that is to be deleted from the custom voice model.
     # @return [nil]
     def delete_word(customization_id:, word:)
-      raise ArgumentError("customization_id must be provided") if customization_id.nil?
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
-      raise ArgumentError("word must be provided") if word.nil?
+      raise ArgumentError.new("word must be provided") if word.nil?
 
       headers = {
       }
+
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -712,18 +817,21 @@ module IBMWatson
     #   with a request that passes the data.
     #
     #   **See also:** [Information
-    #   security](https://console.bluemix.net/docs/services/text-to-speech/information-security.html).
+    #   security](/docs/services/text-to-speech/information-security.html).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
-      raise ArgumentError("customer_id must be provided") if customer_id.nil?
+      raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {
       }
+
       params = {
         "customer_id" => customer_id
       }
+
       method_url = "/v1/user_data"
+
       request(
         method: "DELETE",
         url: method_url,

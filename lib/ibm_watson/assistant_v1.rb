@@ -91,35 +91,37 @@ module IBMWatson
     ##
     # @!method message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
     # Get response to user input.
-    # Get a response to a user's input.
+    # Send user input to a workspace and receive a response.
     #
     #   There is no rate limit for this operation.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param input [InputData] An input object that includes the input text.
+    # @param input [InputData] The user input.
     # @param alternate_intents [Boolean] Whether to return more than one intent. Set to `true` to return all matching
     #   intents.
-    # @param context [Context] State information for the conversation. Continue a conversation by including the
-    #   context object from the previous response.
+    # @param context [Context] State information for the conversation. To maintain state, include the context
+    #   from the previous response.
     # @param entities [Array[RuntimeEntity]] Entities to use when evaluating the message. Include entities from the previous
     #   response to continue using those entities rather than detecting entities in the
     #   new input.
     # @param intents [Array[RuntimeIntent]] Intents to use when evaluating the user input. Include intents from the previous
     #   response to continue using those intents rather than trying to recognize intents
     #   in the new input.
-    # @param output [OutputData] System output. Include the output from the previous response to maintain
-    #   intermediate information over multiple requests.
+    # @param output [OutputData] An output object that includes the response to the user, the dialog nodes that
+    #   were triggered, and messages from the log.
     # @param nodes_visited_details [Boolean] Whether to include additional diagnostic information about the dialog nodes that
     #   were visited during processing of the message.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "nodes_visited_details" => nodes_visited_details
       }
+
       data = {
         "input" => input,
         "alternate_intents" => alternate_intents,
@@ -128,7 +130,9 @@ module IBMWatson
         "intents" => intents,
         "output" => output
       }
+
       method_url = "/v1/workspaces/%s/message" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -152,8 +156,8 @@ module IBMWatson
     #   see **Rate limiting**.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned workspaces will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
@@ -161,6 +165,7 @@ module IBMWatson
     def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "page_limit" => page_limit,
@@ -169,7 +174,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -195,7 +202,7 @@ module IBMWatson
     # @param language [String] The language of the workspace.
     # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
     # @param entities [Array[CreateEntity]] An array of objects defining the entities for the workspace.
-    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the workspace dialog.
+    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the dialog.
     # @param counterexamples [Array[CreateCounterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
     # @param metadata [Object] Any metadata related to the workspace.
@@ -206,9 +213,11 @@ module IBMWatson
     def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
@@ -221,7 +230,9 @@ module IBMWatson
         "learning_opt_out" => learning_opt_out,
         "system_settings" => system_settings
       }
+
       method_url = "/v1/workspaces"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -234,7 +245,7 @@ module IBMWatson
     end
 
     ##
-    # @!method get_workspace(workspace_id:, export: nil, include_audit: nil)
+    # @!method get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
     # Get information about a workspace.
     # Get information about a workspace, optionally including all workspace content.
     #
@@ -247,18 +258,25 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
+    # @param sort [String] Indicates how the returned workspace data will be sorted. This parameter is valid
+    #   only if **export**=`true`. Specify `sort=stable` to sort all workspace objects by
+    #   unique identifier, in ascending alphabetical order.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_workspace(workspace_id:, export: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+    def get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
-        "include_audit" => include_audit
+        "include_audit" => include_audit,
+        "sort" => sort
       }
+
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -285,7 +303,7 @@ module IBMWatson
     # @param language [String] The language of the workspace.
     # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
     # @param entities [Array[CreateEntity]] An array of objects defining the entities for the workspace.
-    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the workspace dialog.
+    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the dialog.
     # @param counterexamples [Array[CreateCounterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
     # @param metadata [Object] Any metadata related to the workspace.
@@ -303,14 +321,16 @@ module IBMWatson
     #   request fails.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "append" => append
       }
+
       data = {
         "name" => name,
         "description" => description,
@@ -323,7 +343,9 @@ module IBMWatson
         "learning_opt_out" => learning_opt_out,
         "system_settings" => system_settings
       }
+
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -345,14 +367,17 @@ module IBMWatson
     # @param workspace_id [String] Unique identifier of the workspace.
     # @return [nil]
     def delete_workspace(workspace_id:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -380,17 +405,18 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
+    # @param sort [String] The attribute by which returned intents will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
@@ -400,7 +426,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -429,21 +457,25 @@ module IBMWatson
     # @param examples [Array[CreateExample]] An array of user input examples for the intent.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_intent(workspace_id:, intent:, description: nil, examples: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "intent" => intent,
         "description" => description,
         "examples" => examples
       }
+
       method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -472,18 +504,21 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -513,21 +548,25 @@ module IBMWatson
     # @param new_examples [Array[CreateExample]] An array of user input examples for the intent.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "intent" => new_intent,
         "description" => new_description,
         "examples" => new_examples
       }
+
       method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -550,16 +589,19 @@ module IBMWatson
     # @param intent [String] The intent name.
     # @return [nil]
     def delete_intent(workspace_id:, intent:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -585,19 +627,20 @@ module IBMWatson
     # @param intent [String] The intent name.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned examples will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "page_limit" => page_limit,
@@ -606,7 +649,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -634,22 +679,26 @@ module IBMWatson
     # @param mentions [Array[Mentions]] An array of contextual entity mentions.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_example(workspace_id:, intent:, text:, mentions: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "text" => text,
         "mentions" => mentions
       }
+
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -675,19 +724,22 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_example(workspace_id:, intent:, text:, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -716,22 +768,26 @@ module IBMWatson
     # @param new_mentions [Array[Mentions]] An array of contextual entity mentions.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "text" => new_text,
         "mentions" => new_mentions
       }
+
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -755,18 +811,21 @@ module IBMWatson
     # @param text [String] The text of the user input example.
     # @return [nil]
     def delete_example(workspace_id:, intent:, text:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("intent must be provided") if intent.nil?
+      raise ArgumentError.new("intent must be provided") if intent.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -791,17 +850,18 @@ module IBMWatson
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned counterexamples will be sorted. To reverse the
+    #   sort order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "page_limit" => page_limit,
@@ -810,7 +870,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -837,19 +899,23 @@ module IBMWatson
     #   - It must be no longer than 1024 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_counterexample(workspace_id:, text:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "text" => text
       }
+
       method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -875,17 +941,20 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_counterexample(workspace_id:, text:, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -909,19 +978,23 @@ module IBMWatson
     # @param new_text [String] The text of a user input counterexample.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_counterexample(workspace_id:, text:, new_text: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "text" => new_text
       }
+
       method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -945,16 +1018,19 @@ module IBMWatson
     # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @return [nil]
     def delete_counterexample(workspace_id:, text:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -982,17 +1058,18 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned entities will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
@@ -1002,7 +1079,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1016,15 +1095,18 @@ module IBMWatson
     ##
     # @!method create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
     # Create entity.
-    # Create a new entity.
+    # Create a new entity, or enable a system entity.
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, and hyphen characters.
-    #   - It cannot begin with the reserved prefix `sys-`.
     #   - It must be no longer than 64 characters.
+    #
+    #   If you specify an entity name beginning with the reserved prefix `sys-`, it must
+    #   be the name of a system entity that you want to enable. (Any entity content
+    #   specified with the request is ignored.).
     # @param description [String] The description of the entity. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
     # @param metadata [Object] Any metadata related to the value.
@@ -1032,15 +1114,17 @@ module IBMWatson
     # @param fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "entity" => entity,
         "description" => description,
@@ -1048,7 +1132,9 @@ module IBMWatson
         "values" => values,
         "fuzzy_match" => fuzzy_match
       }
+
       method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1077,18 +1163,21 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1120,15 +1209,17 @@ module IBMWatson
     # @param new_values [Array[CreateValue]] An array of entity values.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "entity" => new_entity,
         "description" => new_description,
@@ -1136,7 +1227,9 @@ module IBMWatson
         "fuzzy_match" => new_fuzzy_match,
         "values" => new_values
       }
+
       method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1151,7 +1244,7 @@ module IBMWatson
     ##
     # @!method delete_entity(workspace_id:, entity:)
     # Delete entity.
-    # Delete an entity from a workspace.
+    # Delete an entity from a workspace, or disable a system entity.
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
@@ -1159,16 +1252,19 @@ module IBMWatson
     # @param entity [String] The name of the entity.
     # @return [nil]
     def delete_entity(workspace_id:, entity:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1199,18 +1295,21 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/mentions" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1238,19 +1337,20 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned entity values will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
@@ -1260,7 +1360,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1300,17 +1402,19 @@ module IBMWatson
     # @param value_type [String] Specifies the type of value.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "value" => value,
         "metadata" => metadata,
@@ -1318,7 +1422,9 @@ module IBMWatson
         "patterns" => patterns,
         "type" => value_type
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1347,20 +1453,23 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "export" => export,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1402,17 +1511,19 @@ module IBMWatson
     #   [documentation](https://console.bluemix.net/docs/services/conversation/entities.html#creating-entities).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "value" => new_value,
         "metadata" => new_metadata,
@@ -1420,7 +1531,9 @@ module IBMWatson
         "synonyms" => new_synonyms,
         "patterns" => new_patterns
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1444,18 +1557,21 @@ module IBMWatson
     # @param value [String] The text of the entity value.
     # @return [nil]
     def delete_value(workspace_id:, entity:, value:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1481,21 +1597,22 @@ module IBMWatson
     # @param value [String] The text of the entity value.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned entity value synonyms will be sorted. To reverse
+    #   the sort order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "page_limit" => page_limit,
@@ -1504,7 +1621,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1531,23 +1650,27 @@ module IBMWatson
     #   - It must be no longer than 64 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_synonym(workspace_id:, entity:, value:, synonym:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
-      raise ArgumentError("synonym must be provided") if synonym.nil?
+      raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "synonym" => synonym
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1574,21 +1697,24 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
-      raise ArgumentError("synonym must be provided") if synonym.nil?
+      raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1616,23 +1742,27 @@ module IBMWatson
     #   - It must be no longer than 64 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
-      raise ArgumentError("synonym must be provided") if synonym.nil?
+      raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "synonym" => new_synonym
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1657,20 +1787,23 @@ module IBMWatson
     # @param synonym [String] The text of the synonym.
     # @return [nil]
     def delete_synonym(workspace_id:, entity:, value:, synonym:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("entity must be provided") if entity.nil?
+      raise ArgumentError.new("entity must be provided") if entity.nil?
 
-      raise ArgumentError("value must be provided") if value.nil?
+      raise ArgumentError.new("value must be provided") if value.nil?
 
-      raise ArgumentError("synonym must be provided") if synonym.nil?
+      raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1694,17 +1827,18 @@ module IBMWatson
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned results will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
+    # @param sort [String] The attribute by which returned dialog nodes will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "page_limit" => page_limit,
@@ -1713,7 +1847,9 @@ module IBMWatson
         "cursor" => cursor,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1748,7 +1884,7 @@ module IBMWatson
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
     # @param context [Object] The context for the dialog node.
     # @param metadata [Object] The metadata for the dialog node.
-    # @param next_step [DialogNodeNextStep] The next step to be executed in dialog processing.
+    # @param next_step [DialogNodeNextStep] The next step to execute following this dialog node.
     # @param actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
     # @param title [String] The alias used to identify the dialog node. This string must conform to the
     #   following restrictions:
@@ -1765,15 +1901,17 @@ module IBMWatson
     #   users. This string must be no longer than 512 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "dialog_node" => dialog_node,
         "description" => description,
@@ -1794,7 +1932,9 @@ module IBMWatson
         "digress_out_slots" => digress_out_slots,
         "user_label" => user_label
       }
+
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1819,17 +1959,20 @@ module IBMWatson
     #   the response.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "include_audit" => include_audit
       }
+
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1865,7 +2008,7 @@ module IBMWatson
     #   [documentation](https://console.bluemix.net/docs/services/conversation/dialog-overview.html#complex).
     # @param new_context [Object] The context for the dialog node.
     # @param new_metadata [Object] The metadata for the dialog node.
-    # @param new_next_step [DialogNodeNextStep] The next step to be executed in dialog processing.
+    # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
     # @param new_title [String] The alias used to identify the dialog node. This string must conform to the
     #   following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
@@ -1882,15 +2025,17 @@ module IBMWatson
     #   users. This string must be no longer than 512 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "dialog_node" => new_dialog_node,
         "description" => new_description,
@@ -1911,7 +2056,9 @@ module IBMWatson
         "digress_out_slots" => new_digress_out_slots,
         "user_label" => new_user_label
       }
+
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1934,16 +2081,19 @@ module IBMWatson
     # @param dialog_node [String] The dialog node ID (for example, `get_order`).
     # @return [nil]
     def delete_dialog_node(workspace_id:, dialog_node:)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
-      raise ArgumentError("dialog_node must be provided") if dialog_node.nil?
+      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1975,10 +2125,11 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
-      raise ArgumentError("workspace_id must be provided") if workspace_id.nil?
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "sort" => sort,
@@ -1986,7 +2137,9 @@ module IBMWatson
         "page_limit" => page_limit,
         "cursor" => cursor
       }
+
       method_url = "/v1/workspaces/%s/logs" % [ERB::Util.url_encode(workspace_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2016,10 +2169,11 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
-      raise ArgumentError("filter must be provided") if filter.nil?
+      raise ArgumentError.new("filter must be provided") if filter.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "filter" => filter,
@@ -2027,7 +2181,9 @@ module IBMWatson
         "page_limit" => page_limit,
         "cursor" => cursor
       }
+
       method_url = "/v1/logs"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2054,15 +2210,18 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
-      raise ArgumentError("customer_id must be provided") if customer_id.nil?
+      raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "customer_id" => customer_id
       }
+
       method_url = "/v1/user_data"
+
       request(
         method: "DELETE",
         url: method_url,

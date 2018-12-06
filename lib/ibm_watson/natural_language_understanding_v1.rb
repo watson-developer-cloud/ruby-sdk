@@ -96,22 +96,33 @@ module IBMWatson
 
     ##
     # @!method analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
-    # Analyze text, HTML, or a public webpage.
-    # Analyzes text, HTML, or a public webpage with one or more text analysis features,
-    #   including categories, concepts, emotion, entities, keywords, metadata, relations,
-    #   semantic roles, and sentiment.
-    # @param features [Features] Specific features to analyze the document for.
+    # Analyze text.
+    # Analyzes text, HTML, or a public webpage for the following features:
+    #   - Categories
+    #   - Concepts
+    #   - Emotion
+    #   - Entities
+    #   - Keywords
+    #   - Metadata
+    #   - Relations
+    #   - Semantic roles
+    #   - Sentiment.
+    # @param features [Features] Analysis features and options.
     # @param text [String] The plain text to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
     # @param html [String] The HTML file to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
-    # @param url [String] The web page to analyze. One of the `text`, `html`, or `url` parameters is
+    # @param url [String] The webpage to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
-    # @param clean [Boolean] Remove website elements, such as links, ads, etc.
-    # @param xpath [String] An [XPath query](https://www.w3.org/TR/xpath/) to perform on `html` or `url`
-    #   input. Results of the query will be appended to the cleaned webpage text before it
-    #   is analyzed. To analyze only the results of the XPath query, set the `clean`
-    #   parameter to `false`.
+    # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
+    #   cleaning, see the [Analyzing
+    #   webpages](/docs/services/natural-language-understanding/analyzing-webpages.html)
+    #   documentation.
+    # @param xpath [String] An [XPath
+    #   query](/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
+    #   to perform on `html` or `url` input. Results of the query will be appended to the
+    #   cleaned webpage text before it is analyzed. To analyze only the results of the
+    #   XPath query, set the `clean` parameter to `false`.
     # @param fallback_to_raw [Boolean] Whether to use raw HTML content if text cleaning fails.
     # @param return_analyzed_text [Boolean] Whether or not to return the analyzed text.
     # @param language [String] ISO 639-1 code that specifies the language of your text. This overrides automatic
@@ -122,13 +133,15 @@ module IBMWatson
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
-      raise ArgumentError("features must be provided") if features.nil?
+      raise ArgumentError.new("features must be provided") if features.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "features" => features,
         "text" => text,
@@ -141,7 +154,9 @@ module IBMWatson
         "language" => language,
         "limit_text_characters" => limit_text_characters
       }
+
       method_url = "/v1/analyze"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -159,17 +174,20 @@ module IBMWatson
     ##
     # @!method list_models
     # List models.
-    # Lists available models for Relations and Entities features, including Watson
-    #   Knowledge Studio custom models that you have created and linked to your Natural
-    #   Language Understanding service.
+    # Lists Watson Knowledge Studio [custom
+    #   models](/docs/services/natural-language-understanding/customizing.html) that are
+    #   deployed to your Natural Language Understanding service.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_models
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/models"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -187,14 +205,17 @@ module IBMWatson
     # @param model_id [String] model_id of the model to delete.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_model(model_id:)
-      raise ArgumentError("model_id must be provided") if model_id.nil?
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,
