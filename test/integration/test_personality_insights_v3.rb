@@ -20,6 +20,7 @@ if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASS
         }
       )
       service_response = service.profile(
+        accept: "application/json",
         content: personality_text,
         content_type: "text/plain;charset=utf-8"
       )
@@ -40,6 +41,7 @@ if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASS
         }
       )
       service_response = service.profile(
+        accept: "application/json",
         content: personality_text,
         content_type: "application/json",
         raw_scores: true,
@@ -86,6 +88,7 @@ if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASS
         }
       )
       service_response = service.profile(
+        accept: "application/json",
         content: personality_text,
         content_type: "text/plain;charset=utf-8",
         content_language: "es",

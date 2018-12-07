@@ -31,6 +31,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       password: "password"
     )
     service_response = service.profile(
+      accept: "application/json",
       content: personality_text,
       content_type: "text/plain;charset=utf-8"
     )
@@ -52,6 +53,7 @@ class PersonalityInsightsV3Test < Minitest::Test
         }
       ).to_return(status: 200, body: { "profile" => "response" }.to_json, headers: headers)
     service_response = service.profile(
+      accept: "application/json",
       content: { "personality" => "text" },
       content_type: "application/json"
     )
@@ -81,6 +83,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       password: "password"
     )
     service_response = service.profile(
+      accept: "application/json",
       content: personality_text,
       content_type: "application/json",
       raw_scores: true,
@@ -157,6 +160,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       password: "password"
     )
     service_response = service.profile(
+      accept: "application/json",
       content: personality_text,
       content_type: "text/plain;charset=utf-8",
       content_language: "es",

@@ -86,16 +86,19 @@ module IBMWatson
     # @param text [String] The submitted phrase. The maximum length is 2048 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def classify(classifier_id:, text:)
-      raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       data = {
         "text" => text
       }
+
       method_url = "/v1/classifiers/%s/classify" % [ERB::Util.url_encode(classifier_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -117,16 +120,19 @@ module IBMWatson
     # @param collection [Array[ClassifyInput]] The submitted phrases.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def classify_collection(classifier_id:, collection:)
-      raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
-      raise ArgumentError("collection must be provided") if collection.nil?
+      raise ArgumentError.new("collection must be provided") if collection.nil?
 
       headers = {
       }
+
       data = {
         "collection" => collection
       }
+
       method_url = "/v1/classifiers/%s/classify_collection" % [ERB::Util.url_encode(classifier_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -153,45 +159,40 @@ module IBMWatson
     #   (`de`), Italian (`it`), Japanese (`ja`), Korean (`ko`), Brazilian Portuguese
     #   (`pt`), and Spanish (`es`).
     # @param training_data [File] Training data in CSV format. Each text value must have at least one class. The
-    #   data can include up to 20,000 records. For details, see [Data
+    #   data can include up to 3,000 classes and 20,000 records. For details, see [Data
     #   preparation](https://console.bluemix.net/docs/services/natural-language-classifier/using-your-data.html).
     # @param metadata_filename [String] The filename for training_metadata.
     # @param training_data_filename [String] The filename for training_data.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_classifier(metadata:, training_data:, metadata_filename: nil, training_data_filename: nil)
-      raise ArgumentError("metadata must be provided") if metadata.nil?
+      raise ArgumentError.new("metadata must be provided") if metadata.nil?
 
-      raise ArgumentError("training_data must be provided") if training_data.nil?
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
 
       headers = {
       }
-      mime_type = "application/json"
+
+      form_data = {}
+
       unless metadata.instance_of?(StringIO) || metadata.instance_of?(File)
         metadata = metadata.respond_to?(:to_json) ? StringIO.new(metadata.to_json) : StringIO.new(metadata)
       end
-      if metadata_filename
-        metadata = metadata.instance_of?(StringIO) ? HTTP::FormData::File.new(metadata, content_type: mime_type, filename: metadata_filename) : HTTP::FormData::File.new(metadata.path, content_type: mime_type, filename: metadata_filename)
-      else
-        metadata = metadata.instance_of?(StringIO) ? HTTP::FormData::File.new(metadata, content_type: mime_type) : HTTP::FormData::File.new(metadata.path, content_type: mime_type)
-      end
-      mime_type = "text/csv"
+      metadata_filename = metadata.path if metadata_filename.nil? && metadata.respond_to?(:path)
+      form_data[:training_metadata] = HTTP::FormData::File.new(metadata, content_type: "application/json", filename: metadata_filename)
+
       unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
         training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
       end
-      if training_data_filename
-        training_data = training_data.instance_of?(StringIO) ? HTTP::FormData::File.new(training_data, content_type: mime_type, filename: training_data_filename) : HTTP::FormData::File.new(training_data.path, content_type: mime_type, filename: training_data_filename)
-      else
-        training_data = training_data.instance_of?(StringIO) ? HTTP::FormData::File.new(training_data, content_type: mime_type) : HTTP::FormData::File.new(training_data.path, content_type: mime_type)
-      end
+      training_data_filename = training_data.path if training_data_filename.nil? && training_data.respond_to?(:path)
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: "text/csv", filename: training_data_filename)
+
       method_url = "/v1/classifiers"
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
-        form: {
-          training_metadata: metadata,
-          training_data: training_data
-        },
+        form: form_data,
         accept_json: true
       )
       response
@@ -205,7 +206,9 @@ module IBMWatson
     def list_classifiers
       headers = {
       }
+
       method_url = "/v1/classifiers"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -222,11 +225,13 @@ module IBMWatson
     # @param classifier_id [String] Classifier ID to query.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
-      raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
       }
+
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -242,11 +247,13 @@ module IBMWatson
     # @param classifier_id [String] Classifier ID to delete.
     # @return [nil]
     def delete_classifier(classifier_id:)
-      raise ArgumentError("classifier_id must be provided") if classifier_id.nil?
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
       }
+
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+
       request(
         method: "DELETE",
         url: method_url,
