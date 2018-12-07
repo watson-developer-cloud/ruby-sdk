@@ -100,7 +100,7 @@ module IBMWatson
     #   among other things.
     #
     #   **See also:** [Languages and
-    #   models](/docs/services/speech-to-text/input.html#models).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/input.html#models).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_models
       headers = {
@@ -125,7 +125,7 @@ module IBMWatson
     #   sampling rate in Hertz, among other things.
     #
     #   **See also:** [Languages and
-    #   models](/docs/services/speech-to-text/input.html#models).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/input.html#models).
     # @param model_id [String] The identifier of the model in the form of its name from the output of the **Get a
     #   model** method.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -160,7 +160,7 @@ module IBMWatson
     #   the WebSocket API.
     #
     #   **See also:** [Making a basic HTTP
-    #   request](/docs/services/speech-to-text/http.html#HTTP-basic).
+    #   request](https://console.bluemix.net/docs/services/speech-to-text/http.html#HTTP-basic).
     #
     #   ### Streaming mode
     #
@@ -173,8 +173,8 @@ module IBMWatson
     #   `inactivity_timeout` parameter to change the default of 30 seconds.
     #
     #   **See also:**
-    #   * [Audio transmission](/docs/services/speech-to-text/input.html#transmission)
-    #   * [Timeouts](/docs/services/speech-to-text/input.html#timeouts)
+    #   * [Audio transmission](https://console.bluemix.net/docs/services/speech-to-text/input.html#transmission)
+    #   * [Timeouts](https://console.bluemix.net/docs/services/speech-to-text/input.html#timeouts)
     #
     #   ### Audio formats (content types)
     #
@@ -203,7 +203,7 @@ module IBMWatson
     #   * `audio/webm;codecs=opus`
     #   * `audio/webm;codecs=vorbis`
     #
-    #   **See also:** [Audio formats](/docs/services/speech-to-text/audio-formats.html).
+    #   **See also:** [Audio formats](https://console.bluemix.net/docs/services/speech-to-text/audio-formats.html).
     #
     #   ### Multipart speech recognition
     #
@@ -220,7 +220,7 @@ module IBMWatson
     #   example, if you want to spot a very large number of keywords.
     #
     #   **See also:** [Making a multipart HTTP
-    #   request](/docs/services/speech-to-text/http.html#HTTP-multi).
+    #   request](https://console.bluemix.net/docs/services/speech-to-text/http.html#HTTP-multi).
     # @param audio [String] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
@@ -230,7 +230,7 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model. By default, no custom language model is used. See [Custom
-    #   models](/docs/services/speech-to-text/input.html#custom).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/input.html#custom).
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
     #   parameter.
@@ -239,13 +239,13 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model. By default, no custom acoustic model is used. See [Custom
-    #   models](/docs/services/speech-to-text/input.html#custom).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/input.html#custom).
     # @param base_model_version [String] The version of the specified base model that is to be used with recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
     #   models that have been upgraded for a new base model. The default value depends on
     #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](/docs/services/speech-to-text/input.html#version).
+    #   version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
     #   recognition request, the customization weight tells the service how much weight to
     #   give to words from the custom language model compared to those from the base model
@@ -262,51 +262,51 @@ module IBMWatson
     #   custom model's domain, but it can negatively affect performance on non-domain
     #   phrases.
     #
-    #   See [Custom models](/docs/services/speech-to-text/input.html#custom).
+    #   See [Custom models](https://console.bluemix.net/docs/services/speech-to-text/input.html#custom).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
     #   submitted audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
     #   walks away. Use `-1` for infinity. See
-    #   [Timeouts](/docs/services/speech-to-text/input.html#timeouts).
+    #   [Timeouts](https://console.bluemix.net/docs/services/speech-to-text/input.html#timeouts).
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
     #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
     #   an empty array if you do not need to spot keywords. See [Keyword
-    #   spotting](/docs/services/speech-to-text/output.html#keyword_spotting).
+    #   spotting](https://console.bluemix.net/docs/services/speech-to-text/output.html#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
     #   threshold. Specify a probability between 0.0 and 1.0. No keyword spotting is
     #   performed if you omit the parameter. If you specify a threshold, you must also
     #   specify one or more keywords. See [Keyword
-    #   spotting](/docs/services/speech-to-text/output.html#keyword_spotting).
+    #   spotting](https://console.bluemix.net/docs/services/speech-to-text/output.html#keyword_spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
     #   default, a single transcription is returned. See [Maximum
-    #   alternatives](/docs/services/speech-to-text/output.html#max_alternatives).
+    #   alternatives](https://console.bluemix.net/docs/services/speech-to-text/output.html#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as \"Confusion Networks\"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. No alternative words are computed if
     #   you omit the parameter. See [Word
-    #   alternatives](/docs/services/speech-to-text/output.html#word_alternatives).
+    #   alternatives](https://console.bluemix.net/docs/services/speech-to-text/output.html#word_alternatives).
     # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
     #   each word. By default, no word confidence measures are returned. See [Word
-    #   confidence](/docs/services/speech-to-text/output.html#word_confidence).
+    #   confidence](https://console.bluemix.net/docs/services/speech-to-text/output.html#word_confidence).
     # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
     #   timestamps are returned. See [Word
-    #   timestamps](/docs/services/speech-to-text/output.html#word_timestamps).
+    #   timestamps](https://console.bluemix.net/docs/services/speech-to-text/output.html#word_timestamps).
     # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
     #   transcription only. See [Profanity
-    #   filtering](/docs/services/speech-to-text/output.html#profanity_filter).
+    #   filtering](https://console.bluemix.net/docs/services/speech-to-text/output.html#profanity_filter).
     # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
     #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
     #   the service also converts certain keyword strings to punctuation symbols. By
     #   default, no smart formatting is performed. Applies to US English, Japanese, and
     #   Spanish transcription only. See [Smart
-    #   formatting](/docs/services/speech-to-text/output.html#smart_formatting).
+    #   formatting](https://console.bluemix.net/docs/services/speech-to-text/output.html#smart_formatting).
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, no speaker labels are
     #   returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to
@@ -314,7 +314,7 @@ module IBMWatson
     #
     #   To determine whether a language model supports speaker labels, use the **Get a
     #   model** method and check that the attribute `speaker_labels` is set to `true`. See
-    #   [Speaker labels](/docs/services/speech-to-text/output.html#speaker_labels).
+    #   [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
     # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
@@ -361,7 +361,7 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_using_websocket(content_type:,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
@@ -385,7 +385,7 @@ module IBMWatson
     # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
     # @return [WebSocketClient] Returns a new WebSocketClient object
     def recognize_using_websocket(
-      content_type:,
+      content_type: nil,
       recognize_callback:,
       audio: nil,
       chunk_data: false,
@@ -450,7 +450,7 @@ module IBMWatson
     # :nocov:
     # @deprecated This will method be removed in the next major release. Use {#recognize_using_websocket} instead.
     def recognize_with_websocket(
-      content_type:,
+      content_type: nil,
       recognize_callback:,
       audio: nil,
       chunk_data: false,
@@ -536,7 +536,7 @@ module IBMWatson
     #   a one-hour span of time.
     #
     #   **See also:** [Registering a callback
-    #   URL](/docs/services/speech-to-text/async.html#register).
+    #   URL](https://console.bluemix.net/docs/services/speech-to-text/async.html#register).
     # @param callback_url [String] An HTTP or HTTPS URL to which callback notifications are to be sent. To be
     #   white-listed, the URL must successfully echo the challenge string during URL
     #   verification. During verification, the client can also check the signature that
@@ -579,7 +579,7 @@ module IBMWatson
     #   URL can no longer be used with asynchronous recognition requests.
     #
     #   **See also:** [Unregistering a callback
-    #   URL](/docs/services/speech-to-text/async.html#unregister).
+    #   URL](https://console.bluemix.net/docs/services/speech-to-text/async.html#unregister).
     # @param callback_url [String] The callback URL that is to be unregistered.
     # @return [nil]
     def unregister_callback(callback_url:)
@@ -643,7 +643,7 @@ module IBMWatson
     #   mono during transcoding. The method returns only final results; to enable interim
     #   results, use the WebSocket API.
     #
-    #   **See also:** [Creating a job](/docs/services/speech-to-text/async.html#create).
+    #   **See also:** [Creating a job](https://console.bluemix.net/docs/services/speech-to-text/async.html#create).
     #
     #   ### Streaming mode
     #
@@ -656,8 +656,8 @@ module IBMWatson
     #   `inactivity_timeout` parameter to change the default of 30 seconds.
     #
     #   **See also:**
-    #   * [Audio transmission](/docs/services/speech-to-text/input.html#transmission)
-    #   * [Timeouts](/docs/services/speech-to-text/input.html#timeouts)
+    #   * [Audio transmission](https://console.bluemix.net/docs/services/speech-to-text/input.html#transmission)
+    #   * [Timeouts](https://console.bluemix.net/docs/services/speech-to-text/input.html#timeouts)
     #
     #   ### Audio formats (content types)
     #
@@ -686,7 +686,7 @@ module IBMWatson
     #   * `audio/webm;codecs=opus`
     #   * `audio/webm;codecs=vorbis`
     #
-    #   **See also:** [Audio formats](/docs/services/speech-to-text/audio-formats.html).
+    #   **See also:** [Audio formats](https://console.bluemix.net/docs/services/speech-to-text/audio-formats.html).
     # @param audio [String] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
@@ -730,7 +730,7 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model. By default, no custom language model is used. See [Custom
-    #   models](/docs/services/speech-to-text/input.html#custom).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/input.html#custom).
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
     #   parameter.
@@ -739,13 +739,13 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model. By default, no custom acoustic model is used. See [Custom
-    #   models](/docs/services/speech-to-text/input.html#custom).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/input.html#custom).
     # @param base_model_version [String] The version of the specified base model that is to be used with recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
     #   models that have been upgraded for a new base model. The default value depends on
     #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](/docs/services/speech-to-text/input.html#version).
+    #   version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
     #   recognition request, the customization weight tells the service how much weight to
     #   give to words from the custom language model compared to those from the base model
@@ -762,51 +762,51 @@ module IBMWatson
     #   custom model's domain, but it can negatively affect performance on non-domain
     #   phrases.
     #
-    #   See [Custom models](/docs/services/speech-to-text/input.html#custom).
+    #   See [Custom models](https://console.bluemix.net/docs/services/speech-to-text/input.html#custom).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
     #   submitted audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
     #   walks away. Use `-1` for infinity. See
-    #   [Timeouts](/docs/services/speech-to-text/input.html#timeouts).
+    #   [Timeouts](https://console.bluemix.net/docs/services/speech-to-text/input.html#timeouts).
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
     #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
     #   an empty array if you do not need to spot keywords. See [Keyword
-    #   spotting](/docs/services/speech-to-text/output.html#keyword_spotting).
+    #   spotting](https://console.bluemix.net/docs/services/speech-to-text/output.html#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
     #   threshold. Specify a probability between 0.0 and 1.0. No keyword spotting is
     #   performed if you omit the parameter. If you specify a threshold, you must also
     #   specify one or more keywords. See [Keyword
-    #   spotting](/docs/services/speech-to-text/output.html#keyword_spotting).
+    #   spotting](https://console.bluemix.net/docs/services/speech-to-text/output.html#keyword_spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
     #   default, a single transcription is returned. See [Maximum
-    #   alternatives](/docs/services/speech-to-text/output.html#max_alternatives).
+    #   alternatives](https://console.bluemix.net/docs/services/speech-to-text/output.html#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as \"Confusion Networks\"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. No alternative words are computed if
     #   you omit the parameter. See [Word
-    #   alternatives](/docs/services/speech-to-text/output.html#word_alternatives).
+    #   alternatives](https://console.bluemix.net/docs/services/speech-to-text/output.html#word_alternatives).
     # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
     #   each word. By default, no word confidence measures are returned. See [Word
-    #   confidence](/docs/services/speech-to-text/output.html#word_confidence).
+    #   confidence](https://console.bluemix.net/docs/services/speech-to-text/output.html#word_confidence).
     # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
     #   timestamps are returned. See [Word
-    #   timestamps](/docs/services/speech-to-text/output.html#word_timestamps).
+    #   timestamps](https://console.bluemix.net/docs/services/speech-to-text/output.html#word_timestamps).
     # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
     #   transcription only. See [Profanity
-    #   filtering](/docs/services/speech-to-text/output.html#profanity_filter).
+    #   filtering](https://console.bluemix.net/docs/services/speech-to-text/output.html#profanity_filter).
     # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
     #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
     #   the service also converts certain keyword strings to punctuation symbols. By
     #   default, no smart formatting is performed. Applies to US English, Japanese, and
     #   Spanish transcription only. See [Smart
-    #   formatting](/docs/services/speech-to-text/output.html#smart_formatting).
+    #   formatting](https://console.bluemix.net/docs/services/speech-to-text/output.html#smart_formatting).
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, no speaker labels are
     #   returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to
@@ -814,7 +814,7 @@ module IBMWatson
     #
     #   To determine whether a language model supports speaker labels, use the **Get a
     #   model** method and check that the attribute `speaker_labels` is set to `true`. See
-    #   [Speaker labels](/docs/services/speech-to-text/output.html#speaker_labels).
+    #   [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
     # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
@@ -877,7 +877,7 @@ module IBMWatson
     #   whichever comes first.
     #
     #   **See also:** [Checking the status of the latest
-    #   jobs](/docs/services/speech-to-text/async.html#jobs).
+    #   jobs](https://console.bluemix.net/docs/services/speech-to-text/async.html#jobs).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def check_jobs
       headers = {
@@ -909,7 +909,7 @@ module IBMWatson
     #   recent jobs associated with the caller.
     #
     #   **See also:** [Checking the status and retrieving the results of a
-    #   job](/docs/services/speech-to-text/async.html#job).
+    #   job](https://console.bluemix.net/docs/services/speech-to-text/async.html#job).
     # @param id [String] The identifier of the asynchronous job that is to be used for the request.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def check_job(id:)
@@ -938,7 +938,7 @@ module IBMWatson
     #   results expires. You must submit the request with the service credentials of the
     #   user who created the job.
     #
-    #   **See also:** [Deleting a job](/docs/services/speech-to-text/async.html#delete).
+    #   **See also:** [Deleting a job](https://console.bluemix.net/docs/services/speech-to-text/async.html#delete).
     # @param id [String] The identifier of the asynchronous job that is to be used for the request.
     # @return [nil]
     def delete_job(id:)
@@ -970,7 +970,7 @@ module IBMWatson
     #   it.
     #
     #   **See also:** [Create a custom language
-    #   model](/docs/services/speech-to-text/language-create.html#createModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-create.html#createModel).
     # @param name [String] A user-defined name for the new custom language model. Use a name that is unique
     #   among all custom language models that you own. Use a localized name that matches
     #   the language of the custom model. Use a name that describes the domain of the
@@ -982,7 +982,7 @@ module IBMWatson
     #   To determine whether a base model supports language model customization, use the
     #   **Get a model** method and check that the attribute `custom_language_model` is set
     #   to `true`. You can also refer to [Language support for
-    #   customization](/docs/services/speech-to-text/custom.html#languageSupport).
+    #   customization](https://console.bluemix.net/docs/services/speech-to-text/custom.html#languageSupport).
     # @param dialect [String] The dialect of the specified language that is to be used with the custom language
     #   model. The parameter is meaningful only for Spanish models, for which the service
     #   creates a custom language model that is suited for speech in one of the following
@@ -1034,7 +1034,7 @@ module IBMWatson
     #   a model to list information about it.
     #
     #   **See also:** [Listing custom language
-    #   models](/docs/services/speech-to-text/language-models.html#listModels).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/language-models.html#listModels).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned (for example, `en-US`). Omit the parameter to see all custom
     #   language or custom acoustic models owned by the requesting service credentials.
@@ -1066,7 +1066,7 @@ module IBMWatson
     #   for the instance of the service that owns a model to list information about it.
     #
     #   **See also:** [Listing custom language
-    #   models](/docs/services/speech-to-text/language-models.html#listModels).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/language-models.html#listModels).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1097,7 +1097,7 @@ module IBMWatson
     #   model to delete it.
     #
     #   **See also:** [Deleting a custom language
-    #   model](/docs/services/speech-to-text/language-models.html#deleteModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-models.html#deleteModel).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1150,7 +1150,7 @@ module IBMWatson
     #   pronunciations that you must fix.
     #
     #   **See also:** [Train the custom language
-    #   model](/docs/services/speech-to-text/language-create.html#trainModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-create.html#trainModel).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1208,7 +1208,7 @@ module IBMWatson
     #   credentials for the instance of the service that owns a model to reset it.
     #
     #   **See also:** [Resetting a custom language
-    #   model](/docs/services/speech-to-text/language-models.html#resetModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-models.html#resetModel).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1250,7 +1250,7 @@ module IBMWatson
     #   subsequent requests for the model until the upgrade completes.
     #
     #   **See also:** [Upgrading a custom language
-    #   model](/docs/services/speech-to-text/custom-upgrade.html#upgradeLanguage).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/custom-upgrade.html#upgradeLanguage).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1284,7 +1284,7 @@ module IBMWatson
     #   that owns a model to list its corpora.
     #
     #   **See also:** [Listing corpora for a custom language
-    #   model](/docs/services/speech-to-text/language-corpora.html#listCorpora).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-corpora.html#listCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1350,9 +1350,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Working with
-    #   corpora](/docs/services/speech-to-text/language-resource.html#workingCorpora)
+    #   corpora](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#workingCorpora)
     #   * [Add corpora to the custom language
-    #   model](/docs/services/speech-to-text/language-create.html#addCorpora).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-create.html#addCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1371,7 +1371,7 @@ module IBMWatson
     #   Make sure that you know the character encoding of the file. You must use that
     #   encoding when working with the words in the custom language model. For more
     #   information, see [Character
-    #   encoding](/docs/services/speech-to-text/language-resource.html#charEncoding).
+    #   encoding](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#charEncoding).
     #
     #   With the `curl` command, use the `--data-binary` option to upload the file for the
     #   request.
@@ -1424,7 +1424,7 @@ module IBMWatson
     #   that owns a model to list its corpora.
     #
     #   **See also:** [Listing corpora for a custom language
-    #   model](/docs/services/speech-to-text/language-corpora.html#listCorpora).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-corpora.html#listCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1461,7 +1461,7 @@ module IBMWatson
     #   for the instance of the service that owns a model to delete its corpora.
     #
     #   **See also:** [Deleting a corpus from a custom language
-    #   model](/docs/services/speech-to-text/language-corpora.html#deleteCorpus).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-corpora.html#deleteCorpus).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1501,7 +1501,7 @@ module IBMWatson
     #   information about its words.
     #
     #   **See also:** [Listing words from a custom language
-    #   model](/docs/services/speech-to-text/language-words.html#listWords).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-words.html#listWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1597,9 +1597,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Working with custom
-    #   words](/docs/services/speech-to-text/language-resource.html#workingWords)
+    #   words](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#workingWords)
     #   * [Add words to the custom language
-    #   model](/docs/services/speech-to-text/language-create.html#addWords).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-create.html#addWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1668,9 +1668,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Working with custom
-    #   words](/docs/services/speech-to-text/language-resource.html#workingWords)
+    #   words](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#workingWords)
     #   * [Add words to the custom language
-    #   model](/docs/services/speech-to-text/language-create.html#addWords).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-create.html#addWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1678,7 +1678,7 @@ module IBMWatson
     #   not include spaces in the word. Use a `-` (dash) or `_` (underscore) to connect
     #   the tokens of compound words. URL-encode the word if it includes non-ASCII
     #   characters. For more information, see [Character
-    #   encoding](/docs/services/speech-to-text/language-resource.html#charEncoding).
+    #   encoding](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#charEncoding).
     # @param word [String] For the **Add custom words** method, you must specify the custom word that is to
     #   be added to or updated in the custom model. Do not include spaces in the word. Use
     #   a `-` (dash) or `_` (underscore) to connect the tokens of compound words.
@@ -1734,13 +1734,13 @@ module IBMWatson
     #   about its words.
     #
     #   **See also:** [Listing words from a custom language
-    #   model](/docs/services/speech-to-text/language-words.html#listWords).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-words.html#listWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
     # @param word_name [String] The custom word that is to be read from the custom language model. URL-encode the
     #   word if it includes non-ASCII characters. For more information, see [Character
-    #   encoding](/docs/services/speech-to-text/language-resource.html#charEncoding).
+    #   encoding](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#charEncoding).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_word(customization_id:, word_name:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -1773,13 +1773,13 @@ module IBMWatson
     #   instance of the service that owns a model to delete its words.
     #
     #   **See also:** [Deleting a word from a custom language
-    #   model](/docs/services/speech-to-text/language-words.html#deleteWord).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/language-words.html#deleteWord).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
     # @param word_name [String] The custom word that is to be deleted from the custom language model. URL-encode
     #   the word if it includes non-ASCII characters. For more information, see [Character
-    #   encoding](/docs/services/speech-to-text/language-resource.html#charEncoding).
+    #   encoding](https://console.bluemix.net/docs/services/speech-to-text/language-resource.html#charEncoding).
     # @return [nil]
     def delete_word(customization_id:, word_name:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -1812,7 +1812,7 @@ module IBMWatson
     #   it.
     #
     #   **See also:** [Create a custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-create.html#createModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-create.html#createModel).
     # @param name [String] A user-defined name for the new custom acoustic model. Use a name that is unique
     #   among all custom acoustic models that you own. Use a localized name that matches
     #   the language of the custom model. Use a name that describes the acoustic
@@ -1824,7 +1824,7 @@ module IBMWatson
     #
     #   To determine whether a base model supports acoustic model customization, refer to
     #   [Language support for
-    #   customization](/docs/services/speech-to-text/custom.html#languageSupport).
+    #   customization](https://console.bluemix.net/docs/services/speech-to-text/custom.html#languageSupport).
     # @param description [String] A description of the new custom acoustic model. Use a localized description that
     #   matches the language of the custom model.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -1864,7 +1864,7 @@ module IBMWatson
     #   a model to list information about it.
     #
     #   **See also:** [Listing custom acoustic
-    #   models](/docs/services/speech-to-text/acoustic-models.html#listModels).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/acoustic-models.html#listModels).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned (for example, `en-US`). Omit the parameter to see all custom
     #   language or custom acoustic models owned by the requesting service credentials.
@@ -1896,7 +1896,7 @@ module IBMWatson
     #   for the instance of the service that owns a model to list information about it.
     #
     #   **See also:** [Listing custom acoustic
-    #   models](/docs/services/speech-to-text/acoustic-models.html#listModels).
+    #   models](https://console.bluemix.net/docs/services/speech-to-text/acoustic-models.html#listModels).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1927,7 +1927,7 @@ module IBMWatson
     #   model to delete it.
     #
     #   **See also:** [Deleting a custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-models.html#deleteModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-models.html#deleteModel).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -1990,7 +1990,7 @@ module IBMWatson
     #   * One or more of the custom model's audio resources is invalid.
     #
     #   **See also:** [Train the custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-create.html#trainModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-create.html#trainModel).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -2031,7 +2031,7 @@ module IBMWatson
     #   credentials for the instance of the service that owns a model to reset it.
     #
     #   **See also:** [Resetting a custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-models.html#resetModel).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-models.html#resetModel).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -2080,7 +2080,7 @@ module IBMWatson
     #   acoustic model was not trained with a custom language model.
     #
     #   **See also:** [Upgrading a custom acoustic
-    #   model](/docs/services/speech-to-text/custom-upgrade.html#upgradeAcoustic).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/custom-upgrade.html#upgradeAcoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -2124,7 +2124,7 @@ module IBMWatson
     #   the instance of the service that owns a model to list its audio resources.
     #
     #   **See also:** [Listing audio resources for a custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-audio.html#listAudio).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-audio.html#listAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -2186,7 +2186,7 @@ module IBMWatson
     #   every few seconds until it becomes `ok`.
     #
     #   **See also:** [Add audio to the custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-create.html#addAudio).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-create.html#addAudio).
     #
     #   ### Content types for audio-type resources
     #
@@ -2209,7 +2209,7 @@ module IBMWatson
     #   * `audio/webm;codecs=opus`
     #   * `audio/webm;codecs=vorbis`
     #
-    #   **See also:** [Audio formats](/docs/services/speech-to-text/audio-formats.html).
+    #   **See also:** [Audio formats](https://console.bluemix.net/docs/services/speech-to-text/audio-formats.html).
     #
     #   **Note:** The sampling rate of an audio file must match the sampling rate of the
     #   base model for the custom model: for broadband models, at least 16 kHz; for
@@ -2328,7 +2328,7 @@ module IBMWatson
     #   its audio resources.
     #
     #   **See also:** [Listing audio resources for a custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-audio.html#listAudio).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-audio.html#listAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -2365,7 +2365,7 @@ module IBMWatson
     #   delete its audio resources.
     #
     #   **See also:** [Deleting an audio resource from a custom acoustic
-    #   model](/docs/services/speech-to-text/acoustic-audio.html#deleteAudio).
+    #   model](https://console.bluemix.net/docs/services/speech-to-text/acoustic-audio.html#deleteAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model.
@@ -2406,7 +2406,7 @@ module IBMWatson
     #   with a request that passes the data.
     #
     #   **See also:** [Information
-    #   security](/docs/services/speech-to-text/information-security.html).
+    #   security](https://console.bluemix.net/docs/services/speech-to-text/information-security.html).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)

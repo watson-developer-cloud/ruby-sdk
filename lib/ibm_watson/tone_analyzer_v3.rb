@@ -118,7 +118,7 @@ module IBMWatson
     #   analyzes only the textual content.
     #
     #   **See also:** [Using the general-purpose
-    #   endpoint](/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
+    #   endpoint](https://console.bluemix.net/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
     # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
     # @param content_type [String] The type of the input. A character encoding can be specified by including a
@@ -195,7 +195,7 @@ module IBMWatson
     #   character encoding for JSON content is effectively always UTF-8.
     #
     #   **See also:** [Using the customer-engagement
-    #   endpoint](/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
+    #   endpoint](https://console.bluemix.net/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
     # @param utterances [Array[Utterance]] An array of `Utterance` objects that provides the input content that the service
     #   is to analyze.
     # @param content_language [String] The language of the input text for the request: English or French. Regional

@@ -20,7 +20,7 @@
 # can ignore most advertisements and other unwanted content.
 #
 # You can create [custom
-# models](/docs/services/natural-language-understanding/customizing.html) with Watson
+# models](https://console.bluemix.net/docs/services/natural-language-understanding/customizing.html) with Watson
 # Knowledge Studio to detect custom entities and relations in Natural Language
 # Understanding.
 
@@ -116,10 +116,10 @@ module IBMWatson
     #   required.
     # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
     #   cleaning, see the [Analyzing
-    #   webpages](/docs/services/natural-language-understanding/analyzing-webpages.html)
+    #   webpages](https://console.bluemix.net/docs/services/natural-language-understanding/analyzing-webpages.html)
     #   documentation.
     # @param xpath [String] An [XPath
-    #   query](/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
+    #   query](https://console.bluemix.net/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
     #   to perform on `html` or `url` input. Results of the query will be appended to the
     #   cleaned webpage text before it is analyzed. To analyze only the results of the
     #   XPath query, set the `clean` parameter to `false`.
@@ -175,7 +175,7 @@ module IBMWatson
     # @!method list_models
     # List models.
     # Lists Watson Knowledge Studio [custom
-    #   models](/docs/services/natural-language-understanding/customizing.html) that are
+    #   models](https://console.bluemix.net/docs/services/natural-language-understanding/customizing.html) that are
     #   deployed to your Natural Language Understanding service.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_models
