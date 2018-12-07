@@ -368,6 +368,7 @@ module IBMWatson
     # @param audio [IO] Audio to transcribe in the format specified by the `Content-Type` header.
     # @param chunk_data [Boolean] If true, then the WebSocketClient will expect to receive data in chunks rather than as a single audio file
     # @param model [String] The identifier of the model to be used for the recognition request.
+    # @param language_customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
     # @param customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
     # @param acoustic_customization_id [String] The GUID of a custom acoustic model that is to be used with the request. The base model of the specified custom acoustic model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom acoustic model is used.
     # @param customization_weight [Float] If you specify a `customization_id` with the request, you can use the `customization_weight` parameter to tell the service how much weight to give to words from the custom language model compared to those from the base model for speech recognition.   Specify a value between 0.0 and 1.0. Unless a different customization weight was specified for the custom model when it was trained, the default value is 0.3. A customization weight that you specify overrides a weight that was specified when the custom model was trained.   The default value yields the best performance in general. Assign a higher value if your audio makes frequent use of OOV words from the custom model. Use caution when setting the weight: a higher value can improve the accuracy of phrases from the custom model's domain, but it can negatively affect performance on non-domain phrases.
@@ -390,6 +391,7 @@ module IBMWatson
       audio: nil,
       chunk_data: false,
       model: nil,
+      language_customization_id: nil,
       customization_id: nil,
       acoustic_customization_id: nil,
       customization_weight: nil,
@@ -423,6 +425,7 @@ module IBMWatson
       params = {
         "model" => model,
         "customization_id" => customization_id,
+        "langauge_customization_id" => language_customization_id,
         "acoustic_customization_id" => acoustic_customization_id,
         "customization_weight" => customization_weight,
         "base_model_version" => base_model_version
