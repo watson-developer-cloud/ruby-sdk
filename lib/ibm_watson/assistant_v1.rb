@@ -1897,10 +1897,11 @@ module IBMWatson
     # @param digress_in [String] Whether this top-level dialog node can be digressed into.
     # @param digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
+    # @param disable [Bool] Whether to consider the dialog node during runtime evaluation. Set to `true` to ignore the dialog node.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users. This string must be no longer than 512 characters.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, disable: nil, user_label: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -1930,6 +1931,7 @@ module IBMWatson
         "digress_in" => digress_in,
         "digress_out" => digress_out,
         "digress_out_slots" => digress_out_slots,
+        "disable" => disable,
         "user_label" => user_label
       }
 
