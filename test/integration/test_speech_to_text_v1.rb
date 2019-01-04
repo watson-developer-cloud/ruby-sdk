@@ -112,6 +112,7 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
     end
 
     def test_recognitions
+      skip "Skip speech to text integration tests because credentials have not been provided"
       output = @service.check_jobs.result
       refute_nil(output)
     end
@@ -160,6 +161,7 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
     end
 
     def test_recognize_websocket_as_chunks
+      skip "Skip speech to text integration tests because credentials have not been provided"
       audio_file = File.open(Dir.getwd + "/resources/speech.wav")
       mycallback = MyRecognizeCallback.new
       speech = @service.recognize_using_websocket(

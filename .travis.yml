@@ -13,12 +13,13 @@ before_install:
   - sudo apt-get install python
   - nvm install node
   - nvm use node
+  - gem install bundler:1.16.3
 
 install:
   - pip install --user bumpversion
   - npm install -g semantic-release
   - npm install -g @semantic-release/exec
-  - bundle install
+  - bundle _1.16.3_ install
   - 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then cd appscan; make asoc-tool; cd ../; fi'
 before_script:
 - 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then chmod a+x ./appscan/ASOC.sh; fi'
