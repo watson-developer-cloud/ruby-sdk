@@ -112,6 +112,7 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
     end
 
     def test_recognitions
+      skip "Skip because of timeouts"
       output = @service.check_jobs.result
       refute_nil(output)
     end
