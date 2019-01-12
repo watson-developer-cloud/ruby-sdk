@@ -104,19 +104,23 @@ module IBMWatson
     #   `LT`, in all other plans the default is `S`.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
-      raise ArgumentError("name must be provided") if name.nil?
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
         "size" => size
       }
+
       method_url = "/v1/environments"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -137,11 +141,14 @@ module IBMWatson
     def list_environments(name: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "name" => name
       }
+
       method_url = "/v1/environments"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -158,14 +165,17 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_environment(environment_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -189,19 +199,23 @@ module IBMWatson
     #   decreased.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_environment(environment_id:, name: nil, description: nil, size: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
         "size" => size
       }
+
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "PUT",
         url: method_url,
@@ -219,14 +233,17 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_environment(environment_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,
@@ -246,17 +263,20 @@ module IBMWatson
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_fields(environment_id:, collection_ids:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
+      raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "collection_ids" => collection_ids.to_a
       }
+
       method_url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -288,7 +308,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param name [String] The name of the configuration.
     # @param description [String] The description of the configuration, if available.
-    # @param conversions [Conversions] The document conversion settings for the configuration.
+    # @param conversions [Conversions] Document conversion settings.
     # @param enrichments [Array[Enrichment]] An array of document enrichment settings for the configuration.
     # @param normalizations [Array[NormalizationOperation]] Defines operations that can be used to transform the final output JSON into a
     #   normalized form. Operations are executed in the order that they appear in the
@@ -296,15 +316,17 @@ module IBMWatson
     # @param source [Source] Object containing source parameters for the configuration.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("name must be provided") if name.nil?
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
@@ -313,7 +335,9 @@ module IBMWatson
         "normalizations" => normalizations,
         "source" => source
       }
+
       method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -333,15 +357,18 @@ module IBMWatson
     # @param name [String] Find configurations with the given name.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_configurations(environment_id:, name: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "name" => name
       }
+
       method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -359,16 +386,19 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_configuration(environment_id:, configuration_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
+      raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -395,7 +425,7 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration.
     # @param name [String] The name of the configuration.
     # @param description [String] The description of the configuration, if available.
-    # @param conversions [Conversions] The document conversion settings for the configuration.
+    # @param conversions [Conversions] Document conversion settings.
     # @param enrichments [Array[Enrichment]] An array of document enrichment settings for the configuration.
     # @param normalizations [Array[NormalizationOperation]] Defines operations that can be used to transform the final output JSON into a
     #   normalized form. Operations are executed in the order that they appear in the
@@ -403,17 +433,19 @@ module IBMWatson
     # @param source [Source] Object containing source parameters for the configuration.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
+      raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
 
-      raise ArgumentError("name must be provided") if name.nil?
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
@@ -422,7 +454,9 @@ module IBMWatson
         "normalizations" => normalizations,
         "source" => source
       }
+
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
+
       response = request(
         method: "PUT",
         url: method_url,
@@ -447,16 +481,19 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_configuration(environment_id:, configuration_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("configuration_id must be provided") if configuration_id.nil?
+      raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,
@@ -504,37 +541,39 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def test_configuration_in_environment(environment_id:, configuration: nil, step: nil, configuration_id: nil, file: nil, metadata: nil, file_content_type: nil, filename: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "step" => step,
         "configuration_id" => configuration_id
       }
+
+      form_data = {}
+
+      form_data[:configuration] = HTTP::FormData::Part.new(configuration.to_s, content_type: "text/plain") unless configuration.nil?
+
       unless file.nil?
-        mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
         unless file.instance_of?(StringIO) || file.instance_of?(File)
           file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
         end
-        if filename
-          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
-        else
-          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
-        end
+        filename = file.path if filename.nil? && file.respond_to?(:path)
+        form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
       end
+
+      form_data[:metadata] = HTTP::FormData::Part.new(metadata.to_s, content_type: "text/plain") unless metadata.nil?
+
       method_url = "/v1/environments/%s/preview" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
         params: params,
-        form: {
-          configuration: configuration,
-          file: file,
-          metadata: metadata
-        },
+        form: form_data,
         accept_json: true
       )
       response
@@ -554,22 +593,26 @@ module IBMWatson
     #   639-1 language code.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_collection(environment_id:, name:, description: nil, configuration_id: nil, language: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("name must be provided") if name.nil?
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
         "configuration_id" => configuration_id,
         "language" => language
       }
+
       method_url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -589,15 +632,18 @@ module IBMWatson
     # @param name [String] Find collections with the given name.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_collections(environment_id:, name: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "name" => name
       }
+
       method_url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -615,16 +661,19 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_collection(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -645,21 +694,25 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration in which the collection is to be updated.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_collection(environment_id:, collection_id:, name:, description: nil, configuration_id: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "name" => name,
         "description" => description,
         "configuration_id" => configuration_id
       }
+
       method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "PUT",
         url: method_url,
@@ -678,16 +731,19 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_collection(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,
@@ -706,16 +762,19 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_collection_fields(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/fields" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -738,16 +797,19 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_expansions(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -784,21 +846,25 @@ module IBMWatson
     #   **expanded_terms** array.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_expansions(environment_id:, collection_id:, expansions:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("expansions must be provided") if expansions.nil?
+      raise ArgumentError.new("expansions must be provided") if expansions.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "expansions" => expansions
       }
+
       method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -819,16 +885,121 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_expansions(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      nil
+    end
+
+    ##
+    # @!method get_tokenization_dictionary_status(environment_id:, collection_id:)
+    # Get tokenization dictionary status.
+    # Returns the current status of the tokenization dictionary for the specified
+    #   collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_tokenization_dictionary_status(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+    # Create tokenization dictionary.
+    # Upload a custom tokenization dictionary to use with the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param tokenization_rules [Array[TokenDictRule]] An array of tokenization rules. Each rule contains, the original `text` string,
+    #   component `tokens`, any alternate character set `readings`, and which
+    #   `part_of_speech` the text is from.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "tokenization_rules" => tokenization_rules
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_tokenization_dictionary(environment_id:, collection_id:)
+    # Delete tokenization dictionary.
+    # Delete the tokenization dictionary from the collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [nil]
+    def delete_tokenization_dictionary(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -885,36 +1056,37 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def add_document(environment_id:, collection_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
+      form_data = {}
+
       unless file.nil?
-        mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
         unless file.instance_of?(StringIO) || file.instance_of?(File)
           file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
         end
-        if filename
-          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
-        else
-          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
-        end
+        filename = file.path if filename.nil? && file.respond_to?(:path)
+        form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
       end
+
+      form_data[:metadata] = HTTP::FormData::Part.new(metadata.to_s, content_type: "text/plain") unless metadata.nil?
+
       method_url = "/v1/environments/%s/collections/%s/documents" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
         params: params,
-        form: {
-          file: file,
-          metadata: metadata
-        },
+        form: form_data,
         accept_json: true
       )
       response
@@ -932,18 +1104,21 @@ module IBMWatson
     # @param document_id [String] The ID of the document.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_document_status(environment_id:, collection_id:, document_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("document_id must be provided") if document_id.nil?
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -975,38 +1150,39 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_document(environment_id:, collection_id:, document_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("document_id must be provided") if document_id.nil?
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
+      form_data = {}
+
       unless file.nil?
-        mime_type = file_content_type.nil? ? "application/octet-stream" : file_content_type
         unless file.instance_of?(StringIO) || file.instance_of?(File)
           file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
         end
-        if filename
-          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type, filename: filename) : HTTP::FormData::File.new(file.path, content_type: mime_type, filename: filename)
-        else
-          file = file.instance_of?(StringIO) ? HTTP::FormData::File.new(file, content_type: mime_type) : HTTP::FormData::File.new(file.path, content_type: mime_type)
-        end
+        filename = file.path if filename.nil? && file.respond_to?(:path)
+        form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
       end
+
+      form_data[:metadata] = HTTP::FormData::Part.new(metadata.to_s, content_type: "text/plain") unless metadata.nil?
+
       method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
         params: params,
-        form: {
-          file: file,
-          metadata: metadata
-        },
+        form: form_data,
         accept_json: true
       )
       response
@@ -1023,18 +1199,21 @@ module IBMWatson
     # @param document_id [String] The ID of the document.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_document(environment_id:, collection_id:, document_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("document_id must be provided") if document_id.nil?
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,
@@ -1116,16 +1295,18 @@ module IBMWatson
     # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "filter" => filter,
         "query" => query,
@@ -1148,7 +1329,9 @@ module IBMWatson
         "similar.fields" => similar_fields,
         "bias" => bias
       }
+
       method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1215,12 +1398,13 @@ module IBMWatson
     #   comparison.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "filter" => filter,
@@ -1241,7 +1425,9 @@ module IBMWatson
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
+
       method_url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1319,14 +1505,16 @@ module IBMWatson
     # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "filter" => filter,
         "query" => query,
@@ -1349,7 +1537,9 @@ module IBMWatson
         "similar.fields" => similar_fields,
         "bias" => bias
       }
+
       method_url = "/v1/environments/%s/query" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1410,12 +1600,13 @@ module IBMWatson
     #   comparison.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_ids must be provided") if collection_ids.nil?
+      raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "collection_ids" => collection_ids.to_a,
@@ -1433,7 +1624,9 @@ module IBMWatson
         "similar.document_ids" => similar_document_ids.to_a,
         "similar.fields" => similar_fields.to_a
       }
+
       method_url = "/v1/environments/%s/notices" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1463,15 +1656,17 @@ module IBMWatson
     #   maximum number of evidence items per query is 10,000.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "feature" => feature,
         "entity" => entity,
@@ -1479,7 +1674,9 @@ module IBMWatson
         "count" => count,
         "evidence_count" => evidence_count
       }
+
       method_url = "/v1/environments/%s/collections/%s/query_entities" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1513,15 +1710,17 @@ module IBMWatson
     #   maximum number of evidence items per query is 10,000.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "entities" => entities,
         "context" => context,
@@ -1530,7 +1729,9 @@ module IBMWatson
         "count" => count,
         "evidence_count" => evidence_count
       }
+
       method_url = "/v1/environments/%s/collections/%s/query_relations" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1553,16 +1754,19 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_training_data(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1585,21 +1789,25 @@ module IBMWatson
     # @param examples [Array[TrainingExample]]
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def add_training_data(environment_id:, collection_id:, natural_language_query: nil, filter: nil, examples: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "natural_language_query" => natural_language_query,
         "filter" => filter,
         "examples" => examples
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1619,16 +1827,19 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_all_training_data(environment_id:, collection_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1649,18 +1860,21 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_training_data(environment_id:, collection_id:, query_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1681,18 +1895,21 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [nil]
     def delete_training_data(environment_id:, collection_id:, query_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1712,18 +1929,21 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_training_examples(environment_id:, collection_id:, query_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1746,23 +1966,27 @@ module IBMWatson
     # @param relevance [Fixnum]
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "document_id" => document_id,
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1784,20 +2008,23 @@ module IBMWatson
     # @param example_id [String] The ID of the document as it is indexed.
     # @return [nil]
     def delete_training_example(environment_id:, collection_id:, query_id:, example_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
-      raise ArgumentError("example_id must be provided") if example_id.nil?
+      raise ArgumentError.new("example_id must be provided") if example_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1820,24 +2047,28 @@ module IBMWatson
     # @param relevance [Fixnum]
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_training_example(environment_id:, collection_id:, query_id:, example_id:, cross_reference: nil, relevance: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
-      raise ArgumentError("example_id must be provided") if example_id.nil?
+      raise ArgumentError.new("example_id must be provided") if example_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "cross_reference" => cross_reference,
         "relevance" => relevance
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
+
       response = request(
         method: "PUT",
         url: method_url,
@@ -1859,20 +2090,23 @@ module IBMWatson
     # @param example_id [String] The ID of the document as it is indexed.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_training_example(environment_id:, collection_id:, query_id:, example_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("collection_id must be provided") if collection_id.nil?
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
-      raise ArgumentError("query_id must be provided") if query_id.nil?
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
 
-      raise ArgumentError("example_id must be provided") if example_id.nil?
+      raise ArgumentError.new("example_id must be provided") if example_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -1899,15 +2133,18 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
-      raise ArgumentError("customer_id must be provided") if customer_id.nil?
+      raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "customer_id" => customer_id
       }
+
       method_url = "/v1/user_data"
+
       request(
         method: "DELETE",
         url: method_url,
@@ -1928,23 +2165,27 @@ module IBMWatson
     #   specific queries. For example, you can record which documents in the results set
     #   were \"clicked\" by a user and when that click occured.
     # @param type [String] The event type to be created.
-    # @param data [EventData] Data object used to create a query event.
+    # @param data [EventData] Query event data object.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_event(type:, data:)
-      raise ArgumentError("type must be provided") if type.nil?
+      raise ArgumentError.new("type must be provided") if type.nil?
 
-      raise ArgumentError("data must be provided") if data.nil?
+      raise ArgumentError.new("data must be provided") if data.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "type" => type,
         "data" => data
       }
+
       method_url = "/v1/events"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -1980,6 +2221,7 @@ module IBMWatson
     def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "filter" => filter,
@@ -1988,7 +2230,9 @@ module IBMWatson
         "offset" => offset,
         "sort" => sort.to_a
       }
+
       method_url = "/v1/logs"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2013,13 +2257,16 @@ module IBMWatson
     def get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "start_time" => start_time,
         "end_time" => end_time,
         "result_type" => result_type
       }
+
       method_url = "/v1/metrics/number_of_queries"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2045,13 +2292,16 @@ module IBMWatson
     def get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "start_time" => start_time,
         "end_time" => end_time,
         "result_type" => result_type
       }
+
       method_url = "/v1/metrics/number_of_queries_with_event"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2076,13 +2326,16 @@ module IBMWatson
     def get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "start_time" => start_time,
         "end_time" => end_time,
         "result_type" => result_type
       }
+
       method_url = "/v1/metrics/number_of_queries_with_no_search_results"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2109,13 +2362,16 @@ module IBMWatson
     def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "start_time" => start_time,
         "end_time" => end_time,
         "result_type" => result_type
       }
+
       method_url = "/v1/metrics/event_rate"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2138,11 +2394,14 @@ module IBMWatson
     def get_metrics_query_token_event(count: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "count" => count
       }
+
       method_url = "/v1/metrics/top_query_tokens_with_event_rate"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2166,14 +2425,17 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_credentials(environment_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2204,18 +2466,22 @@ module IBMWatson
     #   Obtain credentials for your source from the administrator of the source.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "source_type" => source_type,
         "credential_details" => credential_details
       }
+
       method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
+
       response = request(
         method: "POST",
         url: method_url,
@@ -2238,16 +2504,19 @@ module IBMWatson
     # @param credential_id [String] The unique identifier for a set of source credentials.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_credentials(environment_id:, credential_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("credential_id must be provided") if credential_id.nil?
+      raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
+
       response = request(
         method: "GET",
         url: method_url,
@@ -2278,20 +2547,24 @@ module IBMWatson
     #   Obtain credentials for your source from the administrator of the source.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("credential_id must be provided") if credential_id.nil?
+      raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "source_type" => source_type,
         "credential_details" => credential_details
       }
+
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
+
       response = request(
         method: "PUT",
         url: method_url,
@@ -2311,16 +2584,19 @@ module IBMWatson
     # @param credential_id [String] The unique identifier for a set of source credentials.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_credentials(environment_id:, credential_id:)
-      raise ArgumentError("environment_id must be provided") if environment_id.nil?
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
-      raise ArgumentError("credential_id must be provided") if credential_id.nil?
+      raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,

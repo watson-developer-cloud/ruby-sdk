@@ -69,6 +69,37 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
       refute_nil(output["results"][0]["alternatives"][0]["transcript"])
     end
 
+    def test_recognize_with_keywords
+      file = File.open(Dir.getwd + "/resources/speech.wav")
+      File.open(file) do |audio_file|
+        output = @service.recognize(
+          audio: audio_file,
+          content_type: "audio/l16; rate=44100",
+          timestamps: true,
+          word_alternatives_threshold: 0.9,
+          keywords: %w"[colorado tornado]",
+          keywords_threshold: 0.5
+        )
+        refute_nil(output.result["results"][0]["alternatives"][0]["transcript"])
+      end
+    end
+
+    def test_recognize_with_single_keyword
+      file = File.open(Dir.getwd + "/resources/speech.wav")
+      output = nil
+      File.open(file) do |audio_file|
+        output = @service.recognize(
+          audio: audio_file,
+          content_type: "audio/l16; rate=44100",
+          timestamps: true,
+          word_alternatives_threshold: 0.9,
+          keywords: %w"[colorado]",
+          keywords_threshold: 0.5
+        )
+        refute_nil(output.result["results"][0]["alternatives"][0]["transcript"])
+      end
+    end
+
     def test_recognize_async
       audio_file = File.open(Dir.getwd + "/resources/speech.wav")
       future = @service.async.recognize(
@@ -81,6 +112,7 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
     end
 
     def test_recognitions
+      skip "Skip because of timeouts"
       output = @service.check_jobs.result
       refute_nil(output)
     end

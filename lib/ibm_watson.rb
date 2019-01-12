@@ -13,5 +13,6 @@ module IBMWatson
   require_relative("./ibm_watson/visual_recognition_v3.rb")
   require_relative("./ibm_watson/natural_language_classifier_v1.rb")
   require_relative("./ibm_watson/language_translator_v3.rb")
+  require_relative("./ibm_watson/compare_comply_v1.rb")
   require_relative("./ibm_watson/websocket/recognize_callback.rb")
 end

@@ -16,6 +16,8 @@ test/html_reports/
 
 # Used by dotenv library to load environment variables.
 .env
+resources/cnc_input_credentials_file.json
+resources/cnc_output_credentials_file.json
 
 ## Specific to RubyMotion:
 .dat*

@@ -31,6 +31,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13"
     )
     service_response = service.profile(
+      accept: "application/json",
       content: personality_text,
       content_type: "text/plain;charset=utf-8"
     )
@@ -63,6 +64,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13"
     )
     service_response = service.profile(
+      accept: "application/json",
       content: personality_text,
       content_type: "application/json",
       raw_scores: true,
@@ -135,6 +137,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13"
     )
     service_response = service.profile(
+      accept: "application/json",
       content: personality_text,
       content_type: "text/plain;charset=utf-8",
       content_language: "es",

@@ -96,31 +96,30 @@ module IBMWatson
     # Translates the input text from the source language to the target language.
     # @param text [Array[String]] Input text in UTF-8 encoding. Multiple entries will result in multiple
     #   translations in the response.
-    # @param model_id [String] Model ID of the translation model to use. If this is specified, the **source** and
-    #   **target** parameters will be ignored. The method requires either a model ID or
-    #   both the **source** and **target** parameters.
-    # @param source [String] Language code of the source text language. Use with `target` as an alternative way
-    #   to select a translation model. When `source` and `target` are set, and a model ID
-    #   is not set, the system chooses a default model for the language pair (usually the
-    #   model based on the news domain).
-    # @param target [String] Language code of the translation target language. Use with source as an
-    #   alternative way to select a translation model.
+    # @param model_id [String] A globally unique string that identifies the underlying model that is used for
+    #   translation.
+    # @param source [String] Translation source language code.
+    # @param target [String] Translation target language code.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def translate(text:, model_id: nil, source: nil, target: nil)
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = {
         "text" => text,
         "model_id" => model_id,
         "source" => source,
         "target" => target
       }
+
       method_url = "/v3/translate"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -144,10 +143,13 @@ module IBMWatson
     def list_identifiable_languages
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v3/identifiable_languages"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -165,16 +167,20 @@ module IBMWatson
     # @param text [String] Input text in UTF-8 format.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def identify(text:)
-      raise ArgumentError("text must be provided") if text.nil?
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       data = text
       headers["Content-Type"] = "text/plain"
+
       method_url = "/v3/identify"
+
       response = request(
         method: "POST",
         url: method_url,
@@ -203,13 +209,16 @@ module IBMWatson
     def list_models(source: nil, target: nil, default_models: nil)
       headers = {
       }
+
       params = {
         "version" => @version,
         "source" => source,
         "target" => target,
         "default" => default_models
       }
+
       method_url = "/v3/models"
+
       response = request(
         method: "GET",
         url: method_url,
@@ -257,47 +266,43 @@ module IBMWatson
     # @param parallel_corpus_filename [String] The filename for parallel_corpus.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil)
-      raise ArgumentError("base_model_id must be provided") if base_model_id.nil?
+      raise ArgumentError.new("base_model_id must be provided") if base_model_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version,
         "base_model_id" => base_model_id,
         "name" => name
       }
+
+      form_data = {}
+
       unless forced_glossary.nil?
-        mime_type = "application/octet-stream"
         unless forced_glossary.instance_of?(StringIO) || forced_glossary.instance_of?(File)
           forced_glossary = forced_glossary.respond_to?(:to_json) ? StringIO.new(forced_glossary.to_json) : StringIO.new(forced_glossary)
         end
-        if forced_glossary_filename
-          forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type, filename: forced_glossary_filename) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type, filename: forced_glossary_filename)
-        else
-          forced_glossary = forced_glossary.instance_of?(StringIO) ? HTTP::FormData::File.new(forced_glossary, content_type: mime_type) : HTTP::FormData::File.new(forced_glossary.path, content_type: mime_type)
-        end
+        forced_glossary_filename = forced_glossary.path if forced_glossary_filename.nil? && forced_glossary.respond_to?(:path)
+        form_data[:forced_glossary] = HTTP::FormData::File.new(forced_glossary, content_type: "application/octet-stream", filename: forced_glossary_filename)
       end
+
       unless parallel_corpus.nil?
-        mime_type = "application/octet-stream"
         unless parallel_corpus.instance_of?(StringIO) || parallel_corpus.instance_of?(File)
           parallel_corpus = parallel_corpus.respond_to?(:to_json) ? StringIO.new(parallel_corpus.to_json) : StringIO.new(parallel_corpus)
         end
-        if parallel_corpus_filename
-          parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type, filename: parallel_corpus_filename) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type, filename: parallel_corpus_filename)
-        else
-          parallel_corpus = parallel_corpus.instance_of?(StringIO) ? HTTP::FormData::File.new(parallel_corpus, content_type: mime_type) : HTTP::FormData::File.new(parallel_corpus.path, content_type: mime_type)
-        end
+        parallel_corpus_filename = parallel_corpus.path if parallel_corpus_filename.nil? && parallel_corpus.respond_to?(:path)
+        form_data[:parallel_corpus] = HTTP::FormData::File.new(parallel_corpus, content_type: "application/octet-stream", filename: parallel_corpus_filename)
       end
+
       method_url = "/v3/models"
+
       response = request(
         method: "POST",
         url: method_url,
         headers: headers,
         params: params,
-        form: {
-          forced_glossary: forced_glossary,
-          parallel_corpus: parallel_corpus
-        },
+        form: form_data,
         accept_json: true
       )
       response
@@ -310,14 +315,17 @@ module IBMWatson
     # @param model_id [String] Model ID of the model to delete.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_model(model_id:)
-      raise ArgumentError("model_id must be provided") if model_id.nil?
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
+
       response = request(
         method: "DELETE",
         url: method_url,
@@ -337,14 +345,17 @@ module IBMWatson
     # @param model_id [String] Model ID of the model to get.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_model(model_id:)
-      raise ArgumentError("model_id must be provided") if model_id.nil?
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+
       params = {
         "version" => @version
       }
+
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
+
       response = request(
         method: "GET",
         url: method_url,
