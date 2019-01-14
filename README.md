@@ -248,6 +248,23 @@ assistant.configure_http_client(
 )
 ```
 
+The HTTP client can be configured to disable SSL verification. Note that this has serious security implications - only do this if you really mean to! ⚠️
+
+To do this, pass `disable_ssl` as `true` in `configure_http_client()`, like below:
+
+```ruby
+require "ibm_watson/assistant_v1"
+include IBMWatson
+
+service = AssistantV1.new(
+  version: "<version>",
+  username: "<username>",
+  password: "<password>",
+)
+
+service.configure_http_client(disable_ssl: true)
+```
+
 ## Using Websockets
 
 The Speech-to-Text service supports websockets with the `recognize_using_websocket` method. The method accepts a custom callback class. The `eventmachine` loop that the websocket uses blocks the main thread by default. Here is an example of using the websockets method:
