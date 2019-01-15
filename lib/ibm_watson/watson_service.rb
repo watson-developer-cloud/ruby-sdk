@@ -36,6 +36,7 @@ class WatsonService
     @url = vars[:url]
     @username = nil
     @password = nil
+    @iam_apikey = nil
     @token_manager = nil
     @temp_headers = nil
     @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
@@ -69,6 +70,10 @@ class WatsonService
         @password = vars[:password]
       end
     end
+    raise ArgumentError.new('The username shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your username') if check_bad_first_or_last_char(@username)
+    raise ArgumentError.new('The password shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your password') if check_bad_first_or_last_char(@password)
+    raise ArgumentError.new('The url shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your url') if check_bad_first_or_last_char(@url)
+    raise ArgumentError.new('The apikey shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your apikey') if check_bad_first_or_last_char(@iam_apikey)
 
     @conn = HTTP::Client.new(
       headers: headers
@@ -186,6 +191,10 @@ class WatsonService
   end
 
   private
+
+  def check_bad_first_or_last_char(str)
+    return str.start_with?("{", "\"") || str.end_with?("}", "\"") unless str.nil?
+  end
 
   def set_token_manager(iam_apikey: nil, iam_access_token: nil, iam_url: nil)
     @iam_apikey = iam_apikey
