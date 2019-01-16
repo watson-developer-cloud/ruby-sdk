@@ -86,12 +86,7 @@ module IBMWatson
     #   assumes UTF-8 encoding if it encounters non-ASCII characters.
     #
     #   You can also include an image with the **url** parameter.
-    # @param accept_language [String] The language of the output class names. The full set of languages is supported for
-    #   the built-in classifier IDs: `default`, `food`, and `explicit`. The class names of
-    #   custom classifiers are not translated.
-    #
-    #   The response might not be in the specified language when the requested language is
-    #   not supported or when there is no translation for the class name.
+    # @param accept_language [String] The desired language of parts of the response. See the response for details.
     # @param url [String] The URL of an image to analyze. Must be in .jpg, or .png format. The minimum
     #   recommended pixel density is 32X32 pixels per inch, and the maximum image size is
     #   10 MB.
@@ -167,13 +162,13 @@ module IBMWatson
     #########################
 
     ##
-    # @!method detect_faces(images_file: nil, url: nil, images_file_content_type: nil, images_filename: nil)
+    # @!method detect_faces(images_file: nil, url: nil, images_file_content_type: nil, accept_language: nil, images_filename: nil)
     # Detect faces in images.
     # **Important:** On April 2, 2018, the identity information in the response to calls
     #   to the Face model was removed. The identity information refers to the `name` of
     #   the person, `score`, and `type_hierarchy` knowledge graph. For details about the
     #   enhanced Face model, see the [Release
-    #   notes](https://console.bluemix.net/docs/services/visual-recognition/release-notes.html#2april2018).
+    #   notes](https://cloud.ibm.com/docs/services/visual-recognition/release-notes.html#2april2018).
     #
     #   Analyze and get data about faces in images. Responses can include estimated age
     #   and gender. This feature uses a built-in model, so no training is necessary. The
@@ -195,10 +190,12 @@ module IBMWatson
     #
     #   You can also include images with the **images_file** parameter.
     # @param images_file_content_type [String] The content type of images_file.
+    # @param accept_language [String] The desired language of parts of the response. See the response for details.
     # @param images_filename [String] The filename for images_file.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def detect_faces(images_file: nil, url: nil, images_file_content_type: nil, images_filename: nil)
+    def detect_faces(images_file: nil, url: nil, images_file_content_type: nil, accept_language: nil, images_filename: nil)
       headers = {
+        "Accept-Language" => accept_language
       }
 
       params = {
@@ -375,7 +372,7 @@ module IBMWatson
     # Update a custom classifier by adding new positive or negative classes (examples)
     #   or by adding new images to existing classes. You must supply at least one set of
     #   positive or negative examples. For details, see [Updating custom
-    #   classifiers](https://console.bluemix.net/docs/services/visual-recognition/customizing.html#updating-custom-classifiers).
+    #   classifiers](https://cloud.ibm.com/docs/services/visual-recognition/customizing.html#updating-custom-classifiers).
     #
     #   Encode all names in UTF-8 if they contain non-ASCII characters (.zip and image
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
@@ -524,7 +521,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://console.bluemix.net/docs/services/visual-recognition/information-security.html).
+    #   security](https://cloud.ibm.com/docs/services/visual-recognition/information-security.html).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
