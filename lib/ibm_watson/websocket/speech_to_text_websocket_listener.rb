@@ -11,7 +11,7 @@ TEN_MILLISECONDS = 0.01
 
 # Class for interacting with the WebSocket API
 class WebSocketClient
-  def initialize(audio: nil, chunk_data:, options:, recognize_callback:, url:, headers:, disable_ssl:)
+  def initialize(audio: nil, chunk_data:, options:, recognize_callback:, url:, headers:)
     @audio = audio
     @options = options
     @callback = recognize_callback
@@ -24,7 +24,6 @@ class WebSocketClient
     @mic_running = false
     @data_size = audio.nil? ? 0 : @audio.size
     @queue = Queue.new
-    @disable_ssl = disable_ssl
   end
 
   def start
@@ -78,11 +77,7 @@ class WebSocketClient
 
     EM&.reactor_thread&.join
     EM.run do
-      if @disable_ssl
-        @client = Faye::WebSocket::Client.new(@url, nil, tls: { verify_peer: false, fail_if_no_peer_cert: false }, headers: @headers)
-      else
-        @client = Faye::WebSocket::Client.new(@url, nil, headers: @headers)
-      end
+      @client = Faye::WebSocket::Client.new(@url, nil, headers: @headers)
       @client.onclose = on_close
       @client.onerror = on_error
       @client.onmessage = on_message
