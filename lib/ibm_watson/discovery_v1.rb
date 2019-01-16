@@ -785,7 +785,7 @@ module IBMWatson
       response
     end
     #########################
-    # Expansions
+    # Query modifications
     #########################
 
     ##
@@ -999,6 +999,82 @@ module IBMWatson
       }
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      nil
+    end
+
+    ##
+    # @!method create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
+    # Create stopword list.
+    # Upload a custom stopword list to use with the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param stopword_file [File] The content of the stopword list to ingest.
+    # @param stopword_filename [String] The filename for stopword_file.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("stopword_file must be provided") if stopword_file.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      unless stopword_file.instance_of?(StringIO) || stopword_file.instance_of?(File)
+        stopword_file = stopword_file.respond_to?(:to_json) ? StringIO.new(stopword_file.to_json) : StringIO.new(stopword_file)
+      end
+      stopword_filename = stopword_file.path if stopword_filename.nil? && stopword_file.respond_to?(:path)
+      form_data[:stopword_file] = HTTP::FormData::File.new(stopword_file, content_type: "application/octet-stream", filename: stopword_filename)
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_stopword_list(environment_id:, collection_id:)
+    # Delete a custom stopword list.
+    # Delete a custom stopword list from the collection. After a custom stopword list is
+    #   deleted, the default list is used for the collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [nil]
+    def delete_stopword_list(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
       request(
         method: "DELETE",
@@ -2461,6 +2537,7 @@ module IBMWatson
     #   -  `salesforce` indicates the credentials are used to connect to Salesforce.
     #   -  `sharepoint` indicates the credentials are used to connect to Microsoft
     #   SharePoint Online.
+    #   -  `web_crawl` indicates the credentials are used to perform a web crawl.
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
@@ -2542,6 +2619,7 @@ module IBMWatson
     #   -  `salesforce` indicates the credentials are used to connect to Salesforce.
     #   -  `sharepoint` indicates the credentials are used to connect to Microsoft
     #   SharePoint Online.
+    #   -  `web_crawl` indicates the credentials are used to perform a web crawl.
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
@@ -2596,6 +2674,133 @@ module IBMWatson
       }
 
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # gatewayConfiguration
+    #########################
+
+    ##
+    # @!method list_gateways(environment_id:)
+    # List Gateways.
+    # List the currently configured gateways.
+    # @param environment_id [String] The ID of the environment.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def list_gateways(environment_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/gateways" % [ERB::Util.url_encode(environment_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_gateway(environment_id:, name: nil)
+    # Create Gateway.
+    # Create a gateway configuration to use with a remotely installed gateway.
+    # @param environment_id [String] The ID of the environment.
+    # @param name [String] User-defined name.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def create_gateway(environment_id:, name: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "name" => name
+      }
+
+      method_url = "/v1/environments/%s/gateways" % [ERB::Util.url_encode(environment_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_gateway(environment_id:, gateway_id:)
+    # List Gateway Details.
+    # List information about the specified gateway.
+    # @param environment_id [String] The ID of the environment.
+    # @param gateway_id [String] The requested gateway ID.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_gateway(environment_id:, gateway_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("gateway_id must be provided") if gateway_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/gateways/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(gateway_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_gateway(environment_id:, gateway_id:)
+    # Delete Gateway.
+    # Delete the specified gateway configuration.
+    # @param environment_id [String] The ID of the environment.
+    # @param gateway_id [String] The requested gateway ID.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def delete_gateway(environment_id:, gateway_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("gateway_id must be provided") if gateway_id.nil?
+
+      headers = {
+      }
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/gateways/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(gateway_id)]
 
       response = request(
         method: "DELETE",
