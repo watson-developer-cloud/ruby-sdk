@@ -198,7 +198,6 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
         filter: "extracted_metadata.sha1::9181d244*",
         return_fields: "extracted_metadata.sha1"
       ).result
-      puts query_results
       refute(query_results.nil?)
     end
 
@@ -207,6 +206,33 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
         environment_id: @environment_id
       ).result
       refute(credentials.nil?)
+    end
+
+    def test_list_gateways
+      response = @service.list_gateways(
+        environment_id: @environment_id
+      ).result
+      refute(response.nil?)
+    end
+
+    def test_create_get_delete_gateways
+      gateway = @service.create_gateway(
+        environment_id: @environment_id,
+        name: "test"
+      ).result
+      refute(gateway.nil?)
+
+      response = @service.get_gateway(
+        environment_id: @environment_id,
+        gateway_id: gateway["gateway_id"]
+      ).result
+      refute(response.nil?)
+
+      response = @service.delete_gateway(
+        environment_id: @environment_id,
+        gateway_id: gateway["gateway_id"]
+      ).result
+      refute(response.nil?)
     end
   end
 else
