@@ -162,7 +162,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method detect_faces(images_file: nil, url: nil, images_file_content_type: nil, accept_language: nil, images_filename: nil)
+    # @!method detect_faces(images_file: nil, url: nil, images_file_content_type: nil, images_filename: nil, accept_language: nil)
     # Detect faces in images.
     # **Important:** On April 2, 2018, the identity information in the response to calls
     #   to the Face model was removed. The identity information refers to the `name` of
@@ -190,10 +190,10 @@ module IBMWatson
     #
     #   You can also include images with the **images_file** parameter.
     # @param images_file_content_type [String] The content type of images_file.
-    # @param accept_language [String] The desired language of parts of the response. See the response for details.
     # @param images_filename [String] The filename for images_file.
+    # @param accept_language [String] The desired language of parts of the response. See the response for details.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def detect_faces(images_file: nil, url: nil, images_file_content_type: nil, accept_language: nil, images_filename: nil)
+    def detect_faces(images_file: nil, url: nil, images_file_content_type: nil, images_filename: nil, accept_language: nil)
       headers = {
         "Accept-Language" => accept_language
       }
