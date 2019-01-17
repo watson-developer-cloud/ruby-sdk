@@ -545,6 +545,87 @@ class SpeechToTextV1Test < Minitest::Test
     assert_equal({ "get response" => "yep" }, service_response.result)
   end
 
+  def test_list_grammars
+    service = IBMWatson::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_grammars(
+      customization_id: "custid"
+    )
+    assert_equal({ "get response" => "yep" }, service_response.result)
+  end
+
+  def test_add_grammar
+    service = IBMWatson::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
+    response = service.add_grammar(
+      customization_id: "custid",
+      grammar_name: "grammar",
+      grammar_file: "file",
+      content_type: "application/srgs"
+    )
+    assert_nil(response)
+  end
+
+  def test_get_grammar
+    service = IBMWatson::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
+    response = service.get_grammar(
+      customization_id: "custid",
+      grammar_name: "grammar"
+    )
+    assert_equal({ "get response" => "yep" }, response.result)
+  end
+
+  def test_delete_grammar
+    service = IBMWatson::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
+    response = service.delete_grammar(
+      customization_id: "custid",
+      grammar_name: "grammar"
+    )
+    assert_nil(response)
+  end
+
   def test_custom_audio_resources
     service = IBMWatson::SpeechToTextV1.new(
       username: "username",

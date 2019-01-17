@@ -1368,4 +1368,128 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "updated" => "true" }, service_response.result)
   end
+
+  def test_create_stopword_list
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/element_classification").with do |req|
+    end
+
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05").with do |req|
+      assert_equal(req.headers["Accept"], "application/json")
+      assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
+      assert_match(/Content-Disposition: form-data/, req.body)
+    end
+    service.create_stopword_list(
+      environment_id: "envid",
+      collection_id: "colid",
+      stopword_file: "file"
+    )
+  end
+
+  def test_delete_stopword_list
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "deleted" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_stopword_list(
+      environment_id: "envid",
+      collection_id: "colid"
+    )
+    assert_nil(service_response)
+  end
+
+  def test_list_gateways
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_gateways(
+      environment_id: "envid"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_create_gateway
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_gateway(
+      environment_id: "envid"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_get_gateway
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_gateway(
+      environment_id: "envid",
+      gateway_id: "gatewayid"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_delete_gateway
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_gateway(
+      environment_id: "envid",
+      gateway_id: "gatewayid"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
 end
