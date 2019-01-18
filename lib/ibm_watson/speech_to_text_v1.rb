@@ -502,9 +502,7 @@ module IBMWatson
         "langauge_customization_id" => language_customization_id,
         "acoustic_customization_id" => acoustic_customization_id,
         "customization_weight" => customization_weight,
-        "base_model_version" => base_model_version,
-        "grammar_name" => grammar_name,
-        "redaction" => redaction
+        "base_model_version" => base_model_version
       }
       params.delete_if { |_, v| v.nil? }
       url += "/v1/recognize?" + HTTP::URI.form_encode(params)
@@ -520,7 +518,9 @@ module IBMWatson
         "timestamps" => timestamps,
         "profanity_filter" => profanity_filter,
         "smart_formatting" => smart_formatting,
-        "speaker_labels" => speaker_labels
+        "speaker_labels" => speaker_labels,
+        "grammar_name" => grammar_name,
+        "redaction" => redaction
       }
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
