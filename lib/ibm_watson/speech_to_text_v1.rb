@@ -523,7 +523,7 @@ module IBMWatson
         "redaction" => redaction
       }
       options.delete_if { |_, v| v.nil? }
-      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
+      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers, disable_ssl: @disable_ssl)
     end
 
     # :nocov:

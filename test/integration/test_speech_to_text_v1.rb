@@ -162,7 +162,8 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
 
     def test_recognize_websocket_as_chunks
       audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-      mycallback = MyRecognizeCallback.new
+      atomic_boolean = Concurrent::AtomicBoolean.new
+      mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
       speech = @service.recognize_using_websocket(
         chunk_data: true,
         recognize_callback: mycallback,
@@ -186,7 +187,8 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
 
     def test_recognize_websocket
       audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-      mycallback = MyRecognizeCallback.new
+      atomic_boolean = Concurrent::AtomicBoolean.new
+      mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
       speech = @service.recognize_using_websocket(
         audio: audio_file,
         recognize_callback: mycallback,
