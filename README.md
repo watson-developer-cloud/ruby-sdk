@@ -61,7 +61,7 @@ The [examples][examples] folder has basic and advanced examples. The examples wi
 
 ## Running in IBM Cloud
 
-If you run your app in IBM Cloud, the SDK gets credentials from the [`VCAP_SERVICES`][vcap_services] environment variable. 
+If you run your app in IBM Cloud, the SDK gets credentials from the [`VCAP_SERVICES`][vcap_services] environment variable.
 
 ## Authentication
 
@@ -94,8 +94,8 @@ To find out which authentication to use, view the service credentials. You find 
 
  As long as you set that up correctly, you don't have to worry about setting any authentication options in your code. So, for example, if you created and downloaded the credential file for your Discovery instance, you just need to do the following:
 
- ```python
-discovery = DiscoveryV1(version='2018-08-01')
+ ```ruby
+discovery = DiscoveryV1(version: "2018-08-01")
 ```
 
  And that's it!
