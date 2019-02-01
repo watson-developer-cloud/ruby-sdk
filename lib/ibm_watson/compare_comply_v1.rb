@@ -69,6 +69,7 @@ module IBMWatson
       args[:vcap_services_name] = "compare-comply"
       super
       @version = args[:version]
+      args[:display_name] = "Compare Comply"
     end
 
     #########################

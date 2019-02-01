@@ -90,6 +90,7 @@ module IBMWatson
       args = defaults.merge(args)
       args[:vcap_services_name] = "speech_to_text"
       super
+      args[:display_name] = "Speech to Text"
     end
 
     #########################

@@ -88,6 +88,7 @@ module IBMWatson
       args[:vcap_services_name] = "natural-language-understanding"
       super
       @version = args[:version]
+      args[:display_name] = "Natural Language Understanding"
     end
 
     #########################

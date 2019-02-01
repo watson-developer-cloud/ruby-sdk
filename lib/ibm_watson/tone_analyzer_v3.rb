@@ -90,6 +90,7 @@ module IBMWatson
       args[:vcap_services_name] = "tone_analyzer"
       super
       @version = args[:version]
+      args[:display_name] = "Tone Analyzer"
     end
 
     #########################
