@@ -119,6 +119,7 @@ module IBMWatson
       headers = {
         "Accept-Language" => accept_language
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=classify"
 
       params = {
         "version" => @version
@@ -271,6 +272,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=create_classifier"
 
       params = {
         "version" => @version
@@ -320,6 +322,7 @@ module IBMWatson
     def list_classifiers(verbose: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=list_classifiers"
 
       params = {
         "version" => @version,
@@ -349,6 +352,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=get_classifier"
 
       params = {
         "version" => @version
@@ -412,6 +416,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=update_classifier"
 
       params = {
         "version" => @version
@@ -460,6 +465,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=delete_classifier"
 
       params = {
         "version" => @version
@@ -492,6 +498,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=get_core_ml_model"
 
       params = {
         "version" => @version
@@ -529,6 +536,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=delete_user_data"
 
       params = {
         "version" => @version,

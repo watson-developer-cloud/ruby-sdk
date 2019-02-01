@@ -99,11 +99,12 @@ module IBMWatson
     #   about a specific voice, use the **Get a voice** method.
     #
     #   **See also:** [Specifying a
-    #   voice](https://console.bluemix.net/docs/services/text-to-speech/http.html#voices).
+    #   voice](https://cloud.ibm.com/docs/services/text-to-speech/http.html#voices).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_voices
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=list_voices"
 
       method_url = "/v1/voices"
 
@@ -125,7 +126,7 @@ module IBMWatson
     #   information about all available voices, use the **List voices** method.
     #
     #   **See also:** [Specifying a
-    #   voice](https://console.bluemix.net/docs/services/text-to-speech/http.html#voices).
+    #   voice](https://cloud.ibm.com/docs/services/text-to-speech/http.html#voices).
     # @param voice [String] The voice for which information is to be returned.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model for which information is to be
     #   returned. You must make the request with service credentials created for the
@@ -137,6 +138,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=get_voice"
 
       params = {
         "customization_id" => customization_id
@@ -168,7 +170,7 @@ module IBMWatson
     #   pass a maximum of 5 KB of text to the service.
     #
     #   **See also:** [Synthesizing text to
-    #   audio](https://console.bluemix.net/docs/services/text-to-speech/http.html#synthesize).
+    #   audio](https://cloud.ibm.com/docs/services/text-to-speech/http.html#synthesize).
     #
     #   ### Audio formats (accept types)
     #
@@ -236,7 +238,7 @@ module IBMWatson
     #
     #   For more information about specifying an audio format, including additional
     #   details about some of the formats, see [Specifying an audio
-    #   format](https://console.bluemix.net/docs/services/text-to-speech/http.html#format).
+    #   format](https://cloud.ibm.com/docs/services/text-to-speech/http.html#format).
     #
     #   ### Warning messages
     #
@@ -266,6 +268,7 @@ module IBMWatson
       headers = {
         "Accept" => accept
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=synthesize"
 
       params = {
         "voice" => voice,
@@ -303,7 +306,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a word from a
-    #   language](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordsQueryLanguage).
+    #   language](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuWordsQueryLanguage).
     # @param text [String] The word for which the pronunciation is requested.
     # @param voice [String] A voice that specifies the language in which the pronunciation is to be returned.
     #   All voices for the same language (for example, `en-US`) return the same
@@ -323,6 +326,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=get_pronunciation"
 
       params = {
         "text" => text,
@@ -357,7 +361,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Creating a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsCreate).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-models.html#cuModelsCreate).
     # @param name [String] The name of the new custom voice model.
     # @param language [String] The language of the new custom voice model. Omit the parameter to use the the
     #   default language, `en-US`.
@@ -369,6 +373,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=create_voice_model"
 
       data = {
         "name" => name,
@@ -401,7 +406,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying all custom
-    #   models](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsQueryAll).
+    #   models](https://cloud.ibm.com/docs/services/text-to-speech/custom-models.html#cuModelsQueryAll).
     # @param language [String] The language for which custom voice models that are owned by the requesting
     #   service credentials are to be returned. Omit the parameter to see all custom voice
     #   models that are owned by the requester.
@@ -409,6 +414,7 @@ module IBMWatson
     def list_voice_models(language: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=list_voice_models"
 
       params = {
         "language" => language
@@ -454,10 +460,11 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Updating a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsUpdate)
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-models.html#cuModelsUpdate)
     #   * [Adding words to a Japanese custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
-    #   * [Understanding customization](https://console.bluemix.net/docs/services/text-to-speech/custom-intro.html).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
+    #   * [Understanding
+    #   customization](https://cloud.ibm.com/docs/services/text-to-speech/custom-intro.html).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -472,6 +479,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=update_voice_model"
 
       data = {
         "name" => name,
@@ -502,7 +510,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsQuery).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-models.html#cuModelsQuery).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -512,6 +520,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=get_voice_model"
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -533,7 +542,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Deleting a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-models.html#cuModelsDelete).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-models.html#cuModelsDelete).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -543,6 +552,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=delete_voice_model"
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -585,10 +595,11 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Adding multiple words to a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordsAdd)
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuWordsAdd)
     #   * [Adding words to a Japanese custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
-    #   * [Understanding customization](https://console.bluemix.net/docs/services/text-to-speech/custom-intro.html).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
+    #   * [Understanding
+    #   customization](https://cloud.ibm.com/docs/services/text-to-speech/custom-intro.html).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -608,6 +619,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=add_words"
 
       data = {
         "words" => words
@@ -636,7 +648,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying all words from a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordsQueryModel).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuWordsQueryModel).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -646,6 +658,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=list_words"
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
@@ -685,10 +698,11 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Adding a single word to a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordAdd)
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuWordAdd)
     #   * [Adding words to a Japanese custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
-    #   * [Understanding customization](https://console.bluemix.net/docs/services/text-to-speech/custom-intro.html).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuJapaneseAdd)
+    #   * [Understanding
+    #   customization](https://cloud.ibm.com/docs/services/text-to-speech/custom-intro.html).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -702,7 +716,7 @@ module IBMWatson
     #   with or without a single part of speech, for any word; you cannot create multiple
     #   entries with different parts of speech for the same word. For more information,
     #   see [Working with Japanese
-    #   entries](https://console.bluemix.net/docs/services/text-to-speech/custom-rules.html#jaNotes).
+    #   entries](https://cloud.ibm.com/docs/services/text-to-speech/custom-rules.html#jaNotes).
     # @return [nil]
     def add_word(customization_id:, word:, translation:, part_of_speech: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -713,6 +727,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=add_word"
 
       data = {
         "translation" => translation,
@@ -741,7 +756,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a single word from a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordQueryModel).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuWordQueryModel).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -754,6 +769,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=get_word"
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
@@ -776,7 +792,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Deleting a word from a custom
-    #   model](https://console.bluemix.net/docs/services/text-to-speech/custom-entries.html#cuWordDelete).
+    #   model](https://cloud.ibm.com/docs/services/text-to-speech/custom-entries.html#cuWordDelete).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
@@ -789,6 +805,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=delete_word"
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
@@ -817,7 +834,7 @@ module IBMWatson
     #   with a request that passes the data.
     #
     #   **See also:** [Information
-    #   security](https://console.bluemix.net/docs/services/text-to-speech/information-security.html).
+    #   security](https://cloud.ibm.com/docs/services/text-to-speech/information-security.html).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
@@ -825,6 +842,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=text_to_speech;service_version=V1;operation_id=delete_user_data"
 
       params = {
         "customer_id" => customer_id

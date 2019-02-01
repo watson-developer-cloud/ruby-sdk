@@ -26,9 +26,10 @@
 # is timestamped, can report temporal behavior.
 # * For information about the meaning of the models that the service uses to describe
 # personality characteristics, see [Personality
-# models](https://console.bluemix.net/docs/services/personality-insights/models.html).
+# models](https://cloud.ibm.com/docs/services/personality-insights/models.html).
 # * For information about the meaning of the consumption preferences, see [Consumption
-# preferences](https://console.bluemix.net/docs/services/personality-insights/preferences.html).
+# preferences](https://cloud.ibm.com/docs/services/personality-insights/preferences.html).
+#
 #
 # **Note:** Request logging is disabled for the Personality Insights service. Regardless
 # of whether you set the `X-Watson-Learning-Opt-Out` request header, the service does not
@@ -114,9 +115,11 @@ module IBMWatson
     #
     #
     #   **See also:**
-    #   * [Requesting a profile](https://console.bluemix.net/docs/services/personality-insights/input.html)
+    #   * [Requesting a
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights/input.html)
     #   * [Providing sufficient
-    #   input](https://console.bluemix.net/docs/services/personality-insights/input.html#sufficient)
+    #   input](https://cloud.ibm.com/docs/services/personality-insights/input.html#sufficient)
+    #
     #
     #   ### Content types
     #
@@ -133,7 +136,8 @@ module IBMWatson
     #   `Content-Type: text/plain;charset=utf-8`.
     #
     #   **See also:** [Specifying request and response
-    #   formats](https://console.bluemix.net/docs/services/personality-insights/input.html#formats)
+    #   formats](https://cloud.ibm.com/docs/services/personality-insights/input.html#formats)
+    #
     #
     #   ### Accept types
     #
@@ -143,13 +147,14 @@ module IBMWatson
     #   optional column headers for CSV output.
     #
     #   **See also:**
-    #   * [Understanding a JSON profile](https://console.bluemix.net/docs/services/personality-insights/output.html)
+    #   * [Understanding a JSON
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights/output.html)
     #   * [Understanding a CSV
-    #   profile](https://console.bluemix.net/docs/services/personality-insights/output-csv.html).
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights/output-csv.html).
     # @param content [Content] A maximum of 20 MB of content to analyze, though the service requires much less
     #   text; for more information, see [Providing sufficient
-    #   input](https://console.bluemix.net/docs/services/personality-insights/input.html#sufficient). For JSON input,
-    #   provide an object of type `Content`.
+    #   input](https://cloud.ibm.com/docs/services/personality-insights/input.html#sufficient).
+    #   For JSON input, provide an object of type `Content`.
     # @param accept [String] The type of the response. For more information, see **Accept types** in the method
     #   description.
     # @param content_type [String] The type of the input. For more information, see **Content types** in the method
@@ -192,6 +197,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=personality_insights;service_version=V3;operation_id=profile"
 
       params = {
         "version" => @version,
