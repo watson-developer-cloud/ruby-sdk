@@ -99,6 +99,7 @@ module IBMWatson
       args[:vcap_services_name] = "personality_insights"
       super
       @version = args[:version]
+      args[:display_name] = "Personality Insights"
     end
 
     #########################

@@ -1,6 +1,7 @@
 {
   "branch": "master",
   "verifyConditions": [],
+  "@semantic-release/git",
   "prepare": [
     {
       "path": "@semantic-release/exec",

@@ -70,6 +70,7 @@ module IBMWatson
       args[:vcap_services_name] = "watson_vision_combined"
       super
       @version = args[:version]
+      args[:display_name] = "Visual Recognition"
     end
 
     #########################
@@ -198,6 +199,7 @@ module IBMWatson
       headers = {
         "Accept-Language" => accept_language
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=detect_faces"
 
       params = {
         "version" => @version

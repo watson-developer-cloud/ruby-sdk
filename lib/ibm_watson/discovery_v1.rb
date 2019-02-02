@@ -84,6 +84,7 @@ module IBMWatson
       args[:vcap_services_name] = "discovery"
       super
       @version = args[:version]
+      args[:display_name] = "Discovery"
     end
 
     #########################
