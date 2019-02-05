@@ -1369,14 +1369,33 @@ class DiscoveryV1Test < Minitest::Test
     assert_equal({ "updated" => "true" }, service_response.result)
   end
 
+  def test_get_stopword_list_status
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/stopwords?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_stopword_list_status(
+      environment_id: "envid",
+      collection_id: "collid"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
   def test_create_stopword_list
     service = IBMWatson::DiscoveryV1.new(
       username: "username",
       password: "password",
       version: "2018-03-05"
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/element_classification").with do |req|
-    end
 
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
