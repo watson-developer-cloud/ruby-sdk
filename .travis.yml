@@ -9,6 +9,7 @@ rvm:
 - 2.5.1
 
 before_install:
+  - git fetch --tags
   - sudo apt-get update
   - sudo apt-get install python
   - nvm install node
