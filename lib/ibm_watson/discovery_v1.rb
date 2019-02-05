@@ -84,6 +84,7 @@ module IBMWatson
       args[:vcap_services_name] = "discovery"
       super
       @version = args[:version]
+      args[:display_name] = "Discovery"
     end
 
     #########################
@@ -108,6 +109,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_environment"
 
       params = {
         "version" => @version
@@ -141,6 +143,7 @@ module IBMWatson
     def list_environments(name: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_environments"
 
       params = {
         "version" => @version,
@@ -169,6 +172,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_environment"
 
       params = {
         "version" => @version
@@ -203,6 +207,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=update_environment"
 
       params = {
         "version" => @version
@@ -237,6 +242,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_environment"
 
       params = {
         "version" => @version
@@ -269,6 +275,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_fields"
 
       params = {
         "version" => @version,
@@ -322,6 +329,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_configuration"
 
       params = {
         "version" => @version
@@ -361,6 +369,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_configurations"
 
       params = {
         "version" => @version,
@@ -392,6 +401,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_configuration"
 
       params = {
         "version" => @version
@@ -441,6 +451,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=update_configuration"
 
       params = {
         "version" => @version
@@ -487,6 +498,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_configuration"
 
       params = {
         "version" => @version
@@ -545,6 +557,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=test_configuration_in_environment"
 
       params = {
         "version" => @version,
@@ -599,6 +612,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_collection"
 
       params = {
         "version" => @version
@@ -636,6 +650,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_collections"
 
       params = {
         "version" => @version,
@@ -667,6 +682,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_collection"
 
       params = {
         "version" => @version
@@ -700,6 +716,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=update_collection"
 
       params = {
         "version" => @version
@@ -737,6 +754,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_collection"
 
       params = {
         "version" => @version
@@ -768,6 +786,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_collection_fields"
 
       params = {
         "version" => @version
@@ -803,6 +822,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_expansions"
 
       params = {
         "version" => @version
@@ -854,6 +874,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_expansions"
 
       params = {
         "version" => @version
@@ -891,6 +912,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_expansions"
 
       params = {
         "version" => @version
@@ -923,6 +945,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_tokenization_dictionary_status"
 
       params = {
         "version" => @version
@@ -957,6 +980,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_tokenization_dictionary"
 
       params = {
         "version" => @version
@@ -993,6 +1017,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_tokenization_dictionary"
 
       params = {
         "version" => @version
@@ -1028,6 +1053,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_stopword_list"
 
       params = {
         "version" => @version
@@ -1069,6 +1095,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_stopword_list"
 
       params = {
         "version" => @version
@@ -1138,6 +1165,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=add_document"
 
       params = {
         "version" => @version
@@ -1188,6 +1216,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_document_status"
 
       params = {
         "version" => @version
@@ -1234,6 +1263,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=update_document"
 
       params = {
         "version" => @version
@@ -1283,6 +1313,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_document"
 
       params = {
         "version" => @version
@@ -1378,6 +1409,7 @@ module IBMWatson
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=query"
 
       params = {
         "version" => @version
@@ -1480,6 +1512,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=query_notices"
 
       params = {
         "version" => @version,
@@ -1586,6 +1619,7 @@ module IBMWatson
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=federated_query"
 
       params = {
         "version" => @version
@@ -1682,6 +1716,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=federated_query_notices"
 
       params = {
         "version" => @version,
@@ -1738,6 +1773,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=query_entities"
 
       params = {
         "version" => @version
@@ -1792,6 +1828,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=query_relations"
 
       params = {
         "version" => @version
@@ -1836,6 +1873,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_training_data"
 
       params = {
         "version" => @version
@@ -1871,6 +1909,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=add_training_data"
 
       params = {
         "version" => @version
@@ -1909,6 +1948,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_all_training_data"
 
       params = {
         "version" => @version
@@ -1944,6 +1984,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_training_data"
 
       params = {
         "version" => @version
@@ -1979,6 +2020,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_training_data"
 
       params = {
         "version" => @version
@@ -2013,6 +2055,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_training_examples"
 
       params = {
         "version" => @version
@@ -2050,6 +2093,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_training_example"
 
       params = {
         "version" => @version
@@ -2094,6 +2138,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_training_example"
 
       params = {
         "version" => @version
@@ -2133,6 +2178,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=update_training_example"
 
       params = {
         "version" => @version
@@ -2176,6 +2222,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_training_example"
 
       params = {
         "version" => @version
@@ -2213,6 +2260,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_user_data"
 
       params = {
         "version" => @version,
@@ -2250,6 +2298,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_event"
 
       params = {
         "version" => @version
@@ -2297,6 +2346,7 @@ module IBMWatson
     def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=query_log"
 
       params = {
         "version" => @version,
@@ -2333,6 +2383,7 @@ module IBMWatson
     def get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_metrics_query"
 
       params = {
         "version" => @version,
@@ -2368,6 +2419,7 @@ module IBMWatson
     def get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_metrics_query_event"
 
       params = {
         "version" => @version,
@@ -2402,6 +2454,7 @@ module IBMWatson
     def get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_metrics_query_no_results"
 
       params = {
         "version" => @version,
@@ -2438,6 +2491,7 @@ module IBMWatson
     def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_metrics_event_rate"
 
       params = {
         "version" => @version,
@@ -2470,6 +2524,7 @@ module IBMWatson
     def get_metrics_query_token_event(count: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_metrics_query_token_event"
 
       params = {
         "version" => @version,
@@ -2505,6 +2560,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_credentials"
 
       params = {
         "version" => @version
@@ -2547,6 +2603,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_credentials"
 
       params = {
         "version" => @version
@@ -2587,6 +2644,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_credentials"
 
       params = {
         "version" => @version
@@ -2631,6 +2689,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=update_credentials"
 
       params = {
         "version" => @version
@@ -2668,6 +2727,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_credentials"
 
       params = {
         "version" => @version
@@ -2699,6 +2759,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=list_gateways"
 
       params = {
         "version" => @version
@@ -2728,6 +2789,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=create_gateway"
 
       params = {
         "version" => @version
@@ -2764,6 +2826,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_gateway"
 
       params = {
         "version" => @version
@@ -2795,6 +2858,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=delete_gateway"
 
       params = {
         "version" => @version

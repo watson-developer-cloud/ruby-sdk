@@ -71,6 +71,7 @@ module IBMWatson
       args = defaults.merge(args)
       args[:vcap_services_name] = "natural_language_classifier"
       super
+      args[:display_name] = "Natural Language Classifier"
     end
 
     #########################
@@ -92,6 +93,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural_language_classifier;service_version=V1;operation_id=classify"
 
       data = {
         "text" => text
@@ -126,6 +128,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural_language_classifier;service_version=V1;operation_id=classify_collection"
 
       data = {
         "collection" => collection
@@ -160,7 +163,7 @@ module IBMWatson
     #   (`pt`), and Spanish (`es`).
     # @param training_data [File] Training data in CSV format. Each text value must have at least one class. The
     #   data can include up to 3,000 classes and 20,000 records. For details, see [Data
-    #   preparation](https://console.bluemix.net/docs/services/natural-language-classifier/using-your-data.html).
+    #   preparation](https://cloud.ibm.com/docs/services/natural-language-classifier/using-your-data.html).
     # @param metadata_filename [String] The filename for training_metadata.
     # @param training_data_filename [String] The filename for training_data.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -171,6 +174,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural_language_classifier;service_version=V1;operation_id=create_classifier"
 
       form_data = {}
 
@@ -206,6 +210,7 @@ module IBMWatson
     def list_classifiers
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural_language_classifier;service_version=V1;operation_id=list_classifiers"
 
       method_url = "/v1/classifiers"
 
@@ -229,6 +234,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural_language_classifier;service_version=V1;operation_id=get_classifier"
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
@@ -251,6 +257,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural_language_classifier;service_version=V1;operation_id=delete_classifier"
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 

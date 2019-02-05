@@ -20,8 +20,8 @@
 # can ignore most advertisements and other unwanted content.
 #
 # You can create [custom
-# models](https://console.bluemix.net/docs/services/natural-language-understanding/customizing.html) with Watson
-# Knowledge Studio to detect custom entities and relations in Natural Language
+# models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
+# with Watson Knowledge Studio to detect custom entities and relations in Natural Language
 # Understanding.
 
 require "concurrent"
@@ -88,6 +88,7 @@ module IBMWatson
       args[:vcap_services_name] = "natural-language-understanding"
       super
       @version = args[:version]
+      args[:display_name] = "Natural Language Understanding"
     end
 
     #########################
@@ -116,10 +117,10 @@ module IBMWatson
     #   required.
     # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
     #   cleaning, see the [Analyzing
-    #   webpages](https://console.bluemix.net/docs/services/natural-language-understanding/analyzing-webpages.html)
+    #   webpages](https://cloud.ibm.com/docs/services/natural-language-understanding/analyzing-webpages.html)
     #   documentation.
     # @param xpath [String] An [XPath
-    #   query](https://console.bluemix.net/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
+    #   query](https://cloud.ibm.com/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
     #   to perform on `html` or `url` input. Results of the query will be appended to the
     #   cleaned webpage text before it is analyzed. To analyze only the results of the
     #   XPath query, set the `clean` parameter to `false`.
@@ -137,6 +138,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural-language-understanding;service_version=V1;operation_id=analyze"
 
       params = {
         "version" => @version
@@ -175,12 +177,13 @@ module IBMWatson
     # @!method list_models
     # List models.
     # Lists Watson Knowledge Studio [custom
-    #   models](https://console.bluemix.net/docs/services/natural-language-understanding/customizing.html) that are
-    #   deployed to your Natural Language Understanding service.
+    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
+    #   that are deployed to your Natural Language Understanding service.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_models
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural-language-understanding;service_version=V1;operation_id=list_models"
 
       params = {
         "version" => @version
@@ -202,13 +205,14 @@ module IBMWatson
     # @!method delete_model(model_id:)
     # Delete model.
     # Deletes a custom model.
-    # @param model_id [String] model_id of the model to delete.
+    # @param model_id [String] Model ID of the model to delete.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=natural-language-understanding;service_version=V1;operation_id=delete_model"
 
       params = {
         "version" => @version

@@ -84,6 +84,7 @@ module IBMWatson
       args[:vcap_services_name] = "language_translator"
       super
       @version = args[:version]
+      args[:display_name] = "Language Translator"
     end
 
     #########################
@@ -106,6 +107,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=translate"
 
       params = {
         "version" => @version
@@ -143,6 +145,7 @@ module IBMWatson
     def list_identifiable_languages
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=list_identifiable_languages"
 
       params = {
         "version" => @version
@@ -171,6 +174,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=identify"
 
       params = {
         "version" => @version
@@ -209,6 +213,7 @@ module IBMWatson
     def list_models(source: nil, target: nil, default_models: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=list_models"
 
       params = {
         "version" => @version,
@@ -270,6 +275,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=create_model"
 
       params = {
         "version" => @version,
@@ -319,6 +325,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=delete_model"
 
       params = {
         "version" => @version
@@ -349,6 +356,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=language_translator;service_version=V3;operation_id=get_model"
 
       params = {
         "version" => @version

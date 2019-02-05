@@ -82,6 +82,7 @@ module IBMWatson
       args[:vcap_services_name] = "conversation"
       super
       @version = args[:version]
+      args[:display_name] = "Assistant"
     end
 
     #########################
@@ -105,6 +106,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V2;operation_id=create_session"
 
       params = {
         "version" => @version
@@ -141,6 +143,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V2;operation_id=delete_session"
 
       params = {
         "version" => @version
@@ -174,7 +177,7 @@ module IBMWatson
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.
-    # @param input [MessageInput] The user input.
+    # @param input [MessageInput] An input object that includes the input text.
     # @param context [MessageContext] State information for the conversation.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def message(assistant_id:, session_id:, input: nil, context: nil)
@@ -184,6 +187,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V2;operation_id=message"
 
       params = {
         "version" => @version

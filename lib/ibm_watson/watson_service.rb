@@ -18,9 +18,11 @@ require_relative("./version.rb")
 #   config.log_response  = true
 # end
 
+DEFAULT_CREDENTIALS_FILE_NAME = "ibm-credentials.env"
+
 # Class for interacting with the Watson API
 class WatsonService
-  attr_accessor :password, :url, :username
+  attr_accessor :password, :url, :username, :display_name
   attr_reader :conn, :token_manager
   def initialize(vars)
     defaults = {
@@ -30,7 +32,8 @@ class WatsonService
       use_vcap_services: true,
       iam_apikey: nil,
       iam_access_token: nil,
-      iam_url: nil
+      iam_url: nil,
+      display_name: nil
     }
     vars = defaults.merge(vars)
     @url = vars[:url]
@@ -41,6 +44,7 @@ class WatsonService
     @temp_headers = nil
     @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
     @disable_ssl = false
+    @display_name = vars[:display_name]
 
     user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
     user_agent_string += " #{RbConfig::CONFIG["host"]}"
@@ -49,17 +53,6 @@ class WatsonService
     headers = {
       "User-Agent" => user_agent_string
     }
-    if vars[:use_vcap_services]
-      @vcap_service_credentials = load_from_vcap_services(service_name: vars[:vcap_services_name])
-      if !@vcap_service_credentials.nil? && @vcap_service_credentials.instance_of?(Hash)
-        @url = @vcap_service_credentials["url"]
-        @username = @vcap_service_credentials["username"] if @vcap_service_credentials.key?("username")
-        @password = @vcap_service_credentials["password"] if @vcap_service_credentials.key?("password")
-        @iam_apikey = @vcap_service_credentials["iam_apikey"] if @vcap_service_credentials.key?("iam_apikey")
-        @iam_access_token = @vcap_service_credentials["iam_access_token"] if @vcap_service_credentials.key?("iam_access_token")
-        @iam_url = @vcap_service_credentials["iam_url"] if @vcap_service_credentials.key?("iam_url")
-      end
-    end
 
     if !vars[:iam_access_token].nil? || !vars[:iam_apikey].nil?
       set_token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
@@ -71,6 +64,24 @@ class WatsonService
         @password = vars[:password]
       end
     end
+
+    if @display_name && !@username && !@iam_apikey
+      service_name = @display_name.sub(" ", "_").downcase
+      load_from_credential_file(service_name)
+    end
+
+    if vars[:use_vcap_services] && !@username && !@iam_apikey
+      @vcap_service_credentials = load_from_vcap_services(service_name: vars[:vcap_services_name])
+      if !@vcap_service_credentials.nil? && @vcap_service_credentials.instance_of?(Hash)
+        @url = @vcap_service_credentials["url"]
+        @username = @vcap_service_credentials["username"] if @vcap_service_credentials.key?("username")
+        @password = @vcap_service_credentials["password"] if @vcap_service_credentials.key?("password")
+        @iam_apikey = @vcap_service_credentials["iam_apikey"] if @vcap_service_credentials.key?("iam_apikey")
+        @iam_access_token = @vcap_service_credentials["iam_access_token"] if @vcap_service_credentials.key?("iam_access_token")
+        @iam_url = @vcap_service_credentials["iam_url"] if @vcap_service_credentials.key?("iam_url")
+      end
+    end
+
     raise ArgumentError.new('The username shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your username') if check_bad_first_or_last_char(@username)
     raise ArgumentError.new('The password shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your password') if check_bad_first_or_last_char(@password)
     raise ArgumentError.new('The url shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your url') if check_bad_first_or_last_char(@url)
@@ -79,6 +90,31 @@ class WatsonService
     @conn = HTTP::Client.new(
       headers: headers
     )
+  end
+
+  # Initiates the credentials based on the credential file
+  def load_from_credential_file(service_name, separator = "=")
+    credential_file_path = ENV["IBM_CREDENTIALS_FILE"]
+
+    # Home directory
+    if credential_file_path.nil?
+      file_path = ENV["HOME"] + DEFAULT_CREDENTIALS_FILE_NAME
+      credential_file_path = file_path if File.exist?(file_path)
+    end
+
+    # Top-level directory of the project
+    if credential_file_path.nil?
+      file_path = File.join(File.dirname(__FILE__), "/../../" + DEFAULT_CREDENTIALS_FILE_NAME)
+      credential_file_path = file_path if File.exist?(file_path)
+    end
+
+    return if credential_file_path.nil?
+
+    file_contents = File.open(credential_file_path, "r")
+    file_contents.each_line do |line|
+      key_val = line.strip.split(separator)
+      set_credential_based_on_type(service_name, key_val[0].downcase, key_val[1].downcase) if key_val.length == 2
+    end
   end
 
   def load_from_vcap_services(service_name:)
@@ -199,6 +235,16 @@ class WatsonService
   end
 
   private
+
+  def set_credential_based_on_type(service_name, key, value)
+    return unless key.include?(service_name)
+
+    @iam_apikey = value if key.include?("iam_apikey")
+    @iam_url = value if key.include?("iam_url")
+    @url = value if key.include?("url")
+    @username = value if key.include?("username")
+    @password = value if key.include?("password")
+  end
 
   def check_bad_first_or_last_char(str)
     return str.start_with?("{", "\"") || str.end_with?("}", "\"") unless str.nil?

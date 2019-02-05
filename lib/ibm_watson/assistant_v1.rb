@@ -82,6 +82,7 @@ module IBMWatson
       args[:vcap_services_name] = "conversation"
       super
       @version = args[:version]
+      args[:display_name] = "Assistant"
     end
 
     #########################
@@ -95,7 +96,7 @@ module IBMWatson
     #
     #   There is no rate limit for this operation.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param input [InputData] The user input.
+    # @param input [InputData] An input object that includes the input text.
     # @param alternate_intents [Boolean] Whether to return more than one intent. Set to `true` to return all matching
     #   intents.
     # @param context [Context] State information for the conversation. To maintain state, include the context
@@ -116,6 +117,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=message"
 
       params = {
         "version" => @version,
@@ -165,6 +167,7 @@ module IBMWatson
     def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_workspaces"
 
       params = {
         "version" => @version,
@@ -213,6 +216,7 @@ module IBMWatson
     def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_workspace"
 
       params = {
         "version" => @version
@@ -267,6 +271,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_workspace"
 
       params = {
         "version" => @version,
@@ -325,6 +330,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_workspace"
 
       params = {
         "version" => @version,
@@ -371,6 +377,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_workspace"
 
       params = {
         "version" => @version
@@ -416,6 +423,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_intents"
 
       params = {
         "version" => @version,
@@ -463,6 +471,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_intent"
 
       params = {
         "version" => @version
@@ -510,6 +519,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_intent"
 
       params = {
         "version" => @version,
@@ -554,6 +564,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_intent"
 
       params = {
         "version" => @version
@@ -595,6 +606,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_intent"
 
       params = {
         "version" => @version
@@ -640,6 +652,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_examples"
 
       params = {
         "version" => @version,
@@ -687,6 +700,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_example"
 
       params = {
         "version" => @version
@@ -732,6 +746,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_example"
 
       params = {
         "version" => @version,
@@ -776,6 +791,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_example"
 
       params = {
         "version" => @version
@@ -819,6 +835,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_example"
 
       params = {
         "version" => @version
@@ -861,6 +878,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_counterexamples"
 
       params = {
         "version" => @version,
@@ -905,6 +923,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_counterexample"
 
       params = {
         "version" => @version
@@ -947,6 +966,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_counterexample"
 
       params = {
         "version" => @version,
@@ -984,6 +1004,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_counterexample"
 
       params = {
         "version" => @version
@@ -1024,6 +1045,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_counterexample"
 
       params = {
         "version" => @version
@@ -1069,6 +1091,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_entities"
 
       params = {
         "version" => @version,
@@ -1120,6 +1143,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_entity"
 
       params = {
         "version" => @version
@@ -1169,6 +1193,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_entity"
 
       params = {
         "version" => @version,
@@ -1215,6 +1240,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_entity"
 
       params = {
         "version" => @version
@@ -1258,6 +1284,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_entity"
 
       params = {
         "version" => @version
@@ -1301,6 +1328,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_mentions"
 
       params = {
         "version" => @version,
@@ -1350,6 +1378,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_values"
 
       params = {
         "version" => @version,
@@ -1398,7 +1427,7 @@ module IBMWatson
     #   patterns (as indicated by **type**), but not both. A pattern is a regular
     #   expression no longer than 512 characters. For more information about how to
     #   specify a pattern, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/entities.html#creating-entities).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/entities.html#creating-entities).
     # @param value_type [String] Specifies the type of value.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
@@ -1410,6 +1439,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_value"
 
       params = {
         "version" => @version
@@ -1461,6 +1491,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_value"
 
       params = {
         "version" => @version,
@@ -1508,7 +1539,7 @@ module IBMWatson
     #   patterns (as indicated by **type**), but not both. A pattern is a regular
     #   expression no longer than 512 characters. For more information about how to
     #   specify a pattern, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/entities.html#creating-entities).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/entities.html#creating-entities).
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
@@ -1519,6 +1550,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_value"
 
       params = {
         "version" => @version
@@ -1565,6 +1597,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_value"
 
       params = {
         "version" => @version
@@ -1612,6 +1645,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_synonyms"
 
       params = {
         "version" => @version,
@@ -1660,6 +1694,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_synonym"
 
       params = {
         "version" => @version
@@ -1707,6 +1742,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_synonym"
 
       params = {
         "version" => @version,
@@ -1752,6 +1788,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_synonym"
 
       params = {
         "version" => @version
@@ -1797,6 +1834,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_synonym"
 
       params = {
         "version" => @version
@@ -1838,6 +1876,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_dialog_nodes"
 
       params = {
         "version" => @version,
@@ -1881,7 +1920,7 @@ module IBMWatson
     # @param previous_sibling [String] The ID of the previous dialog node.
     # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/dialog-overview.html#complex).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/dialog-overview.html#complex).
     # @param context [Object] The context for the dialog node.
     # @param metadata [Object] The metadata for the dialog node.
     # @param next_step [DialogNodeNextStep] The next step to execute following this dialog node.
@@ -1907,6 +1946,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_dialog_node"
 
       params = {
         "version" => @version
@@ -1965,6 +2005,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_dialog_node"
 
       params = {
         "version" => @version,
@@ -2005,7 +2046,7 @@ module IBMWatson
     # @param new_previous_sibling [String] The ID of the previous sibling dialog node.
     # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/dialog-overview.html#complex).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/dialog-overview.html#complex).
     # @param new_context [Object] The context for the dialog node.
     # @param new_metadata [Object] The metadata for the dialog node.
     # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
@@ -2031,6 +2072,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_dialog_node"
 
       params = {
         "version" => @version
@@ -2087,6 +2129,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_dialog_node"
 
       params = {
         "version" => @version
@@ -2120,7 +2163,7 @@ module IBMWatson
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. For more information, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/filter-reference.html#filter-query-syntax).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/filter-reference.html#filter-query-syntax).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
@@ -2129,6 +2172,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_logs"
 
       params = {
         "version" => @version,
@@ -2162,7 +2206,7 @@ module IBMWatson
     #   filter. You must specify a filter query that includes a value for `language`, as
     #   well as a value for `workspace_id` or `request.context.metadata.deployment`. For
     #   more information, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/filter-reference.html#filter-query-syntax).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/filter-reference.html#filter-query-syntax).
     # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
@@ -2173,6 +2217,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_all_logs"
 
       params = {
         "version" => @version,
@@ -2206,7 +2251,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://console.bluemix.net/docs/services/assistant/information-security.html).
+    #   security](https://cloud.ibm.com/docs/services/assistant/information-security.html).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
@@ -2214,6 +2259,7 @@ module IBMWatson
 
       headers = {
       }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_user_data"
 
       params = {
         "version" => @version,
