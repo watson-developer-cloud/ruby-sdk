@@ -21,12 +21,8 @@ install:
   - npm install -g @semantic-release/exec
   - npm install -g @semantic-release/git
   - bundle _1.16.3_ install
-  - 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then cd appscan; make asoc-tool; cd ../; fi'
-before_script:
-- 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then chmod a+x ./appscan/ASOC.sh; fi'
 script:
 - bundle exec rake
-- 'if [ "${TRAVIS_TAG}" = "${TRAVIS_BRANCH}" ]; then ./appscan/ASOC.sh; fi'
 
 before_deploy:
   - bundle exec rake test:appveyor_status
