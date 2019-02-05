@@ -16,7 +16,7 @@
 
 # The IBM&reg; Speech to Text service provides APIs that use IBM's speech-recognition
 # capabilities to produce transcripts of spoken audio. The service can transcribe speech
-# from various languages and audio formats. It addition to basic transcription, the
+# from various languages and audio formats. In addition to basic transcription, the
 # service can produce detailed information about many different aspects of the audio. For
 # most languages, the service supports two sampling rates, broadband and narrowband. It
 # returns all JSON response content in the UTF-8 character set.
@@ -2368,6 +2368,9 @@ module IBMWatson
     #   * The custom model contains less than 10 minutes or more than 100 hours of audio
     #   data.
     #   * One or more of the custom model's audio resources is invalid.
+    #   * You passed an incompatible custom language model with the
+    #   `custom_language_model_id` query parameter. Both custom models must be based on
+    #   the same version of the same base model.
     #
     #   **See also:** [Train the custom acoustic
     #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-create.html#trainModel).
@@ -2377,7 +2380,10 @@ module IBMWatson
     # @param custom_language_model_id [String] The customization ID (GUID) of a custom language model that is to be used during
     #   training of the custom acoustic model. Specify a custom language model that has
     #   been trained with verbatim transcriptions of the audio resources or that contains
-    #   words that are relevant to the contents of the audio resources.
+    #   words that are relevant to the contents of the audio resources. The custom
+    #   language model must be based on the same version of the same base model as the
+    #   custom acoustic model. The credentials specified with the request must own both
+    #   custom models.
     # @return [nil]
     def train_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2436,7 +2442,7 @@ module IBMWatson
     end
 
     ##
-    # @!method upgrade_acoustic_model(customization_id:, custom_language_model_id: nil)
+    # @!method upgrade_acoustic_model(customization_id:, custom_language_model_id: nil, force: nil)
     # Upgrade a custom acoustic model.
     # Initiates the upgrade of a custom acoustic model to the latest version of its base
     #   language model. The upgrade method is asynchronous. It can take on the order of
@@ -2468,9 +2474,16 @@ module IBMWatson
     #   service that owns the custom model.
     # @param custom_language_model_id [String] If the custom acoustic model was trained with a custom language model, the
     #   customization ID (GUID) of that custom language model. The custom language model
-    #   must be upgraded before the custom acoustic model can be upgraded.
+    #   must be upgraded before the custom acoustic model can be upgraded. The credentials
+    #   specified with the request must own both custom models.
+    # @param force [Boolean] If `true`, forces the upgrade of a custom acoustic model for which no input data
+    #   has been modified since it was last trained. Use this parameter only to force the
+    #   upgrade of a custom acoustic model that is trained with a custom language model,
+    #   and only if you receive a 400 response code and the message `No input data
+    #   modified since last training`. See [Upgrading a custom acoustic
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/custom-upgrade.html#upgradeAcoustic).
     # @return [nil]
-    def upgrade_acoustic_model(customization_id:, custom_language_model_id: nil)
+    def upgrade_acoustic_model(customization_id:, custom_language_model_id: nil, force: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
@@ -2478,7 +2491,8 @@ module IBMWatson
       headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=upgrade_acoustic_model"
 
       params = {
-        "custom_language_model_id" => custom_language_model_id
+        "custom_language_model_id" => custom_language_model_id,
+        "force" => force
       }
 
       method_url = "/v1/acoustic_customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]

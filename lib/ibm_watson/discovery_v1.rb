@@ -1036,6 +1036,38 @@ module IBMWatson
     end
 
     ##
+    # @!method get_stopword_list_status(environment_id:, collection_id:)
+    # Get stopword list status.
+    # Returns the current status of the stopword list for the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    def get_stopword_list_status(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=get_stopword_list_status"
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
     # Create stopword list.
     # Upload a custom stopword list to use with the specified collection.

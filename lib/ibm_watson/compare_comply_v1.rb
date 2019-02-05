@@ -79,7 +79,7 @@ module IBMWatson
     ##
     # @!method convert_to_html(file:, model_id: nil, file_content_type: nil, filename: nil)
     # Convert file to HTML.
-    # Uploads an input file. The response includes an HTML version of the document.
+    # Convert an uploaded file to HTML.
     # @param file [File] The file to convert.
     # @param model_id [String] The analysis model to be used by the service. For the `/v1/element_classification`
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
@@ -127,8 +127,7 @@ module IBMWatson
     ##
     # @!method classify_elements(file:, model_id: nil, file_content_type: nil, filename: nil)
     # Classify the elements of a document.
-    # Uploads a file. The response includes an analysis of the document's structural and
-    #   semantic elements.
+    # Analyze an uploaded file's structural and semantic elements.
     # @param file [File] The file to classify.
     # @param model_id [String] The analysis model to be used by the service. For the `/v1/element_classification`
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
@@ -176,7 +175,7 @@ module IBMWatson
     ##
     # @!method extract_tables(file:, model_id: nil, file_content_type: nil, filename: nil)
     # Extract a document's tables.
-    # Uploads a file. The response includes an analysis of the document's tables.
+    # Extract and analyze an uploaded file's tables.
     # @param file [File] The file on which to run table extraction.
     # @param model_id [String] The analysis model to be used by the service. For the `/v1/element_classification`
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
@@ -224,8 +223,7 @@ module IBMWatson
     ##
     # @!method compare_documents(file_1:, file_2:, file_1_label: nil, file_2_label: nil, model_id: nil, file_1_content_type: nil, file_1_filename: nil, file_2_content_type: nil, file_2_filename: nil)
     # Compare two documents.
-    # Uploads two input files. The response includes JSON comparing the two documents.
-    #   Uploaded files must be in the same file format.
+    # Compare two uploaded input files. Uploaded files must be in the same file format.
     # @param file_1 [File] The first file to compare.
     # @param file_2 [File] The second file to compare.
     # @param file_1_label [String] A text label for the first file.
@@ -412,7 +410,7 @@ module IBMWatson
     ##
     # @!method get_feedback(feedback_id:, model_id: nil)
     # List a specified feedback entry.
-    # @param feedback_id [String] An string that specifies the feedback entry to be included in the output.
+    # @param feedback_id [String] A string that specifies the feedback entry to be included in the output.
     # @param model_id [String] The analysis model to be used by the service. For the `/v1/element_classification`
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
     #   method, the default is `tables`. These defaults apply to the standalone methods as
@@ -445,7 +443,7 @@ module IBMWatson
     ##
     # @!method delete_feedback(feedback_id:, model_id: nil)
     # Deletes a specified feedback entry.
-    # @param feedback_id [String] An string that specifies the feedback entry to be deleted from the document.
+    # @param feedback_id [String] A string that specifies the feedback entry to be deleted from the document.
     # @param model_id [String] The analysis model to be used by the service. For the `/v1/element_classification`
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
     #   method, the default is `tables`. These defaults apply to the standalone methods as
@@ -483,10 +481,10 @@ module IBMWatson
     # Submit a batch-processing request.
     # Run Compare and Comply methods over a collection of input documents.
     #   **Important:** Batch processing requires the use of the [IBM Cloud Object Storage
-    #   service](https://console.bluemix.net/docs/services/cloud-object-storage/about-cos.html#about-ibm-cloud-object-storage).
+    #   service](https://cloud.ibm.com/docs/services/cloud-object-storage/about-cos.html#about-ibm-cloud-object-storage).
     #   The use of IBM Cloud Object Storage with Compare and Comply is discussed at [Using
     #   batch
-    #   processing](https://console.bluemix.net/docs/services/compare-comply/batching.html#before-you-batch).
+    #   processing](https://cloud.ibm.com/docs/services/compare-comply/batching.html#before-you-batch).
     # @param function [String] The Compare and Comply method to run across the submitted input documents.
     # @param input_credentials_file [File] A JSON file containing the input Cloud Object Storage credentials. At a minimum,
     #   the credentials must enable `READ` permissions on the bucket defined by the
@@ -571,8 +569,8 @@ module IBMWatson
 
     ##
     # @!method list_batches
-    # Gets the list of submitted batch-processing jobs.
-    # Gets the list of batch-processing jobs submitted by users.
+    # List submitted batch-processing jobs.
+    # List the batch-processing jobs submitted by users.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def list_batches
       headers = {
@@ -597,8 +595,8 @@ module IBMWatson
 
     ##
     # @!method get_batch(batch_id:)
-    # Gets information about a specific batch-processing request.
-    # Gets information about a batch-processing request with a specified ID.
+    # Get information about a specific batch-processing request.
+    # Get information about a batch-processing request with a specified ID.
     # @param batch_id [String] The ID of the batch-processing request whose information you want to retrieve.
     # @return [DetailedResponse] A `DetailedResponse` object representing the response.
     def get_batch(batch_id:)
@@ -626,8 +624,8 @@ module IBMWatson
 
     ##
     # @!method update_batch(batch_id:, action:, model_id: nil)
-    # Updates a pending or active batch-processing request.
-    # Updates a pending or active batch-processing request. You can rescan the input
+    # Update a pending or active batch-processing request.
+    # Update a pending or active batch-processing request. You can rescan the input
     #   bucket to check for new documents or cancel a request.
     # @param batch_id [String] The ID of the batch-processing request you want to update.
     # @param action [String] The action you want to perform on the specified batch-processing request.
