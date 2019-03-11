@@ -20,6 +20,9 @@ require_relative("./common.rb")
 # end
 
 DEFAULT_CREDENTIALS_FILE_NAME = "ibm-credentials.env"
+NORMALIZER = lambda do |uri| # Custom URI normalizer when using HTTP Client
+  HTTP::URI.parse uri
+end
 
 # Class for interacting with the Watson API
 class WatsonService
@@ -82,7 +85,7 @@ class WatsonService
 
     @conn = HTTP::Client.new(
       headers: {}
-    )
+    ).use normalize_uri: { normalizer: NORMALIZER }
   end
 
   # Initiates the credentials based on the credential file
@@ -260,11 +263,11 @@ class WatsonService
         read: 0
       }
       time = defaults.merge(timeout[:per_operation])
-      @conn = @conn.timeout(:per_operation, write: time[:write], connect: time[:connect], read: time[:read])
+      @conn = @conn.timeout(write: time[:write], connect: time[:connect], read: time[:read])
     else
       raise TypeError("global in timeout must be an Integer") unless timeout[:global].is_a?(Integer)
 
-      @conn = @conn.timeout(:global, write: timeout[:global], connect: 0, read: 0)
+      @conn = @conn.timeout(timeout[:global])
     end
   end
 

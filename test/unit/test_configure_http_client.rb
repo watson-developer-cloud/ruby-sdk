@@ -134,9 +134,7 @@ class HTTPConfigTest < Minitest::Test
     assert_equal(HTTP::Timeout::Global, timeout_class)
 
     expected_timeouts = {
-      read_timeout: 0,
-      write_timeout: 20,
-      connect_timeout: 0
+      global_timeout: 20
     }
     timeout = service.conn.default_options.timeout_options
     assert_equal(expected_timeouts, timeout)
