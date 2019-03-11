@@ -22,6 +22,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -106,7 +107,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V2;operation_id=create_session"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "create_session")
 
       params = {
         "version" => @version
@@ -143,7 +144,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V2;operation_id=delete_session"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "delete_session")
 
       params = {
         "version" => @version
@@ -187,7 +188,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V2;operation_id=message"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "message")
 
       params = {
         "version" => @version

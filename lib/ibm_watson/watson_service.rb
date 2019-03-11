@@ -8,6 +8,7 @@ require_relative("./detailed_response.rb")
 require_relative("./watson_api_exception.rb")
 require_relative("./iam_token_manager.rb")
 require_relative("./version.rb")
+require_relative("./common.rb")
 # require("httplog")
 # HttpLog.configure do |config|
 #   config.log_connect   = true
@@ -46,14 +47,6 @@ class WatsonService
     @disable_ssl = false
     @display_name = vars[:display_name]
 
-    user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
-    user_agent_string += " #{RbConfig::CONFIG["host"]}"
-    user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
-
-    headers = {
-      "User-Agent" => user_agent_string
-    }
-
     if !vars[:iam_access_token].nil? || !vars[:iam_apikey].nil?
       set_token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
     elsif !vars[:username].nil? && !vars[:password].nil?
@@ -88,7 +81,7 @@ class WatsonService
     raise ArgumentError.new('The apikey shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your apikey') if check_bad_first_or_last_char(@iam_apikey)
 
     @conn = HTTP::Client.new(
-      headers: headers
+      headers: {}
     )
   end
 

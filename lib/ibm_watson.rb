@@ -15,4 +15,5 @@ module IBMWatson
   require_relative("./ibm_watson/language_translator_v3.rb")
   require_relative("./ibm_watson/compare_comply_v1.rb")
   require_relative("./ibm_watson/websocket/recognize_callback.rb")
+  require_relative("./ibm_watson/common.rb")
 end

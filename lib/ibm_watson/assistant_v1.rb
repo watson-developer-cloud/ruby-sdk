@@ -22,6 +22,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -117,7 +118,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=message"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "message")
 
       params = {
         "version" => @version,
@@ -167,7 +168,7 @@ module IBMWatson
     def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_workspaces"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_workspaces")
 
       params = {
         "version" => @version,
@@ -216,7 +217,7 @@ module IBMWatson
     def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_workspace"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_workspace")
 
       params = {
         "version" => @version
@@ -271,7 +272,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_workspace"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_workspace")
 
       params = {
         "version" => @version,
@@ -330,7 +331,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_workspace"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_workspace")
 
       params = {
         "version" => @version,
@@ -377,7 +378,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_workspace"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_workspace")
 
       params = {
         "version" => @version
@@ -423,7 +424,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_intents"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_intents")
 
       params = {
         "version" => @version,
@@ -471,7 +472,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_intent"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_intent")
 
       params = {
         "version" => @version
@@ -519,7 +520,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_intent"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_intent")
 
       params = {
         "version" => @version,
@@ -564,7 +565,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_intent"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_intent")
 
       params = {
         "version" => @version
@@ -606,7 +607,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_intent"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_intent")
 
       params = {
         "version" => @version
@@ -652,7 +653,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_examples"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_examples")
 
       params = {
         "version" => @version,
@@ -700,7 +701,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_example"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_example")
 
       params = {
         "version" => @version
@@ -746,7 +747,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_example"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_example")
 
       params = {
         "version" => @version,
@@ -791,7 +792,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_example"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_example")
 
       params = {
         "version" => @version
@@ -835,7 +836,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_example"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_example")
 
       params = {
         "version" => @version
@@ -878,7 +879,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_counterexamples"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_counterexamples")
 
       params = {
         "version" => @version,
@@ -923,7 +924,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_counterexample"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_counterexample")
 
       params = {
         "version" => @version
@@ -966,7 +967,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_counterexample"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_counterexample")
 
       params = {
         "version" => @version,
@@ -1004,7 +1005,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_counterexample"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_counterexample")
 
       params = {
         "version" => @version
@@ -1045,7 +1046,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_counterexample"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_counterexample")
 
       params = {
         "version" => @version
@@ -1091,7 +1092,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_entities"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_entities")
 
       params = {
         "version" => @version,
@@ -1143,7 +1144,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_entity"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_entity")
 
       params = {
         "version" => @version
@@ -1193,7 +1194,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_entity"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_entity")
 
       params = {
         "version" => @version,
@@ -1240,7 +1241,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_entity"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_entity")
 
       params = {
         "version" => @version
@@ -1284,7 +1285,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_entity"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_entity")
 
       params = {
         "version" => @version
@@ -1328,7 +1329,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_mentions"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_mentions")
 
       params = {
         "version" => @version,
@@ -1378,7 +1379,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_values"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_values")
 
       params = {
         "version" => @version,
@@ -1439,7 +1440,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_value"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_value")
 
       params = {
         "version" => @version
@@ -1491,7 +1492,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_value"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_value")
 
       params = {
         "version" => @version,
@@ -1550,7 +1551,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_value"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_value")
 
       params = {
         "version" => @version
@@ -1597,7 +1598,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_value"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_value")
 
       params = {
         "version" => @version
@@ -1645,7 +1646,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_synonyms"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_synonyms")
 
       params = {
         "version" => @version,
@@ -1694,7 +1695,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_synonym"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_synonym")
 
       params = {
         "version" => @version
@@ -1742,7 +1743,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_synonym"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_synonym")
 
       params = {
         "version" => @version,
@@ -1788,7 +1789,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_synonym"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_synonym")
 
       params = {
         "version" => @version
@@ -1834,7 +1835,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_synonym"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_synonym")
 
       params = {
         "version" => @version
@@ -1876,7 +1877,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_dialog_nodes"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_dialog_nodes")
 
       params = {
         "version" => @version,
@@ -1946,7 +1947,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=create_dialog_node"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_dialog_node")
 
       params = {
         "version" => @version
@@ -2005,7 +2006,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=get_dialog_node"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_dialog_node")
 
       params = {
         "version" => @version,
@@ -2072,7 +2073,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=update_dialog_node"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_dialog_node")
 
       params = {
         "version" => @version
@@ -2129,7 +2130,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_dialog_node"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_dialog_node")
 
       params = {
         "version" => @version
@@ -2172,7 +2173,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_logs"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_logs")
 
       params = {
         "version" => @version,
@@ -2217,7 +2218,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=list_all_logs"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_all_logs")
 
       params = {
         "version" => @version,
@@ -2259,7 +2260,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=conversation;service_version=V1;operation_id=delete_user_data"
+      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_user_data")
 
       params = {
         "version" => @version,

@@ -21,6 +21,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -93,7 +94,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=convert_to_html"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "convert_to_html")
 
       params = {
         "version" => @version,
@@ -141,7 +142,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=classify_elements"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "classify_elements")
 
       params = {
         "version" => @version,
@@ -189,7 +190,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=extract_tables"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "extract_tables")
 
       params = {
         "version" => @version,
@@ -244,7 +245,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=compare_documents"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "compare_documents")
 
       params = {
         "version" => @version,
@@ -300,7 +301,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=add_feedback"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "add_feedback")
 
       params = {
         "version" => @version
@@ -373,7 +374,7 @@ module IBMWatson
     def list_feedback(feedback_type: nil, before: nil, after: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=list_feedback"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "list_feedback")
 
       params = {
         "version" => @version,
@@ -421,7 +422,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=get_feedback"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "get_feedback")
 
       params = {
         "version" => @version,
@@ -454,7 +455,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=delete_feedback"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "delete_feedback")
 
       params = {
         "version" => @version,
@@ -524,7 +525,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=create_batch"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "create_batch")
 
       params = {
         "version" => @version,
@@ -575,7 +576,7 @@ module IBMWatson
     def list_batches
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=list_batches"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "list_batches")
 
       params = {
         "version" => @version
@@ -604,7 +605,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=get_batch"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "get_batch")
 
       params = {
         "version" => @version
@@ -641,7 +642,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=compare-comply;service_version=V1;operation_id=update_batch"
+      headers = Common.new.default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "update_batch")
 
       params = {
         "version" => @version,
