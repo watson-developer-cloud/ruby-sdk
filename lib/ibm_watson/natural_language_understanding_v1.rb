@@ -139,7 +139,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "analyze")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "analyze")
 
       params = {
         "version" => @version
@@ -184,7 +184,7 @@ module IBMWatson
     def list_models
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "list_models")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "list_models")
 
       params = {
         "version" => @version
@@ -213,7 +213,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "delete_model")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "delete_model")
 
       params = {
         "version" => @version

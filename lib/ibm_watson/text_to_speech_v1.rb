@@ -106,7 +106,7 @@ module IBMWatson
     def list_voices
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voices")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voices")
 
       method_url = "/v1/voices"
 
@@ -140,7 +140,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice")
 
       params = {
         "customization_id" => customization_id
@@ -270,7 +270,7 @@ module IBMWatson
       headers = {
         "Accept" => accept
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "synthesize")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "synthesize")
 
       params = {
         "voice" => voice,
@@ -328,7 +328,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_pronunciation")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_pronunciation")
 
       params = {
         "text" => text,
@@ -375,7 +375,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "create_voice_model")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "create_voice_model")
 
       data = {
         "name" => name,
@@ -416,7 +416,7 @@ module IBMWatson
     def list_voice_models(language: nil)
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voice_models")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voice_models")
 
       params = {
         "language" => language
@@ -481,7 +481,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "update_voice_model")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "update_voice_model")
 
       data = {
         "name" => name,
@@ -522,7 +522,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice_model")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice_model")
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -554,7 +554,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_voice_model")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_voice_model")
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -621,7 +621,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_words")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_words")
 
       data = {
         "words" => words
@@ -660,7 +660,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_words")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_words")
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
@@ -729,7 +729,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_word")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_word")
 
       data = {
         "translation" => translation,
@@ -771,7 +771,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_word")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_word")
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
@@ -807,7 +807,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_word")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_word")
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
@@ -844,7 +844,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_user_data")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_user_data")
 
       params = {
         "customer_id" => customer_id

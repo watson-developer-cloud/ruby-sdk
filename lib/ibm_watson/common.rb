@@ -5,7 +5,7 @@ module IBMWatson
   class Common
     def initialize(*); end
 
-    def default_headers(headers: {}, service_name: nil, service_version: nil, operation_id: nil)
+    def get_default_headers(headers: {}, service_name: nil, service_version: nil, operation_id: nil)
       user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION + " #{RbConfig::CONFIG["host"]}"
       user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
 

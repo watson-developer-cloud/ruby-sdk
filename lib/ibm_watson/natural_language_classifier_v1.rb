@@ -94,7 +94,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify")
 
       data = {
         "text" => text
@@ -129,7 +129,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify_collection")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify_collection")
 
       data = {
         "collection" => collection
@@ -175,7 +175,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "create_classifier")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "create_classifier")
 
       form_data = {}
 
@@ -211,7 +211,7 @@ module IBMWatson
     def list_classifiers
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "list_classifiers")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "list_classifiers")
 
       method_url = "/v1/classifiers"
 
@@ -235,7 +235,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "get_classifier")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "get_classifier")
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
@@ -258,7 +258,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "delete_classifier")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "delete_classifier")
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 

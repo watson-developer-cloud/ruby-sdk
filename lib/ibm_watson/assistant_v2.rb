@@ -107,7 +107,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "create_session")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "create_session")
 
       params = {
         "version" => @version
@@ -144,7 +144,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "delete_session")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "delete_session")
 
       params = {
         "version" => @version
@@ -188,7 +188,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "message")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "message")
 
       params = {
         "version" => @version

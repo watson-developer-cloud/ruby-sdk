@@ -155,7 +155,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone")
 
       params = {
         "version" => @version,
@@ -220,7 +220,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone_chat")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone_chat")
 
       params = {
         "version" => @version

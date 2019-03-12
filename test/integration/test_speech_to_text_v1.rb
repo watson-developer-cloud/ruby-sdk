@@ -298,7 +298,6 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
         word_name: "ＡＢＣ"
       )
       refute_nil(service_response)
-      puts service_response
       @service.delete_language_model(
         customization_id: customization_id
       )

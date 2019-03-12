@@ -199,7 +199,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.default_headers(headers: headers, service_name: "personality_insights", service_version: "V3", operation_id: "profile")
+      headers = Common.new.get_default_headers(headers: headers, service_name: "personality_insights", service_version: "V3", operation_id: "profile")
 
       params = {
         "version" => @version,
