@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "concurrent-ruby", "~> 1.0"
   spec.add_runtime_dependency "eventmachine", "~> 1.2"
   spec.add_runtime_dependency "faye-websocket", "~> 0.10"
-  spec.add_runtime_dependency "http", "~> 3.3"
+  spec.add_runtime_dependency "http", "~> 4.1.0"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "codecov", "~> 0.1"

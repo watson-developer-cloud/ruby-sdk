@@ -30,6 +30,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -154,7 +155,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=tone_analyzer;service_version=V3;operation_id=tone"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone")
 
       params = {
         "version" => @version,
@@ -219,7 +220,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=tone_analyzer;service_version=V3;operation_id=tone_chat"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone_chat")
 
       params = {
         "version" => @version

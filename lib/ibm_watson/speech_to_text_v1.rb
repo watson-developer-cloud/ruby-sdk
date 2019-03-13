@@ -42,6 +42,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -110,7 +111,7 @@ module IBMWatson
     def list_models
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_models"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_models")
 
       method_url = "/v1/models"
 
@@ -140,7 +141,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_model")
 
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
 
@@ -378,7 +379,7 @@ module IBMWatson
         "Content-Type" => content_type
       }
       keywords *= "," unless keywords.nil?
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=recognize"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "recognize")
 
       params = {
         "model" => model,
@@ -494,7 +495,7 @@ module IBMWatson
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=discovery;service_version=V1;operation_id=recognize_using_websocket"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "recognize_using_websocket")
       headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
       if !token_manager.nil?
         access_token = token_manager.token
@@ -639,7 +640,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=register_callback"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "register_callback")
 
       params = {
         "callback_url" => callback_url,
@@ -674,7 +675,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=unregister_callback"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "unregister_callback")
 
       params = {
         "callback_url" => callback_url
@@ -958,7 +959,7 @@ module IBMWatson
       headers = {
         "Content-Type" => content_type
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=create_job"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "create_job")
 
       params = {
         "model" => model,
@@ -1018,7 +1019,7 @@ module IBMWatson
     def check_jobs
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=check_jobs"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "check_jobs")
 
       method_url = "/v1/recognitions"
 
@@ -1057,7 +1058,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=check_job"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "check_job")
 
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
 
@@ -1090,7 +1091,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_job"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_job")
 
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
 
@@ -1149,7 +1150,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=create_language_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "create_language_model")
 
       data = {
         "name" => name,
@@ -1188,7 +1189,7 @@ module IBMWatson
     def list_language_models(language: nil)
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_language_models"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_language_models")
 
       params = {
         "language" => language
@@ -1223,7 +1224,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_language_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_language_model")
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -1255,7 +1256,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_language_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_language_model")
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -1331,7 +1332,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=train_language_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "train_language_model")
 
       params = {
         "word_type_to_add" => word_type_to_add,
@@ -1371,7 +1372,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=reset_language_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "reset_language_model")
 
       method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
 
@@ -1414,7 +1415,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=upgrade_language_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "upgrade_language_model")
 
       method_url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
 
@@ -1449,7 +1450,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_corpora"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_corpora")
 
       method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
 
@@ -1548,7 +1549,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=add_corpus"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_corpus")
 
       params = {
         "allow_overwrite" => allow_overwrite
@@ -1597,7 +1598,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_corpus"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_corpus")
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
@@ -1636,7 +1637,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_corpus"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_corpus")
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
@@ -1686,7 +1687,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_words"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_words")
 
       params = {
         "word_type" => word_type,
@@ -1777,7 +1778,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=add_words"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_words")
 
       data = {
         "words" => words
@@ -1870,7 +1871,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=add_word"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_word")
 
       data = {
         "word" => word,
@@ -1913,7 +1914,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_word"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_word")
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
@@ -1953,7 +1954,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_word"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_word")
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
@@ -1988,7 +1989,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_grammars"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_grammars")
 
       method_url = "/v1/customizations/%s/grammars" % [ERB::Util.url_encode(customization_id)]
 
@@ -2082,7 +2083,7 @@ module IBMWatson
       headers = {
         "Content-Type" => content_type
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=add_grammar"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_grammar")
 
       params = {
         "allow_overwrite" => allow_overwrite
@@ -2125,7 +2126,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_grammar"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_grammar")
 
       method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
 
@@ -2163,7 +2164,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_grammar"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_grammar")
 
       method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
 
@@ -2211,7 +2212,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=create_acoustic_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "create_acoustic_model")
 
       data = {
         "name" => name,
@@ -2249,7 +2250,7 @@ module IBMWatson
     def list_acoustic_models(language: nil)
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_acoustic_models"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_acoustic_models")
 
       params = {
         "language" => language
@@ -2284,7 +2285,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_acoustic_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_acoustic_model")
 
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -2316,7 +2317,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_acoustic_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_acoustic_model")
 
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -2390,7 +2391,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=train_acoustic_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "train_acoustic_model")
 
       params = {
         "custom_language_model_id" => custom_language_model_id
@@ -2428,7 +2429,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=reset_acoustic_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "reset_acoustic_model")
 
       method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
 
@@ -2488,7 +2489,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=upgrade_acoustic_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "upgrade_acoustic_model")
 
       params = {
         "custom_language_model_id" => custom_language_model_id,
@@ -2531,7 +2532,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=list_audio"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_audio")
 
       method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
 
@@ -2684,7 +2685,7 @@ module IBMWatson
         "Content-Type" => content_type,
         "Contained-Content-Type" => contained_content_type
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=add_audio"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_audio")
 
       params = {
         "allow_overwrite" => allow_overwrite
@@ -2743,7 +2744,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=get_audio"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_audio")
 
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
 
@@ -2781,7 +2782,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_audio"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_audio")
 
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
 
@@ -2818,7 +2819,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=speech_to_text;service_version=V1;operation_id=delete_user_data"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_user_data")
 
       params = {
         "customer_id" => customer_id

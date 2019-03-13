@@ -8,6 +8,7 @@ require_relative("./detailed_response.rb")
 require_relative("./watson_api_exception.rb")
 require_relative("./iam_token_manager.rb")
 require_relative("./version.rb")
+require_relative("./common.rb")
 # require("httplog")
 # HttpLog.configure do |config|
 #   config.log_connect   = true
@@ -19,6 +20,9 @@ require_relative("./version.rb")
 # end
 
 DEFAULT_CREDENTIALS_FILE_NAME = "ibm-credentials.env"
+NORMALIZER = lambda do |uri| # Custom URI normalizer when using HTTP Client
+  HTTP::URI.parse uri
+end
 
 # Class for interacting with the Watson API
 class WatsonService
@@ -45,14 +49,6 @@ class WatsonService
     @icp_prefix = vars[:password]&.start_with?("icp-") ? true : false
     @disable_ssl = false
     @display_name = vars[:display_name]
-
-    user_agent_string = "watson-apis-ruby-sdk-" + IBMWatson::VERSION
-    user_agent_string += " #{RbConfig::CONFIG["host"]}"
-    user_agent_string += " #{RbConfig::CONFIG["RUBY_BASE_NAME"]}-#{RbConfig::CONFIG["RUBY_PROGRAM_VERSION"]}"
-
-    headers = {
-      "User-Agent" => user_agent_string
-    }
 
     if !vars[:iam_access_token].nil? || !vars[:iam_apikey].nil?
       set_token_manager(iam_apikey: vars[:iam_apikey], iam_access_token: vars[:iam_access_token], iam_url: vars[:iam_url])
@@ -88,8 +84,8 @@ class WatsonService
     raise ArgumentError.new('The apikey shouldn\'t start or end with curly brackets or quotes. Be sure to remove any {} and \" characters surrounding your apikey') if check_bad_first_or_last_char(@iam_apikey)
 
     @conn = HTTP::Client.new(
-      headers: headers
-    )
+      headers: {}
+    ).use normalize_uri: { normalizer: NORMALIZER }
   end
 
   # Initiates the credentials based on the credential file
@@ -267,11 +263,11 @@ class WatsonService
         read: 0
       }
       time = defaults.merge(timeout[:per_operation])
-      @conn = @conn.timeout(:per_operation, write: time[:write], connect: time[:connect], read: time[:read])
+      @conn = @conn.timeout(write: time[:write], connect: time[:connect], read: time[:read])
     else
       raise TypeError("global in timeout must be an Integer") unless timeout[:global].is_a?(Integer)
 
-      @conn = @conn.timeout(:global, write: timeout[:global], connect: 0, read: 0)
+      @conn = @conn.timeout(timeout[:global])
     end
   end
 

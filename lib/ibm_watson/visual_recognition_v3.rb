@@ -22,6 +22,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -120,7 +121,7 @@ module IBMWatson
       headers = {
         "Accept-Language" => accept_language
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=classify"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "classify")
 
       params = {
         "version" => @version
@@ -199,7 +200,7 @@ module IBMWatson
       headers = {
         "Accept-Language" => accept_language
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=detect_faces"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "detect_faces")
 
       params = {
         "version" => @version
@@ -274,7 +275,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=create_classifier"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "create_classifier")
 
       params = {
         "version" => @version
@@ -324,7 +325,7 @@ module IBMWatson
     def list_classifiers(verbose: nil)
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=list_classifiers"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "list_classifiers")
 
       params = {
         "version" => @version,
@@ -354,7 +355,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=get_classifier"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "get_classifier")
 
       params = {
         "version" => @version
@@ -418,7 +419,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=update_classifier"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "update_classifier")
 
       params = {
         "version" => @version
@@ -467,7 +468,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=delete_classifier"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "delete_classifier")
 
       params = {
         "version" => @version
@@ -500,7 +501,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=get_core_ml_model"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "get_core_ml_model")
 
       params = {
         "version" => @version
@@ -538,7 +539,7 @@ module IBMWatson
 
       headers = {
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=watson_vision_combined;service_version=V3;operation_id=delete_user_data"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "delete_user_data")
 
       params = {
         "version" => @version,

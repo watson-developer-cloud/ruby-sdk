@@ -39,6 +39,7 @@ require "concurrent"
 require "erb"
 require "json"
 require_relative "./detailed_response"
+require_relative "./common.rb"
 
 require_relative "./watson_service"
 
@@ -198,7 +199,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers["X-IBMCloud-SDK-Analytics"] = "service_name=personality_insights;service_version=V3;operation_id=profile"
+      headers = Common.new.get_default_headers(headers: headers, service_name: "personality_insights", service_version: "V3", operation_id: "profile")
 
       params = {
         "version" => @version,
