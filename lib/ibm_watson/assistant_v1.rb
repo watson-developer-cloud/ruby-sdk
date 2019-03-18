@@ -21,16 +21,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Assistant V1 service.
-  class AssistantV1 < WatsonService
+  class AssistantV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -112,13 +111,13 @@ module IBMWatson
     #   were triggered, and messages from the log.
     # @param nodes_visited_details [Boolean] Whether to include additional diagnostic information about the dialog nodes that
     #   were visited during processing of the message.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "message")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "message")
 
       params = {
         "version" => @version,
@@ -164,11 +163,11 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_workspaces")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_workspaces")
 
       params = {
         "version" => @version,
@@ -213,11 +212,11 @@ module IBMWatson
     # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
     #   improvements. `true` indicates that workspace training data is not to be used.
     # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_workspace")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_workspace")
 
       params = {
         "version" => @version
@@ -266,13 +265,13 @@ module IBMWatson
     # @param sort [String] Indicates how the returned workspace data will be sorted. This parameter is valid
     #   only if **export**=`true`. Specify `sort=stable` to sort all workspace objects by
     #   unique identifier, in ascending alphabetical order.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_workspace")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_workspace")
 
       params = {
         "version" => @version,
@@ -325,13 +324,13 @@ module IBMWatson
     #   If **append**=`true`, existing elements are preserved, and the new elements are
     #   added. If any elements in the new data collide with existing elements, the update
     #   request fails.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_workspace")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_workspace")
 
       params = {
         "version" => @version,
@@ -378,7 +377,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_workspace")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_workspace")
 
       params = {
         "version" => @version
@@ -418,13 +417,13 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_intents")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_intents")
 
       params = {
         "version" => @version,
@@ -464,7 +463,7 @@ module IBMWatson
     # @param description [String] The description of the intent. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
     # @param examples [Array[CreateExample]] An array of user input examples for the intent.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_intent(workspace_id:, intent:, description: nil, examples: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -472,7 +471,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_intent")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_intent")
 
       params = {
         "version" => @version
@@ -512,7 +511,7 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -520,7 +519,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_intent")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_intent")
 
       params = {
         "version" => @version,
@@ -557,7 +556,7 @@ module IBMWatson
     #   - It must be no longer than 128 characters.
     # @param new_description [String] The description of the intent.
     # @param new_examples [Array[CreateExample]] An array of user input examples for the intent.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -565,7 +564,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_intent")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_intent")
 
       params = {
         "version" => @version
@@ -607,7 +606,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_intent")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_intent")
 
       params = {
         "version" => @version
@@ -645,7 +644,7 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -653,7 +652,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_examples")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_examples")
 
       params = {
         "version" => @version,
@@ -691,7 +690,7 @@ module IBMWatson
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
     # @param mentions [Array[Mentions]] An array of contextual entity mentions.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_example(workspace_id:, intent:, text:, mentions: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -701,7 +700,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_example")
 
       params = {
         "version" => @version
@@ -737,7 +736,7 @@ module IBMWatson
     # @param text [String] The text of the user input example.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_example(workspace_id:, intent:, text:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -747,7 +746,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_example")
 
       params = {
         "version" => @version,
@@ -782,7 +781,7 @@ module IBMWatson
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
     # @param new_mentions [Array[Mentions]] An array of contextual entity mentions.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -792,7 +791,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_example")
 
       params = {
         "version" => @version
@@ -836,7 +835,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_example")
 
       params = {
         "version" => @version
@@ -873,13 +872,13 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_counterexamples")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_counterexamples")
 
       params = {
         "version" => @version,
@@ -916,7 +915,7 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters
     #   - It cannot consist of only whitespace characters
     #   - It must be no longer than 1024 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_counterexample(workspace_id:, text:)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -924,7 +923,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_counterexample")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_counterexample")
 
       params = {
         "version" => @version
@@ -959,7 +958,7 @@ module IBMWatson
     # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_counterexample(workspace_id:, text:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -967,7 +966,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_counterexample")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_counterexample")
 
       params = {
         "version" => @version,
@@ -997,7 +996,7 @@ module IBMWatson
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @param new_text [String] The text of a user input counterexample.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_counterexample(workspace_id:, text:, new_text: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1005,7 +1004,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_counterexample")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_counterexample")
 
       params = {
         "version" => @version
@@ -1046,7 +1045,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_counterexample")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_counterexample")
 
       params = {
         "version" => @version
@@ -1086,13 +1085,13 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_entities")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_entities")
 
       params = {
         "version" => @version,
@@ -1136,7 +1135,7 @@ module IBMWatson
     # @param metadata [Object] Any metadata related to the value.
     # @param values [Array[CreateValue]] An array of objects describing the entity values.
     # @param fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1144,7 +1143,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_entity")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_entity")
 
       params = {
         "version" => @version
@@ -1186,7 +1185,7 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1194,7 +1193,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_entity")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_entity")
 
       params = {
         "version" => @version,
@@ -1233,7 +1232,7 @@ module IBMWatson
     # @param new_metadata [Object] Any metadata related to the entity.
     # @param new_fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
     # @param new_values [Array[CreateValue]] An array of entity values.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1241,7 +1240,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_entity")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_entity")
 
       params = {
         "version" => @version
@@ -1285,7 +1284,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_entity")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_entity")
 
       params = {
         "version" => @version
@@ -1321,7 +1320,7 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1329,7 +1328,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_mentions")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_mentions")
 
       params = {
         "version" => @version,
@@ -1371,7 +1370,7 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1379,7 +1378,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_values")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_values")
 
       params = {
         "version" => @version,
@@ -1430,7 +1429,7 @@ module IBMWatson
     #   specify a pattern, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant/entities.html#creating-entities).
     # @param value_type [String] Specifies the type of value.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1440,7 +1439,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_value")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_value")
 
       params = {
         "version" => @version
@@ -1482,7 +1481,7 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1492,7 +1491,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_value")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_value")
 
       params = {
         "version" => @version,
@@ -1541,7 +1540,7 @@ module IBMWatson
     #   expression no longer than 512 characters. For more information about how to
     #   specify a pattern, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant/entities.html#creating-entities).
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1551,7 +1550,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_value")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_value")
 
       params = {
         "version" => @version
@@ -1598,7 +1597,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_value")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_value")
 
       params = {
         "version" => @version
@@ -1636,7 +1635,7 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1646,7 +1645,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_synonyms")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_synonyms")
 
       params = {
         "version" => @version,
@@ -1683,7 +1682,7 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_synonym(workspace_id:, entity:, value:, synonym:)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1695,7 +1694,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_synonym")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_synonym")
 
       params = {
         "version" => @version
@@ -1731,7 +1730,7 @@ module IBMWatson
     # @param synonym [String] The text of the synonym.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1743,7 +1742,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_synonym")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_synonym")
 
       params = {
         "version" => @version,
@@ -1777,7 +1776,7 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1789,7 +1788,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_synonym")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_synonym")
 
       params = {
         "version" => @version
@@ -1835,7 +1834,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_synonym")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_synonym")
 
       params = {
         "version" => @version
@@ -1871,13 +1870,13 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_dialog_nodes")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_dialog_nodes")
 
       params = {
         "version" => @version,
@@ -1939,7 +1938,7 @@ module IBMWatson
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users. This string must be no longer than 512 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1947,7 +1946,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_dialog_node")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "create_dialog_node")
 
       params = {
         "version" => @version
@@ -1998,7 +1997,7 @@ module IBMWatson
     # @param dialog_node [String] The dialog node ID (for example, `get_order`).
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -2006,7 +2005,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_dialog_node")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "get_dialog_node")
 
       params = {
         "version" => @version,
@@ -2065,7 +2064,7 @@ module IBMWatson
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users. This string must be no longer than 512 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -2073,7 +2072,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_dialog_node")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "update_dialog_node")
 
       params = {
         "version" => @version
@@ -2130,7 +2129,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_dialog_node")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_dialog_node")
 
       params = {
         "version" => @version
@@ -2167,13 +2166,13 @@ module IBMWatson
     #   [documentation](https://cloud.ibm.com/docs/services/assistant/filter-reference.html#filter-query-syntax).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param cursor [String] A token identifying the page of results to retrieve.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_logs")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_logs")
 
       params = {
         "version" => @version,
@@ -2212,13 +2211,13 @@ module IBMWatson
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param cursor [String] A token identifying the page of results to retrieve.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
       raise ArgumentError.new("filter must be provided") if filter.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_all_logs")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "list_all_logs")
 
       params = {
         "version" => @version,
@@ -2260,7 +2259,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_user_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V1", operation_id: "delete_user_data")
 
       params = {
         "version" => @version,

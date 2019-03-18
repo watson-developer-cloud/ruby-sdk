@@ -36,16 +36,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Text to Speech V1 service.
-  class TextToSpeechV1 < WatsonService
+  class TextToSpeechV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -102,11 +101,11 @@ module IBMWatson
     #
     #   **See also:** [Specifying a
     #   voice](https://cloud.ibm.com/docs/services/text-to-speech/http.html#voices).
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_voices
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voices")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voices")
 
       method_url = "/v1/voices"
 
@@ -134,13 +133,13 @@ module IBMWatson
     #   returned. You must make the request with service credentials created for the
     #   instance of the service that owns the custom model. Omit the parameter to see
     #   information about the specified voice with no customization.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_voice(voice:, customization_id: nil)
       raise ArgumentError.new("voice must be provided") if voice.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice")
 
       params = {
         "customization_id" => customization_id
@@ -263,14 +262,14 @@ module IBMWatson
     #   language of the indicated voice. You must make the request with service
     #   credentials created for the instance of the service that owns the custom model.
     #   Omit the parameter to use the specified voice with no customization.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
         "Accept" => accept
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "synthesize")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "synthesize")
 
       params = {
         "voice" => voice,
@@ -322,13 +321,13 @@ module IBMWatson
     #   must make the request with service credentials created for the instance of the
     #   service that owns the custom model. Omit the parameter to see the translation for
     #   the specified voice with no customization.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_pronunciation(text:, voice: nil, format: nil, customization_id: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_pronunciation")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_pronunciation")
 
       params = {
         "text" => text,
@@ -369,13 +368,13 @@ module IBMWatson
     #   default language, `en-US`.
     # @param description [String] A description of the new custom voice model. Specifying a description is
     #   recommended.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_voice_model(name:, language: nil, description: nil)
       raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "create_voice_model")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "create_voice_model")
 
       data = {
         "name" => name,
@@ -412,11 +411,11 @@ module IBMWatson
     # @param language [String] The language for which custom voice models that are owned by the requesting
     #   service credentials are to be returned. Omit the parameter to see all custom voice
     #   models that are owned by the requester.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_voice_models(language: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voice_models")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_voice_models")
 
       params = {
         "language" => language
@@ -481,7 +480,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "update_voice_model")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "update_voice_model")
 
       data = {
         "name" => name,
@@ -516,13 +515,13 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_voice_model(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice_model")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_voice_model")
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -554,7 +553,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_voice_model")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_voice_model")
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
@@ -621,7 +620,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_words")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_words")
 
       data = {
         "words" => words
@@ -654,13 +653,13 @@ module IBMWatson
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_words(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_words")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "list_words")
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
@@ -729,7 +728,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_word")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "add_word")
 
       data = {
         "translation" => translation,
@@ -763,7 +762,7 @@ module IBMWatson
     #   with service credentials created for the instance of the service that owns the
     #   custom model.
     # @param word [String] The word that is to be queried from the custom voice model.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_word(customization_id:, word:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
@@ -771,7 +770,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_word")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "get_word")
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
@@ -807,7 +806,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_word")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_word")
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
@@ -844,7 +843,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_user_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "text_to_speech", service_version: "V1", operation_id: "delete_user_data")
 
       params = {
         "customer_id" => customer_id

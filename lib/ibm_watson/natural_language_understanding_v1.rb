@@ -27,16 +27,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Natural Language Understanding V1 service.
-  class NaturalLanguageUnderstandingV1 < WatsonService
+  class NaturalLanguageUnderstandingV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -133,13 +132,13 @@ module IBMWatson
     #   support](https://www.bluemix.net/docs/services/natural-language-understanding/language-support.html)
     #   for more information.
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
       raise ArgumentError.new("features must be provided") if features.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "analyze")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "analyze")
 
       params = {
         "version" => @version
@@ -180,11 +179,11 @@ module IBMWatson
     # Lists Watson Knowledge Studio [custom
     #   models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
     #   that are deployed to your Natural Language Understanding service.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_models
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "list_models")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "list_models")
 
       params = {
         "version" => @version
@@ -207,13 +206,13 @@ module IBMWatson
     # Delete model.
     # Deletes a custom model.
     # @param model_id [String] Model ID of the model to delete.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "delete_model")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "delete_model")
 
       params = {
         "version" => @version

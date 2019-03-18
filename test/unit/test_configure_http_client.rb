@@ -146,7 +146,7 @@ class HTTPConfigTest < Minitest::Test
       username: "username",
       password: "password"
     )
-    service.configure_http_client(disable_ssl: true)
+    service.configure_http_client(disable_ssl_verification: true)
     refute_nil(service.conn.default_options.ssl_context)
   end
 end

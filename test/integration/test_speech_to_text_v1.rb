@@ -55,7 +55,7 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
           model_id: "bogus"
         )
       rescue StandardError => e
-        refute_nil(e.global_transaction_id)
+        refute_nil(e.error)
       end
     end
 

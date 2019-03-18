@@ -23,16 +23,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Discovery V1 service.
-  class DiscoveryV1 < WatsonService
+  class DiscoveryV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -104,13 +103,13 @@ module IBMWatson
     # @param description [String] Description of the environment.
     # @param size [String] Size of the environment. In the Lite plan the default and only accepted value is
     #   `LT`, in all other plans the default is `S`.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
       raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_environment")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_environment")
 
       params = {
         "version" => @version
@@ -140,11 +139,11 @@ module IBMWatson
     # List environments.
     # List existing environments for the service instance.
     # @param name [String] Show only the environment with the given name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_environments(name: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_environments")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_environments")
 
       params = {
         "version" => @version,
@@ -167,13 +166,13 @@ module IBMWatson
     # @!method get_environment(environment_id:)
     # Get environment info.
     # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_environment(environment_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_environment")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_environment")
 
       params = {
         "version" => @version
@@ -202,13 +201,13 @@ module IBMWatson
     # @param size [String] Size that the environment should be increased to. Environment size cannot be
     #   modified when using a Lite plan. Environment size can only increased and not
     #   decreased.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_environment(environment_id:, name: nil, description: nil, size: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_environment")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_environment")
 
       params = {
         "version" => @version
@@ -237,13 +236,13 @@ module IBMWatson
     # @!method delete_environment(environment_id:)
     # Delete environment.
     # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_environment(environment_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_environment")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_environment")
 
       params = {
         "version" => @version
@@ -268,7 +267,7 @@ module IBMWatson
     #   specified collections.
     # @param environment_id [String] The ID of the environment.
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_fields(environment_id:, collection_ids:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -276,7 +275,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_fields")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_fields")
 
       params = {
         "version" => @version,
@@ -322,7 +321,7 @@ module IBMWatson
     #   normalized form. Operations are executed in the order that they appear in the
     #   array.
     # @param source [Source] Object containing source parameters for the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -330,7 +329,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_configuration")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_configuration")
 
       params = {
         "version" => @version
@@ -364,13 +363,13 @@ module IBMWatson
     # Lists existing configurations for the service instance.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] Find configurations with the given name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_configurations(environment_id:, name: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_configurations")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_configurations")
 
       params = {
         "version" => @version,
@@ -394,7 +393,7 @@ module IBMWatson
     # Get configuration details.
     # @param environment_id [String] The ID of the environment.
     # @param configuration_id [String] The ID of the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_configuration(environment_id:, configuration_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -402,7 +401,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_configuration")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_configuration")
 
       params = {
         "version" => @version
@@ -442,7 +441,7 @@ module IBMWatson
     #   normalized form. Operations are executed in the order that they appear in the
     #   array.
     # @param source [Source] Object containing source parameters for the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -452,7 +451,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_configuration")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_configuration")
 
       params = {
         "version" => @version
@@ -491,7 +490,7 @@ module IBMWatson
     #   submitted.
     # @param environment_id [String] The ID of the environment.
     # @param configuration_id [String] The ID of the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_configuration(environment_id:, configuration_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -499,7 +498,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_configuration")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_configuration")
 
       params = {
         "version" => @version
@@ -552,13 +551,13 @@ module IBMWatson
     #   } ```.
     # @param file_content_type [String] The content type of file.
     # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def test_configuration_in_environment(environment_id:, configuration: nil, step: nil, configuration_id: nil, file: nil, metadata: nil, file_content_type: nil, filename: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "test_configuration_in_environment")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "test_configuration_in_environment")
 
       params = {
         "version" => @version,
@@ -605,7 +604,7 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration in which the collection is to be created.
     # @param language [String] The language of the documents stored in the collection, in the form of an ISO
     #   639-1 language code.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_collection(environment_id:, name:, description: nil, configuration_id: nil, language: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -613,7 +612,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_collection")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_collection")
 
       params = {
         "version" => @version
@@ -645,13 +644,13 @@ module IBMWatson
     # Lists existing collections for the service instance.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] Find collections with the given name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collections(environment_id:, name: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_collections")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_collections")
 
       params = {
         "version" => @version,
@@ -675,7 +674,7 @@ module IBMWatson
     # Get collection details.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_collection(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -683,7 +682,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_collection")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_collection")
 
       params = {
         "version" => @version
@@ -709,7 +708,7 @@ module IBMWatson
     # @param name [String] The name of the collection.
     # @param description [String] A description of the collection.
     # @param configuration_id [String] The ID of the configuration in which the collection is to be updated.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_collection(environment_id:, collection_id:, name:, description: nil, configuration_id: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -717,7 +716,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_collection")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_collection")
 
       params = {
         "version" => @version
@@ -747,7 +746,7 @@ module IBMWatson
     # Delete a collection.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_collection(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -755,7 +754,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_collection")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_collection")
 
       params = {
         "version" => @version
@@ -779,7 +778,7 @@ module IBMWatson
     # Gets a list of the unique fields (and their types) stored in the index.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collection_fields(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -787,7 +786,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_collection_fields")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_collection_fields")
 
       params = {
         "version" => @version
@@ -815,7 +814,7 @@ module IBMWatson
     #   list is not specified, an object with empty expansion arrays is returned.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_expansions(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -823,7 +822,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_expansions")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_expansions")
 
       params = {
         "version" => @version
@@ -865,7 +864,7 @@ module IBMWatson
     #   and an array of **expanded_terms**. When items in the **input_terms** array are
     #   present in a query, they are expanded using the items listed in the
     #   **expanded_terms** array.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_expansions(environment_id:, collection_id:, expansions:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -875,7 +874,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_expansions")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_expansions")
 
       params = {
         "version" => @version
@@ -913,7 +912,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_expansions")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_expansions")
 
       params = {
         "version" => @version
@@ -938,7 +937,7 @@ module IBMWatson
     #   collection.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_tokenization_dictionary_status(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -946,7 +945,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_tokenization_dictionary_status")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_tokenization_dictionary_status")
 
       params = {
         "version" => @version
@@ -973,7 +972,7 @@ module IBMWatson
     # @param tokenization_rules [Array[TokenDictRule]] An array of tokenization rules. Each rule contains, the original `text` string,
     #   component `tokens`, any alternate character set `readings`, and which
     #   `part_of_speech` the text is from.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -981,7 +980,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_tokenization_dictionary")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_tokenization_dictionary")
 
       params = {
         "version" => @version
@@ -1018,7 +1017,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_tokenization_dictionary")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_tokenization_dictionary")
 
       params = {
         "version" => @version
@@ -1042,7 +1041,7 @@ module IBMWatson
     # Returns the current status of the stopword list for the specified collection.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_stopword_list_status(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1050,7 +1049,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_stopword_list_status")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_stopword_list_status")
 
       params = {
         "version" => @version
@@ -1076,7 +1075,7 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @param stopword_file [File] The content of the stopword list to ingest.
     # @param stopword_filename [String] The filename for stopword_file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1086,7 +1085,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_stopword_list")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_stopword_list")
 
       params = {
         "version" => @version
@@ -1128,7 +1127,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_stopword_list")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_stopword_list")
 
       params = {
         "version" => @version
@@ -1190,7 +1189,7 @@ module IBMWatson
     #   } ```.
     # @param file_content_type [String] The content type of file.
     # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_document(environment_id:, collection_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1198,7 +1197,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "add_document")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "add_document")
 
       params = {
         "version" => @version
@@ -1239,7 +1238,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param document_id [String] The ID of the document.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_document_status(environment_id:, collection_id:, document_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1249,7 +1248,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_document_status")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_document_status")
 
       params = {
         "version" => @version
@@ -1286,7 +1285,7 @@ module IBMWatson
     #   } ```.
     # @param file_content_type [String] The content type of file.
     # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_document(environment_id:, collection_id:, document_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1296,7 +1295,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_document")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_document")
 
       params = {
         "version" => @version
@@ -1336,7 +1335,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param document_id [String] The ID of the document.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_document(environment_id:, collection_id:, document_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1346,7 +1345,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_document")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_document")
 
       params = {
         "version" => @version
@@ -1433,7 +1432,7 @@ module IBMWatson
     #   field values. This parameter cannot be used in the same query as the **sort**
     #   parameter.
     # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1442,7 +1441,7 @@ module IBMWatson
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query")
 
       params = {
         "version" => @version
@@ -1537,7 +1536,7 @@ module IBMWatson
     # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
     #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1545,7 +1544,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_notices")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_notices")
 
       params = {
         "version" => @version,
@@ -1645,14 +1644,14 @@ module IBMWatson
     #   field values. This parameter cannot be used in the same query as the **sort**
     #   parameter.
     # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "federated_query")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "federated_query")
 
       params = {
         "version" => @version
@@ -1741,7 +1740,7 @@ module IBMWatson
     # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
     #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1749,7 +1748,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "federated_query_notices")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "federated_query_notices")
 
       params = {
         "version" => @version,
@@ -1798,7 +1797,7 @@ module IBMWatson
     # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
     # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
     #   maximum number of evidence items per query is 10,000.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1806,7 +1805,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_entities")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_entities")
 
       params = {
         "version" => @version
@@ -1853,7 +1852,7 @@ module IBMWatson
     # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
     # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
     #   maximum number of evidence items per query is 10,000.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1861,7 +1860,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_relations")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_relations")
 
       params = {
         "version" => @version
@@ -1898,7 +1897,7 @@ module IBMWatson
     # Lists the training data for the specified collection.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_training_data(environment_id:, collection_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1906,7 +1905,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_training_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_training_data")
 
       params = {
         "version" => @version
@@ -1934,7 +1933,7 @@ module IBMWatson
     # @param natural_language_query [String]
     # @param filter [String]
     # @param examples [Array[TrainingExample]]
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_training_data(environment_id:, collection_id:, natural_language_query: nil, filter: nil, examples: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1942,7 +1941,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "add_training_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "add_training_data")
 
       params = {
         "version" => @version
@@ -1981,7 +1980,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_all_training_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_all_training_data")
 
       params = {
         "version" => @version
@@ -2007,7 +2006,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param query_id [String] The ID of the query used for training.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_data(environment_id:, collection_id:, query_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2017,7 +2016,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_training_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_training_data")
 
       params = {
         "version" => @version
@@ -2053,7 +2052,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_training_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_training_data")
 
       params = {
         "version" => @version
@@ -2078,7 +2077,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param query_id [String] The ID of the query used for training.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_training_examples(environment_id:, collection_id:, query_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2088,7 +2087,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_training_examples")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_training_examples")
 
       params = {
         "version" => @version
@@ -2116,7 +2115,7 @@ module IBMWatson
     # @param document_id [String]
     # @param cross_reference [String]
     # @param relevance [Fixnum]
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2126,7 +2125,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_training_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_training_example")
 
       params = {
         "version" => @version
@@ -2171,7 +2170,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_training_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_training_example")
 
       params = {
         "version" => @version
@@ -2199,7 +2198,7 @@ module IBMWatson
     # @param example_id [String] The ID of the document as it is indexed.
     # @param cross_reference [String]
     # @param relevance [Fixnum]
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_training_example(environment_id:, collection_id:, query_id:, example_id:, cross_reference: nil, relevance: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2211,7 +2210,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_training_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_training_example")
 
       params = {
         "version" => @version
@@ -2243,7 +2242,7 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @param query_id [String] The ID of the query used for training.
     # @param example_id [String] The ID of the document as it is indexed.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_example(environment_id:, collection_id:, query_id:, example_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2255,7 +2254,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_training_example")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_training_example")
 
       params = {
         "version" => @version
@@ -2293,7 +2292,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_user_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_user_data")
 
       params = {
         "version" => @version,
@@ -2323,7 +2322,7 @@ module IBMWatson
     #   were \"clicked\" by a user and when that click occured.
     # @param type [String] The event type to be created.
     # @param data [EventData] Query event data object.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_event(type:, data:)
       raise ArgumentError.new("type must be provided") if type.nil?
 
@@ -2331,7 +2330,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_event")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_event")
 
       params = {
         "version" => @version
@@ -2375,11 +2374,11 @@ module IBMWatson
     # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
     #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_log")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "query_log")
 
       params = {
         "version" => @version,
@@ -2412,11 +2411,11 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query")
 
       params = {
         "version" => @version,
@@ -2448,11 +2447,11 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query_event")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query_event")
 
       params = {
         "version" => @version,
@@ -2483,11 +2482,11 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query_no_results")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query_no_results")
 
       params = {
         "version" => @version,
@@ -2520,11 +2519,11 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_event_rate")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_event_rate")
 
       params = {
         "version" => @version,
@@ -2553,11 +2552,11 @@ module IBMWatson
     #   (queries and events are stored for 30 days). A query token is an individual word
     #   or unigram within the query string.
     # @param count [Fixnum] Number of results to return.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_token_event(count: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query_token_event")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_metrics_query_token_event")
 
       params = {
         "version" => @version,
@@ -2587,13 +2586,13 @@ module IBMWatson
     #    **Note:**  All credentials are sent over an encrypted connection and encrypted at
     #   rest.
     # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_credentials(environment_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_credentials")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_credentials")
 
       params = {
         "version" => @version
@@ -2630,13 +2629,13 @@ module IBMWatson
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_credentials")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_credentials")
 
       params = {
         "version" => @version
@@ -2669,7 +2668,7 @@ module IBMWatson
     #   returned and must be obtained from the source system.
     # @param environment_id [String] The ID of the environment.
     # @param credential_id [String] The unique identifier for a set of source credentials.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_credentials(environment_id:, credential_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2677,7 +2676,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_credentials")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_credentials")
 
       params = {
         "version" => @version
@@ -2714,7 +2713,7 @@ module IBMWatson
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2722,7 +2721,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_credentials")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "update_credentials")
 
       params = {
         "version" => @version
@@ -2752,7 +2751,7 @@ module IBMWatson
     # Deletes a set of stored credentials from your Discovery instance.
     # @param environment_id [String] The ID of the environment.
     # @param credential_id [String] The unique identifier for a set of source credentials.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_credentials(environment_id:, credential_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2760,7 +2759,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_credentials")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_credentials")
 
       params = {
         "version" => @version
@@ -2786,13 +2785,13 @@ module IBMWatson
     # List Gateways.
     # List the currently configured gateways.
     # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_gateways(environment_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_gateways")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "list_gateways")
 
       params = {
         "version" => @version
@@ -2816,13 +2815,13 @@ module IBMWatson
     # Create a gateway configuration to use with a remotely installed gateway.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] User-defined name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_gateway(environment_id:, name: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_gateway")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "create_gateway")
 
       params = {
         "version" => @version
@@ -2851,7 +2850,7 @@ module IBMWatson
     # List information about the specified gateway.
     # @param environment_id [String] The ID of the environment.
     # @param gateway_id [String] The requested gateway ID.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_gateway(environment_id:, gateway_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2859,7 +2858,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_gateway")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "get_gateway")
 
       params = {
         "version" => @version
@@ -2883,7 +2882,7 @@ module IBMWatson
     # Delete the specified gateway configuration.
     # @param environment_id [String] The ID of the environment.
     # @param gateway_id [String] The requested gateway ID.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_gateway(environment_id:, gateway_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2891,7 +2890,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_gateway")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "discovery", service_version: "V1", operation_id: "delete_gateway")
 
       params = {
         "version" => @version
