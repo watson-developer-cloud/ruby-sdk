@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative("./../../lib/ibm_watson/watson_api_exception.rb")
 require("json")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
@@ -14,7 +13,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = DetailedResponse.new(status: 200, headers: headers, body: tone_response)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
       .with(
@@ -46,7 +45,7 @@ class ToneAnalyzerV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    expected_response = DetailedResponse.new(status: 200, headers: headers, body: tone_response)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?sentences=false&version=2017-09-21")
       .with(
         body: tone_text,
@@ -76,7 +75,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = DetailedResponse.new(body: tone_response, status: 200, headers: headers)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(body: tone_response, status: 200, headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone_chat?version=2017-09-21")
       .with(
         body: "{\"utterances\":[{\"text\":\"I am very happy\",\"user\":\"glenn\"}]}",
@@ -136,7 +135,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     )
     begin
       service.tone(tone_input: text, content_type: "application/json")
-    rescue WatsonApiException => e
+    rescue IBMCloudSdkCore::ApiException => e
       assert_equal(error_code, e.code)
       assert_equal(error_message, e.error)
       assert_equal("C00012", e.info["sub_code"])

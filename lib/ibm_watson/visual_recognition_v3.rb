@@ -21,16 +21,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Visual Recognition V3 service.
-  class VisualRecognitionV3 < WatsonService
+  class VisualRecognitionV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -116,12 +115,12 @@ module IBMWatson
     #   - `explicit`: Evaluates whether the image might be pornographic.
     # @param images_file_content_type [String] The content type of images_file.
     # @param images_filename [String] The filename for images_file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify(images_file: nil, accept_language: nil, url: nil, threshold: nil, owners: nil, classifier_ids: nil, images_file_content_type: nil, images_filename: nil)
       headers = {
         "Accept-Language" => accept_language
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "classify")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "classify")
 
       params = {
         "version" => @version
@@ -178,7 +177,8 @@ module IBMWatson
     #   Detect faces method does not support general biometric facial recognition.
     #
     #   Supported image formats include .gif, .jpg, .png, and .tif. The maximum image size
-    #   is 10 MB. The minimum recommended pixel density is 32X32 pixels per inch.
+    #   is 10 MB. The minimum recommended pixel density is 32X32 pixels, but the service
+    #   tends to perform better with images that are at least 224 x 224 pixels.
     # @param images_file [File] An image file (gif, .jpg, .png, .tif.) or .zip file with images. Limit the .zip
     #   file to 100 MB. You can include a maximum of 15 images in a request.
     #
@@ -188,19 +188,20 @@ module IBMWatson
     #
     #   You can also include an image with the **url** parameter.
     # @param url [String] The URL of an image to analyze. Must be in .gif, .jpg, .png, or .tif format. The
-    #   minimum recommended pixel density is 32X32 pixels per inch, and the maximum image
+    #   minimum recommended pixel density is 32X32 pixels, but the service tends to
+    #   perform better with images that are at least 224 x 224 pixels. The maximum image
     #   size is 10 MB. Redirects are followed, so you can use a shortened URL.
     #
     #   You can also include images with the **images_file** parameter.
     # @param images_file_content_type [String] The content type of images_file.
     # @param images_filename [String] The filename for images_file.
     # @param accept_language [String] The desired language of parts of the response. See the response for details.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def detect_faces(images_file: nil, url: nil, images_file_content_type: nil, images_filename: nil, accept_language: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def detect_faces(images_file: nil, url: nil, accept_language: nil, images_file_content_type: nil, images_filename: nil)
       headers = {
         "Accept-Language" => accept_language
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "detect_faces")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "detect_faces")
 
       params = {
         "version" => @version
@@ -264,7 +265,7 @@ module IBMWatson
     #   Encode special characters in the file name in UTF-8.
     # @param positive_examples_filename [Hash] The filename for positive_examples.
     # @param negative_examples_filename [String] The filename for negative_examples.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_classifier(name:, positive_examples:, negative_examples: nil, positive_examples_filename: nil, negative_examples_filename: nil)
       raise ArgumentError.new("name must be provided") if name.nil?
 
@@ -275,7 +276,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "create_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "create_classifier")
 
       params = {
         "version" => @version
@@ -321,11 +322,11 @@ module IBMWatson
     # Retrieve a list of classifiers.
     # @param verbose [Boolean] Specify `true` to return details about the classifiers. Omit this parameter to
     #   return a brief list of classifiers.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_classifiers(verbose: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "list_classifiers")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "list_classifiers")
 
       params = {
         "version" => @version,
@@ -349,13 +350,13 @@ module IBMWatson
     # Retrieve classifier details.
     # Retrieve information about a custom classifier.
     # @param classifier_id [String] The ID of the classifier.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "get_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "get_classifier")
 
       params = {
         "version" => @version
@@ -409,7 +410,7 @@ module IBMWatson
     #   Encode special characters in the file name in UTF-8.
     # @param positive_examples_filename [Hash] The filename for positive_examples.
     # @param negative_examples_filename [String] The filename for negative_examples.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_classifier(classifier_id:, positive_examples: nil, negative_examples: nil, positive_examples_filename: nil, negative_examples_filename: nil)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
@@ -419,7 +420,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "update_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "update_classifier")
 
       params = {
         "version" => @version
@@ -468,7 +469,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "delete_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "delete_classifier")
 
       params = {
         "version" => @version
@@ -495,13 +496,13 @@ module IBMWatson
     # Download a Core ML model file (.mlmodel) of a custom classifier that returns
     #   <tt>\"core_ml_enabled\": true</tt> in the classifier details.
     # @param classifier_id [String] The ID of the classifier.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_core_ml_model(classifier_id:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "get_core_ml_model")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "get_core_ml_model")
 
       params = {
         "version" => @version
@@ -539,7 +540,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "delete_user_data")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "watson_vision_combined", service_version: "V3", operation_id: "delete_user_data")
 
       params = {
         "version" => @version,

@@ -16,7 +16,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = DetailedResponse.new(status: 200, body: JSON.parse(profile_response), headers: headers)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, body: JSON.parse(profile_response), headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
       .with(
         body: personality_text,
@@ -49,7 +49,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
     headers = {
       "Content-Type" => "applicaiton/json"
     }
-    expected_response = DetailedResponse.new(status: 200, body: profile_response, headers: headers)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, body: profile_response, headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&raw_scores=true&version=2017-10-13")
       .with(
         body: personality_text,
@@ -84,7 +84,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
     headers = {
       "Content-Type" => "text/csv"
     }
-    expected_response = DetailedResponse.new(status: 200, body: profile_response, headers: headers)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, body: profile_response, headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&csv_headers=true&raw_scores=true&version=2017-10-13")
       .with(
         body: personality_text,
@@ -120,7 +120,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = DetailedResponse.new(status: 200, body: profile_response, headers: headers)
+    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, body: profile_response, headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
       .with(
         body: personality_text,

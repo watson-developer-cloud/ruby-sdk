@@ -20,16 +20,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Compare Comply V1 service.
-  class CompareComplyV1 < WatsonService
+  class CompareComplyV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -88,13 +87,13 @@ module IBMWatson
     #   well as to the methods' use in batch-processing requests.
     # @param file_content_type [String] The content type of file.
     # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def convert_to_html(file:, model_id: nil, file_content_type: nil, filename: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "convert_to_html")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "convert_to_html")
 
       params = {
         "version" => @version,
@@ -136,13 +135,13 @@ module IBMWatson
     #   well as to the methods' use in batch-processing requests.
     # @param file_content_type [String] The content type of file.
     # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify_elements(file:, model_id: nil, file_content_type: nil, filename: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "classify_elements")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "classify_elements")
 
       params = {
         "version" => @version,
@@ -184,13 +183,13 @@ module IBMWatson
     #   well as to the methods' use in batch-processing requests.
     # @param file_content_type [String] The content type of file.
     # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def extract_tables(file:, model_id: nil, file_content_type: nil, filename: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "extract_tables")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "extract_tables")
 
       params = {
         "version" => @version,
@@ -237,7 +236,7 @@ module IBMWatson
     # @param file_1_filename [String] The filename for file_1.
     # @param file_2_content_type [String] The content type of file_2.
     # @param file_2_filename [String] The filename for file_2.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def compare_documents(file_1:, file_2:, file_1_label: nil, file_2_label: nil, model_id: nil, file_1_content_type: nil, file_1_filename: nil, file_2_content_type: nil, file_2_filename: nil)
       raise ArgumentError.new("file_1 must be provided") if file_1.nil?
 
@@ -245,7 +244,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "compare_documents")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "compare_documents")
 
       params = {
         "version" => @version,
@@ -295,13 +294,13 @@ module IBMWatson
     # @param feedback_data [FeedbackDataInput] Feedback data for submission.
     # @param user_id [String] An optional string identifying the user.
     # @param comment [String] An optional comment on or description of the feedback.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_feedback(feedback_data:, user_id: nil, comment: nil)
       raise ArgumentError.new("feedback_data must be provided") if feedback_data.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "add_feedback")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "add_feedback")
 
       params = {
         "version" => @version
@@ -370,11 +369,11 @@ module IBMWatson
     # @param include_total [Boolean] An optional boolean value. If specified as `true`, the `pagination` object in the
     #   output includes a value called `total` that gives the total count of feedback
     #   created.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_feedback(feedback_type: nil, before: nil, after: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "list_feedback")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "list_feedback")
 
       params = {
         "version" => @version,
@@ -416,13 +415,13 @@ module IBMWatson
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
     #   method, the default is `tables`. These defaults apply to the standalone methods as
     #   well as to the methods' use in batch-processing requests.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_feedback(feedback_id:, model_id: nil)
       raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "get_feedback")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "get_feedback")
 
       params = {
         "version" => @version,
@@ -449,13 +448,13 @@ module IBMWatson
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
     #   method, the default is `tables`. These defaults apply to the standalone methods as
     #   well as to the methods' use in batch-processing requests.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_feedback(feedback_id:, model_id: nil)
       raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "delete_feedback")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "delete_feedback")
 
       params = {
         "version" => @version,
@@ -507,7 +506,7 @@ module IBMWatson
     #   well as to the methods' use in batch-processing requests.
     # @param input_credentials_filename [String] The filename for input_credentials_file.
     # @param output_credentials_filename [String] The filename for output_credentials_file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_batch(function:, input_credentials_file:, input_bucket_location:, input_bucket_name:, output_credentials_file:, output_bucket_location:, output_bucket_name:, model_id: nil, input_credentials_filename: nil, output_credentials_filename: nil)
       raise ArgumentError.new("function must be provided") if function.nil?
 
@@ -525,7 +524,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "create_batch")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "create_batch")
 
       params = {
         "version" => @version,
@@ -572,11 +571,11 @@ module IBMWatson
     # @!method list_batches
     # List submitted batch-processing jobs.
     # List the batch-processing jobs submitted by users.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_batches
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "list_batches")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "list_batches")
 
       params = {
         "version" => @version
@@ -599,13 +598,13 @@ module IBMWatson
     # Get information about a specific batch-processing request.
     # Get information about a batch-processing request with a specified ID.
     # @param batch_id [String] The ID of the batch-processing request whose information you want to retrieve.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_batch(batch_id:)
       raise ArgumentError.new("batch_id must be provided") if batch_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "get_batch")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "get_batch")
 
       params = {
         "version" => @version
@@ -634,7 +633,7 @@ module IBMWatson
     #   and `/v1/comparison` methods, the default is `contracts`. For the `/v1/tables`
     #   method, the default is `tables`. These defaults apply to the standalone methods as
     #   well as to the methods' use in batch-processing requests.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_batch(batch_id:, action:, model_id: nil)
       raise ArgumentError.new("batch_id must be provided") if batch_id.nil?
 
@@ -642,7 +641,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "update_batch")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "compare-comply", service_version: "V1", operation_id: "update_batch")
 
       params = {
         "version" => @version,

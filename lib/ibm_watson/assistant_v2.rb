@@ -21,16 +21,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Assistant V2 service.
-  class AssistantV2 < WatsonService
+  class AssistantV2 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -101,13 +100,13 @@ module IBMWatson
     #   [documentation](https://console.bluemix.net/docs/services/assistant/create-assistant.html#creating-assistants).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_session(assistant_id:)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "create_session")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "create_session")
 
       params = {
         "version" => @version
@@ -144,7 +143,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "delete_session")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "delete_session")
 
       params = {
         "version" => @version
@@ -180,7 +179,7 @@ module IBMWatson
     # @param session_id [String] Unique identifier of the session.
     # @param input [MessageInput] An input object that includes the input text.
     # @param context [MessageContext] State information for the conversation.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def message(assistant_id:, session_id:, input: nil, context: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
@@ -188,7 +187,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "message")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "message")
 
       params = {
         "version" => @version

@@ -38,16 +38,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Personality Insights V3 service.
-  class PersonalityInsightsV3 < WatsonService
+  class PersonalityInsightsV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -187,7 +186,7 @@ module IBMWatson
     #   (`text/csv`).
     # @param consumption_preferences [Boolean] Indicates whether consumption preferences are returned with the results. By
     #   default, no consumption preferences are returned.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
       raise ArgumentError.new("content must be provided") if content.nil?
 
@@ -199,7 +198,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "personality_insights", service_version: "V3", operation_id: "profile")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "personality_insights", service_version: "V3", operation_id: "profile")
 
       params = {
         "version" => @version,

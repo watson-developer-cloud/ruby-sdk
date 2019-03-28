@@ -22,16 +22,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Natural Language Classifier V1 service.
-  class NaturalLanguageClassifierV1 < WatsonService
+  class NaturalLanguageClassifierV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -86,7 +85,7 @@ module IBMWatson
     #   can use the classifier to classify text.
     # @param classifier_id [String] Classifier ID to use.
     # @param text [String] The submitted phrase. The maximum length is 2048 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify(classifier_id:, text:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
@@ -94,7 +93,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify")
 
       data = {
         "text" => text
@@ -121,7 +120,7 @@ module IBMWatson
     #   Note that classifying Japanese texts is a beta feature.
     # @param classifier_id [String] Classifier ID to use.
     # @param collection [Array[ClassifyInput]] The submitted phrases.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify_collection(classifier_id:, collection:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
@@ -129,7 +128,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify_collection")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "classify_collection")
 
       data = {
         "collection" => collection
@@ -167,7 +166,7 @@ module IBMWatson
     #   preparation](https://cloud.ibm.com/docs/services/natural-language-classifier/using-your-data.html).
     # @param metadata_filename [String] The filename for training_metadata.
     # @param training_data_filename [String] The filename for training_data.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_classifier(metadata:, training_data:, metadata_filename: nil, training_data_filename: nil)
       raise ArgumentError.new("metadata must be provided") if metadata.nil?
 
@@ -175,7 +174,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "create_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "create_classifier")
 
       form_data = {}
 
@@ -207,11 +206,11 @@ module IBMWatson
     # @!method list_classifiers
     # List classifiers.
     # Returns an empty array if no classifiers are available.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_classifiers
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "list_classifiers")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "list_classifiers")
 
       method_url = "/v1/classifiers"
 
@@ -229,13 +228,13 @@ module IBMWatson
     # Get information about a classifier.
     # Returns status and other information about a classifier.
     # @param classifier_id [String] Classifier ID to query.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "get_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "get_classifier")
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
@@ -258,7 +257,7 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "delete_classifier")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural_language_classifier", service_version: "V1", operation_id: "delete_classifier")
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 

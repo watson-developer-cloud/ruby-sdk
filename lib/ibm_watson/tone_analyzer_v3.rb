@@ -29,16 +29,15 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-require_relative "./common.rb"
 
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Tone Analyzer V3 service.
-  class ToneAnalyzerV3 < WatsonService
+  class ToneAnalyzerV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -146,7 +145,7 @@ module IBMWatson
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
       raise ArgumentError.new("tone_input must be provided") if tone_input.nil?
 
@@ -155,7 +154,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone")
 
       params = {
         "version" => @version,
@@ -212,7 +211,7 @@ module IBMWatson
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def tone_chat(utterances:, content_language: nil, accept_language: nil)
       raise ArgumentError.new("utterances must be provided") if utterances.nil?
 
@@ -220,7 +219,7 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.get_default_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone_chat")
+      headers = Common.new.get_sdk_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone_chat")
 
       params = {
         "version" => @version
