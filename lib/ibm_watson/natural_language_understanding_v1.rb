@@ -21,13 +21,12 @@
 #
 # You can create [custom
 # models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
-# with Watson Knowledge Studio to detect custom entities and relations in Natural Language
-# Understanding.
+# with Watson Knowledge Studio to detect custom entities, relations, and categories in
+# Natural Language Understanding.
 
 require "concurrent"
 require "erb"
 require "json"
-
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
@@ -107,8 +106,9 @@ module IBMWatson
     #   - Metadata
     #   - Relations
     #   - Semantic roles
-    #   - Sentiment.
-    # @param features [Features] Analysis features and options.
+    #   - Sentiment
+    #   - Syntax (Experimental).
+    # @param features [Features] Specific features to analyze the document for.
     # @param text [String] The plain text to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
     # @param html [String] The HTML file to analyze. One of the `text`, `html`, or `url` parameters is
@@ -138,7 +138,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "analyze")
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "analyze")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -174,34 +175,6 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_models
-    # List models.
-    # Lists Watson Knowledge Studio [custom
-    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
-    #   that are deployed to your Natural Language Understanding service.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_models
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "list_models")
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/models"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method delete_model(model_id:)
     # Delete model.
     # Deletes a custom model.
@@ -212,7 +185,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "natural-language-understanding", service_version: "V1", operation_id: "delete_model")
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "delete_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -222,6 +196,35 @@ module IBMWatson
 
       response = request(
         method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_models
+    # List models.
+    # Lists Watson Knowledge Studio [custom
+    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
+    #   that are deployed to your Natural Language Understanding service.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_models
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models"
+
+      response = request(
+        method: "GET",
         url: method_url,
         headers: headers,
         params: params,

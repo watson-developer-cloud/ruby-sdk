@@ -29,7 +29,6 @@
 require "concurrent"
 require "erb"
 require "json"
-
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
@@ -98,7 +97,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
+    # @!method tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
     # Analyze general tone.
     # Use the general purpose endpoint to analyze the tone of your input content. The
     #   service analyzes the content for emotional and language tones. The method always
@@ -122,8 +121,6 @@ module IBMWatson
     #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
     # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
-    # @param content_type [String] The type of the input. A character encoding can be specified by including a
-    #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
     # @param sentences [Boolean] Indicates whether the service is to return an analysis of each individual sentence
     #   in addition to its analysis of the full document. If `true` (the default), the
     #   service returns results for each sentence.
@@ -145,16 +142,19 @@ module IBMWatson
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
+    # @param content_type [String] The type of the input. A character encoding can be specified by including a
+    #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
+    def tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
       raise ArgumentError.new("tone_input must be provided") if tone_input.nil?
 
       headers = {
-        "Content-Type" => content_type,
         "Content-Language" => content_language,
-        "Accept-Language" => accept_language
+        "Accept-Language" => accept_language,
+        "Content-Type" => content_type
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone")
+      sdk_headers = Common.new.get_sdk_headers("tone_analyzer", "V3", "tone")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -219,7 +219,8 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "tone_analyzer", service_version: "V3", operation_id: "tone_chat")
+      sdk_headers = Common.new.get_sdk_headers("tone_analyzer", "V3", "tone_chat")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
