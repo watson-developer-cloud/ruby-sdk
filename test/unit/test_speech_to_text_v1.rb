@@ -142,7 +142,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions/jobid")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -161,7 +160,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/register_callback?callback_url=monitorcalls.com")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -174,7 +172,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/unregister_callback?callback_url=monitorcalls.com")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -351,7 +348,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -360,8 +356,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.add_corpus(
       customization_id: "customid",
       corpus_name: "corpus",
-      corpus_file: corpus_file,
-      corpus_filename: "corpus-short-1.txt"
+      corpus_file: corpus_file
     )
     assert_nil(service_response)
 
@@ -699,7 +694,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/user_data?customer_id=id")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }

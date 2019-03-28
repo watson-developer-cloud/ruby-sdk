@@ -46,8 +46,7 @@ class CompareComplyV1 < Minitest::Test
       file: file
     )
     service.classify_elements(
-      file: "dummy",
-      filename: "file"
+      file: "dummy"
     )
   end
 
@@ -67,8 +66,7 @@ class CompareComplyV1 < Minitest::Test
       file: file
     )
     service.extract_tables(
-      file: "dummy",
-      filename: "file"
+      file: "dummy"
     )
   end
 
@@ -90,9 +88,7 @@ class CompareComplyV1 < Minitest::Test
     )
     service.compare_documents(
       file_1: "dummy data",
-      file_1_filename: "file1",
-      file_2: "dummy data",
-      file_2_filename: "file1"
+      file_2: "dummy data"
     )
   end
 

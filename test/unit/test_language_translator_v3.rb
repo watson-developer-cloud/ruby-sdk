@@ -286,8 +286,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       base_model_id: "en-fr",
       name: "test_glossary",
       forced_glossary: custom_model.read,
-      parallel_corpus: "parallel corpus",
-      parallel_corpus_filename: "parallel_corpus_filename"
+      parallel_corpus: "parallel corpus"
     )
     assert_equal(expected, service_response.result)
 
@@ -295,7 +294,6 @@ class LanguageTranslatorV3Test < Minitest::Test
       base_model_id: "en-fr",
       name: "test_glossary",
       forced_glossary: custom_model,
-      forced_glossary_filename: "language_translator_model.tmx",
       parallel_corpus: "parallel corpus"
     )
     assert_equal(expected, service_response.result)

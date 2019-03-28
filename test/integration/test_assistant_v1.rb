@@ -2,23 +2,29 @@
 
 require_relative("./../test_helper.rb")
 SimpleCov.command_name "test:integration"
+require("minitest/hooks/test")
 
-if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
+if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
   # Integration tests for the Watson Assistant V1 Service
   class AssistantV1Test < Minitest::Test
-    def test_create_update_delete_workspace
-      skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
+    include Minitest::Hooks
+    attr_accessor :service
+    def before_all
+      @service = IBMWatson::AssistantV1.new(
+        iam_apikey: ENV["ASSISTANT_APIKEY"],
+        url: ENV["ASSISTANT_URL"],
         version: "2018-02-16"
       )
-      service.add_default_headers(
+      @service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
           "X-Watson-Test" => "1"
         }
       )
+    end
+
+    def test_create_update_delete_workspace
+      skip "Skip to allow for concurrent travis jobs"
       service_response = service.create_workspace(
         name: "Pizza app",
         description: "Pizza app",
@@ -44,17 +50,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_get_workspace
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.get_workspace(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         export: false
@@ -63,34 +58,12 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_workspaces
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_workspaces
       assert((200..299).cover?(service_response.status))
     end
 
     def test_create_update_delete_counterexample
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        version: "2018-02-16",
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"]
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.create_counterexample(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         text: "I want a large pizza please."
@@ -104,6 +77,12 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
       )
       assert((200..299).cover?(service_response.status))
 
+      service_response = service.get_counterexample(
+        workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
+        text: "I want a large pizza please."
+      )
+      assert((200..299).cover?(service_response.status))
+
       service_response = service.delete_counterexample(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         text: "I want a large pizza please."
@@ -111,37 +90,7 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
       assert(service_response.nil?)
     end
 
-    def test_get_counterexample
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
-      service_response = service.get_counterexample(
-        workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
-        text: "what is your nickname"
-      )
-      assert((200..299).cover?(service_response.status))
-    end
-
     def test_list_counterexamples
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_counterexamples(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"]
       )
@@ -150,17 +99,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
 
     def test_create_update_delete_entity
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.create_entity(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "pizza_toppings",
@@ -186,17 +124,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_get_entity
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.get_entity(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -206,17 +133,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_entities
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_entities(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         export: true
@@ -226,17 +142,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
 
     def test_create_update_delete_example
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.create_example(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         intent: "Cancel",
@@ -261,17 +166,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_get_example
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.get_example(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         intent: "Cancel",
@@ -281,17 +175,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_examples
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_examples(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         intent: "Cancel"
@@ -301,17 +184,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
 
     def test_create_update_delete_intent
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.create_intent(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         intent: "pizza_order",
@@ -335,17 +207,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_get_intent
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.get_intent(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         intent: "Cancel",
@@ -355,17 +216,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_intents
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_intents(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         export: false
@@ -374,17 +224,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_logs
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_logs(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"]
       )
@@ -392,17 +231,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_all_logs
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_all_logs(
         filter: "language::en,request.context.metadata.deployment::deployment_1"
       )
@@ -410,17 +238,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_message
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.message(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         input: { "text" => "Turn on the lights" },
@@ -439,17 +256,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
 
     def test_create_update_delete_synonym
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.create_synonym(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -477,17 +283,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_get_synonym
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.get_synonym(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -498,17 +293,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_synonyms
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_synonyms(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -519,17 +303,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
 
     def test_create_update_delete_value
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.create_value(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -556,17 +329,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_get_value
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.get_value(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -577,17 +339,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_list_values
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_values(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
         entity: "holiday",
@@ -598,17 +349,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
 
     def test_dialog_nodes
       skip "Skip to allow for concurrent travis jobs"
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
 
       service_response = service.create_dialog_node(
         workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
@@ -635,17 +375,6 @@ if !ENV["ASSISTANT_USERNAME"].nil? && !ENV["ASSISTANT_PASSWORD"].nil?
     end
 
     def test_delete_user_data
-      service = IBMWatson::AssistantV1.new(
-        username: ENV["ASSISTANT_USERNAME"],
-        password: ENV["ASSISTANT_PASSWORD"],
-        version: "2018-02-16"
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.delete_user_data(
         customer_id: "id"
       )

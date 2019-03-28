@@ -4,15 +4,15 @@ require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-if !ENV["LANGUAGE_TRANSLATOR_V3_USERNAME"].nil? && !ENV["LANGUAGE_TRANSLATOR_V3_PASSWORD"].nil?
+if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].nil?
   # Integration tests for the Language Translator V3 Service
   class LanguageTranslatorV3Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service
     def before_all
       @service = IBMWatson::LanguageTranslatorV3.new(
-        username: ENV["LANGUAGE_TRANSLATOR_V3_USERNAME"],
-        password: ENV["LANGUAGE_TRANSLATOR_V3_PASSWORD"],
+        iam_apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"],
+        url: ENV["LANGUAGE_TRANSLATOR_URL"],
         version: "2018-05-01"
       )
       @service.add_default_headers(

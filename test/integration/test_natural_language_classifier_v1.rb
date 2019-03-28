@@ -4,15 +4,15 @@ require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-if !ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"].nil? && !ENV["NATURAL_LANGUAGE_CLASSIFIER_PASSWORD"].nil?
+if !ENV["NATURAL_LANGUAGE_CLASSIFIER_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_CLASSIFIER_URL"].nil?
   # Integration tests for the Natural Language Classifier V1 Service
   class NaturalLanguageClassifierV1Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service
     def before_all
       @service = IBMWatson::NaturalLanguageClassifierV1.new(
-        username: ENV["NATURAL_LANGUAGE_CLASSIFIER_USERNAME"],
-        password: ENV["NATURAL_LANGUAGE_CLASSIFIER_PASSWORD"]
+        iam_apikey: ENV["NATURAL_LANGUAGE_CLASSIFIER_APIKEY"],
+        url: ENV["NATURAL_LANGUAGE_CLASSIFIER_URL"]
       )
       @service.add_default_headers(
         headers: {

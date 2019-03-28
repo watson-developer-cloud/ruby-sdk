@@ -3,22 +3,27 @@
 require("json")
 require_relative("./../test_helper.rb")
 
-if !ENV["TONE_ANALYZER_USERNAME"].nil? && !ENV["TONE_ANALYZER_PASSWORD"].nil?
+if !ENV["TONE_ANALYZER_APIKEY"].nil? && !ENV["TONE_ANALYZER_URL"].nil?
   # Integration tests for the Tone Analyzer V3 Service
   class ToneAnalyzerV3Test < Minitest::Test
-    def test_tone
-      tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-      service = IBMWatson::ToneAnalyzerV3.new(
-        version: "2017-09-21",
-        username: ENV["TONE_ANALYZER_USERNAME"],
-        password: ENV["TONE_ANALYZER_PASSWORD"]
+    include Minitest::Hooks
+    attr_accessor :service
+    def before_all
+      @service = IBMWatson::ToneAnalyzerV3.new(
+        iam_apikey: ENV["TONE_ANALYZER_APIKEY"],
+        url: ENV["TONE_ANALYZER_URL"],
+        version: "2017-09-21"
       )
-      service.add_default_headers(
+      @service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
           "X-Watson-Test" => "1"
         }
       )
+    end
+
+    def test_tone
+      tone_text = File.read(Dir.getwd + "/resources/personality.txt")
       service_response = service.tone(
         tone_input: tone_text,
         content_type: "text/plain"
@@ -28,17 +33,6 @@ if !ENV["TONE_ANALYZER_USERNAME"].nil? && !ENV["TONE_ANALYZER_PASSWORD"].nil?
 
     def test_tone_with_args
       tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-      service = IBMWatson::ToneAnalyzerV3.new(
-        version: "2017-09-21",
-        username: ENV["TONE_ANALYZER_USERNAME"],
-        password: ENV["TONE_ANALYZER_PASSWORD"]
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.tone(
         tone_input: tone_text,
         content_type: "text/plain",
@@ -48,17 +42,6 @@ if !ENV["TONE_ANALYZER_USERNAME"].nil? && !ENV["TONE_ANALYZER_PASSWORD"].nil?
     end
 
     def test_tone_chat
-      service = IBMWatson::ToneAnalyzerV3.new(
-        version: "2017-09-21",
-        username: ENV["TONE_ANALYZER_USERNAME"],
-        password: ENV["TONE_ANALYZER_PASSWORD"]
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       utterances = [
         {
           "text" => "I am very happy",

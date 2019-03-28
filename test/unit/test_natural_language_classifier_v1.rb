@@ -101,9 +101,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     training_data = File.open(Dir.getwd + "/resources/weather_data_train.csv")
     service_response = service.create_classifier(
       training_data: training_data,
-      training_data_filename: "weather_data_train.csv",
-      metadata: { "language" => "en" },
-      metadata_filename: "metadata"
+      metadata: { "language" => "en" }
     )
     assert_equal(create_response, service_response.result)
 
