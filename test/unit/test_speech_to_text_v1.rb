@@ -3,8 +3,24 @@
 require("json")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
+require_relative("./../../lib/ibm_watson/websocket/recognize_callback.rb")
 
 WebMock.disable_net_connect!(allow_localhost: true)
+
+class MyRecognizeCallback < IBMWatson::RecognizeCallback
+  def initialize(atomic_boolean: nil)
+    super
+    @atomic_boolean = atomic_boolean
+  end
+
+  def on_error(*)
+    @atomic_boolean.make_true
+  end
+
+  def on_inactivity_timeout(*)
+    @atomic_boolean.make_true
+  end
+end
 
 # Unit tests for the Speech to Text V1 Service
 class SpeechToTextV1Test < Minitest::Test
@@ -63,6 +79,14 @@ class SpeechToTextV1Test < Minitest::Test
       content_type: "audio/l16; rate=44100"
     )
     assert_equal(recognize_response, service_response.result)
+
+    mycallback = MyRecognizeCallback.new
+    service_response = service.recognize_using_websocket(
+      audio: audio_file,
+      recognize_callback: mycallback,
+      content_type: "audio/l16; rate=44100"
+    )
+    refute_nil(service_response)
   end
 
   def test_get_model
