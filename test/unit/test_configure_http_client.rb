@@ -140,7 +140,7 @@ class HTTPConfigTest < Minitest::Test
     assert_equal(expected_timeouts, timeout)
   end
 
-  def test_disable_ssl
+  def test_disable_ssl_verification
     service = IBMWatson::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
       username: "username",
