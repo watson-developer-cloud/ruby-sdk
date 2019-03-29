@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "./version.rb"
+
 module IBMWatson
   # SDK Common class
   class Common
