@@ -89,6 +89,37 @@ class SpeechToTextV1Test < Minitest::Test
     refute_nil(service_response)
   end
 
+  def test_recognize_using_websocket_disable_ssl_verification
+    service = IBMWatson::SpeechToTextV1.new(
+      username: "username",
+      password: "password"
+    )
+
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    stub_request(:post, "ws://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Content-Type" => "audio/l16; rate=44100",
+          "Host" => "stream.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: { "Content-Type" => "application/json" })
+
+    atomic_boolean = Concurrent::AtomicBoolean.new
+    mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
+    service.configure_http_client(disable_ssl_verification: true)
+    speech = service.recognize_using_websocket(
+      audio: audio_file,
+      recognize_callback: mycallback,
+      inactivity_timeout: 1,
+      content_type: "audio/l16; rate=44100"
+    )
+    thr = Thread.new { speech.start }
+    thr.join
+    assert(atomic_boolean.true?)
+  end
+
   def test_get_model
     service = IBMWatson::SpeechToTextV1.new(
       username: "username",
