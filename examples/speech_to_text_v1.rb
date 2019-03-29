@@ -98,3 +98,31 @@ Thread.new do
 end
 thr = Thread.new { speech.start }
 thr.join
+
+# Example using websockets using multiple threads for two audio files
+# Make sure you create two wrappers of service and then start the threads
+speech = speech_to_text.recognize_using_websocket(
+  audio: File.open(Dir.getwd + "/resources/speech.wav"),
+  recognize_callback: MyRecognizeCallback.new,
+  interim_results: true,
+  timestamps: true,
+  max_alternatives: 2,
+  word_alternatives_threshold: 0.5,
+  content_type: "audio/wav"
+)
+
+speech_with_pause = speech_to_text.recognize_using_websocket(
+  audio: File.open(Dir.getwd + "/resources/sound-with-pause.wav"),
+  recognize_callback: MyRecognizeCallback.new,
+  interim_results: true,
+  timestamps: true,
+  max_alternatives: 2,
+  word_alternatives_threshold: 0.5,
+  content_type: "audio/wav"
+)
+
+main_thread = Thread.new { speech.start }
+another_thread = Thread.new { speech_with_pause.start }
+
+main_thread.join
+another_thread.join
