@@ -41,4 +41,19 @@ class WatsonServiceTest < Minitest::Test
     )
     refute_nil(service)
   end
+
+  def test_set_credentials_from_path_in_env
+    file_path = File.join(File.dirname(__FILE__), "../../resources/ibm-credentials.env")
+    ENV["IBM_CREDENTIALS_FILE"] = file_path
+    service = IBMWatson::AssistantV1.new(display_name: "Visual Recognition")
+    assert_equal(service.url, "https://gateway.ronaldo.com")
+    refute_nil(service)
+    ENV.delete("IBM_CREDENTIALS_FILE")
+  end
+
+  def test_set_credentials_when_no_file
+    service = IBMWatson::AssistantV1.new(display_name: "Visual Recognition")
+    assert_equal(service.url, "https://gateway.watsonplatform.net/assistant/api")
+    refute_nil(service)
+  end
 end

@@ -26,9 +26,10 @@
 # is timestamped, can report temporal behavior.
 # * For information about the meaning of the models that the service uses to describe
 # personality characteristics, see [Personality
-# models](https://console.bluemix.net/docs/services/personality-insights/models.html).
+# models](https://cloud.ibm.com/docs/services/personality-insights/models.html).
 # * For information about the meaning of the consumption preferences, see [Consumption
-# preferences](https://console.bluemix.net/docs/services/personality-insights/preferences.html).
+# preferences](https://cloud.ibm.com/docs/services/personality-insights/preferences.html).
+#
 #
 # **Note:** Request logging is disabled for the Personality Insights service. Regardless
 # of whether you set the `X-Watson-Learning-Opt-Out` request header, the service does not
@@ -37,15 +38,14 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Personality Insights V3 service.
-  class PersonalityInsightsV3 < WatsonService
+  class PersonalityInsightsV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -98,6 +98,7 @@ module IBMWatson
       args[:vcap_services_name] = "personality_insights"
       super
       @version = args[:version]
+      args[:display_name] = "Personality Insights"
     end
 
     #########################
@@ -105,7 +106,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
+    # @!method profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
     # Get profile.
     # Generates a personality profile for the author of the input text. The service
     #   accepts a maximum of 20 MB of input content, but it requires much less text to
@@ -114,9 +115,11 @@ module IBMWatson
     #
     #
     #   **See also:**
-    #   * [Requesting a profile](https://console.bluemix.net/docs/services/personality-insights/input.html)
+    #   * [Requesting a
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights/input.html)
     #   * [Providing sufficient
-    #   input](https://console.bluemix.net/docs/services/personality-insights/input.html#sufficient)
+    #   input](https://cloud.ibm.com/docs/services/personality-insights/input.html#sufficient)
+    #
     #
     #   ### Content types
     #
@@ -133,7 +136,8 @@ module IBMWatson
     #   `Content-Type: text/plain;charset=utf-8`.
     #
     #   **See also:** [Specifying request and response
-    #   formats](https://console.bluemix.net/docs/services/personality-insights/input.html#formats)
+    #   formats](https://cloud.ibm.com/docs/services/personality-insights/input.html#formats)
+    #
     #
     #   ### Accept types
     #
@@ -143,19 +147,16 @@ module IBMWatson
     #   optional column headers for CSV output.
     #
     #   **See also:**
-    #   * [Understanding a JSON profile](https://console.bluemix.net/docs/services/personality-insights/output.html)
+    #   * [Understanding a JSON
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights/output.html)
     #   * [Understanding a CSV
-    #   profile](https://console.bluemix.net/docs/services/personality-insights/output-csv.html).
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights/output-csv.html).
     # @param content [Content] A maximum of 20 MB of content to analyze, though the service requires much less
     #   text; for more information, see [Providing sufficient
-    #   input](https://console.bluemix.net/docs/services/personality-insights/input.html#sufficient). For JSON input,
-    #   provide an object of type `Content`.
+    #   input](https://cloud.ibm.com/docs/services/personality-insights/input.html#sufficient).
+    #   For JSON input, provide an object of type `Content`.
     # @param accept [String] The type of the response. For more information, see **Accept types** in the method
     #   description.
-    # @param content_type [String] The type of the input. For more information, see **Content types** in the method
-    #   description.
-    #
-    #   Default: `text/plain`.
     # @param content_language [String] The language of the input text for the request: Arabic, English, Japanese, Korean,
     #   or Spanish. Regional variants are treated as their parent language; for example,
     #   `en-US` is interpreted as `en`.
@@ -180,18 +181,24 @@ module IBMWatson
     #   (`text/csv`).
     # @param consumption_preferences [Boolean] Indicates whether consumption preferences are returned with the results. By
     #   default, no consumption preferences are returned.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
+    # @param content_type [String] The type of the input. For more information, see **Content types** in the method
+    #   description.
+    #
+    #   Default: `text/plain`.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
       raise ArgumentError.new("content must be provided") if content.nil?
 
       raise ArgumentError.new("accept must be provided") if accept.nil?
 
       headers = {
         "Accept" => accept,
-        "Content-Type" => content_type,
         "Content-Language" => content_language,
-        "Accept-Language" => accept_language
+        "Accept-Language" => accept_language,
+        "Content-Type" => content_type
       }
+      sdk_headers = Common.new.get_sdk_headers("personality_insights", "V3", "profile")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,

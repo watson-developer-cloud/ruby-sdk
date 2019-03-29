@@ -23,15 +23,14 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Discovery V1 service.
-  class DiscoveryV1 < WatsonService
+  class DiscoveryV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -84,6 +83,7 @@ module IBMWatson
       args[:vcap_services_name] = "discovery"
       super
       @version = args[:version]
+      args[:display_name] = "Discovery"
     end
 
     #########################
@@ -102,12 +102,14 @@ module IBMWatson
     # @param description [String] Description of the environment.
     # @param size [String] Size of the environment. In the Lite plan the default and only accepted value is
     #   `LT`, in all other plans the default is `S`.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
       raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_environment")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -133,14 +135,74 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_environment(environment_id:)
+    # Delete environment.
+    # @param environment_id [String] The ID of the environment.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_environment(environment_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_environment")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_environment(environment_id:)
+    # Get environment info.
+    # @param environment_id [String] The ID of the environment.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_environment(environment_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_environment")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method list_environments(name: nil)
     # List environments.
     # List existing environments for the service instance.
     # @param name [String] Show only the environment with the given name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_environments(name: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_environments")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -160,21 +222,29 @@ module IBMWatson
     end
 
     ##
-    # @!method get_environment(environment_id:)
-    # Get environment info.
+    # @!method list_fields(environment_id:, collection_ids:)
+    # List fields across collections.
+    # Gets a list of the unique fields (and their types) stored in the indexes of the
+    #   specified collections.
     # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_environment(environment_id:)
+    # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_fields(environment_id:, collection_ids:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_fields")
+      headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "collection_ids" => collection_ids.to_a
       }
 
-      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
+      method_url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
 
       response = request(
         method: "GET",
@@ -197,12 +267,14 @@ module IBMWatson
     # @param size [String] Size that the environment should be increased to. Environment size cannot be
     #   modified when using a Lite plan. Environment size can only increased and not
     #   decreased.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_environment(environment_id:, name: nil, description: nil, size: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "update_environment")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -222,66 +294,6 @@ module IBMWatson
         headers: headers,
         params: params,
         json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method delete_environment(environment_id:)
-    # Delete environment.
-    # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def delete_environment(environment_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
-
-      response = request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method list_fields(environment_id:, collection_ids:)
-    # List fields across collections.
-    # Gets a list of the unique fields (and their types) stored in the indexes of the
-    #   specified collections.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_fields(environment_id:, collection_ids:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "collection_ids" => collection_ids.to_a
-      }
-
-      method_url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
         accept_json: true
       )
       response
@@ -314,7 +326,7 @@ module IBMWatson
     #   normalized form. Operations are executed in the order that they appear in the
     #   array.
     # @param source [Source] Object containing source parameters for the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -322,6 +334,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_configuration")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -350,27 +364,35 @@ module IBMWatson
     end
 
     ##
-    # @!method list_configurations(environment_id:, name: nil)
-    # List configurations.
-    # Lists existing configurations for the service instance.
+    # @!method delete_configuration(environment_id:, configuration_id:)
+    # Delete a configuration.
+    # The deletion is performed unconditionally. A configuration deletion request
+    #   succeeds even if the configuration is referenced by a collection or document
+    #   ingestion. However, documents that have already been submitted for processing
+    #   continue to use the deleted configuration. Documents are always processed with a
+    #   snapshot of the configuration as it existed at the time the document was
+    #   submitted.
     # @param environment_id [String] The ID of the environment.
-    # @param name [String] Find configurations with the given name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_configurations(environment_id:, name: nil)
+    # @param configuration_id [String] The ID of the configuration.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_configuration(environment_id:, configuration_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_configuration")
+      headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version,
-        "name" => name
+        "version" => @version
       }
 
-      method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
+      method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
 
       response = request(
-        method: "GET",
+        method: "DELETE",
         url: method_url,
         headers: headers,
         params: params,
@@ -384,7 +406,7 @@ module IBMWatson
     # Get configuration details.
     # @param environment_id [String] The ID of the environment.
     # @param configuration_id [String] The ID of the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_configuration(environment_id:, configuration_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -392,12 +414,46 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_configuration")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
       }
 
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_configurations(environment_id:, name: nil)
+    # List configurations.
+    # Lists existing configurations for the service instance.
+    # @param environment_id [String] The ID of the environment.
+    # @param name [String] Find configurations with the given name.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_configurations(environment_id:, name: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_configurations")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "name" => name
+      }
+
+      method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
 
       response = request(
         method: "GET",
@@ -431,7 +487,7 @@ module IBMWatson
     #   normalized form. Operations are executed in the order that they appear in the
     #   array.
     # @param source [Source] Object containing source parameters for the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -441,6 +497,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "update_configuration")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -467,48 +525,12 @@ module IBMWatson
       )
       response
     end
-
-    ##
-    # @!method delete_configuration(environment_id:, configuration_id:)
-    # Delete a configuration.
-    # The deletion is performed unconditionally. A configuration deletion request
-    #   succeeds even if the configuration is referenced by a collection or document
-    #   ingestion. However, documents that have already been submitted for processing
-    #   continue to use the deleted configuration. Documents are always processed with a
-    #   snapshot of the configuration as it existed at the time the document was
-    #   submitted.
-    # @param environment_id [String] The ID of the environment.
-    # @param configuration_id [String] The ID of the configuration.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def delete_configuration(environment_id:, configuration_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
-
-      response = request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
     #########################
     # Test your configuration on a document
     #########################
 
     ##
-    # @!method test_configuration_in_environment(environment_id:, configuration: nil, step: nil, configuration_id: nil, file: nil, metadata: nil, file_content_type: nil, filename: nil)
+    # @!method test_configuration_in_environment(environment_id:, configuration: nil, file: nil, filename: nil, file_content_type: nil, metadata: nil, step: nil, configuration_id: nil)
     # Test configuration.
     # Runs a sample document through the default or your configuration and returns
     #   diagnostic information designed to help you understand how the document was
@@ -521,14 +543,12 @@ module IBMWatson
     #   Configuration parts larger than 1 MB are rejected.
     #   See the `GET /configurations/{configuration_id}` operation for an example
     #   configuration.
-    # @param step [String] Specify to only run the input document through the given step instead of running
-    #   the input document through the entire ingestion workflow. Valid values are
-    #   `convert`, `enrich`, and `normalize`.
-    # @param configuration_id [String] The ID of the configuration to use to process the document. If the
-    #   **configuration** form part is also provided (both are present at the same time),
-    #   then the request will be rejected.
-    # @param file [File] The content of the document to ingest. The maximum supported file size is 50
-    #   megabytes. Files larger than 50 megabytes is rejected.
+    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
+    #   a file to a collection is 50 megabytes, the maximum supported file size when
+    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   rejected.
+    # @param filename [String] The filename for file.
+    # @param file_content_type [String] The content type of file.
     # @param metadata [String] If you're using the Data Crawler to upload your documents, you can test a document
     #   against the type of metadata that the Data Crawler might send. The maximum
     #   supported metadata file size is 1 MB. Metadata parts larger than 1 MB are
@@ -537,14 +557,20 @@ module IBMWatson
     #     \"Creator\": \"Johnny Appleseed\",
     #     \"Subject\": \"Apples\"
     #   } ```.
-    # @param file_content_type [String] The content type of file.
-    # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def test_configuration_in_environment(environment_id:, configuration: nil, step: nil, configuration_id: nil, file: nil, metadata: nil, file_content_type: nil, filename: nil)
+    # @param step [String] Specify to only run the input document through the given step instead of running
+    #   the input document through the entire ingestion workflow. Valid values are
+    #   `convert`, `enrich`, and `normalize`.
+    # @param configuration_id [String] The ID of the configuration to use to process the document. If the
+    #   **configuration** form part is also provided (both are present at the same time),
+    #   then the request will be rejected.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def test_configuration_in_environment(environment_id:, configuration: nil, file: nil, filename: nil, file_content_type: nil, metadata: nil, step: nil, configuration_id: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "test_configuration_in_environment")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -591,7 +617,7 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration in which the collection is to be created.
     # @param language [String] The language of the documents stored in the collection, in the form of an ISO
     #   639-1 language code.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_collection(environment_id:, name:, description: nil, configuration_id: nil, language: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -599,6 +625,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_collection")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -625,17 +653,116 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_collection(environment_id:, collection_id:)
+    # Delete a collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_collection(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_collection")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_collection(environment_id:, collection_id:)
+    # Get collection details.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_collection(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_collection")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_collection_fields(environment_id:, collection_id:)
+    # List collection fields.
+    # Gets a list of the unique fields (and their types) stored in the index.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_collection_fields(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_collection_fields")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/fields" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method list_collections(environment_id:, name: nil)
     # List collections.
     # Lists existing collections for the service instance.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] Find collections with the given name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collections(environment_id:, name: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_collections")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -655,36 +782,6 @@ module IBMWatson
     end
 
     ##
-    # @!method get_collection(environment_id:, collection_id:)
-    # Get collection details.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_collection(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method update_collection(environment_id:, collection_id:, name:, description: nil, configuration_id: nil)
     # Update a collection.
     # @param environment_id [String] The ID of the environment.
@@ -692,7 +789,7 @@ module IBMWatson
     # @param name [String] The name of the collection.
     # @param description [String] A description of the collection.
     # @param configuration_id [String] The ID of the configuration in which the collection is to be updated.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_collection(environment_id:, collection_id:, name:, description: nil, configuration_id: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -700,6 +797,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "update_collection")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -723,102 +822,9 @@ module IBMWatson
       )
       response
     end
-
-    ##
-    # @!method delete_collection(environment_id:, collection_id:)
-    # Delete a collection.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def delete_collection(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method list_collection_fields(environment_id:, collection_id:)
-    # List collection fields.
-    # Gets a list of the unique fields (and their types) stored in the index.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_collection_fields(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/fields" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
     #########################
     # Query modifications
     #########################
-
-    ##
-    # @!method list_expansions(environment_id:, collection_id:)
-    # Get the expansion list.
-    # Returns the current expansion list for the specified collection. If an expansion
-    #   list is not specified, an object with empty expansion arrays is returned.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_expansions(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
 
     ##
     # @!method create_expansions(environment_id:, collection_id:, expansions:)
@@ -844,7 +850,7 @@ module IBMWatson
     #   and an array of **expanded_terms**. When items in the **input_terms** array are
     #   present in a query, they are expanded using the items listed in the
     #   **expanded_terms** array.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_expansions(environment_id:, collection_id:, expansions:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -854,6 +860,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_expansions")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -877,140 +885,6 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_expansions(environment_id:, collection_id:)
-    # Delete the expansion list.
-    # Remove the expansion information for this collection. The expansion list must be
-    #   deleted to disable query expansion for a collection.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [nil]
-    def delete_expansions(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      nil
-    end
-
-    ##
-    # @!method get_tokenization_dictionary_status(environment_id:, collection_id:)
-    # Get tokenization dictionary status.
-    # Returns the current status of the tokenization dictionary for the specified
-    #   collection.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_tokenization_dictionary_status(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
-    # Create tokenization dictionary.
-    # Upload a custom tokenization dictionary to use with the specified collection.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param tokenization_rules [Array[TokenDictRule]] An array of tokenization rules. Each rule contains, the original `text` string,
-    #   component `tokens`, any alternate character set `readings`, and which
-    #   `part_of_speech` the text is from.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "tokenization_rules" => tokenization_rules
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method delete_tokenization_dictionary(environment_id:, collection_id:)
-    # Delete tokenization dictionary.
-    # Delete the tokenization dictionary from the collection.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [nil]
-    def delete_tokenization_dictionary(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      nil
-    end
-
-    ##
     # @!method create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
     # Create stopword list.
     # Upload a custom stopword list to use with the specified collection.
@@ -1018,7 +892,7 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @param stopword_file [File] The content of the stopword list to ingest.
     # @param stopword_filename [String] The filename for stopword_file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1028,6 +902,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_stopword_list")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1055,6 +931,81 @@ module IBMWatson
     end
 
     ##
+    # @!method create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+    # Create tokenization dictionary.
+    # Upload a custom tokenization dictionary to use with the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param tokenization_rules [Array[TokenDictRule]] An array of tokenization rules. Each rule contains, the original `text` string,
+    #   component `tokens`, any alternate character set `readings`, and which
+    #   `part_of_speech` the text is from.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_tokenization_dictionary")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "tokenization_rules" => tokenization_rules
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_expansions(environment_id:, collection_id:)
+    # Delete the expansion list.
+    # Remove the expansion information for this collection. The expansion list must be
+    #   deleted to disable query expansion for a collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [nil]
+    def delete_expansions(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_expansions")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
+    end
+
+    ##
     # @!method delete_stopword_list(environment_id:, collection_id:)
     # Delete a custom stopword list.
     # Delete a custom stopword list from the collection. After a custom stopword list is
@@ -1069,6 +1020,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_stopword_list")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1081,16 +1034,150 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
+        accept_json: false
       )
       nil
+    end
+
+    ##
+    # @!method delete_tokenization_dictionary(environment_id:, collection_id:)
+    # Delete tokenization dictionary.
+    # Delete the tokenization dictionary from the collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [nil]
+    def delete_tokenization_dictionary(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_tokenization_dictionary")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
+    end
+
+    ##
+    # @!method get_stopword_list_status(environment_id:, collection_id:)
+    # Get stopword list status.
+    # Returns the current status of the stopword list for the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_stopword_list_status(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_stopword_list_status")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_tokenization_dictionary_status(environment_id:, collection_id:)
+    # Get tokenization dictionary status.
+    # Returns the current status of the tokenization dictionary for the specified
+    #   collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_tokenization_dictionary_status(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_tokenization_dictionary_status")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_expansions(environment_id:, collection_id:)
+    # Get the expansion list.
+    # Returns the current expansion list for the specified collection. If an expansion
+    #   list is not specified, an object with empty expansion arrays is returned.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_expansions(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_expansions")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
     end
     #########################
     # Documents
     #########################
 
     ##
-    # @!method add_document(environment_id:, collection_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
+    # @!method add_document(environment_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
     # Add a document.
     # Add a document to a collection with optional metadata.
     #
@@ -1115,11 +1202,19 @@ module IBMWatson
     #   indexing.
     #
     #     * Fields containing the following characters after normalization are filtered
-    #   out before indexing: `#` and `,`.
+    #   out before indexing: `#` and `,`
+    #
+    #    **Note:** Documents can be added with a specific **document_id** by using the
+    #   **_/v1/environments/{environment_id}/collections/{collection_id}/documents**
+    #   method.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @param file [File] The content of the document to ingest. The maximum supported file size is 50
-    #   megabytes. Files larger than 50 megabytes is rejected.
+    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
+    #   a file to a collection is 50 megabytes, the maximum supported file size when
+    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   rejected.
+    # @param filename [String] The filename for file.
+    # @param file_content_type [String] The content type of file.
     # @param metadata [String] If you're using the Data Crawler to upload your documents, you can test a document
     #   against the type of metadata that the Data Crawler might send. The maximum
     #   supported metadata file size is 1 MB. Metadata parts larger than 1 MB are
@@ -1128,16 +1223,16 @@ module IBMWatson
     #     \"Creator\": \"Johnny Appleseed\",
     #     \"Subject\": \"Apples\"
     #   } ```.
-    # @param file_content_type [String] The content type of file.
-    # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def add_document(environment_id:, collection_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def add_document(environment_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "add_document")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1169,6 +1264,44 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_document(environment_id:, collection_id:, document_id:)
+    # Delete a document.
+    # If the given document ID is invalid, or if the document is not found, then the a
+    #   success response is returned (HTTP status code `200`) with the status set to
+    #   'deleted'.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param document_id [String] The ID of the document.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_document(environment_id:, collection_id:, document_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_document")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method get_document_status(environment_id:, collection_id:, document_id:)
     # Get document details.
     # Fetch status details about a submitted document. **Note:** this operation does not
@@ -1178,7 +1311,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param document_id [String] The ID of the document.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_document_status(environment_id:, collection_id:, document_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1188,6 +1321,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_document_status")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1206,14 +1341,22 @@ module IBMWatson
     end
 
     ##
-    # @!method update_document(environment_id:, collection_id:, document_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
+    # @!method update_document(environment_id:, collection_id:, document_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
     # Update a document.
-    # Replace an existing document. Starts ingesting a document with optional metadata.
+    # Replace an existing document or add a document with a specified **document_id**.
+    #   Starts ingesting a document with optional metadata.
+    #
+    #   **Note:** When uploading a new document with this method it automatically replaces
+    #   any document stored with the same **document_id** if it exists.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param document_id [String] The ID of the document.
-    # @param file [File] The content of the document to ingest. The maximum supported file size is 50
-    #   megabytes. Files larger than 50 megabytes is rejected.
+    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
+    #   a file to a collection is 50 megabytes, the maximum supported file size when
+    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   rejected.
+    # @param filename [String] The filename for file.
+    # @param file_content_type [String] The content type of file.
     # @param metadata [String] If you're using the Data Crawler to upload your documents, you can test a document
     #   against the type of metadata that the Data Crawler might send. The maximum
     #   supported metadata file size is 1 MB. Metadata parts larger than 1 MB are
@@ -1222,10 +1365,8 @@ module IBMWatson
     #     \"Creator\": \"Johnny Appleseed\",
     #     \"Subject\": \"Apples\"
     #   } ```.
-    # @param file_content_type [String] The content type of file.
-    # @param filename [String] The filename for file.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_document(environment_id:, collection_id:, document_id:, file: nil, metadata: nil, file_content_type: nil, filename: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_document(environment_id:, collection_id:, document_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1234,6 +1375,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "update_document")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1263,256 +1406,9 @@ module IBMWatson
       )
       response
     end
-
-    ##
-    # @!method delete_document(environment_id:, collection_id:, document_id:)
-    # Delete a document.
-    # If the given document ID is invalid, or if the document is not found, then the a
-    #   success response is returned (HTTP status code `200`) with the status set to
-    #   'deleted'.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param document_id [String] The ID of the document.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def delete_document(environment_id:, collection_id:, document_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      raise ArgumentError.new("document_id must be provided") if document_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
-
-      response = request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
     #########################
     # Queries
     #########################
-
-    ##
-    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
-    # Long collection queries.
-    # Complex queries might be too long for a standard method query. By using this
-    #   method, you can construct longer queries. However, these queries may take longer
-    #   to complete than the standard method. For details, see the [Discovery service
-    #   documentation](https://console.bluemix.net/docs/services/discovery/using.html).
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
-    #   Filter searches are better for metadata-type searches and for assessing the
-    #   concepts in the data set.
-    # @param query [String] A query search returns all documents in your data set with full enrichments and
-    #   full text, but with the most relevant documents listed first. Use a query search
-    #   when you want to find the most relevant search results. You cannot use
-    #   **natural_language_query** and **query** at the same time.
-    # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
-    #   data and natural language understanding. You cannot use **natural_language_query**
-    #   and **query** at the same time.
-    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
-    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
-    #   filters. Useful for applications to build lists, tables, and time series. For a
-    #   full list of possible aggregations, see the Query reference.
-    # @param count [Fixnum] Number of results to return.
-    # @param return_fields [String] A comma-separated list of the portion of the document hierarchy to return.
-    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10 and the offset is 8, it returns the last
-    #   two results.
-    # @param sort [String] A comma-separated list of fields in the document to sort on. You can optionally
-    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
-    #   ascending. Ascending is the default sort direction if no prefix is specified. This
-    #   parameter cannot be used in the same query as the **bias** parameter.
-    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
-    #   which match the query with `<em></em>` tags around the matching query terms.
-    # @param passages_fields [String] A comma-separated list of fields that passages are drawn from. If this parameter
-    #   not specified, then all top-level fields are included.
-    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
-    #   requested total is not found. The default is `10`. The maximum is `100`.
-    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
-    # @param deduplicate [Boolean] When `true` and used with a Watson Discovery News collection, duplicate results
-    #   (based on the contents of the **title** field) are removed. Duplicate comparison
-    #   is limited to the current query only; **offset** is not considered. This parameter
-    #   is currently Beta functionality.
-    # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
-    #   the returned results. Duplicate comparison is limited to the current query only,
-    #   **offset** is not considered. This parameter is currently Beta functionality.
-    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against. Required when
-    #   querying multiple collections, invalid when performing a single collection query.
-    # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
-    #   specified in the **similar.document_ids** parameter.
-    # @param similar_document_ids [String] A comma-separated list of document IDs to find similar documents.
-    #
-    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
-    #   the document similarity search with the natural language query. Other query
-    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
-    #   the scope.
-    # @param similar_fields [String] A comma-separated list of field names that are used as a basis for comparison to
-    #   identify similar documents. If not specified, the entire document is used for
-    #   comparison.
-    # @param bias [String] Field which the returned results will be biased against. The specified field must
-    #   be either a **date** or **number** format. When a **date** type field is specified
-    #   returned results are biased towards field values closer to the current date. When
-    #   a **number** type field is specified, returned results are biased towards higher
-    #   field values. This parameter cannot be used in the same query as the **sort**
-    #   parameter.
-    # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-        "X-Watson-Logging-Opt-Out" => logging_opt_out
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "filter" => filter,
-        "query" => query,
-        "natural_language_query" => natural_language_query,
-        "passages" => passages,
-        "aggregation" => aggregation,
-        "count" => count,
-        "return" => return_fields,
-        "offset" => offset,
-        "sort" => sort,
-        "highlight" => highlight,
-        "passages.fields" => passages_fields,
-        "passages.count" => passages_count,
-        "passages.characters" => passages_characters,
-        "deduplicate" => deduplicate,
-        "deduplicate.field" => deduplicate_field,
-        "collection_ids" => collection_ids,
-        "similar" => similar,
-        "similar.document_ids" => similar_document_ids,
-        "similar.fields" => similar_fields,
-        "bias" => bias
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
-    # Query system notices.
-    # Queries for notices (errors or warnings) that might have been generated by the
-    #   system. Notices are generated when ingesting documents and performing relevance
-    #   training. See the [Discovery service
-    #   documentation](https://console.bluemix.net/docs/services/discovery/using.html) for
-    #   more details on the query language.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
-    #   Filter searches are better for metadata-type searches and for assessing the
-    #   concepts in the data set.
-    # @param query [String] A query search returns all documents in your data set with full enrichments and
-    #   full text, but with the most relevant documents listed first. Use a query search
-    #   when you want to find the most relevant search results. You cannot use
-    #   **natural_language_query** and **query** at the same time.
-    # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
-    #   data and natural language understanding. You cannot use **natural_language_query**
-    #   and **query** at the same time.
-    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
-    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
-    #   filters. Useful for applications to build lists, tables, and time series. For a
-    #   full list of possible aggregations, see the Query reference.
-    # @param count [Fixnum] Number of results to return.
-    # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
-    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10 and the offset is 8, it returns the last
-    #   two results.
-    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
-    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
-    #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
-    #   which match the query with `<em></em>` tags around the matching query terms.
-    # @param passages_fields [Array[String]] A comma-separated list of fields that passages are drawn from. If this parameter
-    #   not specified, then all top-level fields are included.
-    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
-    #   requested total is not found.
-    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
-    # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
-    #   the returned results. Duplicate comparison is limited to the current query only,
-    #   **offset** is not considered. This parameter is currently Beta functionality.
-    # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
-    #   specified in the **similar.document_ids** parameter.
-    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs to find similar documents.
-    #
-    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
-    #   the document similarity search with the natural language query. Other query
-    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
-    #   the scope.
-    # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
-    #   identify similar documents. If not specified, the entire document is used for
-    #   comparison.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "filter" => filter,
-        "query" => query,
-        "natural_language_query" => natural_language_query,
-        "passages" => passages,
-        "aggregation" => aggregation,
-        "count" => count,
-        "return" => return_fields.to_a,
-        "offset" => offset,
-        "sort" => sort.to_a,
-        "highlight" => highlight,
-        "passages.fields" => passages_fields.to_a,
-        "passages.count" => passages_count,
-        "passages.characters" => passages_characters,
-        "deduplicate.field" => deduplicate_field,
-        "similar" => similar,
-        "similar.document_ids" => similar_document_ids.to_a,
-        "similar.fields" => similar_fields.to_a
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
 
     ##
     # @!method federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
@@ -1520,7 +1416,7 @@ module IBMWatson
     # Complex queries might be too long for a standard method query. By using this
     #   method, you can construct longer queries. However, these queries may take longer
     #   to complete than the standard method. For details, see the [Discovery service
-    #   documentation](https://console.bluemix.net/docs/services/discovery/using.html).
+    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-query-concepts#query-concepts).
     # @param environment_id [String] The ID of the environment.
     # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
     #   Filter searches are better for metadata-type searches and for assessing the
@@ -1552,7 +1448,7 @@ module IBMWatson
     # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
     #   requested total is not found. The default is `10`. The maximum is `100`.
     # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
-    # @param deduplicate [Boolean] When `true` and used with a Watson Discovery News collection, duplicate results
+    # @param deduplicate [Boolean] When `true`, and used with a Watson Discovery News collection, duplicate results
     #   (based on the contents of the **title** field) are removed. Duplicate comparison
     #   is limited to the current query only; **offset** is not considered. This parameter
     #   is currently Beta functionality.
@@ -1579,13 +1475,15 @@ module IBMWatson
     #   field values. This parameter cannot be used in the same query as the **sort**
     #   parameter.
     # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
         "X-Watson-Logging-Opt-Out" => logging_opt_out
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "federated_query")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1633,8 +1531,8 @@ module IBMWatson
     # Queries for notices (errors or warnings) that might have been generated by the
     #   system. Notices are generated when ingesting documents and performing relevance
     #   training. See the [Discovery service
-    #   documentation](https://console.bluemix.net/docs/services/discovery/using.html) for
-    #   more details on the query language.
+    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-query-concepts#query-concepts)
+    #   for more details on the query language.
     # @param environment_id [String] The ID of the environment.
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
     # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
@@ -1650,11 +1548,13 @@ module IBMWatson
     # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
     #   filters. Useful for applications to build lists, tables, and time series. For a
     #   full list of possible aggregations, see the Query reference.
-    # @param count [Fixnum] Number of results to return.
+    # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
+    #   together in any one query is **10000**.
     # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10 and the offset is 8, it returns the last
-    #   two results.
+    #   two results. The maximum for the **count** and **offset** values together in any
+    #   one query is **10000**.
     # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
     #   ascending. Ascending is the default sort direction if no prefix is specified.
@@ -1674,7 +1574,7 @@ module IBMWatson
     # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
     #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1682,6 +1582,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "federated_query_notices")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -1714,10 +1616,128 @@ module IBMWatson
     end
 
     ##
+    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    # Long collection queries.
+    # Complex queries might be too long for a standard method query. By using this
+    #   method, you can construct longer queries. However, these queries may take longer
+    #   to complete than the standard method. For details, see the [Discovery service
+    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-query-concepts#query-concepts).
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
+    # @param query [String] A query search returns all documents in your data set with full enrichments and
+    #   full text, but with the most relevant documents listed first. Use a query search
+    #   when you want to find the most relevant search results. You cannot use
+    #   **natural_language_query** and **query** at the same time.
+    # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
+    #   data and natural language understanding. You cannot use **natural_language_query**
+    #   and **query** at the same time.
+    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
+    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
+    #   filters. Useful for applications to build lists, tables, and time series. For a
+    #   full list of possible aggregations, see the Query reference.
+    # @param count [Fixnum] Number of results to return.
+    # @param return_fields [String] A comma-separated list of the portion of the document hierarchy to return.
+    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results.
+    # @param sort [String] A comma-separated list of fields in the document to sort on. You can optionally
+    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
+    #   ascending. Ascending is the default sort direction if no prefix is specified. This
+    #   parameter cannot be used in the same query as the **bias** parameter.
+    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
+    #   which match the query with `<em></em>` tags around the matching query terms.
+    # @param passages_fields [String] A comma-separated list of fields that passages are drawn from. If this parameter
+    #   not specified, then all top-level fields are included.
+    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
+    #   requested total is not found. The default is `10`. The maximum is `100`.
+    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
+    # @param deduplicate [Boolean] When `true`, and used with a Watson Discovery News collection, duplicate results
+    #   (based on the contents of the **title** field) are removed. Duplicate comparison
+    #   is limited to the current query only; **offset** is not considered. This parameter
+    #   is currently Beta functionality.
+    # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
+    #   the returned results. Duplicate comparison is limited to the current query only,
+    #   **offset** is not considered. This parameter is currently Beta functionality.
+    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against. Required when
+    #   querying multiple collections, invalid when performing a single collection query.
+    # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
+    #   specified in the **similar.document_ids** parameter.
+    # @param similar_document_ids [String] A comma-separated list of document IDs to find similar documents.
+    #
+    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
+    #   the document similarity search with the natural language query. Other query
+    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
+    #   the scope.
+    # @param similar_fields [String] A comma-separated list of field names that are used as a basis for comparison to
+    #   identify similar documents. If not specified, the entire document is used for
+    #   comparison.
+    # @param bias [String] Field which the returned results will be biased against. The specified field must
+    #   be either a **date** or **number** format. When a **date** type field is specified
+    #   returned results are biased towards field values closer to the current date. When
+    #   a **number** type field is specified, returned results are biased towards higher
+    #   field values. This parameter cannot be used in the same query as the **sort**
+    #   parameter.
+    # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+        "X-Watson-Logging-Opt-Out" => logging_opt_out
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "filter" => filter,
+        "query" => query,
+        "natural_language_query" => natural_language_query,
+        "passages" => passages,
+        "aggregation" => aggregation,
+        "count" => count,
+        "return" => return_fields,
+        "offset" => offset,
+        "sort" => sort,
+        "highlight" => highlight,
+        "passages.fields" => passages_fields,
+        "passages.count" => passages_count,
+        "passages.characters" => passages_characters,
+        "deduplicate" => deduplicate,
+        "deduplicate.field" => deduplicate_field,
+        "collection_ids" => collection_ids,
+        "similar" => similar,
+        "similar.document_ids" => similar_document_ids,
+        "similar.fields" => similar_fields,
+        "bias" => bias
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
     # Knowledge Graph entity query.
     # See the [Knowledge Graph
-    #   documentation](https://console.bluemix.net/docs/services/discovery/building-kg.html)
+    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-kg#kg)
     #   for more details.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
@@ -1730,7 +1750,7 @@ module IBMWatson
     # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
     # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
     #   maximum number of evidence items per query is 10,000.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1738,6 +1758,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_entities")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1765,10 +1787,109 @@ module IBMWatson
     end
 
     ##
+    # @!method query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    # Query system notices.
+    # Queries for notices (errors or warnings) that might have been generated by the
+    #   system. Notices are generated when ingesting documents and performing relevance
+    #   training. See the [Discovery service
+    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-query-concepts#query-concepts)
+    #   for more details on the query language.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
+    # @param query [String] A query search returns all documents in your data set with full enrichments and
+    #   full text, but with the most relevant documents listed first. Use a query search
+    #   when you want to find the most relevant search results. You cannot use
+    #   **natural_language_query** and **query** at the same time.
+    # @param natural_language_query [String] A natural language query that returns relevant documents by utilizing training
+    #   data and natural language understanding. You cannot use **natural_language_query**
+    #   and **query** at the same time.
+    # @param passages [Boolean] A passages query that returns the most relevant passages from the results.
+    # @param aggregation [String] An aggregation search that returns an exact answer by combining query search with
+    #   filters. Useful for applications to build lists, tables, and time series. For a
+    #   full list of possible aggregations, see the Query reference.
+    # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
+    #   together in any one query is **10000**.
+    # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
+    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results. The maximum for the **count** and **offset** values together in any
+    #   one query is **10000**.
+    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
+    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
+    #   ascending. Ascending is the default sort direction if no prefix is specified.
+    # @param highlight [Boolean] When true, a highlight field is returned for each result which contains the fields
+    #   which match the query with `<em></em>` tags around the matching query terms.
+    # @param passages_fields [Array[String]] A comma-separated list of fields that passages are drawn from. If this parameter
+    #   not specified, then all top-level fields are included.
+    # @param passages_count [Fixnum] The maximum number of passages to return. The search returns fewer passages if the
+    #   requested total is not found.
+    # @param passages_characters [Fixnum] The approximate number of characters that any one passage will have.
+    # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
+    #   the returned results. Duplicate comparison is limited to the current query only,
+    #   **offset** is not considered. This parameter is currently Beta functionality.
+    # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
+    #   specified in the **similar.document_ids** parameter.
+    # @param similar_document_ids [Array[String]] A comma-separated list of document IDs to find similar documents.
+    #
+    #   **Tip:** Include the **natural_language_query** parameter to expand the scope of
+    #   the document similarity search with the natural language query. Other query
+    #   parameters, such as **filter** and **query**, are subsequently applied and reduce
+    #   the scope.
+    # @param similar_fields [Array[String]] A comma-separated list of field names that are used as a basis for comparison to
+    #   identify similar documents. If not specified, the entire document is used for
+    #   comparison.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_notices")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "filter" => filter,
+        "query" => query,
+        "natural_language_query" => natural_language_query,
+        "passages" => passages,
+        "aggregation" => aggregation,
+        "count" => count,
+        "return" => return_fields.to_a,
+        "offset" => offset,
+        "sort" => sort.to_a,
+        "highlight" => highlight,
+        "passages.fields" => passages_fields.to_a,
+        "passages.count" => passages_count,
+        "passages.characters" => passages_characters,
+        "deduplicate.field" => deduplicate_field,
+        "similar" => similar,
+        "similar.document_ids" => similar_document_ids.to_a,
+        "similar.fields" => similar_fields.to_a
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
     # Knowledge Graph relationship query.
     # See the [Knowledge Graph
-    #   documentation](https://console.bluemix.net/docs/services/discovery/building-kg.html)
+    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-kg#kg)
     #   for more details.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
@@ -1780,11 +1901,11 @@ module IBMWatson
     #   `frequency` is the number of unique times each entity is identified. The default
     #   is `score`. This parameter cannot be used in the same query as the **bias**
     #   parameter.
-    # @param filter [QueryRelationsFilter] Filters to apply to the relationship query.
+    # @param filter [QueryRelationsFilter]
     # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
     # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
     #   maximum number of evidence items per query is 10,000.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1792,6 +1913,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_relations")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1823,47 +1946,17 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_training_data(environment_id:, collection_id:)
-    # List training data.
-    # Lists the training data for the specified collection.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_training_data(environment_id:, collection_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method add_training_data(environment_id:, collection_id:, natural_language_query: nil, filter: nil, examples: nil)
     # Add query to training data.
     # Adds a query to the training data for this collection. The query can contain a
     #   filter and natural language query.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @param natural_language_query [String]
-    # @param filter [String]
-    # @param examples [Array[TrainingExample]]
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @param natural_language_query [String] The natural text query for the new training query.
+    # @param filter [String] The filter used on the collection before the **natural_language_query** is
+    #   applied.
+    # @param examples [Array[TrainingExample]] Array of training examples.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_training_data(environment_id:, collection_id:, natural_language_query: nil, filter: nil, examples: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -1871,6 +1964,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "add_training_data")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1883,6 +1978,52 @@ module IBMWatson
       }
 
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
+    # Add example to training data query.
+    # Adds a example to this training data query.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param query_id [String] The ID of the query used for training.
+    # @param document_id [String] The document ID associated with this training example.
+    # @param cross_reference [String] The cross reference associated with this training example.
+    # @param relevance [Fixnum] The relevance of the training example.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_training_example")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "document_id" => document_id,
+        "cross_reference" => cross_reference,
+        "relevance" => relevance
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
 
       response = request(
         method: "POST",
@@ -1909,6 +2050,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_all_training_data")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1921,44 +2064,9 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
+        accept_json: false
       )
       nil
-    end
-
-    ##
-    # @!method get_training_data(environment_id:, collection_id:, query_id:)
-    # Get details about a query.
-    # Gets details for a specific training data query, including the query string and
-    #   all examples.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param query_id [String] The ID of the query used for training.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_training_data(environment_id:, collection_id:, query_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      raise ArgumentError.new("query_id must be provided") if query_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
     end
 
     ##
@@ -1979,6 +2087,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_training_data")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1991,87 +2101,9 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
+        accept_json: false
       )
       nil
-    end
-
-    ##
-    # @!method list_training_examples(environment_id:, collection_id:, query_id:)
-    # List examples for a training data query.
-    # List all examples for this training data query.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param query_id [String] The ID of the query used for training.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_training_examples(environment_id:, collection_id:, query_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      raise ArgumentError.new("query_id must be provided") if query_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
-    # Add example to training data query.
-    # Adds a example to this training data query.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param query_id [String] The ID of the query used for training.
-    # @param document_id [String]
-    # @param cross_reference [String]
-    # @param relevance [Fixnum]
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      raise ArgumentError.new("query_id must be provided") if query_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "document_id" => document_id,
-        "cross_reference" => cross_reference,
-        "relevance" => relevance
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
     end
 
     ##
@@ -2094,6 +2126,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_training_example")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2106,9 +2140,154 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
+        accept_json: false
       )
       nil
+    end
+
+    ##
+    # @!method get_training_data(environment_id:, collection_id:, query_id:)
+    # Get details about a query.
+    # Gets details for a specific training data query, including the query string and
+    #   all examples.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param query_id [String] The ID of the query used for training.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_training_data(environment_id:, collection_id:, query_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_training_data")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_training_example(environment_id:, collection_id:, query_id:, example_id:)
+    # Get details for training data example.
+    # Gets the details for this training example.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param query_id [String] The ID of the query used for training.
+    # @param example_id [String] The ID of the document as it is indexed.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_training_example(environment_id:, collection_id:, query_id:, example_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
+
+      raise ArgumentError.new("example_id must be provided") if example_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_training_example")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_training_data(environment_id:, collection_id:)
+    # List training data.
+    # Lists the training data for the specified collection.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_training_data(environment_id:, collection_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_training_data")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_training_examples(environment_id:, collection_id:, query_id:)
+    # List examples for a training data query.
+    # List all examples for this training data query.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param query_id [String] The ID of the query used for training.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_training_examples(environment_id:, collection_id:, query_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("query_id must be provided") if query_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_training_examples")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
     end
 
     ##
@@ -2119,9 +2298,9 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @param query_id [String] The ID of the query used for training.
     # @param example_id [String] The ID of the document as it is indexed.
-    # @param cross_reference [String]
-    # @param relevance [Fixnum]
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @param cross_reference [String] The example to add.
+    # @param relevance [Fixnum] The relevance value for this example.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_training_example(environment_id:, collection_id:, query_id:, example_id:, cross_reference: nil, relevance: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2133,6 +2312,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "update_training_example")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2155,43 +2336,6 @@ module IBMWatson
       )
       response
     end
-
-    ##
-    # @!method get_training_example(environment_id:, collection_id:, query_id:, example_id:)
-    # Get details for training data example.
-    # Gets the details for this training example.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param query_id [String] The ID of the query used for training.
-    # @param example_id [String] The ID of the document as it is indexed.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_training_example(environment_id:, collection_id:, query_id:, example_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      raise ArgumentError.new("query_id must be provided") if query_id.nil?
-
-      raise ArgumentError.new("example_id must be provided") if example_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
     #########################
     # User data
     #########################
@@ -2205,7 +2349,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the **X-Watson-Metadata** header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://console.bluemix.net/docs/services/discovery/information-security.html).
+    #   security](https://cloud.ibm.com/docs/services/discovery?topic=discovery-information-security#information-security).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
@@ -2213,6 +2357,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_user_data")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -2226,7 +2372,7 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
+        accept_json: false
       )
       nil
     end
@@ -2242,7 +2388,7 @@ module IBMWatson
     #   were \"clicked\" by a user and when that click occured.
     # @param type [String] The event type to be created.
     # @param data [EventData] Query event data object.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_event(type:, data:)
       raise ArgumentError.new("type must be provided") if type.nil?
 
@@ -2250,6 +2396,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_event")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2274,40 +2422,32 @@ module IBMWatson
     end
 
     ##
-    # @!method query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
-    # Search the query and event log.
-    # Searches the query and event log to find query sessions that match the specified
-    #   criteria. Searching the **logs** endpoint uses the standard Discovery query syntax
-    #   for the parameters that are supported.
-    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
-    #   Filter searches are better for metadata-type searches and for assessing the
-    #   concepts in the data set.
-    # @param query [String] A query search returns all documents in your data set with full enrichments and
-    #   full text, but with the most relevant documents listed first. Use a query search
-    #   when you want to find the most relevant search results. You cannot use
-    #   **natural_language_query** and **query** at the same time.
-    # @param count [Fixnum] Number of results to return.
-    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
-    #   number of results that are returned is 10 and the offset is 8, it returns the last
-    #   two results.
-    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
-    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
-    #   ascending. Ascending is the default sort direction if no prefix is specified.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
+    # @!method get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
+    # Percentage of queries with an associated event.
+    # The percentage of queries using the **natural_language_query** parameter that have
+    #   a corresponding \"click\" event over a specified time window.  This metric
+    #   requires having integrated event tracking in your application using the **Events**
+    #   API.
+    # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
+    #   `YYYY-MM-DDThh:mm:ssZ` format.
+    # @param result_type [String] The type of result to consider when calculating the metric.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_event_rate")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
-        "filter" => filter,
-        "query" => query,
-        "count" => count,
-        "offset" => offset,
-        "sort" => sort.to_a
+        "start_time" => start_time,
+        "end_time" => end_time,
+        "result_type" => result_type
       }
 
-      method_url = "/v1/logs"
+      method_url = "/v1/metrics/event_rate"
 
       response = request(
         method: "GET",
@@ -2329,10 +2469,12 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -2364,10 +2506,12 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query_event")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -2398,10 +2542,12 @@ module IBMWatson
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query_no_results")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -2423,53 +2569,20 @@ module IBMWatson
     end
 
     ##
-    # @!method get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
-    # Percentage of queries with an associated event.
-    # The percentage of queries using the **natural_language_query** parameter that have
-    #   a corresponding \"click\" event over a specified time window.  This metric
-    #   requires having integrated event tracking in your application using the **Events**
-    #   API.
-    # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
-    #   `YYYY-MM-DDThh:mm:ssZ` format.
-    # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
-    #   `YYYY-MM-DDThh:mm:ssZ` format.
-    # @param result_type [String] The type of result to consider when calculating the metric.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "start_time" => start_time,
-        "end_time" => end_time,
-        "result_type" => result_type
-      }
-
-      method_url = "/v1/metrics/event_rate"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method get_metrics_query_token_event(count: nil)
     # Most frequent query tokens with an event.
     # The most frequent query tokens parsed from the **natural_language_query**
     #   parameter and their corresponding \"click\" event rate within the recording period
     #   (queries and events are stored for 30 days). A query token is an individual word
     #   or unigram within the query string.
-    # @param count [Fixnum] Number of results to return.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
+    #   together in any one query is **10000**.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_token_event(count: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query_token_event")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -2487,30 +2600,46 @@ module IBMWatson
       )
       response
     end
-    #########################
-    # Credentials
-    #########################
 
     ##
-    # @!method list_credentials(environment_id:)
-    # List credentials.
-    # List all the source credentials that have been created for this service instance.
-    #
-    #    **Note:**  All credentials are sent over an encrypted connection and encrypted at
-    #   rest.
-    # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_credentials(environment_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
+    # @!method query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
+    # Search the query and event log.
+    # Searches the query and event log to find query sessions that match the specified
+    #   criteria. Searching the **logs** endpoint uses the standard Discovery query syntax
+    #   for the parameters that are supported.
+    # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
+    #   Filter searches are better for metadata-type searches and for assessing the
+    #   concepts in the data set.
+    # @param query [String] A query search returns all documents in your data set with full enrichments and
+    #   full text, but with the most relevant documents listed first. Use a query search
+    #   when you want to find the most relevant search results. You cannot use
+    #   **natural_language_query** and **query** at the same time.
+    # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
+    #   together in any one query is **10000**.
+    # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
+    #   number of results that are returned is 10 and the offset is 8, it returns the last
+    #   two results. The maximum for the **count** and **offset** values together in any
+    #   one query is **10000**.
+    # @param sort [Array[String]] A comma-separated list of fields in the document to sort on. You can optionally
+    #   specify a sort direction by prefixing the field with `-` for descending or `+` for
+    #   ascending. Ascending is the default sort direction if no prefix is specified.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_log")
+      headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "filter" => filter,
+        "query" => query,
+        "count" => count,
+        "offset" => offset,
+        "sort" => sort.to_a
       }
 
-      method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
+      method_url = "/v1/logs"
 
       response = request(
         method: "GET",
@@ -2521,6 +2650,9 @@ module IBMWatson
       )
       response
     end
+    #########################
+    # Credentials
+    #########################
 
     ##
     # @!method create_credentials(environment_id:, source_type: nil, credential_details: nil)
@@ -2538,15 +2670,19 @@ module IBMWatson
     #   -  `sharepoint` indicates the credentials are used to connect to Microsoft
     #   SharePoint Online.
     #   -  `web_crawl` indicates the credentials are used to perform a web crawl.
+    #   =  `cloud_object_storage` indicates the credentials are used to connect to an IBM
+    #   Cloud Object Store.
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_credentials")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2571,6 +2707,39 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_credentials(environment_id:, credential_id:)
+    # Delete credentials.
+    # Deletes a set of stored credentials from your Discovery instance.
+    # @param environment_id [String] The ID of the environment.
+    # @param credential_id [String] The unique identifier for a set of source credentials.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_credentials(environment_id:, credential_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_credentials")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method get_credentials(environment_id:, credential_id:)
     # View Credentials.
     # Returns details about the specified credentials.
@@ -2579,7 +2748,7 @@ module IBMWatson
     #   returned and must be obtained from the source system.
     # @param environment_id [String] The ID of the environment.
     # @param credential_id [String] The unique identifier for a set of source credentials.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_credentials(environment_id:, credential_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2587,12 +2756,47 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_credentials")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
       }
 
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_credentials(environment_id:)
+    # List credentials.
+    # List all the source credentials that have been created for this service instance.
+    #
+    #    **Note:**  All credentials are sent over an encrypted connection and encrypted at
+    #   rest.
+    # @param environment_id [String] The ID of the environment.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_credentials(environment_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_credentials")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
 
       response = request(
         method: "GET",
@@ -2620,10 +2824,12 @@ module IBMWatson
     #   -  `sharepoint` indicates the credentials are used to connect to Microsoft
     #   SharePoint Online.
     #   -  `web_crawl` indicates the credentials are used to perform a web crawl.
+    #   =  `cloud_object_storage` indicates the credentials are used to connect to an IBM
+    #   Cloud Object Store.
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2631,6 +2837,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "update_credentials")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2653,68 +2861,9 @@ module IBMWatson
       )
       response
     end
-
-    ##
-    # @!method delete_credentials(environment_id:, credential_id:)
-    # Delete credentials.
-    # Deletes a set of stored credentials from your Discovery instance.
-    # @param environment_id [String] The ID of the environment.
-    # @param credential_id [String] The unique identifier for a set of source credentials.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def delete_credentials(environment_id:, credential_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
-
-      response = request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
     #########################
     # gatewayConfiguration
     #########################
-
-    ##
-    # @!method list_gateways(environment_id:)
-    # List Gateways.
-    # List the currently configured gateways.
-    # @param environment_id [String] The ID of the environment.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_gateways(environment_id:)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/environments/%s/gateways" % [ERB::Util.url_encode(environment_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
 
     ##
     # @!method create_gateway(environment_id:, name: nil)
@@ -2722,12 +2871,14 @@ module IBMWatson
     # Create a gateway configuration to use with a remotely installed gateway.
     # @param environment_id [String] The ID of the environment.
     # @param name [String] User-defined name.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_gateway(environment_id:, name: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "create_gateway")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2751,12 +2902,45 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_gateway(environment_id:, gateway_id:)
+    # Delete Gateway.
+    # Delete the specified gateway configuration.
+    # @param environment_id [String] The ID of the environment.
+    # @param gateway_id [String] The requested gateway ID.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_gateway(environment_id:, gateway_id:)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("gateway_id must be provided") if gateway_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "delete_gateway")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/environments/%s/gateways/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(gateway_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method get_gateway(environment_id:, gateway_id:)
     # List Gateway Details.
     # List information about the specified gateway.
     # @param environment_id [String] The ID of the environment.
     # @param gateway_id [String] The requested gateway ID.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_gateway(environment_id:, gateway_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
@@ -2764,6 +2948,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_gateway")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2782,28 +2968,27 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_gateway(environment_id:, gateway_id:)
-    # Delete Gateway.
-    # Delete the specified gateway configuration.
+    # @!method list_gateways(environment_id:)
+    # List Gateways.
+    # List the currently configured gateways.
     # @param environment_id [String] The ID of the environment.
-    # @param gateway_id [String] The requested gateway ID.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def delete_gateway(environment_id:, gateway_id:)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_gateways(environment_id:)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("gateway_id must be provided") if gateway_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_gateways")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
       }
 
-      method_url = "/v1/environments/%s/gateways/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(gateway_id)]
+      method_url = "/v1/environments/%s/gateways" % [ERB::Util.url_encode(environment_id)]
 
       response = request(
-        method: "DELETE",
+        method: "GET",
         url: method_url,
         headers: headers,
         params: params,

@@ -21,15 +21,14 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Assistant V1 service.
-  class AssistantV1 < WatsonService
+  class AssistantV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -82,6 +81,7 @@ module IBMWatson
       args[:vcap_services_name] = "conversation"
       super
       @version = args[:version]
+      args[:display_name] = "Assistant"
     end
 
     #########################
@@ -89,33 +89,35 @@ module IBMWatson
     #########################
 
     ##
-    # @!method message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
+    # @!method message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, nodes_visited_details: nil)
     # Get response to user input.
     # Send user input to a workspace and receive a response.
     #
     #   There is no rate limit for this operation.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param input [InputData] The user input.
-    # @param alternate_intents [Boolean] Whether to return more than one intent. Set to `true` to return all matching
-    #   intents.
-    # @param context [Context] State information for the conversation. To maintain state, include the context
-    #   from the previous response.
-    # @param entities [Array[RuntimeEntity]] Entities to use when evaluating the message. Include entities from the previous
-    #   response to continue using those entities rather than detecting entities in the
-    #   new input.
+    # @param input [MessageInput] An input object that includes the input text.
     # @param intents [Array[RuntimeIntent]] Intents to use when evaluating the user input. Include intents from the previous
     #   response to continue using those intents rather than trying to recognize intents
     #   in the new input.
+    # @param entities [Array[RuntimeEntity]] Entities to use when evaluating the message. Include entities from the previous
+    #   response to continue using those entities rather than detecting entities in the
+    #   new input.
+    # @param alternate_intents [Boolean] Whether to return more than one intent. A value of `true` indicates that all
+    #   matching intents are returned.
+    # @param context [Context] State information for the conversation. To maintain state, include the context
+    #   from the previous response.
     # @param output [OutputData] An output object that includes the response to the user, the dialog nodes that
     #   were triggered, and messages from the log.
     # @param nodes_visited_details [Boolean] Whether to include additional diagnostic information about the dialog nodes that
     #   were visited during processing of the message.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def message(workspace_id:, input: nil, alternate_intents: nil, context: nil, entities: nil, intents: nil, output: nil, nodes_visited_details: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, nodes_visited_details: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "message")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -124,10 +126,10 @@ module IBMWatson
 
       data = {
         "input" => input,
+        "intents" => intents,
+        "entities" => entities,
         "alternate_intents" => alternate_intents,
         "context" => context,
-        "entities" => entities,
-        "intents" => intents,
         "output" => output
       }
 
@@ -148,47 +150,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List workspaces.
-    # List the workspaces associated with a Watson Assistant service instance.
-    #
-    #   This operation is limited to 500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned workspaces will be sorted. To reverse the sort
-    #   order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
+    # @!method create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil)
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
@@ -200,19 +162,22 @@ module IBMWatson
     # @param description [String] The description of the workspace. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
     # @param language [String] The language of the workspace.
-    # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
-    # @param entities [Array[CreateEntity]] An array of objects defining the entities for the workspace.
-    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the dialog.
-    # @param counterexamples [Array[CreateCounterexample]] An array of objects defining input examples that have been marked as irrelevant
-    #   input.
-    # @param metadata [Object] Any metadata related to the workspace.
-    # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
-    #   improvements. `true` indicates that workspace training data is not to be used.
+    # @param metadata [Hash] Any metadata related to the workspace.
+    # @param learning_opt_out [Boolean] Whether training data from the workspace (including artifacts such as intents and
+    #   entities) can be used by IBM for general service improvements. `true` indicates
+    #   that workspace training data is not to be used.
     # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_workspace(name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil)
+    # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
+    # @param entities [Array[CreateEntity]] An array of objects describing the entities for the workspace.
+    # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
+    # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
+    #   input.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil)
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_workspace")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -222,129 +187,16 @@ module IBMWatson
         "name" => name,
         "description" => description,
         "language" => language,
+        "metadata" => metadata,
+        "learning_opt_out" => learning_opt_out,
+        "system_settings" => system_settings,
         "intents" => intents,
         "entities" => entities,
         "dialog_nodes" => dialog_nodes,
-        "counterexamples" => counterexamples,
-        "metadata" => metadata,
-        "learning_opt_out" => learning_opt_out,
-        "system_settings" => system_settings
+        "counterexamples" => counterexamples
       }
 
       method_url = "/v1/workspaces"
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
-    # Get information about a workspace.
-    # Get information about a workspace, optionally including all workspace content.
-    #
-    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
-    #   With **export**=`true`, the limit is 20 requests per 30 minutes. For more
-    #   information, see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param export [Boolean] Whether to include all element content in the returned data. If
-    #   **export**=`false`, the returned data includes only information about the element
-    #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @param sort [String] Indicates how the returned workspace data will be sorted. This parameter is valid
-    #   only if **export**=`true`. Specify `sort=stable` to sort all workspace objects by
-    #   unique identifier, in ascending alphabetical order.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "export" => export,
-        "include_audit" => include_audit,
-        "sort" => sort
-      }
-
-      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
-    # Update workspace.
-    # Update an existing workspace with new or modified data. You must provide component
-    #   objects defining the content of the updated workspace.
-    #
-    #   This operation is limited to 30 request per 30 minutes. For more information, see
-    #   **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param name [String] The name of the workspace. This string cannot contain carriage return, newline, or
-    #   tab characters, and it must be no longer than 64 characters.
-    # @param description [String] The description of the workspace. This string cannot contain carriage return,
-    #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param language [String] The language of the workspace.
-    # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
-    # @param entities [Array[CreateEntity]] An array of objects defining the entities for the workspace.
-    # @param dialog_nodes [Array[CreateDialogNode]] An array of objects defining the nodes in the dialog.
-    # @param counterexamples [Array[CreateCounterexample]] An array of objects defining input examples that have been marked as irrelevant
-    #   input.
-    # @param metadata [Object] Any metadata related to the workspace.
-    # @param learning_opt_out [Boolean] Whether training data from the workspace can be used by IBM for general service
-    #   improvements. `true` indicates that workspace training data is not to be used.
-    # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
-    # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
-    #   **append**=`false`, elements included in the new data completely replace the
-    #   corresponding existing elements, including all subelements. For example, if the
-    #   new data includes **entities** and **append**=`false`, all existing entities in
-    #   the workspace are discarded and replaced with the new entities.
-    #
-    #   If **append**=`true`, existing elements are preserved, and the new elements are
-    #   added. If any elements in the new data collide with existing elements, the update
-    #   request fails.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, append: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "append" => append
-      }
-
-      data = {
-        "name" => name,
-        "description" => description,
-        "language" => language,
-        "intents" => intents,
-        "entities" => entities,
-        "dialog_nodes" => dialog_nodes,
-        "counterexamples" => counterexamples,
-        "metadata" => metadata,
-        "learning_opt_out" => learning_opt_out,
-        "system_settings" => system_settings
-      }
-
-      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
 
       response = request(
         method: "POST",
@@ -371,6 +223,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_workspace")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -387,47 +241,41 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Intents
-    #########################
 
     ##
-    # @!method list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List intents.
-    # List the intents for a workspace.
+    # @!method get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
+    # Get information about a workspace.
+    # Get information about a workspace, optionally including all workspace content.
     #
-    #   With **export**=`false`, this operation is limited to 2000 requests per 30
-    #   minutes. With **export**=`true`, the limit is 400 requests per 30 minutes. For
-    #   more information, see **Rate limiting**.
+    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
+    #   With **export**=`true`, the limit is 20 requests per 30 minutes. For more
+    #   information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned intents will be sorted. To reverse the sort order,
-    #   prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @param sort [String] Indicates how the returned workspace data will be sorted. This parameter is valid
+    #   only if **export**=`true`. Specify `sort=stable` to sort all workspace objects by
+    #   unique identifier, in ascending alphabetical order.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_workspace")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
         "export" => export,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
-        "include_audit" => include_audit
+        "include_audit" => include_audit,
+        "sort" => sort
       }
 
-      method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
 
       response = request(
         method: "GET",
@@ -438,6 +286,124 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List workspaces.
+    # List the workspaces associated with a Watson Assistant service instance.
+    #
+    #   This operation is limited to 500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned workspaces will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_workspaces")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, append: nil)
+    # Update workspace.
+    # Update an existing workspace with new or modified data. You must provide component
+    #   objects defining the content of the updated workspace.
+    #
+    #   This operation is limited to 30 request per 30 minutes. For more information, see
+    #   **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param name [String] The name of the workspace. This string cannot contain carriage return, newline, or
+    #   tab characters, and it must be no longer than 64 characters.
+    # @param description [String] The description of the workspace. This string cannot contain carriage return,
+    #   newline, or tab characters, and it must be no longer than 128 characters.
+    # @param language [String] The language of the workspace.
+    # @param metadata [Hash] Any metadata related to the workspace.
+    # @param learning_opt_out [Boolean] Whether training data from the workspace (including artifacts such as intents and
+    #   entities) can be used by IBM for general service improvements. `true` indicates
+    #   that workspace training data is not to be used.
+    # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
+    # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
+    # @param entities [Array[CreateEntity]] An array of objects describing the entities for the workspace.
+    # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
+    # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
+    #   input.
+    # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
+    #   **append**=`false`, elements included in the new data completely replace the
+    #   corresponding existing elements, including all subelements. For example, if the
+    #   new data includes **entities** and **append**=`false`, all existing entities in
+    #   the workspace are discarded and replaced with the new entities.
+    #
+    #   If **append**=`true`, existing elements are preserved, and the new elements are
+    #   added. If any elements in the new data collide with existing elements, the update
+    #   request fails.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, append: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_workspace")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "append" => append
+      }
+
+      data = {
+        "name" => name,
+        "description" => description,
+        "language" => language,
+        "metadata" => metadata,
+        "learning_opt_out" => learning_opt_out,
+        "system_settings" => system_settings,
+        "intents" => intents,
+        "entities" => entities,
+        "dialog_nodes" => dialog_nodes,
+        "counterexamples" => counterexamples
+      }
+
+      method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Intents
+    #########################
 
     ##
     # @!method create_intent(workspace_id:, intent:, description: nil, examples: nil)
@@ -454,8 +420,8 @@ module IBMWatson
     #   - It must be no longer than 128 characters.
     # @param description [String] The description of the intent. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param examples [Array[CreateExample]] An array of user input examples for the intent.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @param examples [Array[Example]] An array of user input examples for the intent.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_intent(workspace_id:, intent:, description: nil, examples: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -463,6 +429,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_intent")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -475,97 +443,6 @@ module IBMWatson
       }
 
       method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
-    # Get intent.
-    # Get information about an intent, optionally including all intent content.
-    #
-    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
-    #   With **export**=`true`, the limit is 400 requests per 30 minutes. For more
-    #   information, see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param intent [String] The intent name.
-    # @param export [Boolean] Whether to include all element content in the returned data. If
-    #   **export**=`false`, the returned data includes only information about the element
-    #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("intent must be provided") if intent.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "export" => export,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
-    # Update intent.
-    # Update an existing intent with new or modified data. You must provide component
-    #   objects defining the content of the updated intent.
-    #
-    #   This operation is limited to 2000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param intent [String] The intent name.
-    # @param new_intent [String] The name of the intent. This string must conform to the following restrictions:
-    #   - It can contain only Unicode alphanumeric, underscore, hyphen, and dot
-    #   characters.
-    #   - It cannot begin with the reserved prefix `sys-`.
-    #   - It must be no longer than 128 characters.
-    # @param new_description [String] The description of the intent.
-    # @param new_examples [Array[CreateExample]] An array of user input examples for the intent.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("intent must be provided") if intent.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "intent" => new_intent,
-        "description" => new_description,
-        "examples" => new_examples
-      }
-
-      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
       response = request(
         method: "POST",
@@ -595,6 +472,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_intent")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -611,46 +490,40 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Examples
-    #########################
 
     ##
-    # @!method list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List user input examples.
-    # List the user input examples for an intent, optionally including contextual entity
-    #   mentions.
+    # @!method get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
+    # Get intent.
+    # Get information about an intent, optionally including all intent content.
     #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
+    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
+    #   With **export**=`true`, the limit is 400 requests per 30 minutes. For more
+    #   information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned examples will be sorted. To reverse the sort
-    #   order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_intent")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
+        "export" => export,
         "include_audit" => include_audit
       }
 
-      method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
       response = request(
         method: "GET",
@@ -661,6 +534,111 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List intents.
+    # List the intents for a workspace.
+    #
+    #   With **export**=`false`, this operation is limited to 2000 requests per 30
+    #   minutes. With **export**=`true`, the limit is 400 requests per 30 minutes. For
+    #   more information, see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned intents will be sorted. To reverse the sort order,
+    #   prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_intents")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "export" => export,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
+    # Update intent.
+    # Update an existing intent with new or modified data. You must provide component
+    #   objects defining the content of the updated intent.
+    #
+    #   This operation is limited to 2000 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param new_intent [String] The name of the intent. This string must conform to the following restrictions:
+    #   - It can contain only Unicode alphanumeric, underscore, hyphen, and dot
+    #   characters.
+    #   - It cannot begin with the reserved prefix `sys-`.
+    #   - It must be no longer than 128 characters.
+    # @param new_description [String] The description of the intent. This string cannot contain carriage return,
+    #   newline, or tab characters, and it must be no longer than 128 characters.
+    # @param new_examples [Array[Example]] An array of user input examples for the intent.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_intent")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "intent" => new_intent,
+        "description" => new_description,
+        "examples" => new_examples
+      }
+
+      method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Examples
+    #########################
 
     ##
     # @!method create_example(workspace_id:, intent:, text:, mentions: nil)
@@ -676,8 +654,8 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 1024 characters.
-    # @param mentions [Array[Mentions]] An array of contextual entity mentions.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @param mentions [Array[Mention]] An array of contextual entity mentions.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_example(workspace_id:, intent:, text:, mentions: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -687,6 +665,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_example")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -698,95 +678,6 @@ module IBMWatson
       }
 
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_example(workspace_id:, intent:, text:, include_audit: nil)
-    # Get user input example.
-    # Get information about a user input example.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param intent [String] The intent name.
-    # @param text [String] The text of the user input example.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_example(workspace_id:, intent:, text:, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("intent must be provided") if intent.nil?
-
-      raise ArgumentError.new("text must be provided") if text.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
-    # Update user input example.
-    # Update the text of a user input example.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param intent [String] The intent name.
-    # @param text [String] The text of the user input example.
-    # @param new_text [String] The text of the user input example. This string must conform to the following
-    #   restrictions:
-    #   - It cannot contain carriage return, newline, or tab characters.
-    #   - It cannot consist of only whitespace characters.
-    #   - It must be no longer than 1024 characters.
-    # @param new_mentions [Array[Mentions]] An array of contextual entity mentions.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("intent must be provided") if intent.nil?
-
-      raise ArgumentError.new("text must be provided") if text.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "text" => new_text,
-        "mentions" => new_mentions
-      }
-
-      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
 
       response = request(
         method: "POST",
@@ -819,6 +710,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_example")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -835,43 +728,38 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Counterexamples
-    #########################
 
     ##
-    # @!method list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List counterexamples.
-    # List the counterexamples for a workspace. Counterexamples are examples that have
-    #   been marked as irrelevant input.
+    # @!method get_example(workspace_id:, intent:, text:, include_audit: nil)
+    # Get user input example.
+    # Get information about a user input example.
     #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned counterexamples will be sorted. To reverse the
-    #   sort order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param intent [String] The intent name.
+    # @param text [String] The text of the user input example.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_example(workspace_id:, intent:, text:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_example")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
         "include_audit" => include_audit
       }
 
-      method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
 
       response = request(
         method: "GET",
@@ -882,6 +770,109 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List user input examples.
+    # List the user input examples for an intent, optionally including contextual entity
+    #   mentions.
+    #
+    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned examples will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_examples")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
+    # Update user input example.
+    # Update the text of a user input example.
+    #
+    #   This operation is limited to 1000 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param intent [String] The intent name.
+    # @param text [String] The text of the user input example.
+    # @param new_text [String] The text of the user input example. This string must conform to the following
+    #   restrictions:
+    #   - It cannot contain carriage return, newline, or tab characters.
+    #   - It cannot consist of only whitespace characters.
+    #   - It must be no longer than 1024 characters.
+    # @param new_mentions [Array[Mention]] An array of contextual entity mentions.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      raise ArgumentError.new("text must be provided") if text.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_example")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "text" => new_text,
+        "mentions" => new_mentions
+      }
+
+      method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Counterexamples
+    #########################
 
     ##
     # @!method create_counterexample(workspace_id:, text:)
@@ -897,7 +888,7 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters
     #   - It cannot consist of only whitespace characters
     #   - It must be no longer than 1024 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_counterexample(workspace_id:, text:)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -905,6 +896,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_counterexample")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -915,85 +908,6 @@ module IBMWatson
       }
 
       method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_counterexample(workspace_id:, text:, include_audit: nil)
-    # Get counterexample.
-    # Get information about a counterexample. Counterexamples are examples that have
-    #   been marked as irrelevant input.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_counterexample(workspace_id:, text:, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("text must be provided") if text.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_counterexample(workspace_id:, text:, new_text: nil)
-    # Update counterexample.
-    # Update the text of a counterexample. Counterexamples are examples that have been
-    #   marked as irrelevant input.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
-    # @param new_text [String] The text of a user input counterexample.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_counterexample(workspace_id:, text:, new_text: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("text must be provided") if text.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "text" => new_text
-      }
-
-      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
 
       response = request(
         method: "POST",
@@ -1024,6 +938,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_counterexample")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1040,47 +956,36 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Entities
-    #########################
 
     ##
-    # @!method list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List entities.
-    # List the entities for a workspace.
+    # @!method get_counterexample(workspace_id:, text:, include_audit: nil)
+    # Get counterexample.
+    # Get information about a counterexample. Counterexamples are examples that have
+    #   been marked as irrelevant input.
     #
-    #   With **export**=`false`, this operation is limited to 1000 requests per 30
-    #   minutes. With **export**=`true`, the limit is 200 requests per 30 minutes. For
-    #   more information, see **Rate limiting**.
+    #   This operation is limited to 6000 requests per 5 minutes. For more information,
+    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param export [Boolean] Whether to include all element content in the returned data. If
-    #   **export**=`false`, the returned data includes only information about the element
-    #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned entities will be sorted. To reverse the sort
-    #   order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_counterexample(workspace_id:, text:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_counterexample")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
-        "export" => export,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
         "include_audit" => include_audit
       }
 
-      method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
 
       response = request(
         method: "GET",
@@ -1093,7 +998,103 @@ module IBMWatson
     end
 
     ##
-    # @!method create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
+    # @!method list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List counterexamples.
+    # List the counterexamples for a workspace. Counterexamples are examples that have
+    #   been marked as irrelevant input.
+    #
+    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned counterexamples will be sorted. To reverse the
+    #   sort order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_counterexamples")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_counterexample(workspace_id:, text:, new_text: nil)
+    # Update counterexample.
+    # Update the text of a counterexample. Counterexamples are examples that have been
+    #   marked as irrelevant input.
+    #
+    #   This operation is limited to 1000 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
+    # @param new_text [String] The text of a user input marked as irrelevant input. This string must conform to
+    #   the following restrictions:
+    #   - It cannot contain carriage return, newline, or tab characters
+    #   - It cannot consist of only whitespace characters
+    #   - It must be no longer than 1024 characters.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_counterexample(workspace_id:, text:, new_text: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("text must be provided") if text.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_counterexample")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "text" => new_text
+      }
+
+      method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Entities
+    #########################
+
+    ##
+    # @!method create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil)
     # Create entity.
     # Create a new entity, or enable a system entity.
     #
@@ -1109,17 +1110,19 @@ module IBMWatson
     #   specified with the request is ignored.).
     # @param description [String] The description of the entity. This string cannot contain carriage return,
     #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param metadata [Object] Any metadata related to the value.
-    # @param values [Array[CreateValue]] An array of objects describing the entity values.
+    # @param metadata [Hash] Any metadata related to the entity.
     # @param fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_entity(workspace_id:, entity:, description: nil, metadata: nil, values: nil, fuzzy_match: nil)
+    # @param values [Array[CreateValue]] An array of objects describing the entity values.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_entity")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1129,106 +1132,11 @@ module IBMWatson
         "entity" => entity,
         "description" => description,
         "metadata" => metadata,
-        "values" => values,
-        "fuzzy_match" => fuzzy_match
+        "fuzzy_match" => fuzzy_match,
+        "values" => values
       }
 
       method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
-    # Get entity.
-    # Get information about an entity, optionally including all entity content.
-    #
-    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
-    #   With **export**=`true`, the limit is 200 requests per 30 minutes. For more
-    #   information, see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param entity [String] The name of the entity.
-    # @param export [Boolean] Whether to include all element content in the returned data. If
-    #   **export**=`false`, the returned data includes only information about the element
-    #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("entity must be provided") if entity.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "export" => export,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
-    # Update entity.
-    # Update an existing entity with new or modified data. You must provide component
-    #   objects defining the content of the updated entity.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param entity [String] The name of the entity.
-    # @param new_entity [String] The name of the entity. This string must conform to the following restrictions:
-    #   - It can contain only Unicode alphanumeric, underscore, and hyphen characters.
-    #   - It cannot begin with the reserved prefix `sys-`.
-    #   - It must be no longer than 64 characters.
-    # @param new_description [String] The description of the entity. This string cannot contain carriage return,
-    #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param new_metadata [Object] Any metadata related to the entity.
-    # @param new_fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
-    # @param new_values [Array[CreateValue]] An array of entity values.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("entity must be provided") if entity.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "entity" => new_entity,
-        "description" => new_description,
-        "metadata" => new_metadata,
-        "fuzzy_match" => new_fuzzy_match,
-        "values" => new_values
-      }
-
-      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
       response = request(
         method: "POST",
@@ -1258,6 +1166,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_entity")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1273,6 +1183,155 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+
+    ##
+    # @!method get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
+    # Get entity.
+    # Get information about an entity, optionally including all entity content.
+    #
+    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
+    #   With **export**=`true`, the limit is 200 requests per 30 minutes. For more
+    #   information, see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_entity")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "export" => export,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List entities.
+    # List the entities for a workspace.
+    #
+    #   With **export**=`false`, this operation is limited to 1000 requests per 30
+    #   minutes. With **export**=`true`, the limit is 200 requests per 30 minutes. For
+    #   more information, see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned entities will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_entities")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "export" => export,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
+    # Update entity.
+    # Update an existing entity with new or modified data. You must provide component
+    #   objects defining the content of the updated entity.
+    #
+    #   This operation is limited to 1000 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param new_entity [String] The name of the entity. This string must conform to the following restrictions:
+    #   - It can contain only Unicode alphanumeric, underscore, and hyphen characters.
+    #   - It cannot begin with the reserved prefix `sys-`.
+    #   - It must be no longer than 64 characters.
+    # @param new_description [String] The description of the entity. This string cannot contain carriage return,
+    #   newline, or tab characters, and it must be no longer than 128 characters.
+    # @param new_metadata [Hash] Any metadata related to the entity.
+    # @param new_fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
+    # @param new_values [Array[CreateValue]] An array of objects describing the entity values.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_entity")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "entity" => new_entity,
+        "description" => new_description,
+        "metadata" => new_metadata,
+        "fuzzy_match" => new_fuzzy_match,
+        "values" => new_values
+      }
+
+      method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
     end
     #########################
     # Mentions
@@ -1293,7 +1352,7 @@ module IBMWatson
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_mentions(workspace_id:, entity:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
@@ -1301,6 +1360,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_mentions")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -1324,58 +1385,8 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List entity values.
-    # List the values for an entity.
-    #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param entity [String] The name of the entity.
-    # @param export [Boolean] Whether to include all element content in the returned data. If
-    #   **export**=`false`, the returned data includes only information about the element
-    #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned entity values will be sorted. To reverse the sort
-    #   order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("entity must be provided") if entity.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "export" => export,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
-    # Add entity value.
+    # @!method create_value(workspace_id:, entity:, value:, metadata: nil, value_type: nil, synonyms: nil, patterns: nil)
+    # Create entity value.
     # Create a new value for an entity.
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
@@ -1387,21 +1398,21 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @param metadata [Object] Any metadata related to the entity value.
-    # @param synonyms [Array[String]] An array containing any synonyms for the entity value. You can provide either
-    #   synonyms or patterns (as indicated by **type**), but not both. A synonym must
-    #   conform to the following restrictions:
+    # @param metadata [Hash] Any metadata related to the entity value.
+    # @param value_type [String] Specifies the type of entity value.
+    # @param synonyms [Array[String]] An array of synonyms for the entity value. A value can specify either synonyms or
+    #   patterns (depending on the value type), but not both. A synonym must conform to
+    #   the following resrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @param patterns [Array[String]] An array of patterns for the entity value. You can provide either synonyms or
-    #   patterns (as indicated by **type**), but not both. A pattern is a regular
+    # @param patterns [Array[String]] An array of patterns for the entity value. A value can specify either synonyms or
+    #   patterns (depending on the value type), but not both. A pattern is a regular
     #   expression no longer than 512 characters. For more information about how to
     #   specify a pattern, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/entities.html#creating-entities).
-    # @param value_type [String] Specifies the type of value.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_value(workspace_id:, entity:, value:, metadata: nil, synonyms: nil, patterns: nil, value_type: nil)
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/entities.html#entities-create-dictionary-based).
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_value(workspace_id:, entity:, value:, metadata: nil, value_type: nil, synonyms: nil, patterns: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1410,6 +1421,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_value")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1418,121 +1431,12 @@ module IBMWatson
       data = {
         "value" => value,
         "metadata" => metadata,
+        "type" => value_type,
         "synonyms" => synonyms,
-        "patterns" => patterns,
-        "type" => value_type
+        "patterns" => patterns
       }
 
       method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
-    # Get entity value.
-    # Get information about an entity value.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param entity [String] The name of the entity.
-    # @param value [String] The text of the entity value.
-    # @param export [Boolean] Whether to include all element content in the returned data. If
-    #   **export**=`false`, the returned data includes only information about the element
-    #   itself. If **export**=`true`, all content, including subelements, is included.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("entity must be provided") if entity.nil?
-
-      raise ArgumentError.new("value must be provided") if value.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "export" => export,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
-    # Update entity value.
-    # Update an existing entity value with new or modified data. You must provide
-    #   component objects defining the content of the updated entity value.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param entity [String] The name of the entity.
-    # @param value [String] The text of the entity value.
-    # @param new_value [String] The text of the entity value. This string must conform to the following
-    #   restrictions:
-    #   - It cannot contain carriage return, newline, or tab characters.
-    #   - It cannot consist of only whitespace characters.
-    #   - It must be no longer than 64 characters.
-    # @param new_metadata [Object] Any metadata related to the entity value.
-    # @param new_type [String] Specifies the type of value.
-    # @param new_synonyms [Array[String]] An array of synonyms for the entity value. You can provide either synonyms or
-    #   patterns (as indicated by **type**), but not both. A synonym must conform to the
-    #   following resrictions:
-    #   - It cannot contain carriage return, newline, or tab characters.
-    #   - It cannot consist of only whitespace characters.
-    #   - It must be no longer than 64 characters.
-    # @param new_patterns [Array[String]] An array of patterns for the entity value. You can provide either synonyms or
-    #   patterns (as indicated by **type**), but not both. A pattern is a regular
-    #   expression no longer than 512 characters. For more information about how to
-    #   specify a pattern, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/entities.html#creating-entities).
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("entity must be provided") if entity.nil?
-
-      raise ArgumentError.new("value must be provided") if value.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "value" => new_value,
-        "metadata" => new_metadata,
-        "type" => new_type,
-        "synonyms" => new_synonyms,
-        "patterns" => new_patterns
-      }
-
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
       response = request(
         method: "POST",
@@ -1565,6 +1469,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_value")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1581,29 +1487,24 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Synonyms
-    #########################
 
     ##
-    # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List entity value synonyms.
-    # List the synonyms for an entity value.
+    # @!method get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
+    # Get entity value.
+    # Get information about an entity value.
     #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned entity value synonyms will be sorted. To reverse
-    #   the sort order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1612,17 +1513,16 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_value")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
+        "export" => export,
         "include_audit" => include_audit
       }
 
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
       response = request(
         method: "GET",
@@ -1635,41 +1535,112 @@ module IBMWatson
     end
 
     ##
-    # @!method create_synonym(workspace_id:, entity:, value:, synonym:)
-    # Add entity value synonym.
-    # Add a new synonym to an entity value.
+    # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List entity values.
+    # List the values for an entity.
+    #
+    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param export [Boolean] Whether to include all element content in the returned data. If
+    #   **export**=`false`, the returned data includes only information about the element
+    #   itself. If **export**=`true`, all content, including subelements, is included.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned entity values will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_values")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "export" => export,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_value_type: nil, new_synonyms: nil, new_patterns: nil)
+    # Update entity value.
+    # Update an existing entity value with new or modified data. You must provide
+    #   component objects defining the content of the updated entity value.
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
-    # @param synonym [String] The text of the synonym. This string must conform to the following restrictions:
+    # @param new_value [String] The text of the entity value. This string must conform to the following
+    #   restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_synonym(workspace_id:, entity:, value:, synonym:)
+    # @param new_metadata [Hash] Any metadata related to the entity value.
+    # @param new_value_type [String] Specifies the type of entity value.
+    # @param new_synonyms [Array[String]] An array of synonyms for the entity value. A value can specify either synonyms or
+    #   patterns (depending on the value type), but not both. A synonym must conform to
+    #   the following resrictions:
+    #   - It cannot contain carriage return, newline, or tab characters.
+    #   - It cannot consist of only whitespace characters.
+    #   - It must be no longer than 64 characters.
+    # @param new_patterns [Array[String]] An array of patterns for the entity value. A value can specify either synonyms or
+    #   patterns (depending on the value type), but not both. A pattern is a regular
+    #   expression no longer than 512 characters. For more information about how to
+    #   specify a pattern, see the
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/entities.html#entities-create-dictionary-based).
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_value_type: nil, new_synonyms: nil, new_patterns: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
       raise ArgumentError.new("value must be provided") if value.nil?
 
-      raise ArgumentError.new("synonym must be provided") if synonym.nil?
-
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_value")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
       }
 
       data = {
-        "synonym" => synonym
+        "value" => new_value,
+        "metadata" => new_metadata,
+        "type" => new_value_type,
+        "synonyms" => new_synonyms,
+        "patterns" => new_patterns
       }
 
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
       response = request(
         method: "POST",
@@ -1681,67 +1652,26 @@ module IBMWatson
       )
       response
     end
+    #########################
+    # Synonyms
+    #########################
 
     ##
-    # @!method get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
-    # Get entity value synonym.
-    # Get information about a synonym of an entity value.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param entity [String] The name of the entity.
-    # @param value [String] The text of the entity value.
-    # @param synonym [String] The text of the synonym.
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("entity must be provided") if entity.nil?
-
-      raise ArgumentError.new("value must be provided") if value.nil?
-
-      raise ArgumentError.new("synonym must be provided") if synonym.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
-    # Update entity value synonym.
-    # Update an existing entity value synonym with new text.
+    # @!method create_synonym(workspace_id:, entity:, value:, synonym:)
+    # Create entity value synonym.
+    # Add a new synonym to an entity value.
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
-    # @param synonym [String] The text of the synonym.
-    # @param new_synonym [String] The text of the synonym. This string must conform to the following restrictions:
+    # @param synonym [String] The text of the synonym. This string must conform to the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     #   - It must be no longer than 64 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_synonym(workspace_id:, entity:, value:, synonym:)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1752,16 +1682,18 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_synonym")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
       }
 
       data = {
-        "synonym" => new_synonym
+        "synonym" => synonym
       }
 
-      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
       response = request(
         method: "POST",
@@ -1797,6 +1729,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_synonym")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1813,42 +1747,41 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Dialog nodes
-    #########################
 
     ##
-    # @!method list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
-    # List dialog nodes.
-    # List the dialog nodes for a workspace.
+    # @!method get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
+    # Get entity value synonym.
+    # Get information about a synonym of an entity value.
     #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   This operation is limited to 6000 requests per 5 minutes. For more information,
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
-    # @param sort [String] The attribute by which returned dialog nodes will be sorted. To reverse the sort
-    #   order, prefix the value with a minus sign (`-`).
-    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param synonym [String] The text of the synonym.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      raise ArgumentError.new("value must be provided") if value.nil?
+
+      raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_synonym")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
-        "page_limit" => page_limit,
-        "include_count" => include_count,
-        "sort" => sort,
-        "cursor" => cursor,
         "include_audit" => include_audit
       }
 
-      method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
 
       response = request(
         method: "GET",
@@ -1861,7 +1794,112 @@ module IBMWatson
     end
 
     ##
-    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List entity value synonyms.
+    # List the synonyms for an entity value.
+    #
+    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned entity value synonyms will be sorted. To reverse
+    #   the sort order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      raise ArgumentError.new("value must be provided") if value.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_synonyms")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
+    # Update entity value synonym.
+    # Update an existing entity value synonym with new text.
+    #
+    #   This operation is limited to 1000 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param entity [String] The name of the entity.
+    # @param value [String] The text of the entity value.
+    # @param synonym [String] The text of the synonym.
+    # @param new_synonym [String] The text of the synonym. This string must conform to the following restrictions:
+    #   - It cannot contain carriage return, newline, or tab characters.
+    #   - It cannot consist of only whitespace characters.
+    #   - It must be no longer than 64 characters.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      raise ArgumentError.new("value must be provided") if value.nil?
+
+      raise ArgumentError.new("synonym must be provided") if synonym.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_synonym")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "synonym" => new_synonym
+      }
+
+      method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Dialog nodes
+    #########################
+
+    ##
+    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, node_type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
     # Create dialog node.
     # Create a new dialog node.
     #
@@ -1877,15 +1915,16 @@ module IBMWatson
     # @param conditions [String] The condition that will trigger the dialog node. This string cannot contain
     #   carriage return, newline, or tab characters, and it must be no longer than 2048
     #   characters.
-    # @param parent [String] The ID of the parent dialog node.
-    # @param previous_sibling [String] The ID of the previous dialog node.
+    # @param parent [String] The ID of the parent dialog node. This property is omitted if the dialog node has
+    #   no parent.
+    # @param previous_sibling [String] The ID of the previous sibling dialog node. This property is omitted if the dialog
+    #   node has no previous sibling.
     # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/dialog-overview.html#complex).
-    # @param context [Object] The context for the dialog node.
-    # @param metadata [Object] The metadata for the dialog node.
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/dialog-overview.html#dialog-overview-responses).
+    # @param context [Hash] The context for the dialog node.
+    # @param metadata [Hash] The metadata for the dialog node.
     # @param next_step [DialogNodeNextStep] The next step to execute following this dialog node.
-    # @param actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
     # @param title [String] The alias used to identify the dialog node. This string must conform to the
     #   following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
@@ -1894,19 +1933,22 @@ module IBMWatson
     # @param node_type [String] How the dialog node is processed.
     # @param event_name [String] How an `event_handler` node is processed.
     # @param variable [String] The location in the dialog context where output is stored.
+    # @param actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
     # @param digress_in [String] Whether this top-level dialog node can be digressed into.
     # @param digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users. This string must be no longer than 512 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, actions: nil, title: nil, node_type: nil, event_name: nil, variable: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, node_type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_dialog_node")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -1922,11 +1964,11 @@ module IBMWatson
         "context" => context,
         "metadata" => metadata,
         "next_step" => next_step,
-        "actions" => actions,
         "title" => title,
         "type" => node_type,
         "event_name" => event_name,
         "variable" => variable,
+        "actions" => actions,
         "digress_in" => digress_in,
         "digress_out" => digress_out,
         "digress_out_slots" => digress_out_slots,
@@ -1934,130 +1976,6 @@ module IBMWatson
       }
 
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
-    # Get dialog node.
-    # Get information about a dialog node.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
-    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
-    #   the response.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "include_audit" => include_audit
-      }
-
-      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
-    # Update dialog node.
-    # Update an existing dialog node with new or modified data.
-    #
-    #   This operation is limited to 500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
-    # @param new_dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
-    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
-    #   characters.
-    #   - It must be no longer than 1024 characters.
-    # @param new_description [String] The description of the dialog node. This string cannot contain carriage return,
-    #   newline, or tab characters, and it must be no longer than 128 characters.
-    # @param new_conditions [String] The condition that will trigger the dialog node. This string cannot contain
-    #   carriage return, newline, or tab characters, and it must be no longer than 2048
-    #   characters.
-    # @param new_parent [String] The ID of the parent dialog node.
-    # @param new_previous_sibling [String] The ID of the previous sibling dialog node.
-    # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
-    #   node output, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/dialog-overview.html#complex).
-    # @param new_context [Object] The context for the dialog node.
-    # @param new_metadata [Object] The metadata for the dialog node.
-    # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
-    # @param new_title [String] The alias used to identify the dialog node. This string must conform to the
-    #   following restrictions:
-    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
-    #   characters.
-    #   - It must be no longer than 64 characters.
-    # @param new_type [String] How the dialog node is processed.
-    # @param new_event_name [String] How an `event_handler` node is processed.
-    # @param new_variable [String] The location in the dialog context where output is stored.
-    # @param new_actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
-    # @param new_digress_in [String] Whether this top-level dialog node can be digressed into.
-    # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
-    # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
-    # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
-    #   users. This string must be no longer than 512 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "dialog_node" => new_dialog_node,
-        "description" => new_description,
-        "conditions" => new_conditions,
-        "parent" => new_parent,
-        "previous_sibling" => new_previous_sibling,
-        "output" => new_output,
-        "context" => new_context,
-        "metadata" => new_metadata,
-        "next_step" => new_next_step,
-        "title" => new_title,
-        "type" => new_type,
-        "event_name" => new_event_name,
-        "variable" => new_variable,
-        "actions" => new_actions,
-        "digress_in" => new_digress_in,
-        "digress_out" => new_digress_out,
-        "digress_out_slots" => new_digress_out_slots,
-        "user_label" => new_user_label
-      }
-
-      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
 
       response = request(
         method: "POST",
@@ -2087,6 +2005,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_dialog_node")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -2103,9 +2023,230 @@ module IBMWatson
       )
       nil
     end
+
+    ##
+    # @!method get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
+    # Get dialog node.
+    # Get information about a dialog node.
+    #
+    #   This operation is limited to 6000 requests per 5 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_dialog_node")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # List dialog nodes.
+    # List the dialog nodes for a workspace.
+    #
+    #   This operation is limited to 2500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records returned.
+    # @param sort [String] The attribute by which returned dialog nodes will be sorted. To reverse the sort
+    #   order, prefix the value with a minus sign (`-`).
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_dialog_nodes")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "page_limit" => page_limit,
+        "include_count" => include_count,
+        "sort" => sort,
+        "cursor" => cursor,
+        "include_audit" => include_audit
+      }
+
+      method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_node_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
+    # Update dialog node.
+    # Update an existing dialog node with new or modified data.
+    #
+    #   This operation is limited to 500 requests per 30 minutes. For more information,
+    #   see **Rate limiting**.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
+    # @param new_dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
+    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
+    #   characters.
+    #   - It must be no longer than 1024 characters.
+    # @param new_description [String] The description of the dialog node. This string cannot contain carriage return,
+    #   newline, or tab characters, and it must be no longer than 128 characters.
+    # @param new_conditions [String] The condition that will trigger the dialog node. This string cannot contain
+    #   carriage return, newline, or tab characters, and it must be no longer than 2048
+    #   characters.
+    # @param new_parent [String] The ID of the parent dialog node. This property is omitted if the dialog node has
+    #   no parent.
+    # @param new_previous_sibling [String] The ID of the previous sibling dialog node. This property is omitted if the dialog
+    #   node has no previous sibling.
+    # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
+    #   node output, see the
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/dialog-overview.html#dialog-overview-responses).
+    # @param new_context [Hash] The context for the dialog node.
+    # @param new_metadata [Hash] The metadata for the dialog node.
+    # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
+    # @param new_title [String] The alias used to identify the dialog node. This string must conform to the
+    #   following restrictions:
+    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
+    #   characters.
+    #   - It must be no longer than 64 characters.
+    # @param new_node_type [String] How the dialog node is processed.
+    # @param new_event_name [String] How an `event_handler` node is processed.
+    # @param new_variable [String] The location in the dialog context where output is stored.
+    # @param new_actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
+    # @param new_digress_in [String] Whether this top-level dialog node can be digressed into.
+    # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
+    # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
+    # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
+    #   users. This string must be no longer than 512 characters.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_node_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_dialog_node")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "dialog_node" => new_dialog_node,
+        "description" => new_description,
+        "conditions" => new_conditions,
+        "parent" => new_parent,
+        "previous_sibling" => new_previous_sibling,
+        "output" => new_output,
+        "context" => new_context,
+        "metadata" => new_metadata,
+        "next_step" => new_next_step,
+        "title" => new_title,
+        "type" => new_node_type,
+        "event_name" => new_event_name,
+        "variable" => new_variable,
+        "actions" => new_actions,
+        "digress_in" => new_digress_in,
+        "digress_out" => new_digress_out,
+        "digress_out_slots" => new_digress_out_slots,
+        "user_label" => new_user_label
+      }
+
+      method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
     #########################
     # Logs
     #########################
+
+    ##
+    # @!method list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
+    # List log events in all workspaces.
+    # List the events from the logs of all workspaces in the service instance.
+    #
+    #   If **cursor** is not specified, this operation is limited to 40 requests per 30
+    #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
+    #   more information, see **Rate limiting**.
+    # @param filter [String] A cacheable parameter that limits the results to those matching the specified
+    #   filter. You must specify a filter query that includes a value for `language`, as
+    #   well as a value for `workspace_id` or `request.context.metadata.deployment`. For
+    #   more information, see the
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/filter-reference.html#filter-reference-syntax).
+    # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
+    #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
+      raise ArgumentError.new("filter must be provided") if filter.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_all_logs")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "filter" => filter,
+        "sort" => sort,
+        "page_limit" => page_limit,
+        "cursor" => cursor
+      }
+
+      method_url = "/v1/logs"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
 
     ##
     # @!method list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
@@ -2120,15 +2261,17 @@ module IBMWatson
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. For more information, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/filter-reference.html#filter-query-syntax).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant/filter-reference.html#filter-reference-syntax).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param cursor [String] A token identifying the page of results to retrieve.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_logs")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -2139,50 +2282,6 @@ module IBMWatson
       }
 
       method_url = "/v1/workspaces/%s/logs" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
-    # List log events in all workspaces.
-    # List the events from the logs of all workspaces in the service instance.
-    #
-    #   If **cursor** is not specified, this operation is limited to 40 requests per 30
-    #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
-    #   more information, see **Rate limiting**.
-    # @param filter [String] A cacheable parameter that limits the results to those matching the specified
-    #   filter. You must specify a filter query that includes a value for `language`, as
-    #   well as a value for `workspace_id` or `request.context.metadata.deployment`. For
-    #   more information, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/filter-reference.html#filter-query-syntax).
-    # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
-    #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
-    # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param cursor [String] A token identifying the page of results to retrieve.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
-      raise ArgumentError.new("filter must be provided") if filter.nil?
-
-      headers = {
-      }
-
-      params = {
-        "version" => @version,
-        "filter" => filter,
-        "sort" => sort,
-        "page_limit" => page_limit,
-        "cursor" => cursor
-      }
-
-      method_url = "/v1/logs"
 
       response = request(
         method: "GET",
@@ -2206,7 +2305,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://console.bluemix.net/docs/services/assistant/information-security.html).
+    #   security](https://cloud.ibm.com/docs/services/assistant/information-security.html).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
@@ -2214,6 +2313,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_user_data")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,

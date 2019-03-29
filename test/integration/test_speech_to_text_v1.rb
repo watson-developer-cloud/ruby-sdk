@@ -22,15 +22,15 @@ class MyRecognizeCallback < IBMWatson::RecognizeCallback
   end
 end
 
-if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
+if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
   # Integration tests for the Speech to Text V1 Service
   class SpeechToTextV1Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service
     def before_all
       @service = IBMWatson::SpeechToTextV1.new(
-        username: ENV["SPEECH_TO_TEXT_USERNAME"],
-        password: ENV["SPEECH_TO_TEXT_PASSWORD"]
+        iam_apikey: ENV["SPEECH_TO_TEXT_APIKEY"],
+        url: ENV["SPEECH_TO_TEXT_URL"]
       )
       @service.add_default_headers(
         headers: {
@@ -55,7 +55,7 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
           model_id: "bogus"
         )
       rescue StandardError => e
-        refute_nil(e.global_transaction_id)
+        refute_nil(e.error)
       end
     end
 
@@ -279,6 +279,27 @@ if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
         display_as: "IEEE"
       )
       assert_nil(service_response)
+      @service.delete_language_model(
+        customization_id: customization_id
+      )
+    end
+
+    def test_add_word_double
+      model = @service.create_language_model(
+        name: "integration_test_model",
+        base_model_name: "en-US_BroadbandModel"
+      ).result
+      customization_id = model["customization_id"]
+      service_response = @service.add_word(
+        customization_id: customization_id,
+        word_name: "ＡＢＣ"
+      )
+      assert_nil(service_response)
+      service_response = @service.get_word(
+        customization_id: customization_id,
+        word_name: "ＡＢＣ"
+      )
+      refute_nil(service_response)
       @service.delete_language_model(
         customization_id: customization_id
       )

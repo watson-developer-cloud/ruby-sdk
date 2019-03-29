@@ -101,7 +101,7 @@ class AssistantV1Test < Minitest::Test
         workspace_id: "boguswid",
         text: "I want financial advice today."
       )
-    rescue WatsonApiException => e
+    rescue IBMCloudSdkCore::ApiException => e
       assert_equal(error_code, e.code)
       assert_equal(error_msg, e.error)
       assert(e.to_s.instance_of?(String))
@@ -138,7 +138,7 @@ class AssistantV1Test < Minitest::Test
         workspace_id: "boguswid",
         text: "I want financial advice today."
       )
-    rescue WatsonApiException => e
+    rescue IBMCloudSdkCore::ApiException => e
       assert_equal(error_code, e.code)
       assert_equal(error_msg, e.error)
     end

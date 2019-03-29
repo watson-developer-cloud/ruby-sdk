@@ -23,15 +23,14 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Language Translator V3 service.
-  class LanguageTranslatorV3 < WatsonService
+  class LanguageTranslatorV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -84,6 +83,7 @@ module IBMWatson
       args[:vcap_services_name] = "language_translator"
       super
       @version = args[:version]
+      args[:display_name] = "Language Translator"
     end
 
     #########################
@@ -100,12 +100,14 @@ module IBMWatson
     #   translation.
     # @param source [String] Translation source language code.
     # @param target [String] Translation target language code.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def translate(text:, model_id: nil, source: nil, target: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "translate")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -135,42 +137,18 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_identifiable_languages
-    # List identifiable languages.
-    # Lists the languages that the service can identify. Returns the language code (for
-    #   example, `en` for English or `es` for Spanish) and name of each language.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_identifiable_languages
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v3/identifiable_languages"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method identify(text:)
     # Identify language.
     # Identifies the language of the input text.
     # @param text [String] Input text in UTF-8 format.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def identify(text:)
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "identify")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -191,33 +169,24 @@ module IBMWatson
       )
       response
     end
-    #########################
-    # Models
-    #########################
 
     ##
-    # @!method list_models(source: nil, target: nil, default_models: nil)
-    # List models.
-    # Lists available translation models.
-    # @param source [String] Specify a language code to filter results by source language.
-    # @param target [String] Specify a language code to filter results by target language.
-    # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
-    #   (default and non-default) for each language pair. To return only default models,
-    #   set this to `true`. To return only non-default models, set this to `false`. There
-    #   is exactly one default model per language pair, the IBM provided base model.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_models(source: nil, target: nil, default_models: nil)
+    # @!method list_identifiable_languages
+    # List identifiable languages.
+    # Lists the languages that the service can identify. Returns the language code (for
+    #   example, `en` for English or `es` for Spanish) and name of each language.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_identifiable_languages
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_identifiable_languages")
+      headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version,
-        "source" => source,
-        "target" => target,
-        "default" => default_models
+        "version" => @version
       }
 
-      method_url = "/v3/models"
+      method_url = "/v3/identifiable_languages"
 
       response = request(
         method: "GET",
@@ -228,9 +197,12 @@ module IBMWatson
       )
       response
     end
+    #########################
+    # Models
+    #########################
 
     ##
-    # @!method create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil)
+    # @!method create_model(base_model_id:, forced_glossary: nil, parallel_corpus: nil, name: nil)
     # Create model.
     # Uploads Translation Memory eXchange (TMX) files to customize a translation model.
     #
@@ -251,9 +223,6 @@ module IBMWatson
     #   models, use the `List models` method. Usually all IBM provided models are
     #   customizable. In addition, all your models that have been created via parallel
     #   corpus customization, can be further customized with a forced glossary.
-    # @param name [String] An optional model name that you can use to identify the model. Valid characters
-    #   are letters, numbers, dashes, underscores, spaces and apostrophes. The maximum
-    #   length is 32 characters.
     # @param forced_glossary [File] A TMX file with your customizations. The customizations in the file completely
     #   overwrite the domain translaton data, including high frequency or high confidence
     #   phrase translations. You can upload only one glossary with a file size less than
@@ -262,14 +231,17 @@ module IBMWatson
     #   multiple parallel_corpus files in one request. All uploaded parallel_corpus files
     #   combined, your parallel corpus must contain at least 5,000 parallel sentences to
     #   train successfully.
-    # @param forced_glossary_filename [String] The filename for forced_glossary.
-    # @param parallel_corpus_filename [String] The filename for parallel_corpus.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_model(base_model_id:, name: nil, forced_glossary: nil, parallel_corpus: nil, forced_glossary_filename: nil, parallel_corpus_filename: nil)
+    # @param name [String] An optional model name that you can use to identify the model. Valid characters
+    #   are letters, numbers, dashes, underscores, spaces and apostrophes. The maximum
+    #   length is 32 characters.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_model(base_model_id:, forced_glossary: nil, parallel_corpus: nil, name: nil)
       raise ArgumentError.new("base_model_id must be provided") if base_model_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "create_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -283,16 +255,14 @@ module IBMWatson
         unless forced_glossary.instance_of?(StringIO) || forced_glossary.instance_of?(File)
           forced_glossary = forced_glossary.respond_to?(:to_json) ? StringIO.new(forced_glossary.to_json) : StringIO.new(forced_glossary)
         end
-        forced_glossary_filename = forced_glossary.path if forced_glossary_filename.nil? && forced_glossary.respond_to?(:path)
-        form_data[:forced_glossary] = HTTP::FormData::File.new(forced_glossary, content_type: "application/octet-stream", filename: forced_glossary_filename)
+        form_data[:forced_glossary] = HTTP::FormData::File.new(forced_glossary, content_type: "application/octet-stream", filename: forced_glossary.respond_to?(:path) ? forced_glossary.path : nil)
       end
 
       unless parallel_corpus.nil?
         unless parallel_corpus.instance_of?(StringIO) || parallel_corpus.instance_of?(File)
           parallel_corpus = parallel_corpus.respond_to?(:to_json) ? StringIO.new(parallel_corpus.to_json) : StringIO.new(parallel_corpus)
         end
-        parallel_corpus_filename = parallel_corpus.path if parallel_corpus_filename.nil? && parallel_corpus.respond_to?(:path)
-        form_data[:parallel_corpus] = HTTP::FormData::File.new(parallel_corpus, content_type: "application/octet-stream", filename: parallel_corpus_filename)
+        form_data[:parallel_corpus] = HTTP::FormData::File.new(parallel_corpus, content_type: "application/octet-stream", filename: parallel_corpus.respond_to?(:path) ? parallel_corpus.path : nil)
       end
 
       method_url = "/v3/models"
@@ -313,12 +283,14 @@ module IBMWatson
     # Delete model.
     # Deletes a custom translation model.
     # @param model_id [String] Model ID of the model to delete.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "delete_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -343,18 +315,56 @@ module IBMWatson
     #   models. Use this API call to poll the status of your customization request. A
     #   successfully completed training will have a status of `available`.
     # @param model_id [String] Model ID of the model to get.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "get_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
       }
 
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_models(source: nil, target: nil, default_models: nil)
+    # List models.
+    # Lists available translation models.
+    # @param source [String] Specify a language code to filter results by source language.
+    # @param target [String] Specify a language code to filter results by target language.
+    # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
+    #   (default and non-default) for each language pair. To return only default models,
+    #   set this to `true`. To return only non-default models, set this to `false`. There
+    #   is exactly one default model per language pair, the IBM provided base model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_models(source: nil, target: nil, default_models: nil)
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "source" => source,
+        "target" => target,
+        "default" => default_models
+      }
+
+      method_url = "/v3/models"
 
       response = request(
         method: "GET",

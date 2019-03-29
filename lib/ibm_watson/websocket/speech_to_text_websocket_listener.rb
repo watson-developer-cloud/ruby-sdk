@@ -54,7 +54,7 @@ class WebSocketClient
         end
       elsif json_object.key?("results") || json_object.key?("speaker_labels")
         hypothesis = ""
-        unless json_object["results"].nil?
+        unless json_object["results"].nil? && json_object["speaker_labels"].nil?
           hypothesis = json_object.dig("results", 0, "alternatives", 0, "transcript")
           b_final = json_object.dig("results", 0, "final")
           transcripts = extract_transcripts(alternatives: json_object.dig("results", 0, "alternatives"))

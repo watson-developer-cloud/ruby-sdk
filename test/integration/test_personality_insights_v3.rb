@@ -3,22 +3,27 @@
 require("json")
 require_relative("./../test_helper.rb")
 
-if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASSWORD"].nil?
+if !ENV["PERSONALITY_INSIGHTS_APIKEY"].nil? && !ENV["PERSONALITY_INSIGHTS_URL"].nil?
   # Integration tests for the Personality Insights V3 Service
   class PersonalityInsightsV3Test < Minitest::Test
-    def test_plain_to_json
-      personality_text = File.read(Dir.getwd + "/resources/personality-v3.txt")
-      service = IBMWatson::PersonalityInsightsV3.new(
+    include Minitest::Hooks
+    attr_accessor :service
+    def before_all
+      @service = IBMWatson::PersonalityInsightsV3.new(
         version: "2017-10-13",
-        username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
-        password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
+        iam_apikey: ENV["PERSONALITY_INSIGHTS_APIKEY"],
+        url: ENV["PERSONALITY_INSIGHTS_URL"]
       )
-      service.add_default_headers(
+      @service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
           "X-Watson-Test" => "1"
         }
       )
+    end
+
+    def test_plain_to_json
+      personality_text = File.read(Dir.getwd + "/resources/personality-v3.txt")
       service_response = service.profile(
         accept: "application/json",
         content: personality_text,
@@ -29,17 +34,6 @@ if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASS
 
     def test_json_to_json
       personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
-      service = IBMWatson::PersonalityInsightsV3.new(
-        version: "2017-10-13",
-        username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
-        password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.profile(
         accept: "application/json",
         content: personality_text,
@@ -52,17 +46,6 @@ if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASS
 
     def test_json_to_csv
       personality_text = File.read(Dir.getwd + "/resources/personality-v3.json")
-      service = IBMWatson::PersonalityInsightsV3.new(
-        version: "2017-10-13",
-        username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
-        password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.profile(
         content: personality_text,
         content_type: "application/json",
@@ -76,17 +59,6 @@ if !ENV["PERSONALITY_INSIGHTS_USERNAME"].nil? && !ENV["PERSONALITY_INSIGHTS_PASS
 
     def test_plain_to_json_es
       personality_text = File.read(Dir.getwd + "/resources/personality-v3-es.txt")
-      service = IBMWatson::PersonalityInsightsV3.new(
-        version: "2017-10-13",
-        username: ENV["PERSONALITY_INSIGHTS_USERNAME"],
-        password: ENV["PERSONALITY_INSIGHTS_PASSWORD"]
-      )
-      service.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.profile(
         accept: "application/json",
         content: personality_text,

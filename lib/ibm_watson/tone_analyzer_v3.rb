@@ -29,15 +29,14 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Tone Analyzer V3 service.
-  class ToneAnalyzerV3 < WatsonService
+  class ToneAnalyzerV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -90,6 +89,7 @@ module IBMWatson
       args[:vcap_services_name] = "tone_analyzer"
       super
       @version = args[:version]
+      args[:display_name] = "Tone Analyzer"
     end
 
     #########################
@@ -97,7 +97,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
+    # @!method tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
     # Analyze general tone.
     # Use the general purpose endpoint to analyze the tone of your input content. The
     #   service analyzes the content for emotional and language tones. The method always
@@ -118,11 +118,9 @@ module IBMWatson
     #   analyzes only the textual content.
     #
     #   **See also:** [Using the general-purpose
-    #   endpoint](https://console.bluemix.net/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
+    #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
     # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
-    # @param content_type [String] The type of the input. A character encoding can be specified by including a
-    #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
     # @param sentences [Boolean] Indicates whether the service is to return an analysis of each individual sentence
     #   in addition to its analysis of the full document. If `true` (the default), the
     #   service returns results for each sentence.
@@ -144,15 +142,19 @@ module IBMWatson
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
+    # @param content_type [String] The type of the input. A character encoding can be specified by including a
+    #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
       raise ArgumentError.new("tone_input must be provided") if tone_input.nil?
 
       headers = {
-        "Content-Type" => content_type,
         "Content-Language" => content_language,
-        "Accept-Language" => accept_language
+        "Accept-Language" => accept_language,
+        "Content-Type" => content_type
       }
+      sdk_headers = Common.new.get_sdk_headers("tone_analyzer", "V3", "tone")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
@@ -195,7 +197,7 @@ module IBMWatson
     #   character encoding for JSON content is effectively always UTF-8.
     #
     #   **See also:** [Using the customer-engagement
-    #   endpoint](https://console.bluemix.net/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
+    #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
     # @param utterances [Array[Utterance]] An array of `Utterance` objects that provides the input content that the service
     #   is to analyze.
     # @param content_language [String] The language of the input text for the request: English or French. Regional
@@ -209,7 +211,7 @@ module IBMWatson
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def tone_chat(utterances:, content_language: nil, accept_language: nil)
       raise ArgumentError.new("utterances must be provided") if utterances.nil?
 
@@ -217,6 +219,8 @@ module IBMWatson
         "Content-Language" => content_language,
         "Accept-Language" => accept_language
       }
+      sdk_headers = Common.new.get_sdk_headers("tone_analyzer", "V3", "tone_chat")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version

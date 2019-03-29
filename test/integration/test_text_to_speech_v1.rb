@@ -3,15 +3,15 @@
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-if !ENV["TEXT_TO_SPEECH_USERNAME"].nil? && !ENV["TEXT_TO_SPEECH_PASSWORD"].nil?
+if !ENV["TEXT_TO_SPEECH_APIKEY"].nil? && !ENV["TEXT_TO_SPEECH_URL"].nil?
   # Integration tests for the Text to Speech V1 Service
   class TextToSpeechV1Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service
     def before_all
       @service = IBMWatson::TextToSpeechV1.new(
-        username: ENV["TEXT_TO_SPEECH_USERNAME"],
-        password: ENV["TEXT_TO_SPEECH_PASSWORD"]
+        iam_apikey: ENV["TEXT_TO_SPEECH_APIKEY"],
+        url: ENV["TEXT_TO_SPEECH_URL"]
       )
       @service.add_default_headers(
         headers: {

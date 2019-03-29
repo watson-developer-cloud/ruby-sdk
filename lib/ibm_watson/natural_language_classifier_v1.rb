@@ -22,15 +22,14 @@
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Natural Language Classifier V1 service.
-  class NaturalLanguageClassifierV1 < WatsonService
+  class NaturalLanguageClassifierV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -71,6 +70,7 @@ module IBMWatson
       args = defaults.merge(args)
       args[:vcap_services_name] = "natural_language_classifier"
       super
+      args[:display_name] = "Natural Language Classifier"
     end
 
     #########################
@@ -84,7 +84,7 @@ module IBMWatson
     #   can use the classifier to classify text.
     # @param classifier_id [String] Classifier ID to use.
     # @param text [String] The submitted phrase. The maximum length is 2048 characters.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify(classifier_id:, text:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
@@ -92,6 +92,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "classify")
+      headers.merge!(sdk_headers)
 
       data = {
         "text" => text
@@ -118,7 +120,7 @@ module IBMWatson
     #   Note that classifying Japanese texts is a beta feature.
     # @param classifier_id [String] Classifier ID to use.
     # @param collection [Array[ClassifyInput]] The submitted phrases.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify_collection(classifier_id:, collection:)
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
@@ -126,6 +128,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "classify_collection")
+      headers.merge!(sdk_headers)
 
       data = {
         "collection" => collection
@@ -147,7 +151,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method create_classifier(metadata:, training_data:, metadata_filename: nil, training_data_filename: nil)
+    # @!method create_classifier(metadata:, training_data:)
     # Create classifier.
     # Sends data to create and train a classifier and returns information about the new
     #   classifier.
@@ -160,31 +164,29 @@ module IBMWatson
     #   (`pt`), and Spanish (`es`).
     # @param training_data [File] Training data in CSV format. Each text value must have at least one class. The
     #   data can include up to 3,000 classes and 20,000 records. For details, see [Data
-    #   preparation](https://console.bluemix.net/docs/services/natural-language-classifier/using-your-data.html).
-    # @param metadata_filename [String] The filename for training_metadata.
-    # @param training_data_filename [String] The filename for training_data.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def create_classifier(metadata:, training_data:, metadata_filename: nil, training_data_filename: nil)
+    #   preparation](https://cloud.ibm.com/docs/services/natural-language-classifier/using-your-data.html).
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_classifier(metadata:, training_data:)
       raise ArgumentError.new("metadata must be provided") if metadata.nil?
 
       raise ArgumentError.new("training_data must be provided") if training_data.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "create_classifier")
+      headers.merge!(sdk_headers)
 
       form_data = {}
 
       unless metadata.instance_of?(StringIO) || metadata.instance_of?(File)
         metadata = metadata.respond_to?(:to_json) ? StringIO.new(metadata.to_json) : StringIO.new(metadata)
       end
-      metadata_filename = metadata.path if metadata_filename.nil? && metadata.respond_to?(:path)
-      form_data[:training_metadata] = HTTP::FormData::File.new(metadata, content_type: "application/json", filename: metadata_filename)
+      form_data[:training_metadata] = HTTP::FormData::File.new(metadata, content_type: "application/json", filename: metadata.respond_to?(:path) ? metadata.path : nil)
 
       unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
         training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
       end
-      training_data_filename = training_data.path if training_data_filename.nil? && training_data.respond_to?(:path)
-      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: "text/csv", filename: training_data_filename)
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: "text/csv", filename: training_data.respond_to?(:path) ? training_data.path : nil)
 
       method_url = "/v1/classifiers"
 
@@ -193,49 +195,6 @@ module IBMWatson
         url: method_url,
         headers: headers,
         form: form_data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method list_classifiers
-    # List classifiers.
-    # Returns an empty array if no classifiers are available.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_classifiers
-      headers = {
-      }
-
-      method_url = "/v1/classifiers"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_classifier(classifier_id:)
-    # Get information about a classifier.
-    # Returns status and other information about a classifier.
-    # @param classifier_id [String] Classifier ID to query.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def get_classifier(classifier_id:)
-      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
-
-      headers = {
-      }
-
-      method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
         accept_json: true
       )
       response
@@ -251,6 +210,8 @@ module IBMWatson
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "delete_classifier")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
@@ -261,6 +222,53 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+
+    ##
+    # @!method get_classifier(classifier_id:)
+    # Get information about a classifier.
+    # Returns status and other information about a classifier.
+    # @param classifier_id [String] Classifier ID to query.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_classifier(classifier_id:)
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "get_classifier")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_classifiers
+    # List classifiers.
+    # Returns an empty array if no classifiers are available.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_classifiers
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "list_classifiers")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/classifiers"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
     end
   end
 end

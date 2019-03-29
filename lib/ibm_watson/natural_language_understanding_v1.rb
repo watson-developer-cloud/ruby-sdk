@@ -20,22 +20,21 @@
 # can ignore most advertisements and other unwanted content.
 #
 # You can create [custom
-# models](https://console.bluemix.net/docs/services/natural-language-understanding/customizing.html) with Watson
-# Knowledge Studio to detect custom entities and relations in Natural Language
-# Understanding.
+# models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
+# with Watson Knowledge Studio to detect custom entities, relations, and categories in
+# Natural Language Understanding.
 
 require "concurrent"
 require "erb"
 require "json"
-require_relative "./detailed_response"
-
-require_relative "./watson_service"
+require "ibm_cloud_sdk_core"
+require_relative "./common.rb"
 
 # Module for the Watson APIs
 module IBMWatson
   ##
   # The Natural Language Understanding V1 service.
-  class NaturalLanguageUnderstandingV1 < WatsonService
+  class NaturalLanguageUnderstandingV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     ##
     # @!method initialize(args)
@@ -88,6 +87,7 @@ module IBMWatson
       args[:vcap_services_name] = "natural-language-understanding"
       super
       @version = args[:version]
+      args[:display_name] = "Natural Language Understanding"
     end
 
     #########################
@@ -106,8 +106,9 @@ module IBMWatson
     #   - Metadata
     #   - Relations
     #   - Semantic roles
-    #   - Sentiment.
-    # @param features [Features] Analysis features and options.
+    #   - Sentiment
+    #   - Syntax (Experimental).
+    # @param features [Features] Specific features to analyze the document for.
     # @param text [String] The plain text to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
     # @param html [String] The HTML file to analyze. One of the `text`, `html`, or `url` parameters is
@@ -116,10 +117,10 @@ module IBMWatson
     #   required.
     # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
     #   cleaning, see the [Analyzing
-    #   webpages](https://console.bluemix.net/docs/services/natural-language-understanding/analyzing-webpages.html)
+    #   webpages](https://cloud.ibm.com/docs/services/natural-language-understanding/analyzing-webpages.html)
     #   documentation.
     # @param xpath [String] An [XPath
-    #   query](https://console.bluemix.net/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
+    #   query](https://cloud.ibm.com/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
     #   to perform on `html` or `url` input. Results of the query will be appended to the
     #   cleaned webpage text before it is analyzed. To analyze only the results of the
     #   XPath query, set the `clean` parameter to `false`.
@@ -131,12 +132,14 @@ module IBMWatson
     #   support](https://www.bluemix.net/docs/services/natural-language-understanding/language-support.html)
     #   for more information.
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
       raise ArgumentError.new("features must be provided") if features.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "analyze")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -172,43 +175,18 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_models
-    # List models.
-    # Lists Watson Knowledge Studio [custom
-    #   models](https://console.bluemix.net/docs/services/natural-language-understanding/customizing.html) that are
-    #   deployed to your Natural Language Understanding service.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
-    def list_models
-      headers = {
-      }
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/models"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method delete_model(model_id:)
     # Delete model.
     # Deletes a custom model.
-    # @param model_id [String] model_id of the model to delete.
-    # @return [DetailedResponse] A `DetailedResponse` object representing the response.
+    # @param model_id [String] Model ID of the model to delete.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_model(model_id:)
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
       }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "delete_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -218,6 +196,35 @@ module IBMWatson
 
       response = request(
         method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_models
+    # List models.
+    # Lists Watson Knowledge Studio [custom
+    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
+    #   that are deployed to your Natural Language Understanding service.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_models
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models"
+
+      response = request(
+        method: "GET",
         url: method_url,
         headers: headers,
         params: params,
