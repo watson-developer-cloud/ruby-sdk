@@ -21,7 +21,6 @@
 require "concurrent"
 require "erb"
 require "json"
-
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
@@ -97,7 +96,7 @@ module IBMWatson
     # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
     #   on the **Assistants** tab of the Watson Assistant tool. For information about
     #   creating assistants, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/create-assistant.html#creating-assistants).
+    #   [documentation](https://console.bluemix.net/docs/services/assistant/assistant-add.html#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -106,7 +105,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "create_session")
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "create_session")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -131,7 +131,7 @@ module IBMWatson
     # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
     #   on the **Assistants** tab of the Watson Assistant tool. For information about
     #   creating assistants, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/create-assistant.html#creating-assistants).
+    #   [documentation](https://console.bluemix.net/docs/services/assistant/assistant-add.html#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.
@@ -143,7 +143,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "delete_session")
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "delete_session")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version
@@ -173,12 +174,14 @@ module IBMWatson
     # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
     #   on the **Assistants** tab of the Watson Assistant tool. For information about
     #   creating assistants, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/create-assistant.html#creating-assistants).
+    #   [documentation](https://console.bluemix.net/docs/services/assistant/assistant-add.html#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.
     # @param input [MessageInput] An input object that includes the input text.
-    # @param context [MessageContext] State information for the conversation.
+    # @param context [MessageContext] State information for the conversation. The context is stored by the assistant on
+    #   a per-session basis. You can use this property to set or modify context variables,
+    #   which can also be accessed by dialog nodes.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def message(assistant_id:, session_id:, input: nil, context: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
@@ -187,7 +190,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "conversation", service_version: "V2", operation_id: "message")
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "message")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version

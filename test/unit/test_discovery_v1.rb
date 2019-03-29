@@ -571,7 +571,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -682,7 +681,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -773,7 +771,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -894,7 +891,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -951,7 +947,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -972,7 +967,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/user_data?customer_id=id&version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -1390,6 +1384,27 @@ class DiscoveryV1Test < Minitest::Test
     assert_equal({ "received" => "true" }, service_response.result)
   end
 
+  def test_list_fields
+    service = IBMWatson::DiscoveryV1.new(
+      username: "username",
+      password: "password",
+      version: "2018-03-05"
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/fields?collection_ids=collid&version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_fields(
+      environment_id: "envid",
+      collection_ids: ["collid"]
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
   def test_create_stopword_list
     service = IBMWatson::DiscoveryV1.new(
       username: "username",
@@ -1418,7 +1433,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }

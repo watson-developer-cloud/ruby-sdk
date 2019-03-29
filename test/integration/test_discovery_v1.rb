@@ -3,7 +3,7 @@
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
+if !ENV["DISCOVERY_APIKEY"].nil? && !ENV["DISCOVERY_URL"].nil?
   # Integration tests for the Discovery V1 Service
   class DiscoveryV1Test < Minitest::Test
     include Minitest::Hooks
@@ -11,8 +11,8 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
 
     def before_all
       @service = IBMWatson::DiscoveryV1.new(
-        username: ENV["DISCOVERY_USERNAME"],
-        password: ENV["DISCOVERY_PASSWORD"],
+        iam_apikey: ENV["DISCOVERY_APIKEY"],
+        url: ENV["DISCOVERY_URL"],
         version: "2018-03-05"
       )
       @environment_id = ENV["DISCOVERY_ENVIRONMENT_ID"]
@@ -32,11 +32,6 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
         environment_id: envs["environments"][0]["environment_id"]
       )
       refute(env.nil?)
-      fields = @service.list_fields(
-        environment_id: @environment_id,
-        collection_ids: [@collection_id]
-      )
-      refute(fields.nil?)
     end
 
     def test_configurations
@@ -75,7 +70,7 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
       assert_equal("deleted", deleted_config["status"])
     end
 
-    def test_collections_and_expansions
+    def test_collections_fields_query_and_expansions
       skip "Time consuming"
       name = "Example collection for ruby" + ("A".."Z").to_a.sample
       new_collection_id = @service.create_collection(
@@ -103,6 +98,20 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
       ).result
       updated_collection = updated_collection
       assert_equal("Updating description", updated_collection["description"])
+
+      fields = @service.list_fields(
+        environment_id: @environment_id,
+        collection_ids: [new_collection_id]
+      )
+      refute(fields.nil?)
+
+      query_results = @service.query(
+        environment_id: @environment_id,
+        collection_id: new_collection_id,
+        filter: "extracted_metadata.sha1::9181d244*",
+        return_fields: "extracted_metadata.sha1"
+      ).result
+      refute(query_results.nil?)
 
       @service.create_expansions(
         environment_id: @environment_id,
@@ -191,15 +200,8 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
       assert_equal("deleted", delete_doc["status"])
     end
 
-    def test_queries
-      query_results = @service.query(
-        environment_id: @environment_id,
-        collection_id: @collection_id,
-        filter: "extracted_metadata.sha1::9181d244*",
-        return_fields: "extracted_metadata.sha1"
-      ).result
-      refute(query_results.nil?)
-    end
+    # def test_queries
+    # end
 
     def test_list_credentials
       credentials = @service.list_credentials(
@@ -216,6 +218,7 @@ if !ENV["DISCOVERY_USERNAME"].nil? && !ENV["DISCOVERY_PASSWORD"].nil?
     end
 
     def test_create_get_delete_gateways
+      skip
       gateway = @service.create_gateway(
         environment_id: @environment_id,
         name: "test"

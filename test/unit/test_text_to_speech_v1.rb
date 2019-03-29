@@ -220,7 +220,6 @@ class TextToSpeechV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -287,7 +286,6 @@ class TextToSpeechV1Test < Minitest::Test
       .with(
         body: "{\"translation\":\"I'm translated\"}",
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "stream.watsonplatform.net"
@@ -303,7 +301,6 @@ class TextToSpeechV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words/word")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -323,7 +320,6 @@ class TextToSpeechV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/user_data?customer_id=id")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }

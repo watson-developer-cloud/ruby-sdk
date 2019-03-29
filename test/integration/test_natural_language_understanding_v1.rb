@@ -3,15 +3,26 @@
 require("json")
 require_relative("./../test_helper.rb")
 
-if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? && !ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"].nil?
+if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_UNDERSTANDING_URL"].nil?
   # Integration tests for the Natural Language Understanding V1 Service
   class NaturalLanguageUnderstandingV1Test < Minitest::Test
-    def test_text_analyze
-      service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+    include Minitest::Hooks
+    attr_accessor :service
+    def before_all
+      @service = IBMWatson::NaturalLanguageUnderstandingV1.new(
         version: "2018-03-16",
-        username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
-        password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
+        iam_apikey: ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"],
+        url: ENV["NATURAL_LANGUAGE_UNDERSTANDING_URL"]
       )
+      @service.add_default_headers(
+        headers: {
+          "X-Watson-Learning-Opt-Out" => "1",
+          "X-Watson-Test" => "1"
+        }
+      )
+    end
+
+    def test_text_analyze
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -40,11 +51,6 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? && !ENV["NATURAL_LANGUAG
     end
 
     def test_html_analyze
-      service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-        version: "2018-03-16",
-        username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
-        password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
-      )
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -61,11 +67,6 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? && !ENV["NATURAL_LANGUAG
     end
 
     def test_url_analyze
-      service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-        version: "2018-03-16",
-        username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
-        password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
-      )
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -83,11 +84,6 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"].nil? && !ENV["NATURAL_LANGUAG
 
     def test_list_models
       skip
-      service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-        version: "2018-03-16",
-        username: ENV["NATURAL_LANGUAGE_UNDERSTANDING_USERNAME"],
-        password: ENV["NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD"]
-      )
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",

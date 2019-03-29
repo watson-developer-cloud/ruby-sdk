@@ -4,16 +4,16 @@ require("json")
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-if !ENV["VISUAL_RECOGNITION_IAM_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_IAM_URL"].nil?
+if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
   # Integration tests for the Visual Recognition V3 Service
   class VisualRecognitionV3Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service, :classifier_id
     def before_all
       @service = IBMWatson::VisualRecognitionV3.new(
-        iam_apikey: ENV["VISUAL_RECOGNITION_IAM_APIKEY"],
+        iam_apikey: ENV["VISUAL_RECOGNITION_APIKEY"],
         version: "2018-03-19",
-        url: ENV["VISUAL_RECOGNITION_IAM_URL"]
+        url: ENV["VISUAL_RECOGNITION_URL"]
       )
       @classifier_id = "doxnotxdeletexsdksxintegration_718351350"
       @service.add_default_headers(

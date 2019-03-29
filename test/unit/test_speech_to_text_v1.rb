@@ -3,8 +3,24 @@
 require("json")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
+require_relative("./../../lib/ibm_watson/websocket/recognize_callback.rb")
 
 WebMock.disable_net_connect!(allow_localhost: true)
+
+class MyRecognizeCallback < IBMWatson::RecognizeCallback
+  def initialize(atomic_boolean: nil)
+    super
+    @atomic_boolean = atomic_boolean
+  end
+
+  def on_error(*)
+    @atomic_boolean.make_true
+  end
+
+  def on_inactivity_timeout(*)
+    @atomic_boolean.make_true
+  end
+end
 
 # Unit tests for the Speech to Text V1 Service
 class SpeechToTextV1Test < Minitest::Test
@@ -63,6 +79,14 @@ class SpeechToTextV1Test < Minitest::Test
       content_type: "audio/l16; rate=44100"
     )
     assert_equal(recognize_response, service_response.result)
+
+    mycallback = MyRecognizeCallback.new
+    service_response = service.recognize_using_websocket(
+      audio: audio_file,
+      recognize_callback: mycallback,
+      content_type: "audio/l16; rate=44100"
+    )
+    refute_nil(service_response)
   end
 
   def test_get_model
@@ -142,7 +166,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions/jobid")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -161,7 +184,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/register_callback?callback_url=monitorcalls.com")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -174,7 +196,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/unregister_callback?callback_url=monitorcalls.com")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -351,7 +372,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }
@@ -360,8 +380,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.add_corpus(
       customization_id: "customid",
       corpus_name: "corpus",
-      corpus_file: corpus_file,
-      corpus_filename: "corpus-short-1.txt"
+      corpus_file: corpus_file
     )
     assert_nil(service_response)
 
@@ -699,7 +718,6 @@ class SpeechToTextV1Test < Minitest::Test
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/user_data?customer_id=id")
       .with(
         headers: {
-          "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "stream.watsonplatform.net"
         }

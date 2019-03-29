@@ -41,7 +41,6 @@
 require "concurrent"
 require "erb"
 require "json"
-
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
@@ -98,32 +97,6 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_models
-    # List models.
-    # Lists all language models that are available for use with the service. The
-    #   information includes the name of the model and its minimum sampling rate in Hertz,
-    #   among other things.
-    #
-    #   **See also:** [Languages and
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/models.html).
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_models
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_models")
-
-      method_url = "/v1/models"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method get_model(model_id:)
     # Get a model.
     # Gets information for a single specified language model that is available for use
@@ -140,9 +113,37 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_model")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_models
+    # List models.
+    # Lists all language models that are available for use with the service. The
+    #   information includes the name of the model and its minimum sampling rate in Hertz,
+    #   among other things.
+    #
+    #   **See also:** [Languages and
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/models.html).
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_models
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_models")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/models"
 
       response = request(
         method: "GET",
@@ -157,7 +158,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil)
+    # @!method recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, content_type: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. You can
     #   pass a maximum of 100 MB and a minimum of 100 bytes of audio with a request. The
@@ -174,11 +175,11 @@ module IBMWatson
     #
     #    For requests to transcribe live audio as it becomes available, you must set the
     #   `Transfer-Encoding` header to `chunked` to use streaming mode. In streaming mode,
-    #   the server closes the connection (status code 408) if the service receives no data
-    #   chunk for 30 seconds and it has no audio to transcribe for 30 seconds. The server
-    #   also closes the connection (status code 400) if no speech is detected for
-    #   `inactivity_timeout` seconds of audio (not processing time); use the
-    #   `inactivity_timeout` parameter to change the default of 30 seconds.
+    #   the service closes the connection (status code 408) if it does not receive at
+    #   least 15 seconds of audio (including silence) in any 30-second period. The service
+    #   also closes the connection (status code 400) if it detects no speech for
+    #   `inactivity_timeout` seconds of streaming audio; use the `inactivity_timeout`
+    #   parameter to change the default of 30 seconds.
     #
     #   **See also:**
     #   * [Audio
@@ -199,6 +200,7 @@ module IBMWatson
     #
     #   Where indicated, the format that you specify must include the sampling rate and
     #   can optionally include the number of channels and the endianness of the audio.
+    #   * `audio/alaw` (**Required.** Specify the sampling rate (`rate`) of the audio.)
     #   * `audio/basic` (**Required.** Use only with narrowband models.)
     #   * `audio/flac`
     #   * `audio/g729` (Use only with narrowband models.)
@@ -242,8 +244,6 @@ module IBMWatson
     #   **See also:** [Making a multipart HTTP
     #   request](https://cloud.ibm.com/docs/services/speech-to-text/http.html#HTTP-multi).
     # @param audio [String] The audio to transcribe.
-    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
-    #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
     #   [Languages and
     #   models](https://cloud.ibm.com/docs/services/speech-to-text/models.html).
@@ -252,7 +252,8 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
     #   default, no custom language model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom).
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom-input).
+    #
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
     #   parameter.
@@ -261,7 +262,7 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
     #   default, no custom acoustic model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom).
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom-input).
     # @param base_model_version [String] The version of the specified base model that is to be used with recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
@@ -285,12 +286,12 @@ module IBMWatson
     #   phrases.
     #
     #   See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom).
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom-input).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
-    #   submitted audio, the connection is closed with a 400 error. The parameter is
+    #   streaming audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
-    #   walks away. Use `-1` for infinity. See
-    #   [Timeouts](https://cloud.ibm.com/docs/services/speech-to-text/input.html#timeouts).
+    #   walks away. Use `-1` for infinity. See [Inactivity
+    #   timeout](https://cloud.ibm.com/docs/services/speech-to-text/input.html#timeouts-inactivity).
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
@@ -304,7 +305,8 @@ module IBMWatson
     #   spotting if you omit either parameter. See [Keyword
     #   spotting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#keyword_spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
-    #   default, the service returns a single transcript. See [Maximum
+    #   default, the service returns a single transcript. If you specify a value of `0`,
+    #   the service uses the default value, `1`. See [Maximum
     #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text/output.html#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as \"Confusion Networks\"). An alternative
@@ -354,7 +356,7 @@ module IBMWatson
     #   specify the name of the custom language model for which the grammar is defined.
     #   The service recognizes only strings that are recognized by the specified grammar;
     #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text/output.html).
+    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text/input.html#grammars-input).
     # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
     #   feature redacts any number that has three or more consecutive digits by replacing
     #   each digit with an `X` character. It is intended to redact sensitive numeric data,
@@ -370,15 +372,18 @@ module IBMWatson
     #
     #   See [Numeric
     #   redaction](https://cloud.ibm.com/docs/services/speech-to-text/output.html#redaction).
+    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
+    #   audio format, see **Audio formats (content types)** in the method description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil)
+    def recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, content_type: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
         "Content-Type" => content_type
       }
       keywords *= "," unless keywords.nil?
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "recognize")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "recognize")
+      headers.merge!(sdk_headers)
 
       params = {
         "model" => model,
@@ -492,9 +497,7 @@ module IBMWatson
       raise TypeError("Callback is not a derived class of RecognizeCallback") unless recognize_callback.is_a?(IBMWatson::RecognizeCallback)
 
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "recognize_using_websocket")
+      headers = {}
       headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
       if !token_manager.nil?
         access_token = token_manager.token
@@ -587,6 +590,424 @@ module IBMWatson
     #########################
 
     ##
+    # @!method check_job(id:)
+    # Check a job.
+    # Returns information about the specified job. The response always includes the
+    #   status of the job and its creation and update times. If the status is `completed`,
+    #   the response includes the results of the recognition request. You must use
+    #   credentials for the instance of the service that owns a job to list information
+    #   about it.
+    #
+    #   You can use the method to retrieve the results of any job, regardless of whether
+    #   it was submitted with a callback URL and the `recognitions.completed_with_results`
+    #   event, and you can retrieve the results multiple times for as long as they remain
+    #   available. Use the **Check jobs** method to request information about the most
+    #   recent jobs associated with the calling credentials.
+    #
+    #   **See also:** [Checking the status and retrieving the results of a
+    #   job](https://cloud.ibm.com/docs/services/speech-to-text/async.html#job).
+    # @param id [String] The identifier of the asynchronous job that is to be used for the request. You
+    #   must make the request with credentials for the instance of the service that owns
+    #   the job.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def check_job(id:)
+      raise ArgumentError.new("id must be provided") if id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "check_job")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method check_jobs
+    # Check jobs.
+    # Returns the ID and status of the latest 100 outstanding jobs associated with the
+    #   credentials with which it is called. The method also returns the creation and
+    #   update times of each job, and, if a job was created with a callback URL and a user
+    #   token, the user token for the job. To obtain the results for a job whose status is
+    #   `completed` or not one of the latest 100 outstanding jobs, use the **Check a job**
+    #   method. A job and its results remain available until you delete them with the
+    #   **Delete a job** method or until the job's time to live expires, whichever comes
+    #   first.
+    #
+    #   **See also:** [Checking the status of the latest
+    #   jobs](https://cloud.ibm.com/docs/services/speech-to-text/async.html#jobs).
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def check_jobs
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "check_jobs")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/recognitions"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_job(audio:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, content_type: nil)
+    # Create a job.
+    # Creates a job for a new asynchronous recognition request. The job is owned by the
+    #   instance of the service whose credentials are used to create it. How you learn the
+    #   status and results of a job depends on the parameters you include with the job
+    #   creation request:
+    #   * By callback notification: Include the `callback_url` parameter to specify a URL
+    #   to which the service is to send callback notifications when the status of the job
+    #   changes. Optionally, you can also include the `events` and `user_token` parameters
+    #   to subscribe to specific events and to specify a string that is to be included
+    #   with each notification for the job.
+    #   * By polling the service: Omit the `callback_url`, `events`, and `user_token`
+    #   parameters. You must then use the **Check jobs** or **Check a job** methods to
+    #   check the status of the job, using the latter to retrieve the results when the job
+    #   is complete.
+    #
+    #   The two approaches are not mutually exclusive. You can poll the service for job
+    #   status or obtain results from the service manually even if you include a callback
+    #   URL. In both cases, you can include the `results_ttl` parameter to specify how
+    #   long the results are to remain available after the job is complete. Using the
+    #   HTTPS **Check a job** method to retrieve results is more secure than receiving
+    #   them via callback notification over HTTP because it provides confidentiality in
+    #   addition to authentication and data integrity.
+    #
+    #   The method supports the same basic parameters as other HTTP and WebSocket
+    #   recognition requests. It also supports the following parameters specific to the
+    #   asynchronous interface:
+    #   * `callback_url`
+    #   * `events`
+    #   * `user_token`
+    #   * `results_ttl`
+    #
+    #   You can pass a maximum of 1 GB and a minimum of 100 bytes of audio with a request.
+    #   The service automatically detects the endianness of the incoming audio and, for
+    #   audio that includes multiple channels, downmixes the audio to one-channel mono
+    #   during transcoding. The method returns only final results; to enable interim
+    #   results, use the WebSocket API.
+    #
+    #   **See also:** [Creating a
+    #   job](https://cloud.ibm.com/docs/services/speech-to-text/async.html#create).
+    #
+    #   ### Streaming mode
+    #
+    #    For requests to transcribe live audio as it becomes available, you must set the
+    #   `Transfer-Encoding` header to `chunked` to use streaming mode. In streaming mode,
+    #   the service closes the connection (status code 408) if it does not receive at
+    #   least 15 seconds of audio (including silence) in any 30-second period. The service
+    #   also closes the connection (status code 400) if it detects no speech for
+    #   `inactivity_timeout` seconds of streaming audio; use the `inactivity_timeout`
+    #   parameter to change the default of 30 seconds.
+    #
+    #   **See also:**
+    #   * [Audio
+    #   transmission](https://cloud.ibm.com/docs/services/speech-to-text/input.html#transmission)
+    #   *
+    #   [Timeouts](https://cloud.ibm.com/docs/services/speech-to-text/input.html#timeouts)
+    #
+    #
+    #   ### Audio formats (content types)
+    #
+    #    The service accepts audio in the following formats (MIME types).
+    #   * For formats that are labeled **Required**, you must use the `Content-Type`
+    #   header with the request to specify the format of the audio.
+    #   * For all other formats, you can omit the `Content-Type` header or specify
+    #   `application/octet-stream` with the header to have the service automatically
+    #   detect the format of the audio. (With the `curl` command, you can specify either
+    #   `\"Content-Type:\"` or `\"Content-Type: application/octet-stream\"`.)
+    #
+    #   Where indicated, the format that you specify must include the sampling rate and
+    #   can optionally include the number of channels and the endianness of the audio.
+    #   * `audio/alaw` (**Required.** Specify the sampling rate (`rate`) of the audio.)
+    #   * `audio/basic` (**Required.** Use only with narrowband models.)
+    #   * `audio/flac`
+    #   * `audio/g729` (Use only with narrowband models.)
+    #   * `audio/l16` (**Required.** Specify the sampling rate (`rate`) and optionally the
+    #   number of channels (`channels`) and endianness (`endianness`) of the audio.)
+    #   * `audio/mp3`
+    #   * `audio/mpeg`
+    #   * `audio/mulaw` (**Required.** Specify the sampling rate (`rate`) of the audio.)
+    #   * `audio/ogg` (The service automatically detects the codec of the input audio.)
+    #   * `audio/ogg;codecs=opus`
+    #   * `audio/ogg;codecs=vorbis`
+    #   * `audio/wav` (Provide audio with a maximum of nine channels.)
+    #   * `audio/webm` (The service automatically detects the codec of the input audio.)
+    #   * `audio/webm;codecs=opus`
+    #   * `audio/webm;codecs=vorbis`
+    #
+    #   The sampling rate of the audio must match the sampling rate of the model for the
+    #   recognition request: for broadband models, at least 16 kHz; for narrowband models,
+    #   at least 8 kHz. If the sampling rate of the audio is higher than the minimum
+    #   required rate, the service down-samples the audio to the appropriate rate. If the
+    #   sampling rate of the audio is lower than the minimum required rate, the request
+    #   fails.
+    #
+    #    **See also:** [Audio
+    #   formats](https://cloud.ibm.com/docs/services/speech-to-text/audio-formats.html).
+    # @param audio [String] The audio to transcribe.
+    # @param model [String] The identifier of the model that is to be used for the recognition request. See
+    #   [Languages and
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/models.html).
+    # @param callback_url [String] A URL to which callback notifications are to be sent. The URL must already be
+    #   successfully white-listed by using the **Register a callback** method. You can
+    #   include the same callback URL with any number of job creation requests. Omit the
+    #   parameter to poll the service for job completion and results.
+    #
+    #   Use the `user_token` parameter to specify a unique user-specified string with each
+    #   job to differentiate the callback notifications for the jobs.
+    # @param events [String] If the job includes a callback URL, a comma-separated list of notification events
+    #   to which to subscribe. Valid events are
+    #   * `recognitions.started` generates a callback notification when the service begins
+    #   to process the job.
+    #   * `recognitions.completed` generates a callback notification when the job is
+    #   complete. You must use the **Check a job** method to retrieve the results before
+    #   they time out or are deleted.
+    #   * `recognitions.completed_with_results` generates a callback notification when the
+    #   job is complete. The notification includes the results of the request.
+    #   * `recognitions.failed` generates a callback notification if the service
+    #   experiences an error while processing the job.
+    #
+    #   The `recognitions.completed` and `recognitions.completed_with_results` events are
+    #   incompatible. You can specify only of the two events.
+    #
+    #   If the job includes a callback URL, omit the parameter to subscribe to the default
+    #   events: `recognitions.started`, `recognitions.completed`, and
+    #   `recognitions.failed`. If the job does not include a callback URL, omit the
+    #   parameter.
+    # @param user_token [String] If the job includes a callback URL, a user-specified string that the service is to
+    #   include with each callback notification for the job; the token allows the user to
+    #   maintain an internal mapping between jobs and notification events. If the job does
+    #   not include a callback URL, omit the parameter.
+    # @param results_ttl [Fixnum] The number of minutes for which the results are to be available after the job has
+    #   finished. If not delivered via a callback, the results must be retrieved within
+    #   this time. Omit the parameter to use a time to live of one week. The parameter is
+    #   valid with or without a callback URL.
+    # @param language_customization_id [String] The customization ID (GUID) of a custom language model that is to be used with the
+    #   recognition request. The base model of the specified custom language model must
+    #   match the model specified with the `model` parameter. You must make the request
+    #   with credentials for the instance of the service that owns the custom model. By
+    #   default, no custom language model is used. See [Custom
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom-input).
+    #
+    #
+    #   **Note:** Use this parameter instead of the deprecated `customization_id`
+    #   parameter.
+    # @param acoustic_customization_id [String] The customization ID (GUID) of a custom acoustic model that is to be used with the
+    #   recognition request. The base model of the specified custom acoustic model must
+    #   match the model specified with the `model` parameter. You must make the request
+    #   with credentials for the instance of the service that owns the custom model. By
+    #   default, no custom acoustic model is used. See [Custom
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom-input).
+    # @param base_model_version [String] The version of the specified base model that is to be used with recognition
+    #   request. Multiple versions of a base model can exist when a model is updated for
+    #   internal improvements. The parameter is intended primarily for use with custom
+    #   models that have been upgraded for a new base model. The default value depends on
+    #   whether the parameter is used with or without a custom model. See [Base model
+    #   version](https://cloud.ibm.com/docs/services/speech-to-text/input.html#version).
+    # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
+    #   recognition request, the customization weight tells the service how much weight to
+    #   give to words from the custom language model compared to those from the base model
+    #   for the current request.
+    #
+    #   Specify a value between 0.0 and 1.0. Unless a different customization weight was
+    #   specified for the custom model when it was trained, the default value is 0.3. A
+    #   customization weight that you specify overrides a weight that was specified when
+    #   the custom model was trained.
+    #
+    #   The default value yields the best performance in general. Assign a higher value if
+    #   your audio makes frequent use of OOV words from the custom model. Use caution when
+    #   setting the weight: a higher value can improve the accuracy of phrases from the
+    #   custom model's domain, but it can negatively affect performance on non-domain
+    #   phrases.
+    #
+    #   See [Custom
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom-input).
+    # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
+    #   streaming audio, the connection is closed with a 400 error. The parameter is
+    #   useful for stopping audio submission from a live microphone when a user simply
+    #   walks away. Use `-1` for infinity. See [Inactivity
+    #   timeout](https://cloud.ibm.com/docs/services/speech-to-text/input.html#timeouts-inactivity).
+    # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
+    #   one or more string tokens. Keywords are spotted only in the final results, not in
+    #   interim hypotheses. If you specify any keywords, you must also specify a keywords
+    #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
+    #   an empty array if you do not need to spot keywords. See [Keyword
+    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#keyword_spotting).
+    # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
+    #   considered to match a keyword if its confidence is greater than or equal to the
+    #   threshold. Specify a probability between 0.0 and 1.0. If you specify a threshold,
+    #   you must also specify one or more keywords. The service performs no keyword
+    #   spotting if you omit either parameter. See [Keyword
+    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#keyword_spotting).
+    # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
+    #   default, the service returns a single transcript. If you specify a value of `0`,
+    #   the service uses the default value, `1`. See [Maximum
+    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text/output.html#max_alternatives).
+    # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
+    #   possible word alternative (also known as \"Confusion Networks\"). An alternative
+    #   word is considered if its confidence is greater than or equal to the threshold.
+    #   Specify a probability between 0.0 and 1.0. By default, the service computes no
+    #   alternative words. See [Word
+    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text/output.html#word_alternatives).
+    # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
+    #   each word. By default, the service returns no word confidence scores. See [Word
+    #   confidence](https://cloud.ibm.com/docs/services/speech-to-text/output.html#word_confidence).
+    # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
+    #   timestamps are returned. See [Word
+    #   timestamps](https://cloud.ibm.com/docs/services/speech-to-text/output.html#word_timestamps).
+    # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
+    #   results by replacing inappropriate words with a series of asterisks. Set the
+    #   parameter to `false` to return results with no censoring. Applies to US English
+    #   transcription only. See [Profanity
+    #   filtering](https://cloud.ibm.com/docs/services/speech-to-text/output.html#profanity_filter).
+    # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
+    #   numbers, currency values, and internet addresses into more readable, conventional
+    #   representations in the final transcript of a recognition request. For US English,
+    #   the service also converts certain keyword strings to punctuation symbols. By
+    #   default, the service performs no smart formatting.
+    #
+    #   **Note:** Applies to US English, Japanese, and Spanish transcription only.
+    #
+    #   See [Smart
+    #   formatting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#smart_formatting).
+    # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
+    #   which participants in a multi-person exchange. By default, the service returns no
+    #   speaker labels. Setting `speaker_labels` to `true` forces the `timestamps`
+    #   parameter to be `true`, regardless of whether you specify `false` for the
+    #   parameter.
+    #
+    #   **Note:** Applies to US English, Japanese, and Spanish transcription only. To
+    #   determine whether a language model supports speaker labels, you can also use the
+    #   **Get a model** method and check that the attribute `speaker_labels` is set to
+    #   `true`.
+    #
+    #   See [Speaker
+    #   labels](https://cloud.ibm.com/docs/services/speech-to-text/output.html#speaker_labels).
+    # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
+    #   customization ID (GUID) of a custom language model that is to be used with the
+    #   recognition request. Do not specify both parameters with a request.
+    # @param grammar_name [String] The name of a grammar that is to be used with the recognition request. If you
+    #   specify a grammar, you must also use the `language_customization_id` parameter to
+    #   specify the name of the custom language model for which the grammar is defined.
+    #   The service recognizes only strings that are recognized by the specified grammar;
+    #   it does not recognize other custom words from the model's words resource. See
+    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text/input.html#grammars-input).
+    # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
+    #   feature redacts any number that has three or more consecutive digits by replacing
+    #   each digit with an `X` character. It is intended to redact sensitive numeric data,
+    #   such as credit card numbers. By default, the service performs no redaction.
+    #
+    #   When you enable redaction, the service automatically enables smart formatting,
+    #   regardless of whether you explicitly disable that feature. To ensure maximum
+    #   security, the service also disables keyword spotting (ignores the `keywords` and
+    #   `keywords_threshold` parameters) and returns only a single final transcript
+    #   (forces the `max_alternatives` parameter to be `1`).
+    #
+    #   **Note:** Applies to US English, Japanese, and Korean transcription only.
+    #
+    #   See [Numeric
+    #   redaction](https://cloud.ibm.com/docs/services/speech-to-text/output.html#redaction).
+    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
+    #   audio format, see **Audio formats (content types)** in the method description.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_job(audio:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, content_type: nil)
+      raise ArgumentError.new("audio must be provided") if audio.nil?
+
+      headers = {
+        "Content-Type" => content_type
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "create_job")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "model" => model,
+        "callback_url" => callback_url,
+        "events" => events,
+        "user_token" => user_token,
+        "results_ttl" => results_ttl,
+        "language_customization_id" => language_customization_id,
+        "acoustic_customization_id" => acoustic_customization_id,
+        "base_model_version" => base_model_version,
+        "customization_weight" => customization_weight,
+        "inactivity_timeout" => inactivity_timeout,
+        "keywords" => keywords.to_a,
+        "keywords_threshold" => keywords_threshold,
+        "max_alternatives" => max_alternatives,
+        "word_alternatives_threshold" => word_alternatives_threshold,
+        "word_confidence" => word_confidence,
+        "timestamps" => timestamps,
+        "profanity_filter" => profanity_filter,
+        "smart_formatting" => smart_formatting,
+        "speaker_labels" => speaker_labels,
+        "customization_id" => customization_id,
+        "grammar_name" => grammar_name,
+        "redaction" => redaction
+      }
+
+      data = audio
+
+      method_url = "/v1/recognitions"
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        data: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_job(id:)
+    # Delete a job.
+    # Deletes the specified job. You cannot delete a job that the service is actively
+    #   processing. Once you delete a job, its results are no longer available. The
+    #   service automatically deletes a job and its results when the time to live for the
+    #   results expires. You must use credentials for the instance of the service that
+    #   owns a job to delete it.
+    #
+    #   **See also:** [Deleting a
+    #   job](https://cloud.ibm.com/docs/services/speech-to-text/async.html#delete-async).
+    # @param id [String] The identifier of the asynchronous job that is to be used for the request. You
+    #   must make the request with credentials for the instance of the service that owns
+    #   the job.
+    # @return [nil]
+    def delete_job(id:)
+      raise ArgumentError.new("id must be provided") if id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_job")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        accept_json: false
+      )
+      nil
+    end
+
+    ##
     # @!method register_callback(callback_url:, user_secret: nil)
     # Register a callback.
     # Registers a callback URL with the service for use with subsequent asynchronous
@@ -639,7 +1060,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "register_callback")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "register_callback")
+      headers.merge!(sdk_headers)
 
       params = {
         "callback_url" => callback_url,
@@ -674,7 +1096,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "unregister_callback")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "unregister_callback")
+      headers.merge!(sdk_headers)
 
       params = {
         "callback_url" => callback_url
@@ -687,418 +1110,7 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
-      )
-      nil
-    end
-
-    ##
-    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil)
-    # Create a job.
-    # Creates a job for a new asynchronous recognition request. The job is owned by the
-    #   instance of the service whose credentials are used to create it. How you learn the
-    #   status and results of a job depends on the parameters you include with the job
-    #   creation request:
-    #   * By callback notification: Include the `callback_url` parameter to specify a URL
-    #   to which the service is to send callback notifications when the status of the job
-    #   changes. Optionally, you can also include the `events` and `user_token` parameters
-    #   to subscribe to specific events and to specify a string that is to be included
-    #   with each notification for the job.
-    #   * By polling the service: Omit the `callback_url`, `events`, and `user_token`
-    #   parameters. You must then use the **Check jobs** or **Check a job** methods to
-    #   check the status of the job, using the latter to retrieve the results when the job
-    #   is complete.
-    #
-    #   The two approaches are not mutually exclusive. You can poll the service for job
-    #   status or obtain results from the service manually even if you include a callback
-    #   URL. In both cases, you can include the `results_ttl` parameter to specify how
-    #   long the results are to remain available after the job is complete. Using the
-    #   HTTPS **Check a job** method to retrieve results is more secure than receiving
-    #   them via callback notification over HTTP because it provides confidentiality in
-    #   addition to authentication and data integrity.
-    #
-    #   The method supports the same basic parameters as other HTTP and WebSocket
-    #   recognition requests. It also supports the following parameters specific to the
-    #   asynchronous interface:
-    #   * `callback_url`
-    #   * `events`
-    #   * `user_token`
-    #   * `results_ttl`
-    #
-    #   You can pass a maximum of 100 MB and a minimum of 100 bytes of audio with a
-    #   request. The service automatically detects the endianness of the incoming audio
-    #   and, for audio that includes multiple channels, downmixes the audio to one-channel
-    #   mono during transcoding. The method returns only final results; to enable interim
-    #   results, use the WebSocket API.
-    #
-    #   **See also:** [Creating a
-    #   job](https://cloud.ibm.com/docs/services/speech-to-text/async.html#create).
-    #
-    #   ### Streaming mode
-    #
-    #    For requests to transcribe live audio as it becomes available, you must set the
-    #   `Transfer-Encoding` header to `chunked` to use streaming mode. In streaming mode,
-    #   the server closes the connection (status code 408) if the service receives no data
-    #   chunk for 30 seconds and it has no audio to transcribe for 30 seconds. The server
-    #   also closes the connection (status code 400) if no speech is detected for
-    #   `inactivity_timeout` seconds of audio (not processing time); use the
-    #   `inactivity_timeout` parameter to change the default of 30 seconds.
-    #
-    #   **See also:**
-    #   * [Audio
-    #   transmission](https://cloud.ibm.com/docs/services/speech-to-text/input.html#transmission)
-    #   *
-    #   [Timeouts](https://cloud.ibm.com/docs/services/speech-to-text/input.html#timeouts)
-    #
-    #
-    #   ### Audio formats (content types)
-    #
-    #    The service accepts audio in the following formats (MIME types).
-    #   * For formats that are labeled **Required**, you must use the `Content-Type`
-    #   header with the request to specify the format of the audio.
-    #   * For all other formats, you can omit the `Content-Type` header or specify
-    #   `application/octet-stream` with the header to have the service automatically
-    #   detect the format of the audio. (With the `curl` command, you can specify either
-    #   `\"Content-Type:\"` or `\"Content-Type: application/octet-stream\"`.)
-    #
-    #   Where indicated, the format that you specify must include the sampling rate and
-    #   can optionally include the number of channels and the endianness of the audio.
-    #   * `audio/basic` (**Required.** Use only with narrowband models.)
-    #   * `audio/flac`
-    #   * `audio/g729` (Use only with narrowband models.)
-    #   * `audio/l16` (**Required.** Specify the sampling rate (`rate`) and optionally the
-    #   number of channels (`channels`) and endianness (`endianness`) of the audio.)
-    #   * `audio/mp3`
-    #   * `audio/mpeg`
-    #   * `audio/mulaw` (**Required.** Specify the sampling rate (`rate`) of the audio.)
-    #   * `audio/ogg` (The service automatically detects the codec of the input audio.)
-    #   * `audio/ogg;codecs=opus`
-    #   * `audio/ogg;codecs=vorbis`
-    #   * `audio/wav` (Provide audio with a maximum of nine channels.)
-    #   * `audio/webm` (The service automatically detects the codec of the input audio.)
-    #   * `audio/webm;codecs=opus`
-    #   * `audio/webm;codecs=vorbis`
-    #
-    #   The sampling rate of the audio must match the sampling rate of the model for the
-    #   recognition request: for broadband models, at least 16 kHz; for narrowband models,
-    #   at least 8 kHz. If the sampling rate of the audio is higher than the minimum
-    #   required rate, the service down-samples the audio to the appropriate rate. If the
-    #   sampling rate of the audio is lower than the minimum required rate, the request
-    #   fails.
-    #
-    #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/services/speech-to-text/audio-formats.html).
-    # @param audio [String] The audio to transcribe.
-    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
-    #   audio format, see **Audio formats (content types)** in the method description.
-    # @param model [String] The identifier of the model that is to be used for the recognition request. See
-    #   [Languages and
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/models.html).
-    # @param callback_url [String] A URL to which callback notifications are to be sent. The URL must already be
-    #   successfully white-listed by using the **Register a callback** method. You can
-    #   include the same callback URL with any number of job creation requests. Omit the
-    #   parameter to poll the service for job completion and results.
-    #
-    #   Use the `user_token` parameter to specify a unique user-specified string with each
-    #   job to differentiate the callback notifications for the jobs.
-    # @param events [String] If the job includes a callback URL, a comma-separated list of notification events
-    #   to which to subscribe. Valid events are
-    #   * `recognitions.started` generates a callback notification when the service begins
-    #   to process the job.
-    #   * `recognitions.completed` generates a callback notification when the job is
-    #   complete. You must use the **Check a job** method to retrieve the results before
-    #   they time out or are deleted.
-    #   * `recognitions.completed_with_results` generates a callback notification when the
-    #   job is complete. The notification includes the results of the request.
-    #   * `recognitions.failed` generates a callback notification if the service
-    #   experiences an error while processing the job.
-    #
-    #   The `recognitions.completed` and `recognitions.completed_with_results` events are
-    #   incompatible. You can specify only of the two events.
-    #
-    #   If the job includes a callback URL, omit the parameter to subscribe to the default
-    #   events: `recognitions.started`, `recognitions.completed`, and
-    #   `recognitions.failed`. If the job does not include a callback URL, omit the
-    #   parameter.
-    # @param user_token [String] If the job includes a callback URL, a user-specified string that the service is to
-    #   include with each callback notification for the job; the token allows the user to
-    #   maintain an internal mapping between jobs and notification events. If the job does
-    #   not include a callback URL, omit the parameter.
-    # @param results_ttl [Fixnum] The number of minutes for which the results are to be available after the job has
-    #   finished. If not delivered via a callback, the results must be retrieved within
-    #   this time. Omit the parameter to use a time to live of one week. The parameter is
-    #   valid with or without a callback URL.
-    # @param language_customization_id [String] The customization ID (GUID) of a custom language model that is to be used with the
-    #   recognition request. The base model of the specified custom language model must
-    #   match the model specified with the `model` parameter. You must make the request
-    #   with credentials for the instance of the service that owns the custom model. By
-    #   default, no custom language model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom).
-    #
-    #   **Note:** Use this parameter instead of the deprecated `customization_id`
-    #   parameter.
-    # @param acoustic_customization_id [String] The customization ID (GUID) of a custom acoustic model that is to be used with the
-    #   recognition request. The base model of the specified custom acoustic model must
-    #   match the model specified with the `model` parameter. You must make the request
-    #   with credentials for the instance of the service that owns the custom model. By
-    #   default, no custom acoustic model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom).
-    # @param base_model_version [String] The version of the specified base model that is to be used with recognition
-    #   request. Multiple versions of a base model can exist when a model is updated for
-    #   internal improvements. The parameter is intended primarily for use with custom
-    #   models that have been upgraded for a new base model. The default value depends on
-    #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](https://cloud.ibm.com/docs/services/speech-to-text/input.html#version).
-    # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
-    #   recognition request, the customization weight tells the service how much weight to
-    #   give to words from the custom language model compared to those from the base model
-    #   for the current request.
-    #
-    #   Specify a value between 0.0 and 1.0. Unless a different customization weight was
-    #   specified for the custom model when it was trained, the default value is 0.3. A
-    #   customization weight that you specify overrides a weight that was specified when
-    #   the custom model was trained.
-    #
-    #   The default value yields the best performance in general. Assign a higher value if
-    #   your audio makes frequent use of OOV words from the custom model. Use caution when
-    #   setting the weight: a higher value can improve the accuracy of phrases from the
-    #   custom model's domain, but it can negatively affect performance on non-domain
-    #   phrases.
-    #
-    #   See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/input.html#custom).
-    # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
-    #   submitted audio, the connection is closed with a 400 error. The parameter is
-    #   useful for stopping audio submission from a live microphone when a user simply
-    #   walks away. Use `-1` for infinity. See
-    #   [Timeouts](https://cloud.ibm.com/docs/services/speech-to-text/input.html#timeouts).
-    # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
-    #   one or more string tokens. Keywords are spotted only in the final results, not in
-    #   interim hypotheses. If you specify any keywords, you must also specify a keywords
-    #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
-    #   an empty array if you do not need to spot keywords. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#keyword_spotting).
-    # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
-    #   considered to match a keyword if its confidence is greater than or equal to the
-    #   threshold. Specify a probability between 0.0 and 1.0. If you specify a threshold,
-    #   you must also specify one or more keywords. The service performs no keyword
-    #   spotting if you omit either parameter. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#keyword_spotting).
-    # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
-    #   default, the service returns a single transcript. See [Maximum
-    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text/output.html#max_alternatives).
-    # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
-    #   possible word alternative (also known as \"Confusion Networks\"). An alternative
-    #   word is considered if its confidence is greater than or equal to the threshold.
-    #   Specify a probability between 0.0 and 1.0. By default, the service computes no
-    #   alternative words. See [Word
-    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text/output.html#word_alternatives).
-    # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
-    #   each word. By default, the service returns no word confidence scores. See [Word
-    #   confidence](https://cloud.ibm.com/docs/services/speech-to-text/output.html#word_confidence).
-    # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
-    #   timestamps are returned. See [Word
-    #   timestamps](https://cloud.ibm.com/docs/services/speech-to-text/output.html#word_timestamps).
-    # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
-    #   results by replacing inappropriate words with a series of asterisks. Set the
-    #   parameter to `false` to return results with no censoring. Applies to US English
-    #   transcription only. See [Profanity
-    #   filtering](https://cloud.ibm.com/docs/services/speech-to-text/output.html#profanity_filter).
-    # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
-    #   numbers, currency values, and internet addresses into more readable, conventional
-    #   representations in the final transcript of a recognition request. For US English,
-    #   the service also converts certain keyword strings to punctuation symbols. By
-    #   default, the service performs no smart formatting.
-    #
-    #   **Note:** Applies to US English, Japanese, and Spanish transcription only.
-    #
-    #   See [Smart
-    #   formatting](https://cloud.ibm.com/docs/services/speech-to-text/output.html#smart_formatting).
-    # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
-    #   which participants in a multi-person exchange. By default, the service returns no
-    #   speaker labels. Setting `speaker_labels` to `true` forces the `timestamps`
-    #   parameter to be `true`, regardless of whether you specify `false` for the
-    #   parameter.
-    #
-    #   **Note:** Applies to US English, Japanese, and Spanish transcription only. To
-    #   determine whether a language model supports speaker labels, you can also use the
-    #   **Get a model** method and check that the attribute `speaker_labels` is set to
-    #   `true`.
-    #
-    #   See [Speaker
-    #   labels](https://cloud.ibm.com/docs/services/speech-to-text/output.html#speaker_labels).
-    # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
-    #   customization ID (GUID) of a custom language model that is to be used with the
-    #   recognition request. Do not specify both parameters with a request.
-    # @param grammar_name [String] The name of a grammar that is to be used with the recognition request. If you
-    #   specify a grammar, you must also use the `language_customization_id` parameter to
-    #   specify the name of the custom language model for which the grammar is defined.
-    #   The service recognizes only strings that are recognized by the specified grammar;
-    #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text/output.html).
-    # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
-    #   feature redacts any number that has three or more consecutive digits by replacing
-    #   each digit with an `X` character. It is intended to redact sensitive numeric data,
-    #   such as credit card numbers. By default, the service performs no redaction.
-    #
-    #   When you enable redaction, the service automatically enables smart formatting,
-    #   regardless of whether you explicitly disable that feature. To ensure maximum
-    #   security, the service also disables keyword spotting (ignores the `keywords` and
-    #   `keywords_threshold` parameters) and returns only a single final transcript
-    #   (forces the `max_alternatives` parameter to be `1`).
-    #
-    #   **Note:** Applies to US English, Japanese, and Korean transcription only.
-    #
-    #   See [Numeric
-    #   redaction](https://cloud.ibm.com/docs/services/speech-to-text/output.html#redaction).
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil)
-      raise ArgumentError.new("audio must be provided") if audio.nil?
-
-      headers = {
-        "Content-Type" => content_type
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "create_job")
-
-      params = {
-        "model" => model,
-        "callback_url" => callback_url,
-        "events" => events,
-        "user_token" => user_token,
-        "results_ttl" => results_ttl,
-        "language_customization_id" => language_customization_id,
-        "acoustic_customization_id" => acoustic_customization_id,
-        "base_model_version" => base_model_version,
-        "customization_weight" => customization_weight,
-        "inactivity_timeout" => inactivity_timeout,
-        "keywords" => keywords.to_a,
-        "keywords_threshold" => keywords_threshold,
-        "max_alternatives" => max_alternatives,
-        "word_alternatives_threshold" => word_alternatives_threshold,
-        "word_confidence" => word_confidence,
-        "timestamps" => timestamps,
-        "profanity_filter" => profanity_filter,
-        "smart_formatting" => smart_formatting,
-        "speaker_labels" => speaker_labels,
-        "customization_id" => customization_id,
-        "grammar_name" => grammar_name,
-        "redaction" => redaction
-      }
-
-      data = audio
-
-      method_url = "/v1/recognitions"
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        data: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method check_jobs
-    # Check jobs.
-    # Returns the ID and status of the latest 100 outstanding jobs associated with the
-    #   credentials with which it is called. The method also returns the creation and
-    #   update times of each job, and, if a job was created with a callback URL and a user
-    #   token, the user token for the job. To obtain the results for a job whose status is
-    #   `completed` or not one of the latest 100 outstanding jobs, use the **Check a job**
-    #   method. A job and its results remain available until you delete them with the
-    #   **Delete a job** method or until the job's time to live expires, whichever comes
-    #   first.
-    #
-    #   **See also:** [Checking the status of the latest
-    #   jobs](https://cloud.ibm.com/docs/services/speech-to-text/async.html#jobs).
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def check_jobs
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "check_jobs")
-
-      method_url = "/v1/recognitions"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method check_job(id:)
-    # Check a job.
-    # Returns information about the specified job. The response always includes the
-    #   status of the job and its creation and update times. If the status is `completed`,
-    #   the response includes the results of the recognition request. You must use
-    #   credentials for the instance of the service that owns a job to list information
-    #   about it.
-    #
-    #   You can use the method to retrieve the results of any job, regardless of whether
-    #   it was submitted with a callback URL and the `recognitions.completed_with_results`
-    #   event, and you can retrieve the results multiple times for as long as they remain
-    #   available. Use the **Check jobs** method to request information about the most
-    #   recent jobs associated with the calling credentials.
-    #
-    #   **See also:** [Checking the status and retrieving the results of a
-    #   job](https://cloud.ibm.com/docs/services/speech-to-text/async.html#job).
-    # @param id [String] The identifier of the asynchronous job that is to be used for the request. You
-    #   must make the request with credentials for the instance of the service that owns
-    #   the job.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def check_job(id:)
-      raise ArgumentError.new("id must be provided") if id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "check_job")
-
-      method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method delete_job(id:)
-    # Delete a job.
-    # Deletes the specified job. You cannot delete a job that the service is actively
-    #   processing. Once you delete a job, its results are no longer available. The
-    #   service automatically deletes a job and its results when the time to live for the
-    #   results expires. You must use credentials for the instance of the service that
-    #   owns a job to delete it.
-    #
-    #   **See also:** [Deleting a
-    #   job](https://cloud.ibm.com/docs/services/speech-to-text/async.html#delete).
-    # @param id [String] The identifier of the asynchronous job that is to be used for the request. You
-    #   must make the request with credentials for the instance of the service that owns
-    #   the job.
-    # @return [nil]
-    def delete_job(id:)
-      raise ArgumentError.new("id must be provided") if id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_job")
-
-      method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
-
-      request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        accept_json: true
+        accept_json: false
       )
       nil
     end
@@ -1115,7 +1127,7 @@ module IBMWatson
     #   it.
     #
     #   **See also:** [Create a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-create.html#createModel).
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-create.html#createModel-language).
     # @param name [String] A user-defined name for the new custom language model. Use a name that is unique
     #   among all custom language models that you own. Use a localized name that matches
     #   the language of the custom model. Use a name that describes the domain of the
@@ -1149,7 +1161,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "create_language_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "create_language_model")
+      headers.merge!(sdk_headers)
 
       data = {
         "name" => name,
@@ -1171,6 +1184,70 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_language_model(customization_id:)
+    # Delete a custom language model.
+    # Deletes an existing custom language model. The custom model cannot be deleted if
+    #   another request, such as adding a corpus or grammar to the model, is currently
+    #   being processed. You must use credentials for the instance of the service that
+    #   owns a model to delete it.
+    #
+    #   **See also:** [Deleting a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#deleteModel-language).
+    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @return [nil]
+    def delete_language_model(customization_id:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_language_model")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      nil
+    end
+
+    ##
+    # @!method get_language_model(customization_id:)
+    # Get a custom language model.
+    # Gets information about a specified custom language model. You must use credentials
+    #   for the instance of the service that owns a model to list information about it.
+    #
+    #   **See also:** [Listing custom language
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#listModels-language).
+    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_language_model(customization_id:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_language_model")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method list_language_models(language: nil)
     # List custom language models.
     # Lists information about all custom language models that are owned by an instance
@@ -1180,7 +1257,7 @@ module IBMWatson
     #   a model to list information about it.
     #
     #   **See also:** [Listing custom language
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#listModels).
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#listModels-language).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned (for example, `en-US`). Omit the parameter to see all custom
     #   language or custom acoustic models that are owned by the requesting credentials.
@@ -1188,7 +1265,8 @@ module IBMWatson
     def list_language_models(language: nil)
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_language_models")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_language_models")
+      headers.merge!(sdk_headers)
 
       params = {
         "language" => language
@@ -1207,60 +1285,33 @@ module IBMWatson
     end
 
     ##
-    # @!method get_language_model(customization_id:)
-    # Get a custom language model.
-    # Gets information about a specified custom language model. You must use credentials
-    #   for the instance of the service that owns a model to list information about it.
+    # @!method reset_language_model(customization_id:)
+    # Reset a custom language model.
+    # Resets a custom language model by removing all corpora, grammars, and words from
+    #   the model. Resetting a custom language model initializes the model to its state
+    #   when it was first created. Metadata such as the name and language of the model are
+    #   preserved, but the model's words resource is removed and must be re-created. You
+    #   must use credentials for the instance of the service that owns a model to reset
+    #   it.
     #
-    #   **See also:** [Listing custom language
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#listModels).
-    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_language_model(customization_id:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_language_model")
-
-      method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method delete_language_model(customization_id:)
-    # Delete a custom language model.
-    # Deletes an existing custom language model. The custom model cannot be deleted if
-    #   another request, such as adding a corpus or grammar to the model, is currently
-    #   being processed. You must use credentials for the instance of the service that
-    #   owns a model to delete it.
-    #
-    #   **See also:** [Deleting a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#deleteModel).
+    #   **See also:** [Resetting a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#resetModel-language).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
     # @return [nil]
-    def delete_language_model(customization_id:)
+    def reset_language_model(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_language_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "reset_language_model")
+      headers.merge!(sdk_headers)
 
-      method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
 
       request(
-        method: "DELETE",
+        method: "POST",
         url: method_url,
         headers: headers,
         accept_json: true
@@ -1299,7 +1350,7 @@ module IBMWatson
     #   pronunciations that you must fix.
     #
     #   **See also:** [Train the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-create.html#trainModel).
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-create.html#trainModel-language).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1331,7 +1382,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "train_language_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "train_language_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "word_type_to_add" => word_type_to_add,
@@ -1345,40 +1397,6 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
-      )
-      nil
-    end
-
-    ##
-    # @!method reset_language_model(customization_id:)
-    # Reset a custom language model.
-    # Resets a custom language model by removing all corpora, grammars, and words from
-    #   the model. Resetting a custom language model initializes the model to its state
-    #   when it was first created. Metadata such as the name and language of the model are
-    #   preserved, but the model's words resource is removed and must be re-created. You
-    #   must use credentials for the instance of the service that owns a model to reset
-    #   it.
-    #
-    #   **See also:** [Resetting a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-models.html#resetModel).
-    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @return [nil]
-    def reset_language_model(customization_id:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "reset_language_model")
-
-      method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
-
-      request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
         accept_json: true
       )
       nil
@@ -1414,7 +1432,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "upgrade_language_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "upgrade_language_model")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
 
@@ -1431,39 +1450,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_corpora(customization_id:)
-    # List corpora.
-    # Lists information about all corpora from a custom language model. The information
-    #   includes the total number of words and out-of-vocabulary (OOV) words, name, and
-    #   status of each corpus. You must use credentials for the instance of the service
-    #   that owns a model to list its corpora.
-    #
-    #   **See also:** [Listing corpora for a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-corpora.html#listCorpora).
-    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_corpora(customization_id:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_corpora")
-
-      method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil, corpus_filename: nil)
+    # @!method add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil)
     # Add a corpus.
     # Adds a single corpus text file of new training data to a custom language model.
     #   Use multiple requests to submit multiple corpus text files. You must use
@@ -1537,9 +1524,8 @@ module IBMWatson
     # @param allow_overwrite [Boolean] If `true`, the specified corpus overwrites an existing corpus with the same name.
     #   If `false`, the request fails if a corpus with the same name already exists. The
     #   parameter has no effect if a corpus with the same name does not already exist.
-    # @param corpus_filename [String] The filename for corpus_file.
     # @return [nil]
-    def add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil, corpus_filename: nil)
+    def add_corpus(customization_id:, corpus_name:, corpus_file:, allow_overwrite: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       raise ArgumentError.new("corpus_name must be provided") if corpus_name.nil?
@@ -1548,7 +1534,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_corpus")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "add_corpus")
+      headers.merge!(sdk_headers)
 
       params = {
         "allow_overwrite" => allow_overwrite
@@ -1559,8 +1546,7 @@ module IBMWatson
       unless corpus_file.instance_of?(StringIO) || corpus_file.instance_of?(File)
         corpus_file = corpus_file.respond_to?(:to_json) ? StringIO.new(corpus_file.to_json) : StringIO.new(corpus_file)
       end
-      corpus_filename = corpus_file.path if corpus_filename.nil? && corpus_file.respond_to?(:path)
-      form_data[:corpus_file] = HTTP::FormData::File.new(corpus_file, content_type: "text/plain", filename: corpus_filename)
+      form_data[:corpus_file] = HTTP::FormData::File.new(corpus_file, content_type: "text/plain", filename: corpus_file.respond_to?(:path) ? corpus_file.path : nil)
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
@@ -1573,41 +1559,6 @@ module IBMWatson
         accept_json: true
       )
       nil
-    end
-
-    ##
-    # @!method get_corpus(customization_id:, corpus_name:)
-    # Get a corpus.
-    # Gets information about a corpus from a custom language model. The information
-    #   includes the total number of words and out-of-vocabulary (OOV) words, name, and
-    #   status of the corpus. You must use credentials for the instance of the service
-    #   that owns a model to list its corpora.
-    #
-    #   **See also:** [Listing corpora for a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-corpora.html#listCorpora).
-    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @param corpus_name [String] The name of the corpus for the custom language model.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_corpus(customization_id:, corpus_name:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      raise ArgumentError.new("corpus_name must be provided") if corpus_name.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_corpus")
-
-      method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
     end
 
     ##
@@ -1636,7 +1587,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_corpus")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_corpus")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
@@ -1648,152 +1600,78 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Custom words
-    #########################
 
     ##
-    # @!method list_words(customization_id:, word_type: nil, sort: nil)
-    # List custom words.
-    # Lists information about custom words from a custom language model. You can list
-    #   all words from the custom model's words resource, only custom words that were
-    #   added or modified by the user, or only out-of-vocabulary (OOV) words that were
-    #   extracted from corpora or are recognized by grammars. You can also indicate the
-    #   order in which the service is to return words; by default, the service lists words
-    #   in ascending alphabetical order. You must use credentials for the instance of the
-    #   service that owns a model to list information about its words.
+    # @!method get_corpus(customization_id:, corpus_name:)
+    # Get a corpus.
+    # Gets information about a corpus from a custom language model. The information
+    #   includes the total number of words and out-of-vocabulary (OOV) words, name, and
+    #   status of the corpus. You must use credentials for the instance of the service
+    #   that owns a model to list its corpora.
     #
-    #   **See also:** [Listing words from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-words.html#listWords).
+    #   **See also:** [Listing corpora for a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-corpora.html#listCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
-    # @param word_type [String] The type of words to be listed from the custom language model's words resource:
-    #   * `all` (the default) shows all words.
-    #   * `user` shows only custom words that were added or modified by the user directly.
-    #   * `corpora` shows only OOV that were extracted from corpora.
-    #   * `grammars` shows only OOV words that are recognized by grammars.
-    # @param sort [String] Indicates the order in which the words are to be listed, `alphabetical` or by
-    #   `count`. You can prepend an optional `+` or `-` to an argument to indicate whether
-    #   the results are to be sorted in ascending or descending order. By default, words
-    #   are sorted in ascending alphabetical order. For alphabetical ordering, the
-    #   lexicographical precedence is numeric values, uppercase letters, and lowercase
-    #   letters. For count ordering, values with the same count are ordered
-    #   alphabetically. With the `curl` command, URL encode the `+` symbol as `%2B`.
+    # @param corpus_name [String] The name of the corpus for the custom language model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_words(customization_id:, word_type: nil, sort: nil)
+    def get_corpus(customization_id:, corpus_name:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      raise ArgumentError.new("corpus_name must be provided") if corpus_name.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_words")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_corpus")
+      headers.merge!(sdk_headers)
 
-      params = {
-        "word_type" => word_type,
-        "sort" => sort
-      }
-
-      method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
       response = request(
         method: "GET",
         url: method_url,
         headers: headers,
-        params: params,
         accept_json: true
       )
       response
     end
 
     ##
-    # @!method add_words(customization_id:, words:)
-    # Add custom words.
-    # Adds one or more custom words to a custom language model. The service populates
-    #   the words resource for a custom model with out-of-vocabulary (OOV) words from each
-    #   corpus or grammar that is added to the model. You can use this method to add
-    #   additional words or to modify existing words in the words resource. The words
-    #   resource for a model can contain a maximum of 30 thousand custom (OOV) words. This
-    #   includes words that the service extracts from corpora and grammars and words that
-    #   you add directly.
+    # @!method list_corpora(customization_id:)
+    # List corpora.
+    # Lists information about all corpora from a custom language model. The information
+    #   includes the total number of words and out-of-vocabulary (OOV) words, name, and
+    #   status of each corpus. You must use credentials for the instance of the service
+    #   that owns a model to list its corpora.
     #
-    #   You must use credentials for the instance of the service that owns a model to add
-    #   or modify custom words for the model. Adding or modifying custom words does not
-    #   affect the custom model until you train the model for the new data by using the
-    #   **Train a custom language model** method.
-    #
-    #   You add custom words by providing a `CustomWords` object, which is an array of
-    #   `CustomWord` objects, one per word. You must use the object's `word` parameter to
-    #   identify the word that is to be added. You can also provide one or both of the
-    #   optional `sounds_like` and `display_as` fields for each word.
-    #   * The `sounds_like` field provides an array of one or more pronunciations for the
-    #   word. Use the parameter to specify how the word can be pronounced by users. Use
-    #   the parameter for words that are difficult to pronounce, foreign words, acronyms,
-    #   and so on. For example, you might specify that the word `IEEE` can sound like `i
-    #   triple e`. You can specify a maximum of five sounds-like pronunciations for a
-    #   word.
-    #   * The `display_as` field provides a different way of spelling the word in a
-    #   transcript. Use the parameter when you want the word to appear different from its
-    #   usual representation or from its spelling in training data. For example, you might
-    #   indicate that the word `IBM(trademark)` is to be displayed as `IBM&trade;`.
-    #
-    #   If you add a custom word that already exists in the words resource for the custom
-    #   model, the new definition overwrites the existing data for the word. If the
-    #   service encounters an error with the input data, it returns a failure code and
-    #   does not add any of the words to the words resource.
-    #
-    #   The call returns an HTTP 201 response code if the input data is valid. It then
-    #   asynchronously processes the words to add them to the model's words resource. The
-    #   time that it takes for the analysis to complete depends on the number of new words
-    #   that you add but is generally faster than adding a corpus or grammar.
-    #
-    #   You can monitor the status of the request by using the **List a custom language
-    #   model** method to poll the model's status. Use a loop to check the status every 10
-    #   seconds. The method returns a `Customization` object that includes a `status`
-    #   field. A status of `ready` means that the words have been added to the custom
-    #   model. The service cannot accept requests to add new data or to train the model
-    #   until the existing request completes.
-    #
-    #   You can use the **List custom words** or **List a custom word** method to review
-    #   the words that you add. Words with an invalid `sounds_like` field include an
-    #   `error` field that describes the problem. You can use other words-related methods
-    #   to correct errors, eliminate typos, and modify how words are pronounced as needed.
-    #
-    #
-    #   **See also:**
-    #   * [Working with custom
-    #   words](https://cloud.ibm.com/docs/services/speech-to-text/language-resource.html#workingWords)
-    #   * [Add words to the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-create.html#addWords).
+    #   **See also:** [Listing corpora for a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-corpora.html#listCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
-    # @param words [Array[CustomWord]] An array of `CustomWord` objects that provides information about each custom word
-    #   that is to be added to or updated in the custom language model.
-    # @return [nil]
-    def add_words(customization_id:, words:)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_corpora(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      raise ArgumentError.new("words must be provided") if words.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_words")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_corpora")
+      headers.merge!(sdk_headers)
 
-      data = {
-        "words" => words
-      }
+      method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
 
-      method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
-
-      request(
-        method: "POST",
+      response = request(
+        method: "GET",
         url: method_url,
         headers: headers,
-        json: data,
         accept_json: true
       )
-      nil
+      response
     end
+    #########################
+    # Custom words
+    #########################
 
     ##
     # @!method add_word(customization_id:, word_name:, word: nil, sounds_like: nil, display_as: nil)
@@ -1870,7 +1748,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_word")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "add_word")
+      headers.merge!(sdk_headers)
 
       data = {
         "word" => word,
@@ -1891,39 +1770,94 @@ module IBMWatson
     end
 
     ##
-    # @!method get_word(customization_id:, word_name:)
-    # Get a custom word.
-    # Gets information about a custom word from a custom language model. You must use
-    #   credentials for the instance of the service that owns a model to list information
-    #   about its words.
+    # @!method add_words(customization_id:, words:)
+    # Add custom words.
+    # Adds one or more custom words to a custom language model. The service populates
+    #   the words resource for a custom model with out-of-vocabulary (OOV) words from each
+    #   corpus or grammar that is added to the model. You can use this method to add
+    #   additional words or to modify existing words in the words resource. The words
+    #   resource for a model can contain a maximum of 30 thousand custom (OOV) words. This
+    #   includes words that the service extracts from corpora and grammars and words that
+    #   you add directly.
     #
-    #   **See also:** [Listing words from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-words.html#listWords).
+    #   You must use credentials for the instance of the service that owns a model to add
+    #   or modify custom words for the model. Adding or modifying custom words does not
+    #   affect the custom model until you train the model for the new data by using the
+    #   **Train a custom language model** method.
+    #
+    #   You add custom words by providing a `CustomWords` object, which is an array of
+    #   `CustomWord` objects, one per word. You must use the object's `word` parameter to
+    #   identify the word that is to be added. You can also provide one or both of the
+    #   optional `sounds_like` and `display_as` fields for each word.
+    #   * The `sounds_like` field provides an array of one or more pronunciations for the
+    #   word. Use the parameter to specify how the word can be pronounced by users. Use
+    #   the parameter for words that are difficult to pronounce, foreign words, acronyms,
+    #   and so on. For example, you might specify that the word `IEEE` can sound like `i
+    #   triple e`. You can specify a maximum of five sounds-like pronunciations for a
+    #   word.
+    #   * The `display_as` field provides a different way of spelling the word in a
+    #   transcript. Use the parameter when you want the word to appear different from its
+    #   usual representation or from its spelling in training data. For example, you might
+    #   indicate that the word `IBM(trademark)` is to be displayed as `IBM&trade;`.
+    #
+    #   If you add a custom word that already exists in the words resource for the custom
+    #   model, the new definition overwrites the existing data for the word. If the
+    #   service encounters an error with the input data, it returns a failure code and
+    #   does not add any of the words to the words resource.
+    #
+    #   The call returns an HTTP 201 response code if the input data is valid. It then
+    #   asynchronously processes the words to add them to the model's words resource. The
+    #   time that it takes for the analysis to complete depends on the number of new words
+    #   that you add but is generally faster than adding a corpus or grammar.
+    #
+    #   You can monitor the status of the request by using the **List a custom language
+    #   model** method to poll the model's status. Use a loop to check the status every 10
+    #   seconds. The method returns a `Customization` object that includes a `status`
+    #   field. A status of `ready` means that the words have been added to the custom
+    #   model. The service cannot accept requests to add new data or to train the model
+    #   until the existing request completes.
+    #
+    #   You can use the **List custom words** or **List a custom word** method to review
+    #   the words that you add. Words with an invalid `sounds_like` field include an
+    #   `error` field that describes the problem. You can use other words-related methods
+    #   to correct errors, eliminate typos, and modify how words are pronounced as needed.
+    #
+    #
+    #   **See also:**
+    #   * [Working with custom
+    #   words](https://cloud.ibm.com/docs/services/speech-to-text/language-resource.html#workingWords)
+    #   * [Add words to the custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-create.html#addWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
-    # @param word_name [String] The custom word that is to be read from the custom language model. URL-encode the
-    #   word if it includes non-ASCII characters. For more information, see [Character
-    #   encoding](https://cloud.ibm.com/docs/services/speech-to-text/language-resource.html#charEncoding).
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_word(customization_id:, word_name:)
+    # @param words [Array[CustomWord]] An array of `CustomWord` objects that provides information about each custom word
+    #   that is to be added to or updated in the custom language model.
+    # @return [nil]
+    def add_words(customization_id:, words:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
-      raise ArgumentError.new("word_name must be provided") if word_name.nil?
+      raise ArgumentError.new("words must be provided") if words.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_word")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "add_words")
+      headers.merge!(sdk_headers)
 
-      method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
+      data = {
+        "words" => words
+      }
 
-      response = request(
-        method: "GET",
+      method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+
+      request(
+        method: "POST",
         url: method_url,
         headers: headers,
+        json: data,
         accept_json: true
       )
-      response
+      nil
     end
 
     ##
@@ -1953,7 +1887,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_word")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_word")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
@@ -1965,32 +1900,34 @@ module IBMWatson
       )
       nil
     end
-    #########################
-    # Custom grammars
-    #########################
 
     ##
-    # @!method list_grammars(customization_id:)
-    # List grammars.
-    # Lists information about all grammars from a custom language model. The information
-    #   includes the total number of out-of-vocabulary (OOV) words, name, and status of
-    #   each grammar. You must use credentials for the instance of the service that owns a
-    #   model to list its grammars.
+    # @!method get_word(customization_id:, word_name:)
+    # Get a custom word.
+    # Gets information about a custom word from a custom language model. You must use
+    #   credentials for the instance of the service that owns a model to list information
+    #   about its words.
     #
-    #   **See also:** [Listing grammars from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/).
+    #   **See also:** [Listing words from a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-words.html#listWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
+    # @param word_name [String] The custom word that is to be read from the custom language model. URL-encode the
+    #   word if it includes non-ASCII characters. For more information, see [Character
+    #   encoding](https://cloud.ibm.com/docs/services/speech-to-text/language-resource.html#charEncoding).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_grammars(customization_id:)
+    def get_word(customization_id:, word_name:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      raise ArgumentError.new("word_name must be provided") if word_name.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_grammars")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_word")
+      headers.merge!(sdk_headers)
 
-      method_url = "/v1/customizations/%s/grammars" % [ERB::Util.url_encode(customization_id)]
+      method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
       response = request(
         method: "GET",
@@ -2000,6 +1937,63 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method list_words(customization_id:, word_type: nil, sort: nil)
+    # List custom words.
+    # Lists information about custom words from a custom language model. You can list
+    #   all words from the custom model's words resource, only custom words that were
+    #   added or modified by the user, or only out-of-vocabulary (OOV) words that were
+    #   extracted from corpora or are recognized by grammars. You can also indicate the
+    #   order in which the service is to return words; by default, the service lists words
+    #   in ascending alphabetical order. You must use credentials for the instance of the
+    #   service that owns a model to list information about its words.
+    #
+    #   **See also:** [Listing words from a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/language-words.html#listWords).
+    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @param word_type [String] The type of words to be listed from the custom language model's words resource:
+    #   * `all` (the default) shows all words.
+    #   * `user` shows only custom words that were added or modified by the user directly.
+    #   * `corpora` shows only OOV that were extracted from corpora.
+    #   * `grammars` shows only OOV words that are recognized by grammars.
+    # @param sort [String] Indicates the order in which the words are to be listed, `alphabetical` or by
+    #   `count`. You can prepend an optional `+` or `-` to an argument to indicate whether
+    #   the results are to be sorted in ascending or descending order. By default, words
+    #   are sorted in ascending alphabetical order. For alphabetical ordering, the
+    #   lexicographical precedence is numeric values, uppercase letters, and lowercase
+    #   letters. For count ordering, values with the same count are ordered
+    #   alphabetically. With the `curl` command, URL encode the `+` symbol as `%2B`.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_words(customization_id:, word_type: nil, sort: nil)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_words")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "word_type" => word_type,
+        "sort" => sort
+      }
+
+      method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Custom grammars
+    #########################
 
     ##
     # @!method add_grammar(customization_id:, grammar_name:, grammar_file:, content_type:, allow_overwrite: nil)
@@ -2082,7 +2076,8 @@ module IBMWatson
       headers = {
         "Content-Type" => content_type
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_grammar")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "add_grammar")
+      headers.merge!(sdk_headers)
 
       params = {
         "allow_overwrite" => allow_overwrite
@@ -2101,41 +2096,6 @@ module IBMWatson
         accept_json: true
       )
       nil
-    end
-
-    ##
-    # @!method get_grammar(customization_id:, grammar_name:)
-    # Get a grammar.
-    # Gets information about a grammar from a custom language model. The information
-    #   includes the total number of out-of-vocabulary (OOV) words, name, and status of
-    #   the grammar. You must use credentials for the instance of the service that owns a
-    #   model to list its grammars.
-    #
-    #   **See also:** [Listing grammars from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/).
-    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @param grammar_name [String] The name of the grammar for the custom language model.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_grammar(customization_id:, grammar_name:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      raise ArgumentError.new("grammar_name must be provided") if grammar_name.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_grammar")
-
-      method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
     end
 
     ##
@@ -2163,7 +2123,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_grammar")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_grammar")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
 
@@ -2174,6 +2135,75 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+
+    ##
+    # @!method get_grammar(customization_id:, grammar_name:)
+    # Get a grammar.
+    # Gets information about a grammar from a custom language model. The information
+    #   includes the total number of out-of-vocabulary (OOV) words, name, and status of
+    #   the grammar. You must use credentials for the instance of the service that owns a
+    #   model to list its grammars.
+    #
+    #   **See also:** [Listing grammars from a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/).
+    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @param grammar_name [String] The name of the grammar for the custom language model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_grammar(customization_id:, grammar_name:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      raise ArgumentError.new("grammar_name must be provided") if grammar_name.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_grammar")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_grammars(customization_id:)
+    # List grammars.
+    # Lists information about all grammars from a custom language model. The information
+    #   includes the total number of out-of-vocabulary (OOV) words, name, and status of
+    #   each grammar. You must use credentials for the instance of the service that owns a
+    #   model to list its grammars.
+    #
+    #   **See also:** [Listing grammars from a custom language
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/).
+    # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_grammars(customization_id:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_grammars")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/customizations/%s/grammars" % [ERB::Util.url_encode(customization_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
     end
     #########################
     # Custom acoustic models
@@ -2188,7 +2218,7 @@ module IBMWatson
     #   it.
     #
     #   **See also:** [Create a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-create.html#createModel).
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-create.html#createModel-acoustic).
     # @param name [String] A user-defined name for the new custom acoustic model. Use a name that is unique
     #   among all custom acoustic models that you own. Use a localized name that matches
     #   the language of the custom model. Use a name that describes the acoustic
@@ -2211,7 +2241,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "create_acoustic_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "create_acoustic_model")
+      headers.merge!(sdk_headers)
 
       data = {
         "name" => name,
@@ -2232,6 +2263,70 @@ module IBMWatson
     end
 
     ##
+    # @!method delete_acoustic_model(customization_id:)
+    # Delete a custom acoustic model.
+    # Deletes an existing custom acoustic model. The custom model cannot be deleted if
+    #   another request, such as adding an audio resource to the model, is currently being
+    #   processed. You must use credentials for the instance of the service that owns a
+    #   model to delete it.
+    #
+    #   **See also:** [Deleting a custom acoustic
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#deleteModel-acoustic).
+    # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @return [nil]
+    def delete_acoustic_model(customization_id:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_acoustic_model")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      nil
+    end
+
+    ##
+    # @!method get_acoustic_model(customization_id:)
+    # Get a custom acoustic model.
+    # Gets information about a specified custom acoustic model. You must use credentials
+    #   for the instance of the service that owns a model to list information about it.
+    #
+    #   **See also:** [Listing custom acoustic
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#listModels-acoustic).
+    # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_acoustic_model(customization_id:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_acoustic_model")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method list_acoustic_models(language: nil)
     # List custom acoustic models.
     # Lists information about all custom acoustic models that are owned by an instance
@@ -2241,7 +2336,7 @@ module IBMWatson
     #   a model to list information about it.
     #
     #   **See also:** [Listing custom acoustic
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#listModels).
+    #   models](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#listModels-acoustic).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned (for example, `en-US`). Omit the parameter to see all custom
     #   language or custom acoustic models that are owned by the requesting credentials.
@@ -2249,7 +2344,8 @@ module IBMWatson
     def list_acoustic_models(language: nil)
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_acoustic_models")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_acoustic_models")
+      headers.merge!(sdk_headers)
 
       params = {
         "language" => language
@@ -2268,60 +2364,32 @@ module IBMWatson
     end
 
     ##
-    # @!method get_acoustic_model(customization_id:)
-    # Get a custom acoustic model.
-    # Gets information about a specified custom acoustic model. You must use credentials
-    #   for the instance of the service that owns a model to list information about it.
+    # @!method reset_acoustic_model(customization_id:)
+    # Reset a custom acoustic model.
+    # Resets a custom acoustic model by removing all audio resources from the model.
+    #   Resetting a custom acoustic model initializes the model to its state when it was
+    #   first created. Metadata such as the name and language of the model are preserved,
+    #   but the model's audio resources are removed and must be re-created. You must use
+    #   credentials for the instance of the service that owns a model to reset it.
     #
-    #   **See also:** [Listing custom acoustic
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#listModels).
-    # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_acoustic_model(customization_id:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_acoustic_model")
-
-      method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method delete_acoustic_model(customization_id:)
-    # Delete a custom acoustic model.
-    # Deletes an existing custom acoustic model. The custom model cannot be deleted if
-    #   another request, such as adding an audio resource to the model, is currently being
-    #   processed. You must use credentials for the instance of the service that owns a
-    #   model to delete it.
-    #
-    #   **See also:** [Deleting a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#deleteModel).
+    #   **See also:** [Resetting a custom acoustic
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#resetModel-acoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
     # @return [nil]
-    def delete_acoustic_model(customization_id:)
+    def reset_acoustic_model(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_acoustic_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "reset_acoustic_model")
+      headers.merge!(sdk_headers)
 
-      method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
+      method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
 
       request(
-        method: "DELETE",
+        method: "POST",
         url: method_url,
         headers: headers,
         accept_json: true
@@ -2357,10 +2425,11 @@ module IBMWatson
     #
     #   You can use the optional `custom_language_model_id` parameter to specify the GUID
     #   of a separately created custom language model that is to be used during training.
-    #   Specify a custom language model if you have verbatim transcriptions of the audio
-    #   files that you have added to the custom model or you have either corpora (text
-    #   files) or a list of words that are relevant to the contents of the audio files.
-    #   For more information, see the **Create a custom language model** method.
+    #   Train with a custom language model if you have verbatim transcriptions of the
+    #   audio files that you have added to the custom model or you have either corpora
+    #   (text files) or a list of words that are relevant to the contents of the audio
+    #   files. Both of the custom models must be based on the same version of the same
+    #   base model for training to succeed.
     #
     #   Training can fail to start for the following reasons:
     #   * The service is currently handling another request for the custom model, such as
@@ -2373,7 +2442,7 @@ module IBMWatson
     #   the same version of the same base model.
     #
     #   **See also:** [Train the custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-create.html#trainModel).
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-create.html#trainModel-acoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2390,7 +2459,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "train_acoustic_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "train_acoustic_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "custom_language_model_id" => custom_language_model_id
@@ -2403,39 +2473,6 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
-      )
-      nil
-    end
-
-    ##
-    # @!method reset_acoustic_model(customization_id:)
-    # Reset a custom acoustic model.
-    # Resets a custom acoustic model by removing all audio resources from the model.
-    #   Resetting a custom acoustic model initializes the model to its state when it was
-    #   first created. Metadata such as the name and language of the model are preserved,
-    #   but the model's audio resources are removed and must be re-created. You must use
-    #   credentials for the instance of the service that owns a model to reset it.
-    #
-    #   **See also:** [Resetting a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-models.html#resetModel).
-    # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @return [nil]
-    def reset_acoustic_model(customization_id:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "reset_acoustic_model")
-
-      method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
-
-      request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
         accept_json: true
       )
       nil
@@ -2488,7 +2525,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "upgrade_acoustic_model")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "upgrade_acoustic_model")
+      headers.merge!(sdk_headers)
 
       params = {
         "custom_language_model_id" => custom_language_model_id,
@@ -2511,41 +2549,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_audio(customization_id:)
-    # List audio resources.
-    # Lists information about all audio resources from a custom acoustic model. The
-    #   information includes the name of the resource and information about its audio
-    #   data, such as its duration. It also includes the status of the audio resource,
-    #   which is important for checking the service's analysis of the resource in response
-    #   to a request to add it to the custom acoustic model. You must use credentials for
-    #   the instance of the service that owns a model to list its audio resources.
-    #
-    #   **See also:** [Listing audio resources for a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-audio.html#listAudio).
-    # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
-    #   the request. You must make the request with credentials for the instance of the
-    #   service that owns the custom model.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_audio(customization_id:)
-      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      headers = {
-      }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "list_audio")
-
-      method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method add_audio(customization_id:, audio_name:, audio_resource:, content_type: nil, contained_content_type: nil, allow_overwrite: nil)
+    # @!method add_audio(customization_id:, audio_name:, audio_resource:, contained_content_type: nil, allow_overwrite: nil, content_type: nil)
     # Add an audio resource.
     # Adds an audio resource to a custom acoustic model. Add audio content that reflects
     #   the acoustic characteristics of the audio that you plan to transcribe. You must
@@ -2593,6 +2597,7 @@ module IBMWatson
     #   speech recognition. For an audio-type resource, use the `Content-Type` parameter
     #   to specify the audio format (MIME type) of the audio file, including specifying
     #   the sampling rate, channels, and endianness where indicated.
+    #   * `audio/alaw` (Specify the sampling rate (`rate`) of the audio.)
     #   * `audio/basic` (Use only with narrowband models.)
     #   * `audio/flac`
     #   * `audio/g729` (Use only with narrowband models.)
@@ -2628,12 +2633,20 @@ module IBMWatson
     #   * `application/zip` for a **.zip** file
     #   * `application/gzip` for a **.tar.gz** file.
     #
-    #   All audio files contained in the archive must have the same audio format. Use the
-    #   `Contained-Content-Type` parameter to specify the format of the contained audio
-    #   files. The parameter accepts all of the audio formats supported for use with
-    #   speech recognition and with the `Content-Type` header, including the `rate`,
-    #   `channels`, and `endianness` parameters that are used with some formats. The
-    #   default contained audio format is `audio/wav`.
+    #   When you add an archive-type resource, the `Contained-Content-Type` header is
+    #   optional depending on the format of the files that you are adding:
+    #   * For audio files of type `audio/alaw`, `audio/basic`, `audio/l16`, or
+    #   `audio/mulaw`, you must use the `Contained-Content-Type` header to specify the
+    #   format of the contained audio files. Include the `rate`, `channels`, and
+    #   `endianness` parameters where necessary. In this case, all audio files contained
+    #   in the archive file must have the same audio format.
+    #   * For audio files of all other types, you can omit the `Contained-Content-Type`
+    #   header. In this case, the audio files contained in the archive file can have any
+    #   of the formats not listed in the previous bullet. The audio files do not need to
+    #   have the same format.
+    #
+    #   Do not use the `Contained-Content-Type` header when adding an audio-type resource.
+    #
     #
     #   ### Naming restrictions for embedded audio files
     #
@@ -2656,6 +2669,25 @@ module IBMWatson
     #   custom model.
     # @param audio_resource [String] The audio resource that is to be added to the custom acoustic model, an individual
     #   audio file or an archive file.
+    # @param contained_content_type [String] **For an archive-type resource,** specify the format of the audio files that are
+    #   contained in the archive file if they are of type `audio/alaw`, `audio/basic`,
+    #   `audio/l16`, or `audio/mulaw`. Include the `rate`, `channels`, and `endianness`
+    #   parameters where necessary. In this case, all audio files that are contained in
+    #   the archive file must be of the indicated type.
+    #
+    #   For all other audio formats, you can omit the header. In this case, the audio
+    #   files can be of multiple types as long as they are not of the types listed in the
+    #   previous paragraph.
+    #
+    #   The parameter accepts all of the audio formats that are supported for use with
+    #   speech recognition. For more information, see **Content types for audio-type
+    #   resources** in the method description.
+    #
+    #   **For an audio-type resource,** omit the header.
+    # @param allow_overwrite [Boolean] If `true`, the specified audio resource overwrites an existing audio resource with
+    #   the same name. If `false`, the request fails if an audio resource with the same
+    #   name already exists. The parameter has no effect if an audio resource with the
+    #   same name does not already exist.
     # @param content_type [String] For an audio-type resource, the format (MIME type) of the audio. For more
     #   information, see **Content types for audio-type resources** in the method
     #   description.
@@ -2663,17 +2695,8 @@ module IBMWatson
     #   For an archive-type resource, the media type of the archive file. For more
     #   information, see **Content types for archive-type resources** in the method
     #   description.
-    # @param contained_content_type [String] For an archive-type resource, specifies the format of the audio files that are
-    #   contained in the archive file. The parameter accepts all of the audio formats that
-    #   are supported for use with speech recognition, including the `rate`, `channels`,
-    #   and `endianness` parameters that are used with some formats. For more information,
-    #   see **Content types for audio-type resources** in the method description.
-    # @param allow_overwrite [Boolean] If `true`, the specified audio resource overwrites an existing audio resource with
-    #   the same name. If `false`, the request fails if an audio resource with the same
-    #   name already exists. The parameter has no effect if an audio resource with the
-    #   same name does not already exist.
     # @return [nil]
-    def add_audio(customization_id:, audio_name:, audio_resource:, content_type: nil, contained_content_type: nil, allow_overwrite: nil)
+    def add_audio(customization_id:, audio_name:, audio_resource:, contained_content_type: nil, allow_overwrite: nil, content_type: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       raise ArgumentError.new("audio_name must be provided") if audio_name.nil?
@@ -2681,10 +2704,11 @@ module IBMWatson
       raise ArgumentError.new("audio_resource must be provided") if audio_resource.nil?
 
       headers = {
-        "Content-Type" => content_type,
-        "Contained-Content-Type" => contained_content_type
+        "Contained-Content-Type" => contained_content_type,
+        "Content-Type" => content_type
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "add_audio")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "add_audio")
+      headers.merge!(sdk_headers)
 
       params = {
         "allow_overwrite" => allow_overwrite
@@ -2700,6 +2724,45 @@ module IBMWatson
         headers: headers,
         params: params,
         data: data,
+        accept_json: true
+      )
+      nil
+    end
+
+    ##
+    # @!method delete_audio(customization_id:, audio_name:)
+    # Delete an audio resource.
+    # Deletes an existing audio resource from a custom acoustic model. Deleting an
+    #   archive-type audio resource removes the entire archive of files; the current
+    #   interface does not allow deletion of individual files from an archive resource.
+    #   Removing an audio resource does not affect the custom model until you train the
+    #   model on its updated data by using the **Train a custom acoustic model** method.
+    #   You must use credentials for the instance of the service that owns a model to
+    #   delete its audio resources.
+    #
+    #   **See also:** [Deleting an audio resource from a custom acoustic
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-audio.html#deleteAudio).
+    # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
+    #   the request. You must make the request with credentials for the instance of the
+    #   service that owns the custom model.
+    # @param audio_name [String] The name of the audio resource for the custom acoustic model.
+    # @return [nil]
+    def delete_audio(customization_id:, audio_name:)
+      raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
+
+      raise ArgumentError.new("audio_name must be provided") if audio_name.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_audio")
+      headers.merge!(sdk_headers)
+
+      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
         accept_json: true
       )
       nil
@@ -2743,7 +2806,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "get_audio")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "get_audio")
+      headers.merge!(sdk_headers)
 
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
 
@@ -2757,41 +2821,38 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_audio(customization_id:, audio_name:)
-    # Delete an audio resource.
-    # Deletes an existing audio resource from a custom acoustic model. Deleting an
-    #   archive-type audio resource removes the entire archive of files; the current
-    #   interface does not allow deletion of individual files from an archive resource.
-    #   Removing an audio resource does not affect the custom model until you train the
-    #   model on its updated data by using the **Train a custom acoustic model** method.
-    #   You must use credentials for the instance of the service that owns a model to
-    #   delete its audio resources.
+    # @!method list_audio(customization_id:)
+    # List audio resources.
+    # Lists information about all audio resources from a custom acoustic model. The
+    #   information includes the name of the resource and information about its audio
+    #   data, such as its duration. It also includes the status of the audio resource,
+    #   which is important for checking the service's analysis of the resource in response
+    #   to a request to add it to the custom acoustic model. You must use credentials for
+    #   the instance of the service that owns a model to list its audio resources.
     #
-    #   **See also:** [Deleting an audio resource from a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-audio.html#deleteAudio).
+    #   **See also:** [Listing audio resources for a custom acoustic
+    #   model](https://cloud.ibm.com/docs/services/speech-to-text/acoustic-audio.html#listAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
-    # @param audio_name [String] The name of the audio resource for the custom acoustic model.
-    # @return [nil]
-    def delete_audio(customization_id:, audio_name:)
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_audio(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
-
-      raise ArgumentError.new("audio_name must be provided") if audio_name.nil?
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_audio")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "list_audio")
+      headers.merge!(sdk_headers)
 
-      method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
+      method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
 
-      request(
-        method: "DELETE",
+      response = request(
+        method: "GET",
         url: method_url,
         headers: headers,
         accept_json: true
       )
-      nil
+      response
     end
     #########################
     # User data
@@ -2818,7 +2879,8 @@ module IBMWatson
 
       headers = {
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "speech_to_text", service_version: "V1", operation_id: "delete_user_data")
+      sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "delete_user_data")
+      headers.merge!(sdk_headers)
 
       params = {
         "customer_id" => customer_id
@@ -2831,7 +2893,7 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
+        accept_json: false
       )
       nil
     end

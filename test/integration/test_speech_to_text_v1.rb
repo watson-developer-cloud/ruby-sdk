@@ -22,15 +22,15 @@ class MyRecognizeCallback < IBMWatson::RecognizeCallback
   end
 end
 
-if !ENV["SPEECH_TO_TEXT_USERNAME"].nil? && !ENV["SPEECH_TO_TEXT_PASSWORD"].nil?
+if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
   # Integration tests for the Speech to Text V1 Service
   class SpeechToTextV1Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service
     def before_all
       @service = IBMWatson::SpeechToTextV1.new(
-        username: ENV["SPEECH_TO_TEXT_USERNAME"],
-        password: ENV["SPEECH_TO_TEXT_PASSWORD"]
+        iam_apikey: ENV["SPEECH_TO_TEXT_APIKEY"],
+        url: ENV["SPEECH_TO_TEXT_URL"]
       )
       @service.add_default_headers(
         headers: {

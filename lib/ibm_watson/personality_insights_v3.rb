@@ -38,7 +38,6 @@
 require "concurrent"
 require "erb"
 require "json"
-
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
@@ -107,7 +106,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
+    # @!method profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
     # Get profile.
     # Generates a personality profile for the author of the input text. The service
     #   accepts a maximum of 20 MB of input content, but it requires much less text to
@@ -158,10 +157,6 @@ module IBMWatson
     #   For JSON input, provide an object of type `Content`.
     # @param accept [String] The type of the response. For more information, see **Accept types** in the method
     #   description.
-    # @param content_type [String] The type of the input. For more information, see **Content types** in the method
-    #   description.
-    #
-    #   Default: `text/plain`.
     # @param content_language [String] The language of the input text for the request: Arabic, English, Japanese, Korean,
     #   or Spanish. Regional variants are treated as their parent language; for example,
     #   `en-US` is interpreted as `en`.
@@ -186,19 +181,24 @@ module IBMWatson
     #   (`text/csv`).
     # @param consumption_preferences [Boolean] Indicates whether consumption preferences are returned with the results. By
     #   default, no consumption preferences are returned.
+    # @param content_type [String] The type of the input. For more information, see **Content types** in the method
+    #   description.
+    #
+    #   Default: `text/plain`.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
+    def profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
       raise ArgumentError.new("content must be provided") if content.nil?
 
       raise ArgumentError.new("accept must be provided") if accept.nil?
 
       headers = {
         "Accept" => accept,
-        "Content-Type" => content_type,
         "Content-Language" => content_language,
-        "Accept-Language" => accept_language
+        "Accept-Language" => accept_language,
+        "Content-Type" => content_type
       }
-      headers = Common.new.get_sdk_headers(headers: headers, service_name: "personality_insights", service_version: "V3", operation_id: "profile")
+      sdk_headers = Common.new.get_sdk_headers("personality_insights", "V3", "profile")
+      headers.merge!(sdk_headers)
 
       params = {
         "version" => @version,
