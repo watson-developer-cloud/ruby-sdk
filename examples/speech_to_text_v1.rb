@@ -111,7 +111,7 @@ speech = speech_to_text.recognize_using_websocket(
   content_type: "audio/wav"
 )
 
-speech_2 = speech_to_text.recognize_using_websocket(
+speech_with_pause = speech_to_text.recognize_using_websocket(
   audio: File.open(Dir.getwd + "/resources/sound-with-pause.wav"),
   recognize_callback: MyRecognizeCallback.new,
   interim_results: true,
@@ -121,7 +121,8 @@ speech_2 = speech_to_text.recognize_using_websocket(
   content_type: "audio/wav"
 )
 
-thr = Thread.new { speech.start }
-thr_2 = Thread.new { speech_2.start }
-thr.join
-thr_2.join
+main_thread = Thread.new { speech.start }
+another_thread = Thread.new { speech_with_pause.start }
+
+main_thread.join
+another_thread.join
