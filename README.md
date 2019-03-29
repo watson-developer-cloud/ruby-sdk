@@ -286,7 +286,7 @@ assistant.configure_http_client(
 
 The HTTP client can be configured to disable SSL verification. Note that this has serious security implications - only do this if you really mean to! ⚠️
 
-To do this, pass `disable_ssl` as `true` in `configure_http_client()`, like below:
+To do this, pass `disable_ssl_verification` as `true` in `configure_http_client()`, like below:
 
 ```ruby
 require "ibm_watson/assistant_v1"
@@ -298,7 +298,7 @@ service = AssistantV1.new(
   password: "<password>",
 )
 
-service.configure_http_client(disable_ssl: true)
+service.configure_http_client(disable_ssl_verification: true)
 ```
 
 ## Using Websockets
