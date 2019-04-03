@@ -706,7 +706,7 @@ if !ENV["ASSISTANT_IAM_URL"].nil? && !ENV["ASSISTANT_IAM_APIKEY"].nil?
       begin
         service.iam_apikey(iam_apikey: "bogus_api_key")
         service.list_workspaces
-      rescue IBMCloudSdkCore::ApiException => e
+      rescue IBMWatson::ApiException => e
         assert_equal("Provided API key could not be found", e.info["errorMessage"])
         error_received = true
       end

@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
+require("ibm_cloud_sdk_core")
+
 # Module for the Watson APIs
 module IBMWatson
+  ApiException = IBMCloudSdkCore::ApiException
+  DetailedResponse = IBMCloudSdkCore::DetailedResponse
+  IAMTokenManager = IBMCloudSdkCore::IAMTokenManager
+
   require_relative("./ibm_watson/personality_insights_v3.rb")
   require_relative("./ibm_watson/tone_analyzer_v3.rb")
   require_relative("./ibm_watson/assistant_v1.rb")
