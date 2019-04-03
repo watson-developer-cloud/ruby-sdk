@@ -135,7 +135,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     )
     begin
       service.tone(tone_input: text, content_type: "application/json")
-    rescue IBMCloudSdkCore::ApiException => e
+    rescue IBMWatson::ApiException => e
       assert_equal(error_code, e.code)
       assert_equal(error_message, e.error)
       assert_equal("C00012", e.info["sub_code"])
