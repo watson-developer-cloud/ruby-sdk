@@ -357,6 +357,10 @@ This library is licensed under the [Apache 2.0 license][license].
 
 ## Featured projects
 
+Here are some projects that have been using the SDK:
+
+* [GuardianCity](https://github.com/TalentoBogotaFedesoft/ULIBRE-061-grupo-2)
+
 We'd love to highlight cool open-source projects that use this SDK! If you'd like to get your project added to the list, feel free to make an issue linking us to it.
 
 [wdc]: http://www.ibm.com/watson/developercloud/
