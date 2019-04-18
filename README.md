@@ -29,10 +29,12 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
   * [Ruby version](#ruby-version)
   * [Contributing](#contributing)
   * [License](#license)
+  * [Featured Projects](#featured-projects)
 
 </details>
 
 ## Before you begin
+
 * You need an [IBM Cloud][ibm-cloud-onboarding] account.
 
 ## Installation
@@ -71,6 +73,7 @@ Watson services are migrating to token-based Identity and Access Management (IAM
 - In other instances, you authenticate by providing the **[username and password](#username-and-password)** for the service instance.
 
 ### Getting credentials
+
 To find out which authentication to use, view the service credentials. You find the service credentials for authentication the same way for all Watson services:
 
 1. Go to the IBM Cloud [Dashboard](https://cloud.ibm.com/) page.
@@ -79,17 +82,17 @@ To find out which authentication to use, view the service credentials. You find 
 
  On this page, you should be able to see your credentials for accessing your service instance.
 
- ### Supplying credentials
+### Supplying credentials
 
  There are two ways to supply the credentials you found above to the SDK for authentication.
 
- #### Credential file (easier!)
+#### Credential file (easier!)
 
- With a credential file, you just need to put the file in the right place and the SDK will do the work of parsing and authenticating. You can get this file by clicking the **Download** button for the credentials in the **Manage** tab of your service instance.
+With a credential file, you just need to put the file in the right place and the SDK will do the work of parsing and authenticating. You can get this file by clicking the **Download** button for the credentials in the **Manage** tab of your service instance.
 
- The file downloaded will be called `ibm-credentials.env`. This is the name the SDK will search for and **must** be preserved unless you want to configure the file path (more on that later). The SDK will look for your `ibm-credentials.env` file in the following places (in order):
+The file downloaded will be called `ibm-credentials.env`. This is the name the SDK will search for and **must** be preserved unless you want to configure the file path (more on that later). The SDK will look for your `ibm-credentials.env` file in the following places (in order):
 
- - Your system's home directory
+- Your system's home directory
 - The top-level directory of the project you're using the SDK in
 
  As long as you set that up correctly, you don't have to worry about setting any authentication options in your code. So, for example, if you created and downloaded the credential file for your Discovery instance, you just need to do the following:
@@ -110,7 +113,8 @@ export IBM_CREDENTIALS_FILE="<path>"
 
  where `<path>` is something like `/home/user/Downloads/<file_name>.env`.
 
- #### Manually
+#### Manually
+
 If you'd prefer to set authentication values manually in your code, the SDK supports that as well. The way you'll do this depends on what type of credentials your service instance gives you.
 
 ### IAM
@@ -140,6 +144,7 @@ discovery.iam_apikey(iam_apikey: "<iam_apikey>")
 ```
 
 #### Supplying the access token
+
 ```ruby
 # in the constructor, assuming control of managing IAM token
 discovery = IBMWatson::DiscoveryV1.new(
@@ -155,6 +160,7 @@ discovery.iam_access_token(iam_access_token: "<access_token>")
 ```
 
 ### Username and password
+
 ```ruby
 require "ibm_watson"
 include IBMWatson
@@ -170,11 +176,14 @@ discovery.password = "<password>"
 ```
 
 ## Sending requests asynchronously
+
 Requests can be sent asynchronously. There are two asynchronous methods available for the user, `async` & `await`. When used, these methods return an [Ivar][ivar] object.
+
 * To call a method asynchronously, simply insert `.await` or `.async` into the call: `service.translate` would be `service.async.translate`
 * To access the response from an [Ivar][ivar] object called `future`, simply call `future.value`
 
 When `await` is used, the request is made synchronously.
+
 ```ruby
 speech_to_text = IBMWatson::SpeechToTextV1.new(
   username: "username",
@@ -189,6 +198,7 @@ output = future.value # The response is accessible at future.value
 ```
 
 When `async` is used, the request is made asynchronously
+
 ```ruby
 speech_to_text = IBMWatson::SpeechToTextV1.new(
   username: "username",
@@ -205,6 +215,7 @@ output = future.value
 ```
 
 ## Sending request headers
+
 Custom headers can be passed in any request in the form of a `Hash` as a parameter to the `headers` chainable method. For example, to send a header called `Custom-Header` to a call in Watson Assistant, pass the headers as a parameter to the `headers` chainable method:
 ```ruby
 require "ibm_watson"
@@ -222,7 +233,9 @@ response = assistant.headers(
 ```
 
 ## Parsing HTTP response info
+
 HTTP requests all return `DetailedResponse` objects that have a `result`, `status`, and `headers`
+
 ```ruby
 require "ibm_watson"
 include IBMWatson
@@ -325,6 +338,7 @@ thr = Thread.new do # Start the websocket inside of a thread
 end
 thr.join # Wait for the thread to finish before ending the program or running other code
 ```
+
 Note: `recognize_with_websocket` has been **deprecated** in favor of **`recognize_using_websocket`**
 
 ## Ruby version
@@ -340,6 +354,10 @@ See [CONTRIBUTING.md][CONTRIBUTING].
 ## License
 
 This library is licensed under the [Apache 2.0 license][license].
+
+## Featured projects
+
+We'd love to highlight cool open-source projects that use this SDK! If you'd like to get your project added to the list, feel free to make an issue linking us to it.
 
 [wdc]: http://www.ibm.com/watson/developercloud/
 [ibm_cloud]: https://console.bluemix.net
