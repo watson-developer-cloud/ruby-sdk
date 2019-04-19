@@ -21,12 +21,14 @@ already encountered this issue.
 If you want to contribute to the repository, follow these steps:
 
 1. Fork the repo.
-2. Test your code changes: `rake` or `rake test`.
-3. Travis-CI and AppVeyor will run the tests for all services once your changes are merged.
-4. Add a test for your changes. Only refactoring and documentation changes require no new tests.
-5. Make the test pass.
-6. Commit your changes.
-7. Push to your fork and submit a pull request.
+2. Install bundler if needed: `gem install bundler`
+3. Install the dependencies: `bundle install`
+4. Make code changes.
+5. Add a test for your changes. Only refactoring and documentation changes require no new tests.
+6. Make the test pass, test your code changes: `bundle exec rake`.
+7. Commit your changes.
+8. Push to your fork and submit a pull request.
+9. Travis-CI and AppVeyor will run the tests for all services once your changes are merged.
 
 ## Tests
 
