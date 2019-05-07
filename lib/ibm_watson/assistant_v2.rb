@@ -47,16 +47,16 @@ module IBMWatson
     #   ready for a later version.
     # @option args url [String] The base url to use when contacting the service (e.g.
     #   "https://gateway.watsonplatform.net/assistant/api").
-    #   The base url may differ between Bluemix regions.
+    #   The base url may differ between IBM Cloud regions.
     # @option args username [String] The username used to authenticate with the service.
     #   Username and password credentials are only required to run your
-    #   application locally or outside of Bluemix. When running on
-    #   Bluemix, the credentials will be automatically loaded from the
+    #   application locally or outside of IBM Cloud. When running on
+    #   IBM Cloud, the credentials will be automatically loaded from the
     #   `VCAP_SERVICES` environment variable.
     # @option args password [String] The password used to authenticate with the service.
     #   Username and password credentials are only required to run your
-    #   application locally or outside of Bluemix. When running on
-    #   Bluemix, the credentials will be automatically loaded from the
+    #   application locally or outside of IBM Cloud. When running on
+    #   IBM Cloud, the credentials will be automatically loaded from the
     #   `VCAP_SERVICES` environment variable.
     # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
     #   this API key is provided, the SDK will manage the token and handle the
@@ -66,7 +66,7 @@ module IBMWatson
     #   it expires or reactively upon receiving a 401 from the service as any requests
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.ng.bluemix.net/identity/token'.
+    #   'https://iam.cloud.ibm.com/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -96,7 +96,7 @@ module IBMWatson
     # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
     #   on the **Assistants** tab of the Watson Assistant tool. For information about
     #   creating assistants, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/assistant-add.html#assistant-add-task).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-add#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -131,7 +131,7 @@ module IBMWatson
     # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
     #   on the **Assistants** tab of the Watson Assistant tool. For information about
     #   creating assistants, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/assistant-add.html#assistant-add-task).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-add#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.
@@ -174,7 +174,7 @@ module IBMWatson
     # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
     #   on the **Assistants** tab of the Watson Assistant tool. For information about
     #   creating assistants, see the
-    #   [documentation](https://console.bluemix.net/docs/services/assistant/assistant-add.html#assistant-add-task).
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-add#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.

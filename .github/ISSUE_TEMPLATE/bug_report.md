@@ -10,8 +10,8 @@ assignees: ''
 **Service Status**
 Please review the following:
 
-- If the bug is because of the service issue, and service is throwing 5xx error, please go to https://console.bluemix.net/status?tags=platform,runtimes,services&view=n:i and check the status of the service.
-- If it's not a service issue, please continue with a bug report.
+-  For service issues or 5xx errors, first, go to the [IBM Cloud status page](https://cloud.ibm.com/status?component=compare-comply%2Cdiscovery%2Cconversation%2Cwatson-vision-combined%2Cnatural-language-understanding%2Cnatural-language-classifier%2Clanguage-translator%2Cpersonality-insights%2Cspeech-to-text%2Ctext-to-speech%2Ctone-analyzer&selected=status) and check the status of the service.
+-  If the service status is OK, continue with a bug report.
 
 **Describe the bug**
 A clear and concise description of what the bug is. 

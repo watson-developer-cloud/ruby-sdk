@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   if spec.respond_to?(:metadata)
     spec.metadata["allowed_push_host"] = "https://rubygems.org"
     spec.metadata["source_code_uri"] = "https://github.com/watson-developer-cloud/ruby-sdk"
-    spec.metadata["documentation_uri"] = "https://console.bluemix.net/developer/watson/documentation"
+    spec.metadata["documentation_uri"] = "https://cloud.ibm.com/developer/watson/documentation"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."

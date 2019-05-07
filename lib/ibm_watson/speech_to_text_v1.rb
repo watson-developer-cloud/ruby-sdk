@@ -57,16 +57,16 @@ module IBMWatson
     # @param args [Hash] The args to initialize with
     # @option args url [String] The base url to use when contacting the service (e.g.
     #   "https://stream.watsonplatform.net/speech-to-text/api").
-    #   The base url may differ between Bluemix regions.
+    #   The base url may differ between IBM Cloud regions.
     # @option args username [String] The username used to authenticate with the service.
     #   Username and password credentials are only required to run your
-    #   application locally or outside of Bluemix. When running on
-    #   Bluemix, the credentials will be automatically loaded from the
+    #   application locally or outside of IBM Cloud. When running on
+    #   IBM Cloud, the credentials will be automatically loaded from the
     #   `VCAP_SERVICES` environment variable.
     # @option args password [String] The password used to authenticate with the service.
     #   Username and password credentials are only required to run your
-    #   application locally or outside of Bluemix. When running on
-    #   Bluemix, the credentials will be automatically loaded from the
+    #   application locally or outside of IBM Cloud. When running on
+    #   IBM Cloud, the credentials will be automatically loaded from the
     #   `VCAP_SERVICES` environment variable.
     # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
     #   this API key is provided, the SDK will manage the token and handle the
@@ -76,7 +76,7 @@ module IBMWatson
     #   it expires or reactively upon receiving a 401 from the service as any requests
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.ng.bluemix.net/identity/token'.
+    #   'https://iam.cloud.ibm.com/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -433,7 +433,7 @@ module IBMWatson
     # @param acoustic_customization_id [String] The GUID of a custom acoustic model that is to be used with the request. The base model of the specified custom acoustic model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom acoustic model is used.
     # @param language_customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
     # @param customization_weight [Float] If you specify a `customization_id` with the request, you can use the `customization_weight` parameter to tell the service how much weight to give to words from the custom language model compared to those from the base model for speech recognition.   Specify a value between 0.0 and 1.0. Unless a different customization weight was specified for the custom model when it was trained, the default value is 0.3. A customization weight that you specify overrides a weight that was specified when the custom model was trained.   The default value yields the best performance in general. Assign a higher value if your audio makes frequent use of OOV words from the custom model. Use caution when setting the weight: a higher value can improve the accuracy of phrases from the custom model's domain, but it can negatively affect performance on non-domain phrases.
-    # @param base_model_version [String] The version of the specified base `model` that is to be used for speech recognition. Multiple versions of a base model can exist when a model is updated for internal improvements. The parameter is intended primarily for use with custom models that have been upgraded for a new base model. The default value depends on whether the parameter is used with or without a custom model. For more information, see [Base model version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
+    # @param base_model_version [String] The version of the specified base `model` that is to be used for speech recognition. Multiple versions of a base model can exist when a model is updated for internal improvements. The parameter is intended primarily for use with custom models that have been upgraded for a new base model. The default value depends on whether the parameter is used with or without a custom model. For more information, see [Base model version](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#version).
     # @param inactivity_timeout [Integer] The time in seconds after which, if only silence (no speech) is detected in submitted audio, the connection is closed with a 400 error. Useful for stopping audio submission from a live microphone when a user simply walks away. Use `-1` for infinity.
     # @param interim_results [Boolean] Send back non-final previews of each "sentence" as it is being processed. These results are ignored in text mode.
     # @param keywords [Array<String>] Array of keyword strings to spot in the audio. Each keyword string can include one or more tokens. Keywords are spotted only in the final hypothesis, not in interim results. If you specify any keywords, you must also specify a keywords threshold. Omit the parameter or specify an empty array if you do not need to spot keywords.
@@ -444,7 +444,7 @@ module IBMWatson
     # @param timestamps [Boolean] If `true`, time alignment for each word is returned.
     # @param profanity_filter [Boolean] If `true` (the default), filters profanity from all output except for keyword results by replacing inappropriate words with a series of asterisks. Set the parameter to `false` to return results with no censoring. Applies to US English transcription only.
     # @param smart_formatting [Boolean] If `true`, converts dates, times, series of digits and numbers, phone numbers, currency values, and Internet addresses into more readable, conventional representations in the final transcript of a recognition request. If `false` (the default), no formatting is performed. Applies to US English transcription only.
-    # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
+    # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#speaker_labels).
     # @param grammar_name [String] The name of a grammar that is to be used with the recognition request. If you
     #   specify a grammar, you must also use the `language_customization_id` parameter to
     #   specify the name of the custom language model for which the grammar is defined.
