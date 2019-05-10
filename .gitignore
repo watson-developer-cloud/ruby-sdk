@@ -15,6 +15,8 @@ lib/ibm_watson/.swagger-codegen
 lib/ibm_watson/.openapi-generator-ignore
 lib/ibm_watson/.openapi-generator/VERSION
 test/html_reports/
+.pre-commit-config.yaml
+.secrets.baseline
 
 # Used by dotenv library to load environment variables.
 .env
