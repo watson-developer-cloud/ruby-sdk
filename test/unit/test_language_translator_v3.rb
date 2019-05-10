@@ -9,14 +9,14 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Language Translator V3 Service
 class LanguageTranslatorV3Test < Minitest::Test
   def test_translate_source_target
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -57,14 +57,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_translate_model_id
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -108,14 +108,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_identify
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -165,14 +165,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_list_identifiable_languages
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -230,14 +230,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_create_model
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -300,14 +300,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_delete_model
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -342,14 +342,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_get_model
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,
@@ -393,14 +393,14 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_list_models
-    stub_request(:post, "https://iam.bluemix.net/identity/token")
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
-          "Host" => "iam.bluemix.net"
+          "Host" => "iam.cloud.ibm.com"
         }
       ).to_return(
         status: 200,

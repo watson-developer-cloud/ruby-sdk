@@ -47,7 +47,7 @@ module IBMWatson
     #   ready for a later version.
     # @option args url [String] The base url to use when contacting the service (e.g.
     #   "https://gateway.watsonplatform.net/visual-recognition/api").
-    #   The base url may differ between Bluemix regions.
+    #   The base url may differ between IBM Cloud regions.
     # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
     #   this API key is provided, the SDK will manage the token and handle the
     #   refreshing.
@@ -56,7 +56,7 @@ module IBMWatson
     #   it expires or reactively upon receiving a 401 from the service as any requests
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.ng.bluemix.net/identity/token'.
+    #   'https://iam.cloud.ibm.com/identity/token'.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
