@@ -69,6 +69,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -79,6 +81,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "language_translator"
       super
@@ -137,6 +141,34 @@ module IBMWatson
     #########################
 
     ##
+    # @!method list_identifiable_languages
+    # List identifiable languages.
+    # Lists the languages that the service can identify. Returns the language code (for
+    #   example, `en` for English or `es` for Spanish) and name of each language.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_identifiable_languages
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_identifiable_languages")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v3/identifiable_languages"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method identify(text:)
     # Identify language.
     # Identifies the language of the input text.
@@ -169,24 +201,35 @@ module IBMWatson
       )
       response
     end
+    #########################
+    # Models
+    #########################
 
     ##
-    # @!method list_identifiable_languages
-    # List identifiable languages.
-    # Lists the languages that the service can identify. Returns the language code (for
-    #   example, `en` for English or `es` for Spanish) and name of each language.
+    # @!method list_models(source: nil, target: nil, default_models: nil)
+    # List models.
+    # Lists available translation models.
+    # @param source [String] Specify a language code to filter results by source language.
+    # @param target [String] Specify a language code to filter results by target language.
+    # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
+    #   (default and non-default) for each language pair. To return only default models,
+    #   set this to `true`. To return only non-default models, set this to `false`. There
+    #   is exactly one default model per language pair, the IBM provided base model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_identifiable_languages
+    def list_models(source: nil, target: nil, default_models: nil)
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_identifiable_languages")
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_models")
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "source" => source,
+        "target" => target,
+        "default" => default_models
       }
 
-      method_url = "/v3/identifiable_languages"
+      method_url = "/v3/models"
 
       response = request(
         method: "GET",
@@ -197,9 +240,6 @@ module IBMWatson
       )
       response
     end
-    #########################
-    # Models
-    #########################
 
     ##
     # @!method create_model(base_model_id:, forced_glossary: nil, parallel_corpus: nil, name: nil)
@@ -339,32 +379,190 @@ module IBMWatson
       )
       response
     end
+    #########################
+    # Document translation
+    #########################
 
     ##
-    # @!method list_models(source: nil, target: nil, default_models: nil)
-    # List models.
-    # Lists available translation models.
-    # @param source [String] Specify a language code to filter results by source language.
-    # @param target [String] Specify a language code to filter results by target language.
-    # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
-    #   (default and non-default) for each language pair. To return only default models,
-    #   set this to `true`. To return only non-default models, set this to `false`. There
-    #   is exactly one default model per language pair, the IBM provided base model.
+    # @!method list_documents
+    # List documents.
+    # Lists documents that have been submitted for translation.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_models(source: nil, target: nil, default_models: nil)
+    def list_documents
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_models")
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_documents")
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version,
-        "source" => source,
-        "target" => target,
-        "default" => default_models
+        "version" => @version
       }
 
-      method_url = "/v3/models"
+      method_url = "/v3/documents"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method translate_document(file:, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
+    # Translate document.
+    # Submit a document for translation. You can submit the document contents in the
+    #   `file` parameter, or you can reference a previously submitted document by document
+    #   ID.
+    # @param file [File] The source file to translate.
+    #
+    #   [Supported file
+    #   types](https://cloud.ibm.com/docs/services/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats)
+    #
+    #   Maximum file size: **20 MB**.
+    # @param file_content_type [String] The content type of file.
+    # @param model_id [String] The model to use for translation. `model_id` or both `source` and `target` are
+    #   required.
+    # @param source [String] Language code that specifies the language of the source document.
+    # @param target [String] Language code that specifies the target language for translation.
+    # @param document_id [String] To use a previously submitted document as the source for a new translation, enter
+    #   the `document_id` of the document.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def translate_document(file:, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
+      raise ArgumentError.new("file must be provided") if file.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "translate_document")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      unless file.instance_of?(StringIO) || file.instance_of?(File)
+        file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
+      end
+      form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: file.respond_to?(:path) ? file.path : nil)
+
+      form_data[:model_id] = HTTP::FormData::Part.new(model_id.to_s, content_type: "text/plain") unless model_id.nil?
+
+      form_data[:source] = HTTP::FormData::Part.new(source.to_s, content_type: "text/plain") unless source.nil?
+
+      form_data[:target] = HTTP::FormData::Part.new(target.to_s, content_type: "text/plain") unless target.nil?
+
+      form_data[:document_id] = HTTP::FormData::Part.new(document_id.to_s, content_type: "text/plain") unless document_id.nil?
+
+      method_url = "/v3/documents"
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_document_status(document_id:)
+    # Get document status.
+    # Gets the translation status of a document.
+    # @param document_id [String] The document ID of the document.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_document_status(document_id:)
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "get_document_status")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v3/documents/%s" % [ERB::Util.url_encode(document_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_document(document_id:)
+    # Delete document.
+    # Deletes a document.
+    # @param document_id [String] Document ID of the document to delete.
+    # @return [nil]
+    def delete_document(document_id:)
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "delete_document")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v3/documents/%s" % [ERB::Util.url_encode(document_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
+    end
+
+    ##
+    # @!method get_translated_document(document_id:, accept: nil)
+    # Get translated document.
+    # Gets the translated document associated with the given document ID.
+    # @param document_id [String] The document ID of the document that was submitted for translation.
+    # @param accept [String] The type of the response: application/powerpoint, application/mspowerpoint,
+    #   application/x-rtf, application/json, application/xml, application/vnd.ms-excel,
+    #   application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+    #   application/vnd.ms-powerpoint,
+    #   application/vnd.openxmlformats-officedocument.presentationml.presentation,
+    #   application/msword,
+    #   application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+    #   application/vnd.oasis.opendocument.spreadsheet,
+    #   application/vnd.oasis.opendocument.presentation,
+    #   application/vnd.oasis.opendocument.text, application/pdf, application/rtf,
+    #   text/html, text/json, text/plain, text/richtext, text/rtf, or text/xml. A
+    #   character encoding can be specified by including a `charset` parameter. For
+    #   example, 'text/html;charset=utf-8'.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_translated_document(document_id:, accept: nil)
+      raise ArgumentError.new("document_id must be provided") if document_id.nil?
+
+      headers = {
+        "Accept" => accept
+      }
+      sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "get_translated_document")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v3/documents/%s/translated_document" % [ERB::Util.url_encode(document_id)]
 
       response = request(
         method: "GET",

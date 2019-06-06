@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # The IBM Watson&trade; Assistant service combines machine learning, natural language
-# understanding, and integrated dialog tools to create conversation flows between your
+# understanding, and an integrated dialog editor to create conversation flows between your
 # apps and your users.
 
 require "concurrent"
@@ -67,6 +67,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -77,6 +79,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "conversation"
       super
@@ -93,9 +97,9 @@ module IBMWatson
     # Create a session.
     # Create a new session. A session is used to send user input to a skill and receive
     #   responses. It also maintains the state of the conversation.
-    # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
-    #   on the **Assistants** tab of the Watson Assistant tool. For information about
-    #   creating assistants, see the
+    # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
+    #   Assistant user interface, open the assistant settings and click **API Details**.
+    #   For information about creating assistants, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-add#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
@@ -128,9 +132,9 @@ module IBMWatson
     # @!method delete_session(assistant_id:, session_id:)
     # Delete session.
     # Deletes a session explicitly before it times out.
-    # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
-    #   on the **Assistants** tab of the Watson Assistant tool. For information about
-    #   creating assistants, see the
+    # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
+    #   Assistant user interface, open the assistant settings and click **API Details**.
+    #   For information about creating assistants, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-add#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
@@ -171,9 +175,9 @@ module IBMWatson
     # Send user input to an assistant and receive a response.
     #
     #   There is no rate limit for this operation.
-    # @param assistant_id [String] Unique identifier of the assistant. You can find the assistant ID of an assistant
-    #   on the **Assistants** tab of the Watson Assistant tool. For information about
-    #   creating assistants, see the
+    # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
+    #   Assistant user interface, open the assistant settings and click **API Details**.
+    #   For information about creating assistants, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-add#assistant-add-task).
     #
     #   **Note:** Currently, the v2 API does not support creating assistants.
