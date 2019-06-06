@@ -458,6 +458,45 @@ module IBMWatson
     # @param profanity_filter [Boolean] If `true` (the default), filters profanity from all output except for keyword results by replacing inappropriate words with a series of asterisks. Set the parameter to `false` to return results with no censoring. Applies to US English transcription only.
     # @param smart_formatting [Boolean] If `true`, converts dates, times, series of digits and numbers, phone numbers, currency values, and Internet addresses into more readable, conventional representations in the final transcript of a recognition request. If `false` (the default), no formatting is performed. Applies to US English transcription only.
     # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
+    # @param grammar_name [String] The name of a grammar that is to be used with the recognition request. If you
+    #   specify a grammar, you must also use the `language_customization_id` parameter to
+    #   specify the name of the custom language model for which the grammar is defined.
+    #   The service recognizes only strings that are recognized by the specified grammar;
+    #   it does not recognize other custom words from the model's words resource. See
+    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text/output.html).
+    # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
+    #   feature redacts any number that has three or more consecutive digits by replacing
+    #   each digit with an `X` character. It is intended to redact sensitive numeric data,
+    #   such as credit card numbers. By default, the service performs no redaction.
+    #
+    #   When you enable redaction, the service automatically enables smart formatting,
+    #   regardless of whether you explicitly disable that feature. To ensure maximum
+    #   security, the service also disables keyword spotting (ignores the `keywords` and
+    #   `keywords_threshold` parameters) and returns only a single final transcript
+    #   (forces the `max_alternatives` parameter to be `1`).
+    #
+    #   **Note:** Applies to US English, Japanese, and Korean transcription only.
+    #
+    #   See [Numeric
+    #   redaction](https://cloud.ibm.com/docs/services/speech-to-text/output.html#redaction).
+    #
+    # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
+    #   input audio. The service returns processing metrics at the interval specified by
+    #   the `processing_metrics_interval` parameter. It also returns processing metrics
+    #   for transcription events, for example, for final and interim results. By default,
+    #   the service returns no processing metrics.
+    # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
+    #   return processing metrics. The parameter is ignored unless the
+    #   `processing_metrics` parameter is set to `true`.    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
+    #   not restricted, so you can specify values such as 0.25 and 0.125.
+    #
+    #   The service does not impose a maximum value. If you want to receive processing
+    #   metrics only for transcription events instead of at periodic intervals, set the
+    #   value to a large number. If the value is larger than the duration of the audio,
+    #   the service returns processing metrics only for transcription events.
+    # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
+    #   input audio. The service returns audio metrics with the final transcription
+    #   results. By default, the service returns no audio metrics.
     # @return [WebSocketClient] Returns a new WebSocketClient object
     def recognize_using_websocket(
       content_type:,
@@ -479,7 +518,12 @@ module IBMWatson
       timestamps: nil,
       profanity_filter: nil,
       smart_formatting: nil,
-      speaker_labels: nil
+      speaker_labels: nil,
+      grammar_name: nil,
+      redaction: nil,
+      processing_metrics: nil,
+      processing_metrics_interval: nil,
+      audio_metrics: nil
     )
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
@@ -516,7 +560,12 @@ module IBMWatson
         "timestamps" => timestamps,
         "profanity_filter" => profanity_filter,
         "smart_formatting" => smart_formatting,
-        "speaker_labels" => speaker_labels
+        "speaker_labels" => speaker_labels,
+        "grammar_name" => grammar_name,
+        "redaction" => redaction,
+        "processing_metrics" => processing_metrics,
+        "processing_metrics_interval" => processing_metrics_interval,
+        "audio_metrics" => audio_metrics
       }
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)

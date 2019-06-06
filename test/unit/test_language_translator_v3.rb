@@ -456,4 +456,189 @@ class LanguageTranslatorV3Test < Minitest::Test
     service_response = service.list_models
     assert_equal(expected, service_response.result)
   end
+
+  def test_lis_documents
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic Yng6Yng=",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
+          "token_type" => "Bearer",
+          "expires_in" => 3600,
+          "expiration" => 1_524_167_011,
+          "refresh_token" => "jy4gl91BQ"
+        }.to_json,
+        headers: {}
+      )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      iam_apikey: "iam_apikey"
+    )
+    expected = {}
+    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents?version=2018-05-01")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_documents
+    assert_equal(expected, service_response.result)
+  end
+
+  def test_translate_document
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic Yng6Yng=",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
+          "token_type" => "Bearer",
+          "expires_in" => 3600,
+          "expiration" => 1_524_167_011,
+          "refresh_token" => "jy4gl91BQ"
+        }.to_json,
+        headers: {}
+      )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      iam_apikey: "iam_apikey"
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/documents?version=2018-05-01")
+      .with do |req|
+        assert_equal req.headers["Accept"], "application/json"
+        assert_match %r{\Amultipart/form-data}, req.headers["Content-Type"]
+      end
+    file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
+    service.translate_document(file: file, filename: "file")
+  end
+
+  def test_get_document_status
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic Yng6Yng=",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
+          "token_type" => "Bearer",
+          "expires_in" => 3600,
+          "expiration" => 1_524_167_011,
+          "refresh_token" => "jy4gl91BQ"
+        }.to_json,
+        headers: {}
+      )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      iam_apikey: "iam_apikey"
+    )
+    expected = {}
+    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_document_status(document_id: "id")
+    assert_equal(expected, service_response.result)
+  end
+
+  def test_get_translated_document
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic Yng6Yng=",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
+          "token_type" => "Bearer",
+          "expires_in" => 3600,
+          "expiration" => 1_524_167_011,
+          "refresh_token" => "jy4gl91BQ"
+        }.to_json,
+        headers: {}
+      )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      iam_apikey: "iam_apikey"
+    )
+    expected = {}
+    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id/translated_document?version=2018-05-01")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_translated_document(document_id: "id")
+    assert_equal(expected, service_response.result)
+  end
+
+  def test_delete_document
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic Yng6Yng=",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: {
+          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
+          "token_type" => "Bearer",
+          "expires_in" => 3600,
+          "expiration" => 1_524_167_011,
+          "refresh_token" => "jy4gl91BQ"
+        }.to_json,
+        headers: {}
+      )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      iam_apikey: "iam_apikey"
+    )
+    expected = {}
+    stub_request(:delete, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")
+      .with(
+        headers: {
+          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_document(document_id: "id")
+    assert_nil(service_response)
+  end
 end

@@ -411,7 +411,7 @@ module IBMWatson
     end
 
     ##
-    # @!method translate_document(file:, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
+    # @!method translate_document(file:, filename: nil, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
     # Translate document.
     # Submit a document for translation. You can submit the document contents in the
     #   `file` parameter, or you can reference a previously submitted document by document
@@ -422,6 +422,7 @@ module IBMWatson
     #   types](https://cloud.ibm.com/docs/services/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats)
     #
     #   Maximum file size: **20 MB**.
+    # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param model_id [String] The model to use for translation. `model_id` or both `source` and `target` are
     #   required.
@@ -430,7 +431,7 @@ module IBMWatson
     # @param document_id [String] To use a previously submitted document as the source for a new translation, enter
     #   the `document_id` of the document.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def translate_document(file:, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
+    def translate_document(file:, filename: nil, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
@@ -447,7 +448,8 @@ module IBMWatson
       unless file.instance_of?(StringIO) || file.instance_of?(File)
         file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
       end
-      form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: file.respond_to?(:path) ? file.path : nil)
+      filename = file.path if filename.nil? && file.respond_to?(:path)
+      form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
 
       form_data[:model_id] = HTTP::FormData::Part.new(model_id.to_s, content_type: "text/plain") unless model_id.nil?
 
