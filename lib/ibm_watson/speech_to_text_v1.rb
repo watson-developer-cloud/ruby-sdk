@@ -162,7 +162,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, content_type: nil)
+    # @!method recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, content_type: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. You can
     #   pass a maximum of 100 MB and a minimum of 100 bytes of audio with a request. The
@@ -379,29 +379,16 @@ module IBMWatson
     #
     #   See [Numeric
     #   redaction](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#redaction).
-    # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
-    #   input audio. The service returns processing metrics at the interval specified by
-    #   the `processing_metrics_interval` parameter. It also returns processing metrics
-    #   for transcription events, for example, for final and interim results. By default,
-    #   the service returns no processing metrics.
-    # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
-    #   return processing metrics. The parameter is ignored unless the
-    #   `processing_metrics` parameter is set to `true`.
-    #
     #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
     #   not restricted, so you can specify values such as 0.25 and 0.125.
     #
-    #   The service does not impose a maximum value. If you want to receive processing
-    #   metrics only for transcription events instead of at periodic intervals, set the
-    #   value to a large number. If the value is larger than the duration of the audio,
-    #   the service returns processing metrics only for transcription events.
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, content_type: nil)
+    def recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, content_type: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -430,8 +417,6 @@ module IBMWatson
         "customization_id" => customization_id,
         "grammar_name" => grammar_name,
         "redaction" => redaction,
-        "processing_metrics" => processing_metrics,
-        "processing_metrics_interval" => processing_metrics_interval,
         "audio_metrics" => audio_metrics
       }
 
@@ -699,7 +684,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_job(audio:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, content_type: nil)
+    # @!method create_job(audio:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, content_type: nil)
     # Create a job.
     # Creates a job for a new asynchronous recognition request. The job is owned by the
     #   instance of the service whose credentials are used to create it. How you learn the
@@ -960,6 +945,7 @@ module IBMWatson
     #
     #   See [Numeric
     #   redaction](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#redaction).
+    #
     # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
     #   input audio. The service returns processing metrics at the interval specified by
     #   the `processing_metrics_interval` parameter. It also returns processing metrics
@@ -967,9 +953,7 @@ module IBMWatson
     #   the service returns no processing metrics.
     # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
     #   return processing metrics. The parameter is ignored unless the
-    #   `processing_metrics` parameter is set to `true`.
-    #
-    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
+    #   `processing_metrics` parameter is set to `true`.    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
     #   not restricted, so you can specify values such as 0.25 and 0.125.
     #
     #   The service does not impose a maximum value. If you want to receive processing
@@ -1310,7 +1294,7 @@ module IBMWatson
     end
 
     ##
-    # @!method train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil, strict: nil)
+    # @!method train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil)
     # Train a custom language model.
     # Initiates the training of a custom language model with new resources such as
     #   corpora, grammars, and custom words. After adding, modifying, or deleting
@@ -1342,11 +1326,6 @@ module IBMWatson
     #   * The service is currently handling another request for the custom model, such as
     #   another training request or a request to add a corpus or grammar to the model.
     #   * No training data have been added to the custom model.
-    #   * The custom model contains one or more invalid corpora, grammars, or words (for
-    #   example, a custom word has an invalid sounds-like pronunciation). You can correct
-    #   the invalid resources or set the `strict` parameter to `false` to exclude the
-    #   invalid resources from the training. The model must contain at least one valid
-    #   resource for training to succeed.
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1372,13 +1351,8 @@ module IBMWatson
     #   The value that you assign is used for all recognition requests that use the model.
     #   You can override it for any recognition request by specifying a customization
     #   weight for that request.
-    # @param strict [Boolean] If `false`, allows training of the custom language model to proceed as long as the
-    #   model contains at least one valid resource. The method returns an array of
-    #   `TrainingWarning` objects that lists any invalid resources. By default (`true`),
-    #   training of a custom language model fails (status code 400) if the model contains
-    #   one or more invalid resources (corpus files, grammar files, or custom words).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil, strict: nil)
+    def train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
@@ -1388,8 +1362,7 @@ module IBMWatson
 
       params = {
         "word_type_to_add" => word_type_to_add,
-        "customization_weight" => customization_weight,
-        "strict" => strict
+        "customization_weight" => customization_weight
       }
 
       method_url = "/v1/customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
@@ -2405,7 +2378,7 @@ module IBMWatson
     end
 
     ##
-    # @!method train_acoustic_model(customization_id:, custom_language_model_id: nil, strict: nil)
+    # @!method train_acoustic_model(customization_id:, custom_language_model_id: nil)
     # Train a custom acoustic model.
     # Initiates the training of a custom acoustic model with new or changed audio
     #   resources. After adding or deleting audio resources for a custom acoustic model,
@@ -2455,10 +2428,6 @@ module IBMWatson
     #   * You passed an incompatible custom language model with the
     #   `custom_language_model_id` query parameter. Both custom models must be based on
     #   the same version of the same base model.
-    #   * The custom model contains one or more invalid audio resources. You can correct
-    #   the invalid audio resources or set the `strict` parameter to `false` to exclude
-    #   the invalid resources from the training. The model must contain at least one valid
-    #   resource for training to succeed.
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2469,13 +2438,8 @@ module IBMWatson
     #   language model must be based on the same version of the same base model as the
     #   custom acoustic model. The credentials specified with the request must own both
     #   custom models.
-    # @param strict [Boolean] If `false`, allows training of the custom acoustic model to proceed as long as the
-    #   model contains at least one valid audio resource. The method returns an array of
-    #   `TrainingWarning` objects that lists any invalid resources. By default (`true`),
-    #   training of a custom acoustic model fails (status code 400) if the model contains
-    #   one or more invalid audio resources.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def train_acoustic_model(customization_id:, custom_language_model_id: nil, strict: nil)
+    def train_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
@@ -2484,8 +2448,7 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "custom_language_model_id" => custom_language_model_id,
-        "strict" => strict
+        "custom_language_model_id" => custom_language_model_id
       }
 
       method_url = "/v1/acoustic_customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
