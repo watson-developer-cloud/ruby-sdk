@@ -56,6 +56,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -64,6 +66,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "compare-comply"
       super
@@ -322,76 +326,6 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_feedback(feedback_id:, model: nil)
-    # Delete a specified feedback entry.
-    # Deletes a feedback entry with a specified `feedback_id`.
-    # @param feedback_id [String] A string that specifies the feedback entry to be deleted from the document.
-    # @param model [String] The analysis model to be used by the service. For the **Element classification**
-    #   and **Compare two documents** methods, the default is `contracts`. For the
-    #   **Extract tables** method, the default is `tables`. These defaults apply to the
-    #   standalone methods as well as to the methods' use in batch-processing requests.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def delete_feedback(feedback_id:, model: nil)
-      raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "delete_feedback")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version,
-        "model" => model
-      }
-
-      method_url = "/v1/feedback/%s" % [ERB::Util.url_encode(feedback_id)]
-
-      response = request(
-        method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method get_feedback(feedback_id:, model: nil)
-    # List a specified feedback entry.
-    # Lists a feedback entry with a specified `feedback_id`.
-    # @param feedback_id [String] A string that specifies the feedback entry to be included in the output.
-    # @param model [String] The analysis model to be used by the service. For the **Element classification**
-    #   and **Compare two documents** methods, the default is `contracts`. For the
-    #   **Extract tables** method, the default is `tables`. These defaults apply to the
-    #   standalone methods as well as to the methods' use in batch-processing requests.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_feedback(feedback_id:, model: nil)
-      raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "get_feedback")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version,
-        "model" => model
-      }
-
-      method_url = "/v1/feedback/%s" % [ERB::Util.url_encode(feedback_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method list_feedback(feedback_type: nil, before: nil, after: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
     # List the feedback in a document.
     # Lists the feedback in a document.
@@ -474,6 +408,76 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method get_feedback(feedback_id:, model: nil)
+    # Get a specified feedback entry.
+    # Gets a feedback entry with a specified `feedback_id`.
+    # @param feedback_id [String] A string that specifies the feedback entry to be included in the output.
+    # @param model [String] The analysis model to be used by the service. For the **Element classification**
+    #   and **Compare two documents** methods, the default is `contracts`. For the
+    #   **Extract tables** method, the default is `tables`. These defaults apply to the
+    #   standalone methods as well as to the methods' use in batch-processing requests.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_feedback(feedback_id:, model: nil)
+      raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "get_feedback")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "model" => model
+      }
+
+      method_url = "/v1/feedback/%s" % [ERB::Util.url_encode(feedback_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_feedback(feedback_id:, model: nil)
+    # Delete a specified feedback entry.
+    # Deletes a feedback entry with a specified `feedback_id`.
+    # @param feedback_id [String] A string that specifies the feedback entry to be deleted from the document.
+    # @param model [String] The analysis model to be used by the service. For the **Element classification**
+    #   and **Compare two documents** methods, the default is `contracts`. For the
+    #   **Extract tables** method, the default is `tables`. These defaults apply to the
+    #   standalone methods as well as to the methods' use in batch-processing requests.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_feedback(feedback_id:, model: nil)
+      raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "delete_feedback")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "model" => model
+      }
+
+      method_url = "/v1/feedback/%s" % [ERB::Util.url_encode(feedback_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
     #########################
     # Batches
     #########################
@@ -482,11 +486,12 @@ module IBMWatson
     # @!method create_batch(function:, input_credentials_file:, input_bucket_location:, input_bucket_name:, output_credentials_file:, output_bucket_location:, output_bucket_name:, model: nil)
     # Submit a batch-processing request.
     # Run Compare and Comply methods over a collection of input documents.
+    #
     #   **Important:** Batch processing requires the use of the [IBM Cloud Object Storage
-    #   service](https://cloud.ibm.com/docs/services/cloud-object-storage/about-cos.html#about-ibm-cloud-object-storage).
+    #   service](https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-about#about-ibm-cloud-object-storage).
     #   The use of IBM Cloud Object Storage with Compare and Comply is discussed at [Using
     #   batch
-    #   processing](https://cloud.ibm.com/docs/services/compare-comply/batching.html#before-you-batch).
+    #   processing](https://cloud.ibm.com/docs/services/compare-comply?topic=compare-comply-batching#before-you-batch).
     # @param function [String] The Compare and Comply method to run across the submitted input documents.
     # @param input_credentials_file [File] A JSON file containing the input Cloud Object Storage credentials. At a minimum,
     #   the credentials must enable `READ` permissions on the bucket defined by the
@@ -567,6 +572,33 @@ module IBMWatson
     end
 
     ##
+    # @!method list_batches
+    # List submitted batch-processing jobs.
+    # Lists batch-processing jobs submitted by users.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_batches
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "list_batches")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/batches"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method get_batch(batch_id:)
     # Get information about a specific batch-processing job.
     # Gets information about a batch-processing job with a specified ID.
@@ -585,33 +617,6 @@ module IBMWatson
       }
 
       method_url = "/v1/batches/%s" % [ERB::Util.url_encode(batch_id)]
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method list_batches
-    # List submitted batch-processing jobs.
-    # Lists batch-processing jobs submitted by users.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_batches
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "list_batches")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/batches"
 
       response = request(
         method: "GET",

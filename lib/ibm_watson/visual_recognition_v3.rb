@@ -57,6 +57,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -65,6 +67,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "watson_vision_combined"
       super
@@ -169,11 +173,11 @@ module IBMWatson
     #   to the Face model was removed. The identity information refers to the `name` of
     #   the person, `score`, and `type_hierarchy` knowledge graph. For details about the
     #   enhanced Face model, see the [Release
-    #   notes](https://cloud.ibm.com/docs/services/visual-recognition/release-notes.html#2april2018).
+    #   notes](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-release-notes#2april2018).
     #
     #   Analyze and get data about faces in images. Responses can include estimated age
     #   and gender. This feature uses a built-in model, so no training is necessary. The
-    #   Detect faces method does not support general biometric facial recognition.
+    #   **Detect faces** method does not support general biometric facial recognition.
     #
     #   Supported image formats include .gif, .jpg, .png, and .tif. The maximum image size
     #   is 10 MB. The minimum recommended pixel density is 32X32 pixels, but the service
@@ -315,32 +319,32 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_classifier(classifier_id:)
-    # Delete a classifier.
-    # @param classifier_id [String] The ID of the classifier.
-    # @return [nil]
-    def delete_classifier(classifier_id:)
-      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
-
+    # @!method list_classifiers(verbose: nil)
+    # Retrieve a list of classifiers.
+    # @param verbose [Boolean] Specify `true` to return details about the classifiers. Omit this parameter to
+    #   return a brief list of classifiers.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_classifiers(verbose: nil)
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "delete_classifier")
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "list_classifiers")
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "verbose" => verbose
       }
 
-      method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+      method_url = "/v3/classifiers"
 
-      request(
-        method: "DELETE",
+      response = request(
+        method: "GET",
         url: method_url,
         headers: headers,
         params: params,
         accept_json: true
       )
-      nil
+      response
     end
 
     ##
@@ -374,41 +378,12 @@ module IBMWatson
     end
 
     ##
-    # @!method list_classifiers(verbose: nil)
-    # Retrieve a list of classifiers.
-    # @param verbose [Boolean] Specify `true` to return details about the classifiers. Omit this parameter to
-    #   return a brief list of classifiers.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_classifiers(verbose: nil)
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "list_classifiers")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version,
-        "verbose" => verbose
-      }
-
-      method_url = "/v3/classifiers"
-
-      response = request(
-        method: "GET",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
     # @!method update_classifier(classifier_id:, positive_examples: nil, negative_examples: nil, negative_examples_filename: nil)
     # Update a classifier.
     # Update a custom classifier by adding new positive or negative classes or by adding
     #   new images to existing classes. You must supply at least one set of positive or
     #   negative examples. For details, see [Updating custom
-    #   classifiers](https://cloud.ibm.com/docs/services/visual-recognition/customizing.html#updating-custom-classifiers).
+    #   classifiers](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-customizing#updating-custom-classifiers).
     #
     #   Encode all names in UTF-8 if they contain non-ASCII characters (.zip and image
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
@@ -483,6 +458,35 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method delete_classifier(classifier_id:)
+    # Delete a classifier.
+    # @param classifier_id [String] The ID of the classifier.
+    # @return [nil]
+    def delete_classifier(classifier_id:)
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "delete_classifier")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      nil
+    end
     #########################
     # Core ML
     #########################
@@ -530,7 +534,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://cloud.ibm.com/docs/services/visual-recognition/information-security.html).
+    #   security](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-information-security).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)

@@ -58,6 +58,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -67,6 +69,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "natural_language_classifier"
       super
@@ -164,7 +168,7 @@ module IBMWatson
     #   (`pt`), and Spanish (`es`).
     # @param training_data [File] Training data in CSV format. Each text value must have at least one class. The
     #   data can include up to 3,000 classes and 20,000 records. For details, see [Data
-    #   preparation](https://cloud.ibm.com/docs/services/natural-language-classifier/using-your-data.html).
+    #   preparation](https://cloud.ibm.com/docs/services/natural-language-classifier?topic=natural-language-classifier-using-your-data).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_classifier(metadata:, training_data:)
       raise ArgumentError.new("metadata must be provided") if metadata.nil?
@@ -201,27 +205,25 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_classifier(classifier_id:)
-    # Delete classifier.
-    # @param classifier_id [String] Classifier ID to delete.
-    # @return [nil]
-    def delete_classifier(classifier_id:)
-      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
-
+    # @!method list_classifiers
+    # List classifiers.
+    # Returns an empty array if no classifiers are available.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_classifiers
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "delete_classifier")
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "list_classifiers")
       headers.merge!(sdk_headers)
 
-      method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
+      method_url = "/v1/classifiers"
 
-      request(
-        method: "DELETE",
+      response = request(
+        method: "GET",
         url: method_url,
         headers: headers,
         accept_json: true
       )
-      nil
+      response
     end
 
     ##
@@ -250,25 +252,27 @@ module IBMWatson
     end
 
     ##
-    # @!method list_classifiers
-    # List classifiers.
-    # Returns an empty array if no classifiers are available.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_classifiers
+    # @!method delete_classifier(classifier_id:)
+    # Delete classifier.
+    # @param classifier_id [String] Classifier ID to delete.
+    # @return [nil]
+    def delete_classifier(classifier_id:)
+      raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
+
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "list_classifiers")
+      sdk_headers = Common.new.get_sdk_headers("natural_language_classifier", "V1", "delete_classifier")
       headers.merge!(sdk_headers)
 
-      method_url = "/v1/classifiers"
+      method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
-      response = request(
-        method: "GET",
+      request(
+        method: "DELETE",
         url: method_url,
         headers: headers,
         accept_json: true
       )
-      response
+      nil
     end
   end
 end

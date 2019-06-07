@@ -75,6 +75,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -85,6 +87,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "tone_analyzer"
       super
@@ -99,7 +103,7 @@ module IBMWatson
     ##
     # @!method tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
     # Analyze general tone.
-    # Use the general purpose endpoint to analyze the tone of your input content. The
+    # Use the general-purpose endpoint to analyze the tone of your input content. The
     #   service analyzes the content for emotional and language tones. The method always
     #   analyzes the tone of the full document; by default, it also analyzes the tone of
     #   each individual sentence of the content.
@@ -118,7 +122,7 @@ module IBMWatson
     #   analyzes only the textual content.
     #
     #   **See also:** [Using the general-purpose
-    #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer/using-tone.html#using-the-general-purpose-endpoint).
+    #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer?topic=tone-analyzer-utgpe#utgpe).
     # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
     # @param sentences [Boolean] Indicates whether the service is to return an analysis of each individual sentence
@@ -183,8 +187,8 @@ module IBMWatson
 
     ##
     # @!method tone_chat(utterances:, content_language: nil, accept_language: nil)
-    # Analyze customer engagement tone.
-    # Use the customer engagement endpoint to analyze the tone of customer service and
+    # Analyze customer-engagement tone.
+    # Use the customer-engagement endpoint to analyze the tone of customer service and
     #   customer support conversations. For each utterance of a conversation, the method
     #   reports the most prevalent subset of the following seven tones: sad, frustrated,
     #   satisfied, excited, polite, impolite, and sympathetic.
@@ -197,7 +201,7 @@ module IBMWatson
     #   character encoding for JSON content is effectively always UTF-8.
     #
     #   **See also:** [Using the customer-engagement
-    #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer/using-tone-chat.html#using-the-customer-engagement-endpoint).
+    #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer?topic=tone-analyzer-utco#utco).
     # @param utterances [Array[Utterance]] An array of `Utterance` objects that provides the input content that the service
     #   is to analyze.
     # @param content_language [String] The language of the input text for the request: English or French. Regional

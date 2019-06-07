@@ -17,7 +17,6 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
       )
       @service.add_default_headers(
         headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
           "X-Watson-Test" => "1"
         }
       )
@@ -56,6 +55,43 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
       service_response = service.identify(
         text: "祝你有美好的一天"
       ).result
+      refute(service_response.nil?)
+    end
+
+    def test_translate_document
+      @service = IBMWatson::LanguageTranslatorV3.new(
+        iam_apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"],
+        url: ENV["LANGUAGE_TRANSLATOR_URL"],
+        version: "2018-05-01"
+      )
+      @service.add_default_headers(
+        headers: {
+          "X-Watson-Test" => "1"
+        }
+      )
+
+      File.open(Dir.getwd + "/resources/translation_doc.txt") do |file_info|
+        service_response = service.translate_document(
+          file: file_info,
+          filename: "translation_doc.txt",
+          model_id: "en-fr"
+        ).result
+        refute(service_response.nil?)
+      end
+    end
+
+    def test_list_documents
+      @service = IBMWatson::LanguageTranslatorV3.new(
+        iam_apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"],
+        url: ENV["LANGUAGE_TRANSLATOR_URL"],
+        version: "2018-05-01"
+      )
+      @service.add_default_headers(
+        headers: {
+          "X-Watson-Test" => "1"
+        }
+      )
+      service_response = service.list_documents.result
       refute(service_response.nil?)
     end
 

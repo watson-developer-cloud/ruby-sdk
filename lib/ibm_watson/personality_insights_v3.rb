@@ -26,9 +26,9 @@
 # is timestamped, can report temporal behavior.
 # * For information about the meaning of the models that the service uses to describe
 # personality characteristics, see [Personality
-# models](https://cloud.ibm.com/docs/services/personality-insights/models.html).
+# models](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-models#models).
 # * For information about the meaning of the consumption preferences, see [Consumption
-# preferences](https://cloud.ibm.com/docs/services/personality-insights/preferences.html).
+# preferences](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-preferences#preferences).
 #
 #
 # **Note:** Request logging is disabled for the Personality Insights service. Regardless
@@ -84,6 +84,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -94,6 +96,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "personality_insights"
       super
@@ -116,9 +120,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Requesting a
-    #   profile](https://cloud.ibm.com/docs/services/personality-insights/input.html)
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#input)
     #   * [Providing sufficient
-    #   input](https://cloud.ibm.com/docs/services/personality-insights/input.html#sufficient)
+    #   input](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#sufficient)
     #
     #
     #   ### Content types
@@ -136,7 +140,7 @@ module IBMWatson
     #   `Content-Type: text/plain;charset=utf-8`.
     #
     #   **See also:** [Specifying request and response
-    #   formats](https://cloud.ibm.com/docs/services/personality-insights/input.html#formats)
+    #   formats](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#formats)
     #
     #
     #   ### Accept types
@@ -148,12 +152,12 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Understanding a JSON
-    #   profile](https://cloud.ibm.com/docs/services/personality-insights/output.html)
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-output#output)
     #   * [Understanding a CSV
-    #   profile](https://cloud.ibm.com/docs/services/personality-insights/output-csv.html).
+    #   profile](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-outputCSV#outputCSV).
     # @param content [Content] A maximum of 20 MB of content to analyze, though the service requires much less
     #   text; for more information, see [Providing sufficient
-    #   input](https://cloud.ibm.com/docs/services/personality-insights/input.html#sufficient).
+    #   input](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#sufficient).
     #   For JSON input, provide an object of type `Content`.
     # @param accept [String] The type of the response. For more information, see **Accept types** in the method
     #   description.

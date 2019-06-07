@@ -280,7 +280,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.train_language_model(
       customization_id: "customid"
     )
-    assert_nil(service_response)
+    refute_nil(service_response)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/modelid")
       .with(
@@ -353,7 +353,7 @@ class SpeechToTextV1Test < Minitest::Test
     service_response = service.train_acoustic_model(
       customization_id: "customid"
     )
-    assert_nil(service_response)
+    refute_nil(service_response)
 
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/modelid")
       .with(

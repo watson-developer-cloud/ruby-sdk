@@ -20,7 +20,7 @@
 # can ignore most advertisements and other unwanted content.
 #
 # You can create [custom
-# models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
+# models](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-customizing)
 # with Watson Knowledge Studio to detect custom entities, relations, and categories in
 # Natural Language Understanding.
 
@@ -73,6 +73,8 @@ module IBMWatson
     #   made with an expired token will fail.
     # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
     #   'https://iam.cloud.ibm.com/identity/token'.
+    # @option args iam_client_id [String] An optional client id for the IAM service API.
+    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -83,6 +85,8 @@ module IBMWatson
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
+      defaults[:iam_client_id] = nil
+      defaults[:iam_client_secret] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "natural-language-understanding"
       super
@@ -117,10 +121,10 @@ module IBMWatson
     #   required.
     # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
     #   cleaning, see the [Analyzing
-    #   webpages](https://cloud.ibm.com/docs/services/natural-language-understanding/analyzing-webpages.html)
+    #   webpages](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages)
     #   documentation.
     # @param xpath [String] An [XPath
-    #   query](https://cloud.ibm.com/docs/services/natural-language-understanding/analyzing-webpages.html#xpath)
+    #   query](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages#xpath)
     #   to perform on `html` or `url` input. Results of the query will be appended to the
     #   cleaned webpage text before it is analyzed. To analyze only the results of the
     #   XPath query, set the `clean` parameter to `false`.
@@ -129,8 +133,8 @@ module IBMWatson
     # @param language [String] ISO 639-1 code that specifies the language of your text. This overrides automatic
     #   language detection. Language support differs depending on the features you include
     #   in your analysis. See [Language
-    #   support](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-
-    #   understanding-language-support) for more information.
+    #   support](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-language-support)
+    #   for more information.
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
@@ -175,6 +179,35 @@ module IBMWatson
     #########################
 
     ##
+    # @!method list_models
+    # List models.
+    # Lists Watson Knowledge Studio [custom entities and relations
+    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-customizing)
+    #   that are deployed to your Natural Language Understanding service.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_models
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
     # @!method delete_model(model_id:)
     # Delete model.
     # Deletes a custom model.
@@ -196,35 +229,6 @@ module IBMWatson
 
       response = request(
         method: "DELETE",
-        url: method_url,
-        headers: headers,
-        params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method list_models
-    # List models.
-    # Lists Watson Knowledge Studio [custom
-    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding/customizing.html)
-    #   that are deployed to your Natural Language Understanding service.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_models
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_models")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      method_url = "/v1/models"
-
-      response = request(
-        method: "GET",
         url: method_url,
         headers: headers,
         params: params,
