@@ -525,7 +525,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         assert_equal req.headers["Accept"], "application/json"
         assert_match %r{\Amultipart/form-data}, req.headers["Content-Type"]
       end
-    file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
+    file = File.open(Dir.getwd + "/resources/translation_doc.txt")
     service.translate_document(file: file, filename: "file")
   end
 
