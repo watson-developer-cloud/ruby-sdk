@@ -341,6 +341,37 @@ thr.join # Wait for the thread to finish before ending the program or running ot
 
 Note: `recognize_with_websocket` has been **deprecated** in favor of **`recognize_using_websocket`**
 
+## IBM Cloud Pak for Data(ICP4D)
+If your service instance is of ICP4D, below are two ways of initializing the assistant service.
+
+#### 1) Supplying the `username`, `password`, `icp4d_url` and `authentication_type`
+
+The SDK will manage the token for the user
+
+```ruby
+  assistant = IBMWatson::AssistantV1.new(
+    version: "<version>",
+    username: "<username>",
+    password: "<password>",
+    url: "<service url>",
+    icp4d_url: "<authentication url>",
+    authentication_type: "icp4d"
+  )
+  assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL VERIFICATION IS DISABLED
+```
+
+#### 2) Supplying the access token
+
+```ruby
+  assistant = IBMWatson::AssistantV1.new(
+    version: "<version>",
+    url: "<service url>",
+    icp4d_token: "<your managed access token>",
+    authentication_type: "icp4d"
+  )
+  assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL VERIFICATION IS DISABLED
+```
+
 ## Ruby version
 
 Tested on:
