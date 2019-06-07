@@ -58,6 +58,14 @@ module IBMWatson
     #   'https://iam.cloud.ibm.com/identity/token'.
     # @option args iam_client_id [String] An optional client id for the IAM service API.
     # @option args iam_client_secret [String] An optional client secret for the IAM service API.
+    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
+    #   fully managed by the application. Responsibility falls on the application to
+    #   refresh the token, either before it expires or reactively upon receiving a 401
+    #   from the service as any requests made with an expired token will fail.
+    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
+    #   URL must be passed in.
+    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
+    #   takes are basic, iam or icp4d.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
@@ -68,6 +76,9 @@ module IBMWatson
       defaults[:iam_url] = nil
       defaults[:iam_client_id] = nil
       defaults[:iam_client_secret] = nil
+      defaults[:icp4d_access_token] = nil
+      defaults[:icp4d_url] = nil
+      defaults[:authetication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "compare-comply"
       super
