@@ -436,7 +436,7 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_using_websocket(content_type:,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
@@ -499,11 +499,12 @@ module IBMWatson
     #   results. By default, the service returns no audio metrics.
     # @return [WebSocketClient] Returns a new WebSocketClient object
     def recognize_using_websocket(
-      content_type:,
+      content_type: nil,
       recognize_callback:,
       audio: nil,
       chunk_data: false,
       model: nil,
+      language_customization_id: nil,
       customization_id: nil,
       acoustic_customization_id: nil,
       customization_weight: nil,
@@ -542,6 +543,7 @@ module IBMWatson
       params = {
         "model" => model,
         "customization_id" => customization_id,
+        "langauge_customization_id" => language_customization_id,
         "acoustic_customization_id" => acoustic_customization_id,
         "customization_weight" => customization_weight,
         "base_model_version" => base_model_version
@@ -568,7 +570,7 @@ module IBMWatson
         "audio_metrics" => audio_metrics
       }
       options.delete_if { |_, v| v.nil? }
-      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers)
+      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
     end
 
     # :nocov:

@@ -433,6 +433,7 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def translate_document(file:, filename: nil, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
+      raise ArgumentError.new("filename must be provided") if filename.nil?
 
       headers = {
       }

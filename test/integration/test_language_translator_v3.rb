@@ -73,6 +73,7 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
       File.open(Dir.getwd + "/resources/translation_doc.txt") do |file_info|
         service_response = service.translate_document(
           file: file_info,
+          filename: "translation_doc.txt",
           model_id: "en-fr"
         ).result
         refute(service_response.nil?)
