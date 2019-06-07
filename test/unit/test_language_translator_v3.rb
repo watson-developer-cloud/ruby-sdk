@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require("json")
+require("jwt")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
 
@@ -8,7 +9,32 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 # Unit tests for the Language Translator V3 Service
 class LanguageTranslatorV3Test < Minitest::Test
+  def token
+    access_token_layout = {
+      "username" => "dummy",
+      "role" => "Admin",
+      "permissions" => %w[administrator manage_catalog],
+      "sub" => "admin",
+      "iss" => "sss",
+      "aud" => "sss",
+      "uid" => "sss",
+      "iat" => 3600,
+      "exp" => Time.now.to_i
+    }
+
+    access_token = JWT.encode(access_token_layout, "secret", "HS256", "kid": "230498151c214b788dd97f22b85410a5")
+    token_response = {
+      "access_token" => access_token,
+      "token_type" => "Bearer",
+      "expires_in" => 3600,
+      "expiration" => 1_524_167_011,
+      "refresh_token" => "jy4gl91BQ"
+    }
+    token_response
+  end
+
   def test_translate_source_target
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -20,13 +46,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -43,7 +63,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: "{\"text\":\"Hola, cómo estás? €\",\"source\":\"es\",\"target\":\"en\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -57,6 +77,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_translate_model_id
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -68,13 +89,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -95,7 +110,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: "{\"text\":\"Messi is the best ever\",\"model_id\":\"en-es-conversational\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -108,6 +123,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_identify
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -119,13 +135,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -153,7 +163,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: "祝你有美好的一天",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Content-Type" => "text/plain",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -165,6 +175,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_list_identifiable_languages
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -176,13 +187,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -221,8 +226,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
-          "Host" => "gateway.watsonplatform.net"
+          "Authorization" => "Bearer " + token_response["access_token"]
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_identifiable_languages
@@ -230,6 +234,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_create_model
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -241,13 +246,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -270,7 +269,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -300,6 +299,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_delete_model
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -311,13 +311,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -331,7 +325,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -342,6 +336,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_get_model
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -353,13 +348,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -382,7 +371,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -393,6 +382,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_list_models
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -404,13 +394,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -449,7 +433,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -457,7 +441,8 @@ class LanguageTranslatorV3Test < Minitest::Test
     assert_equal(expected, service_response.result)
   end
 
-  def test_lis_documents
+  def test_list_documents
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -469,13 +454,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -487,7 +466,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -496,6 +475,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_translate_document
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -507,13 +487,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -530,6 +504,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_get_document_status
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -541,13 +516,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -559,7 +528,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -568,6 +537,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_get_translated_document
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -579,13 +549,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -597,7 +561,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
@@ -606,6 +570,7 @@ class LanguageTranslatorV3Test < Minitest::Test
   end
 
   def test_delete_document
+    token_response = token
     stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
       .with(
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
@@ -617,13 +582,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ).to_return(
         status: 200,
-        body: {
-          "access_token" => "oAeisG8yqPY7sFR_x66Z15",
-          "token_type" => "Bearer",
-          "expires_in" => 3600,
-          "expiration" => 1_524_167_011,
-          "refresh_token" => "jy4gl91BQ"
-        }.to_json,
+        body: token_response.to_json,
         headers: {}
       )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -634,7 +593,7 @@ class LanguageTranslatorV3Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")
       .with(
         headers: {
-          "Authorization" => "Bearer oAeisG8yqPY7sFR_x66Z15",
+          "Authorization" => "Bearer " + token_response["access_token"],
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
