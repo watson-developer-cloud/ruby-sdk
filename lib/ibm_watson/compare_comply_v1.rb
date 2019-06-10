@@ -78,7 +78,7 @@ module IBMWatson
       defaults[:iam_client_secret] = nil
       defaults[:icp4d_access_token] = nil
       defaults[:icp4d_url] = nil
-      defaults[:authetication_type] = nil
+      defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "compare-comply"
       super
