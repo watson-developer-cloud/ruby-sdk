@@ -554,7 +554,7 @@ module IBMWatson
       params = {
         "model" => model,
         "customization_id" => customization_id,
-        "langauge_customization_id" => language_customization_id,
+        "language_customization_id" => language_customization_id,
         "acoustic_customization_id" => acoustic_customization_id,
         "customization_weight" => customization_weight,
         "base_model_version" => base_model_version
