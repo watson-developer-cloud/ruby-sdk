@@ -390,9 +390,6 @@ module IBMWatson
     #
     #   See [Numeric
     #   redaction](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#redaction).
-    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
-    #   not restricted, so you can specify values such as 0.25 and 0.125.
-    #
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
@@ -1016,6 +1013,8 @@ module IBMWatson
     # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
     #   return processing metrics. The parameter is ignored unless the
     #   `processing_metrics` parameter is set to `true`.    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
+    #
+    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
     #   not restricted, so you can specify values such as 0.25 and 0.125.
     #
     #   The service does not impose a maximum value. If you want to receive processing
@@ -1388,6 +1387,11 @@ module IBMWatson
     #   * The service is currently handling another request for the custom model, such as
     #   another training request or a request to add a corpus or grammar to the model.
     #   * No training data have been added to the custom model.
+    #   * The custom model contains one or more invalid corpora, grammars, or words (for
+    #   example, a custom word has an invalid sounds-like pronunciation). You can correct
+    #   the invalid resources or set the `strict` parameter to `false` to exclude the
+    #   invalid resources from the training. The model must contain at least one valid
+    #   resource for training to succeed.
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1609,11 +1613,17 @@ module IBMWatson
     #   that matches the language of the custom model and reflects the contents of the
     #   corpus.
     #   * Include a maximum of 128 characters in the name.
-    #   * Do not include spaces, slashes, or backslashes in the name.
+    #   * Do not use characters that need to be URL-encoded. For example, do not use
+    #   spaces, slashes, backslashes, colons, ampersands, double quotes, plus signs,
+    #   equals signs, questions marks, and so on in the name. (The service does not
+    #   prevent the use of these characters. But because they must be URL-encoded wherever
+    #   used, their use is strongly discouraged.)
     #   * Do not use the name of an existing corpus or grammar that is already defined for
     #   the custom model.
     #   * Do not use the name `user`, which is reserved by the service to denote custom
     #   words that are added or modified by the user.
+    #   * Do not use the name `base_lm` or `default_lm`. Both names are reserved for
+    #   future use by the service.
     # @param corpus_file [File] A plain text file that contains the training data for the corpus. Encode the file
     #   in UTF-8 if it contains non-ASCII characters; the service assumes UTF-8 encoding
     #   if it encounters non-ASCII characters.
@@ -1772,7 +1782,7 @@ module IBMWatson
     #   are sorted in ascending alphabetical order. For alphabetical ordering, the
     #   lexicographical precedence is numeric values, uppercase letters, and lowercase
     #   letters. For count ordering, values with the same count are ordered
-    #   alphabetically. With the `curl` command, URL encode the `+` symbol as `%2B`.
+    #   alphabetically. With the `curl` command, URL-encode the `+` symbol as `%2B`.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_words(customization_id:, word_type: nil, sort: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2150,11 +2160,17 @@ module IBMWatson
     #   that matches the language of the custom model and reflects the contents of the
     #   grammar.
     #   * Include a maximum of 128 characters in the name.
-    #   * Do not include spaces, slashes, or backslashes in the name.
+    #   * Do not use characters that need to be URL-encoded. For example, do not use
+    #   spaces, slashes, backslashes, colons, ampersands, double quotes, plus signs,
+    #   equals signs, questions marks, and so on in the name. (The service does not
+    #   prevent the use of these characters. But because they must be URL-encoded wherever
+    #   used, their use is strongly discouraged.)
     #   * Do not use the name of an existing grammar or corpus that is already defined for
     #   the custom model.
     #   * Do not use the name `user`, which is reserved by the service to denote custom
     #   words that are added or modified by the user.
+    #   * Do not use the name `base_lm` or `default_lm`. Both names are reserved for
+    #   future use by the service.
     # @param grammar_file [String] A plain text file that contains the grammar in the format specified by the
     #   `Content-Type` header. Encode the file in UTF-8 (ASCII is a subset of UTF-8).
     #   Using any other encoding can lead to issues when compiling the grammar or to
@@ -2462,8 +2478,10 @@ module IBMWatson
     #   model** method to poll the model's status. Use a loop to check the status once a
     #   minute. The method returns an `AcousticModel` object that includes `status` and
     #   `progress` fields. A status of `available` indicates that the custom model is
-    #   trained and ready to use. The service cannot accept subsequent training requests,
-    #   or requests to add new audio resources, until the existing request completes.
+    #   trained and ready to use. The service cannot train a model while it is handling
+    #   another request for the model. The service cannot accept subsequent training
+    #   requests, or requests to add new audio resources, until the existing training
+    #   request completes.
     #
     #   You can use the optional `custom_language_model_id` parameter to specify the GUID
     #   of a separately created custom language model that is to be used during training.
@@ -2490,6 +2508,10 @@ module IBMWatson
     #   * You passed an incompatible custom language model with the
     #   `custom_language_model_id` query parameter. Both custom models must be based on
     #   the same version of the same base model.
+    #   * The custom model contains one or more invalid audio resources. You can correct
+    #   the invalid audio resources or set the `strict` parameter to `false` to exclude
+    #   the invalid resources from the training. The model must contain at least one valid
+    #   resource for training to succeed.
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2531,8 +2553,11 @@ module IBMWatson
     # Resets a custom acoustic model by removing all audio resources from the model.
     #   Resetting a custom acoustic model initializes the model to its state when it was
     #   first created. Metadata such as the name and language of the model are preserved,
-    #   but the model's audio resources are removed and must be re-created. You must use
-    #   credentials for the instance of the service that owns a model to reset it.
+    #   but the model's audio resources are removed and must be re-created. The service
+    #   cannot reset a model while it is handling another request for the model. The
+    #   service cannot accept subsequent requests for the model until the existing reset
+    #   request completes. You must use credentials for the instance of the service that
+    #   owns a model to reset it.
     #
     #   **See also:** [Resetting a custom acoustic
     #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAcousticModels#resetModel-acoustic).
@@ -2576,8 +2601,10 @@ module IBMWatson
     #   returns an `AcousticModel` object that includes `status` and `progress` fields.
     #   Use a loop to check the status once a minute. While it is being upgraded, the
     #   custom model has the status `upgrading`. When the upgrade is complete, the model
-    #   resumes the status that it had prior to upgrade. The service cannot accept
-    #   subsequent requests for the model until the upgrade completes.
+    #   resumes the status that it had prior to upgrade. The service cannot upgrade a
+    #   model while it is handling another request for the model. The service cannot
+    #   accept subsequent requests for the model until the existing upgrade request
+    #   completes.
     #
     #   If the custom acoustic model was trained with a separately created custom language
     #   model, you must use the `custom_language_model_id` parameter to specify the GUID
@@ -2680,22 +2707,22 @@ module IBMWatson
     #   format that the service supports for speech recognition.
     #
     #   You can use this method to add any number of audio resources to a custom model by
-    #   calling the method once for each audio or archive file. But the addition of one
-    #   audio resource must be fully complete before you can add another. You must add a
-    #   minimum of 10 minutes and a maximum of 200 hours of audio that includes speech,
-    #   not just silence, to a custom acoustic model before you can train it. No audio
-    #   resource, audio- or archive-type, can be larger than 100 MB. To add an audio
-    #   resource that has the same name as an existing audio resource, set the
-    #   `allow_overwrite` parameter to `true`; otherwise, the request fails.
+    #   calling the method once for each audio or archive file. You can add multiple
+    #   different audio resources at the same time. You must add a minimum of 10 minutes
+    #   and a maximum of 200 hours of audio that includes speech, not just silence, to a
+    #   custom acoustic model before you can train it. No audio resource, audio- or
+    #   archive-type, can be larger than 100 MB. To add an audio resource that has the
+    #   same name as an existing audio resource, set the `allow_overwrite` parameter to
+    #   `true`; otherwise, the request fails.
     #
     #   The method is asynchronous. It can take several seconds to complete depending on
     #   the duration of the audio and, in the case of an archive file, the total number of
     #   audio files being processed. The service returns a 201 response code if the audio
     #   is valid. It then asynchronously analyzes the contents of the audio file or files
     #   and automatically extracts information about the audio such as its length,
-    #   sampling rate, and encoding. You cannot submit requests to add additional audio
-    #   resources to a custom acoustic model, or to train the model, until the service's
-    #   analysis of all audio files for the current request completes.
+    #   sampling rate, and encoding. You cannot submit requests to train or upgrade the
+    #   model until the service's analysis of all audio resources for current requests
+    #   completes.
     #
     #   To determine the status of the service's analysis of the audio, use the **Get an
     #   audio resource** method to poll the status of the audio. The method accepts the
@@ -2767,13 +2794,9 @@ module IBMWatson
     #
     #   ### Naming restrictions for embedded audio files
     #
-    #    The name of an audio file that is embedded within an archive-type resource must
-    #   meet the following restrictions:
-    #   * Include a maximum of 128 characters in the file name; this includes the file
-    #   extension.
-    #   * Do not include spaces, slashes, or backslashes in the file name.
-    #   * Do not use the name of an audio file that has already been added to the custom
-    #   model as part of an archive-type resource.
+    #    The name of an audio file that is contained in an archive-type resource can
+    #   include a maximum of 128 characters. This includes the file extension and all
+    #   elements of the name (for example, slashes).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2781,7 +2804,11 @@ module IBMWatson
     #   name that matches the language of the custom model and reflects the contents of
     #   the resource.
     #   * Include a maximum of 128 characters in the name.
-    #   * Do not include spaces, slashes, or backslashes in the name.
+    #   * Do not use characters that need to be URL-encoded. For example, do not use
+    #   spaces, slashes, backslashes, colons, ampersands, double quotes, plus signs,
+    #   equals signs, questions marks, and so on in the name. (The service does not
+    #   prevent the use of these characters. But because they must be URL-encoded wherever
+    #   used, their use is strongly discouraged.)
     #   * Do not use the name of an audio resource that has already been added to the
     #   custom model.
     # @param audio_resource [String] The audio resource that is to be added to the custom acoustic model, an individual
@@ -2905,12 +2932,14 @@ module IBMWatson
     # @!method delete_audio(customization_id:, audio_name:)
     # Delete an audio resource.
     # Deletes an existing audio resource from a custom acoustic model. Deleting an
-    #   archive-type audio resource removes the entire archive of files; the current
-    #   interface does not allow deletion of individual files from an archive resource.
+    #   archive-type audio resource removes the entire archive of files. The service does
+    #   not allow deletion of individual files from an archive resource.
+    #
     #   Removing an audio resource does not affect the custom model until you train the
     #   model on its updated data by using the **Train a custom acoustic model** method.
-    #   You must use credentials for the instance of the service that owns a model to
-    #   delete its audio resources.
+    #   You can delete an existing audio resource from a model while a different resource
+    #   is being added to the model. You must use credentials for the instance of the
+    #   service that owns a model to delete its audio resources.
     #
     #   **See also:** [Deleting an audio resource from a custom acoustic
     #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAudio#deleteAudio).

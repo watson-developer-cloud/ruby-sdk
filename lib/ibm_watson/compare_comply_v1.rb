@@ -47,6 +47,16 @@ module IBMWatson
     # @option args url [String] The base url to use when contacting the service (e.g.
     #   "https://gateway.watsonplatform.net/compare-comply/api").
     #   The base url may differ between IBM Cloud regions.
+    # @option args username [String] The username used to authenticate with the service.
+    #   Username and password credentials are only required to run your
+    #   application locally or outside of IBM Cloud. When running on
+    #   IBM Cloud, the credentials will be automatically loaded from the
+    #   `VCAP_SERVICES` environment variable.
+    # @option args password [String] The password used to authenticate with the service.
+    #   Username and password credentials are only required to run your
+    #   application locally or outside of IBM Cloud. When running on
+    #   IBM Cloud, the credentials will be automatically loaded from the
+    #   `VCAP_SERVICES` environment variable.
     # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
     #   this API key is provided, the SDK will manage the token and handle the
     #   refreshing.
@@ -71,6 +81,8 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/compare-comply/api"
+      defaults[:username] = nil
+      defaults[:password] = nil
       defaults[:iam_apikey] = nil
       defaults[:iam_access_token] = nil
       defaults[:iam_url] = nil
