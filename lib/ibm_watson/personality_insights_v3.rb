@@ -198,8 +198,6 @@ module IBMWatson
     #   default, no consumption preferences are returned.
     # @param content_type [String] The type of the input. For more information, see **Content types** in the method
     #   description.
-    #
-    #   Default: `text/plain`.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
       raise ArgumentError.new("content must be provided") if content.nil?
