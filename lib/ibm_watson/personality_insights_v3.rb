@@ -111,9 +111,9 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "personality_insights"
+      args[:display_name] = "Personality Insights"
       super
       @version = args[:version]
-      args[:display_name] = "Personality Insights"
     end
 
     #########################

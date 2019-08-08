@@ -93,9 +93,9 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "compare-comply"
+      args[:display_name] = "Compare Comply"
       super
       @version = args[:version]
-      args[:display_name] = "Compare Comply"
     end
 
     #########################
