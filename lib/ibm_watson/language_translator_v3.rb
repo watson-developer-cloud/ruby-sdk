@@ -96,9 +96,9 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "language_translator"
+      args[:display_name] = "Language Translator"
       super
       @version = args[:version]
-      args[:display_name] = "Language Translator"
     end
 
     #########################

@@ -84,8 +84,8 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "natural_language_classifier"
-      super
       args[:display_name] = "Natural Language Classifier"
+      super
     end
 
     #########################

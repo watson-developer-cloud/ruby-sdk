@@ -82,9 +82,9 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "watson_vision_combined"
+      args[:display_name] = "Visual Recognition"
       super
       @version = args[:version]
-      args[:display_name] = "Visual Recognition"
     end
 
     #########################

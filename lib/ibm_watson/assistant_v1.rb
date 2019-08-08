@@ -94,9 +94,9 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "conversation"
+      args[:display_name] = "Assistant"
       super
       @version = args[:version]
-      args[:display_name] = "Assistant"
     end
 
     #########################
