@@ -102,9 +102,9 @@ module IBMWatson
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
       args[:vcap_services_name] = "tone_analyzer"
+      args[:display_name] = "Tone Analyzer"
       super
       @version = args[:version]
-      args[:display_name] = "Tone Analyzer"
     end
 
     #########################
