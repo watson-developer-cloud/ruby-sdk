@@ -274,6 +274,9 @@ Layout/EmptyLinesAroundModuleBody:
     - empty_lines_special
     - no_empty_lines
 
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+
 # Align ends correctly.
 Layout/EndAlignment:
   # The value `keyword` means that `end` should be aligned with the matching

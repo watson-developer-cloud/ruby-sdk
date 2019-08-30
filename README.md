@@ -130,49 +130,41 @@ You supply either an IAM service **API key** or an **access token**:
 
 ```ruby
 # In the constructor, letting the SDK manage the IAM token
+authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+  apikey: "<iam_apikey>",
+  version: "2018-02-16",
+  url: "<iam_url>" # optional - the default value is https://iam.cloud.ibm.com/identity/token
+)
 discovery = IBMWatson::DiscoveryV1.new(
   version: "2017-10-16",
-  iam_apikey: "<iam_apikey>",
-  iam_url: "<iam_url>" # optional - the default value is https://iam.cloud.ibm.com/identity/token
+  authenticator: authenticator
 )
-```
-
-```ruby
-# after instantiation, letting the SDK manage the IAM token
-discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
-discovery.iam_apikey(iam_apikey: "<iam_apikey>")
 ```
 
 #### Supplying the access token
 
 ```ruby
-# in the constructor, assuming control of managing IAM token
-discovery = IBMWatson::DiscoveryV1.new(
-  version: "2017-10-16",
-  iam_access_token: "<iam_access_token>"
+authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+  bearer_token: "<iam_access_token>"
 )
-```
-
-```ruby
-# after instantiation, assuming control of managing IAM token
-discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16")
-discovery.iam_access_token(iam_access_token: "<access_token>")
+discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16", authenticator)
 ```
 
 ### Username and password
 
 ```ruby
 require "ibm_watson"
+require "ibm_cloud_sdk_core"
 include IBMWatson
 # In the constructor
-discovery = DiscoveryV1.new(version: "2017-10-16", username: "<username>", password: "<password>")
-```
-
-```ruby
-# After instantiation
-discovery = DiscoveryV1.new(version: "2017-10-16")
-discovery.username = "<username>"
-discovery.password = "<password>"
+authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+      username: "<username>",
+      password: "<password>"
+)
+discovery = DiscoveryV1.new(
+  version: "2017-10-16",
+  authenticator: authenticator
+)
 ```
 
 ## Sending requests asynchronously
@@ -185,9 +177,13 @@ Requests can be sent asynchronously. There are two asynchronous methods availabl
 When `await` is used, the request is made synchronously.
 
 ```ruby
+authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+  username: "<username>",
+  password: "<password>"
+)
+
 speech_to_text = IBMWatson::SpeechToTextV1.new(
-  username: "username",
-  password: "password"
+  authenticator: authenticator
 )
 audio_file = File.open(Dir.getwd + "/resources/speech.wav")
 future = speech_to_text.await.recognize(
@@ -200,9 +196,13 @@ output = future.value # The response is accessible at future.value
 When `async` is used, the request is made asynchronously
 
 ```ruby
+authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+  username: "<username>",
+  password: "<password>"
+)
+
 speech_to_text = IBMWatson::SpeechToTextV1.new(
-  username: "username",
-  password: "password"
+  authenticator: authenticator
 )
 audio_file = File.open(Dir.getwd + "/resources/speech.wav")
 future = speech_to_text.async.recognize(
@@ -222,8 +222,7 @@ require "ibm_watson"
 include IBMWatson
 
 assistant = AssistantV1.new(
-  username: "xxx",
-  password: "yyy",
+  authenticator: "<authenticator>"
   version: "2017-04-21"
 )
 
@@ -241,8 +240,7 @@ require "ibm_watson"
 include IBMWatson
 
 assistant = AssistantV1.new(
-  username: "xxx",
-  password: "yyy",
+  authenticator: "<authenticator>"
   version: "2017-04-21"
 )
 
@@ -270,8 +268,7 @@ require "ibm_watson/assistant_v1"
 include IBMWatson
 
 assistant = AssistantV1.new(
-  username: "{username}",
-  password: "{password}",
+  authenticator: "<authenticator>"
   version: "2018-07-10"
 )
 
@@ -307,8 +304,7 @@ include IBMWatson
 
 service = AssistantV1.new(
   version: "<version>",
-  username: "<username>",
-  password: "<password>",
+  authenticator: "<authenticator>"
 )
 
 service.configure_http_client(disable_ssl_verification: true)
@@ -341,35 +337,26 @@ thr.join # Wait for the thread to finish before ending the program or running ot
 
 Note: `recognize_with_websocket` has been **deprecated** in favor of **`recognize_using_websocket`**
 
-## IBM Cloud Pak for Data(ICP4D)
+## IBM Cloud Pak for Data(CP4D)
 If your service instance is of ICP4D, below are two ways of initializing the assistant service.
 
-#### 1) Supplying the `username`, `password`, `icp4d_url` and `authentication_type`
+#### Supplying the `username`, `password`, and `url`
 
 The SDK will manage the token for the user
 
 ```ruby
-  assistant = IBMWatson::AssistantV1.new(
-    version: "<version>",
-    username: "<username>",
-    password: "<password>",
-    url: "<service url>",
-    icp4d_url: "<authentication url>",
-    authentication_type: "icp4d"
-  )
-  assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL VERIFICATION IS DISABLED
-```
 
-#### 2) Supplying the access token
-
-```ruby
-  assistant = IBMWatson::AssistantV1.new(
-    version: "<version>",
-    url: "<service url>",
-    icp4d_token: "<your managed access token>",
-    authentication_type: "icp4d"
-  )
-  assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL VERIFICATION IS DISABLED
+authenticator = IBMCloudSdkCore::CLoudPakForDataAuthenticator.new(
+  username: "<username>",
+  password: "<password>",
+  url: "<authentication url>",
+  disable_ssl: true
+)
+assistant = IBMWatson::AssistantV1.new(
+  version: "<version>",
+  authenticator: authenticator
+)
+assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL VERIFICATION IS DISABLED
 ```
 
 ## Ruby version
