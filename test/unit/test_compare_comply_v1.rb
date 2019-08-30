@@ -11,12 +11,15 @@ WebMock.disable_net_connect!(allow_localhost: true)
 class CompareComplyV1 < Minitest::Test
   def test_convert_to_html
     # service.set_default_headers("x-watson-learning-opt-out" => true)
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/html_conversion").with do |req|
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/html_conversion?version=2018-10-15").with do |req|
       # Test the headers.
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
@@ -24,20 +27,19 @@ class CompareComplyV1 < Minitest::Test
     service.convert_to_html(
       file: file
     )
-    service.convert_to_html(
-      file: "dummy",
-      filename: "file"
-    )
   end
 
   def test_classify_elements
     # service.set_default_headers("x-watson-learning-opt-out" => true)
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/element_classification").with do |req|
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/element_classification?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -52,12 +54,15 @@ class CompareComplyV1 < Minitest::Test
 
   def test_extract_tables
     # service.set_default_headers("x-watson-learning-opt-out" => true)
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/tables").with do |req|
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/tables?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -72,12 +77,15 @@ class CompareComplyV1 < Minitest::Test
 
   def test_compare_documents
     # service.set_default_headers("x-watson-learning-opt-out" => true)
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/comparison").with do |req|
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/comparison?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -93,9 +101,12 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_list_feedback
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = {
       "feedback" => [
@@ -108,7 +119,7 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback")
+    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -122,9 +133,12 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_add_feedback
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = {
       "feedback_id" => "another_one"
@@ -132,7 +146,7 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback")
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -148,9 +162,12 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_get_feedback
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = {
       "feedback_id" => "messi"
@@ -158,7 +175,7 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi")
+    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -174,12 +191,15 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_delete_feedback
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = "200"
-    stub_request(:delete, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi")
+    stub_request(:delete, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -195,11 +215,14 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_create_batch
-    service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches?function=tables")
+    service = IBMWatson::CompareComplyV1.new(
+      version: "2018-10-15",
+      authenticator: authenticator
+    )
+    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches?function=tables&version=2018-10-15")
       .with do |req|
         assert_equal req.headers["Accept"], "application/json"
         assert_match %r{\Amultipart/form-data}, req.headers["Content-Type"]
@@ -217,9 +240,12 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_list_batches
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = {
       "batches" => []
@@ -227,7 +253,7 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches")
+    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -241,12 +267,15 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_get_batch
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = "200"
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo")
+    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -262,12 +291,15 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_update_batch
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::CompareComplyV1.new(
-      iam_apikey: "apikey",
-      iam_access_token: "token"
+      version: "2018-10-15",
+      authenticator: authenticator
     )
     message_response = "200"
-    stub_request(:put, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?action=goal")
+    stub_request(:put, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?action=goal&version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",

@@ -3,6 +3,7 @@
 require_relative("./../test_helper.rb")
 SimpleCov.command_name "test:integration"
 require("minitest/hooks/test")
+require("ibm_cloud_sdk_core")
 
 if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
   # Integration tests for the Watson Assistant V1 Service
@@ -10,10 +11,14 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      @service = IBMWatson::AssistantV1.new(
-        iam_apikey: ENV["ASSISTANT_APIKEY"],
-        url: ENV["ASSISTANT_URL"],
+      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+        apikey: ENV["ASSISTANT_APIKEY"],
         version: "2018-02-16"
+      )
+      @service = IBMWatson::AssistantV1.new(
+        version: "2018-02-16",
+        url: ENV["ASSISTANT_URL"],
+        authenticator: authenticator
       )
       @service.add_default_headers(
         headers: {
@@ -51,8 +56,7 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
 
     def test_get_workspace
       service_response = service.get_workspace(
-        workspace_id: ENV["ASSISTANT_WORKSPACE_ID"],
-        export: false
+        workspace_id: ENV["ASSISTANT_WORKSPACE_ID"]
       )
       assert((200..299).cover?(service_response.status))
     end

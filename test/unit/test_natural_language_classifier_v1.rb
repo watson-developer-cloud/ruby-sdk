@@ -9,9 +9,12 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Natural Language Classifier V1 Service
 class NaturalLanguageClassifierV1Test < Minitest::Test
   def test_success
-    service = IBMWatson::NaturalLanguageClassifierV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageClassifierV1.new(
+      authenticator: authenticator
     )
     list_response = {
       "classifiers" => [
@@ -101,13 +104,13 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     training_data = File.open(Dir.getwd + "/resources/weather_data_train.csv")
     service_response = service.create_classifier(
       training_data: training_data,
-      metadata: { "language" => "en" }
+      training_metadata: { "language" => "en" }
     )
     assert_equal(create_response, service_response.result)
 
     service_response = service.create_classifier(
       training_data: { "training" => "data" },
-      metadata: { "language" => "en" }
+      training_metadata: { "language" => "en" }
     )
     assert_equal(create_response, service_response.result)
 
@@ -126,9 +129,12 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
   end
 
   def test_classify_collection
-    service = IBMWatson::NaturalLanguageClassifierV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageClassifierV1.new(
+      authenticator: authenticator
     )
     classify_collection_response = {
       "classifier_id" => "497EF2-nlc-00",

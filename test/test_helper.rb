@@ -21,6 +21,8 @@ end
 require("minitest/autorun")
 require_relative("./../lib/ibm_watson.rb")
 require("minitest/retry")
+require("minitest/hooks/test")
+require("ibm_cloud_sdk_core")
 
 Minitest::Retry.use!
 

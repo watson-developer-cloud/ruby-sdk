@@ -9,9 +9,12 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_
     include Minitest::Hooks
     attr_accessor :service
     def before_all
+      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+        apikey: ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"]
+      )
       @service = IBMWatson::NaturalLanguageUnderstandingV1.new(
         version: "2018-03-16",
-        iam_apikey: ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"],
+        authenticator: authenticator,
         url: ENV["NATURAL_LANGUAGE_UNDERSTANDING_URL"]
       )
       @service.add_default_headers(

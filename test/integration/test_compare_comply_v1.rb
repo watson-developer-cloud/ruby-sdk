@@ -2,6 +2,7 @@
 
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
+require("ibm_cloud_sdk_core")
 
 if !ENV["COMPARE_COMPLY_APIKEY"].nil?
   # Integration tests for the Discovery V1 Service
@@ -10,9 +11,12 @@ if !ENV["COMPARE_COMPLY_APIKEY"].nil?
     attr_accessor :service, :environment_id, :collection_id
 
     def before_all
+      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+        apikey: ENV["ASSISTANT_APIKEY"]
+      )
       @service = IBMWatson::CompareComplyV1.new(
-        iam_apikey: ENV["COMPARE_COMPLY_APIKEY"],
-        version: "2018-10-15"
+        version: "2018-10-15",
+        authenticator: authenticator
       )
       @service.add_default_headers(
         headers: {

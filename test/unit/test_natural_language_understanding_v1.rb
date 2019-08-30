@@ -9,10 +9,13 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Natural Language Understanding V1 Service
 class NaturalLanguageUnderstandingV1Test < Minitest::Test
   def test_text_analyze
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-03-16")
       .with(
@@ -34,10 +37,13 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_html_analyze
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-03-16")
       .with(
@@ -62,10 +68,13 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_url_analyze
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-03-16")
       .with(
@@ -92,10 +101,13 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_list_models
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/models?version=2018-03-16")
       .with(
@@ -111,10 +123,13 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
 
   def test_delete_model
     model_id = "invalid_model_id"
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/models/invalid_model_id?version=2018-03-16")
       .with(
