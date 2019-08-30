@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,12 +77,6 @@ module IBMWatson
     #   'https://iam.cloud.ibm.com/identity/token'.
     # @option args iam_client_id [String] An optional client id for the IAM service API.
     # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
     # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
     #   takes are basic, iam or icp4d.
     def initialize(args = {})
@@ -90,21 +84,14 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/tone-analyzer/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "tone_analyzer"
+      @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
       args[:display_name] = "Tone Analyzer"
       super
-      @version = args[:version]
     end
 
     #########################
@@ -112,7 +99,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
+    # @!method tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
     # Analyze general tone.
     # Use the general-purpose endpoint to analyze the tone of your input content. The
     #   service analyzes the content for emotional and language tones. The method always
@@ -136,6 +123,8 @@ module IBMWatson
     #   endpoint](https://cloud.ibm.com/docs/services/tone-analyzer?topic=tone-analyzer-utgpe#utgpe).
     # @param tone_input [ToneInput] JSON, plain text, or HTML input that contains the content to be analyzed. For JSON
     #   input, provide an object of type `ToneInput`.
+    # @param content_type [String] The type of the input. A character encoding can be specified by including a
+    #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
     # @param sentences [Boolean] Indicates whether the service is to return an analysis of each individual sentence
     #   in addition to its analysis of the full document. If `true` (the default), the
     #   service returns results for each sentence.
@@ -157,16 +146,14 @@ module IBMWatson
     #   variants are treated as their parent language; for example, `en-US` is interpreted
     #   as `en`. You can use different languages for **Content-Language** and
     #   **Accept-Language**.
-    # @param content_type [String] The type of the input. A character encoding can be specified by including a
-    #   `charset` parameter. For example, 'text/plain;charset=utf-8'.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def tone(tone_input:, sentences: nil, tones: nil, content_language: nil, accept_language: nil, content_type: nil)
+    def tone(tone_input:, content_type: nil, sentences: nil, tones: nil, content_language: nil, accept_language: nil)
       raise ArgumentError.new("tone_input must be provided") if tone_input.nil?
 
       headers = {
+        "Content-Type" => content_type,
         "Content-Language" => content_language,
-        "Accept-Language" => accept_language,
-        "Content-Type" => content_type
+        "Accept-Language" => accept_language
       }
       sdk_headers = Common.new.get_sdk_headers("tone_analyzer", "V3", "tone")
       headers.merge!(sdk_headers)
@@ -185,6 +172,7 @@ module IBMWatson
 
       method_url = "/v3/tone"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -247,6 +235,7 @@ module IBMWatson
 
       method_url = "/v3/tone_chat"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,

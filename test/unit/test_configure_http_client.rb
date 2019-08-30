@@ -9,10 +9,12 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the configure_http_client customizations, such as proxies and timeouts
 class HTTPConfigTest < Minitest::Test
   def test_proxy_address_port
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
-      username: "username",
-      password: "password"
+      authenticator: authenticator
     )
     service.configure_http_client(
       proxy: {

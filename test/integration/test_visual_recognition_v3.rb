@@ -10,10 +10,13 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service, :classifier_id
     def before_all
+      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+        apikey: ENV["VISUAL_RECOGNITION_APIKEY"]
+      )
       @service = IBMWatson::VisualRecognitionV3.new(
-        iam_apikey: ENV["VISUAL_RECOGNITION_APIKEY"],
         version: "2018-03-19",
-        url: ENV["VISUAL_RECOGNITION_URL"]
+        url: ENV["VISUAL_RECOGNITION_URL"],
+        authenticator: authenticator
       )
       @classifier_id = "doxnotxdeletexsdksxintegration_718351350"
       @service.add_default_headers(

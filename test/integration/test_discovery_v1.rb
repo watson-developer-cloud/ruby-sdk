@@ -10,8 +10,11 @@ if !ENV["DISCOVERY_APIKEY"].nil? && !ENV["DISCOVERY_URL"].nil?
     attr_accessor :service, :environment_id, :collection_id
 
     def before_all
+      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+        apikey: ENV["DISCOVERY_APIKEY"]
+      )
       @service = IBMWatson::DiscoveryV1.new(
-        iam_apikey: ENV["DISCOVERY_APIKEY"],
+        authenticator: authenticator,
         url: ENV["DISCOVERY_URL"],
         version: "2018-03-05"
       )

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,30 +60,15 @@ module IBMWatson
     #   'https://iam.cloud.ibm.com/identity/token'.
     # @option args iam_client_id [String] An optional client id for the IAM service API.
     # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
     # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
     #   takes are basic, iam or icp4d.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:url] = "https://gateway.watsonplatform.net/natural-language-classifier/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "natural_language_classifier"
       args[:display_name] = "Natural Language Classifier"
       super
     end
@@ -116,6 +101,7 @@ module IBMWatson
 
       method_url = "/v1/classifiers/%s/classify" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -152,6 +138,7 @@ module IBMWatson
 
       method_url = "/v1/classifiers/%s/classify_collection" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -166,11 +153,11 @@ module IBMWatson
     #########################
 
     ##
-    # @!method create_classifier(metadata:, training_data:)
+    # @!method create_classifier(training_metadata:, training_data:)
     # Create classifier.
     # Sends data to create and train a classifier and returns information about the new
     #   classifier.
-    # @param metadata [File] Metadata in JSON format. The metadata identifies the language of the data, and an
+    # @param training_metadata [File] Metadata in JSON format. The metadata identifies the language of the data, and an
     #   optional name to identify the classifier. Specify the language with the 2-letter
     #   primary language code as assigned in ISO standard 639.
     #
@@ -181,8 +168,8 @@ module IBMWatson
     #   data can include up to 3,000 classes and 20,000 records. For details, see [Data
     #   preparation](https://cloud.ibm.com/docs/services/natural-language-classifier?topic=natural-language-classifier-using-your-data).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_classifier(metadata:, training_data:)
-      raise ArgumentError.new("metadata must be provided") if metadata.nil?
+    def create_classifier(training_metadata:, training_data:)
+      raise ArgumentError.new("training_metadata must be provided") if training_metadata.nil?
 
       raise ArgumentError.new("training_data must be provided") if training_data.nil?
 
@@ -193,10 +180,10 @@ module IBMWatson
 
       form_data = {}
 
-      unless metadata.instance_of?(StringIO) || metadata.instance_of?(File)
-        metadata = metadata.respond_to?(:to_json) ? StringIO.new(metadata.to_json) : StringIO.new(metadata)
+      unless training_metadata.instance_of?(StringIO) || training_metadata.instance_of?(File)
+        training_metadata = training_metadata.respond_to?(:to_json) ? StringIO.new(training_metadata.to_json) : StringIO.new(training_metadata)
       end
-      form_data[:training_metadata] = HTTP::FormData::File.new(metadata, content_type: "application/json", filename: metadata.respond_to?(:path) ? metadata.path : nil)
+      form_data[:training_metadata] = HTTP::FormData::File.new(training_metadata, content_type: "application/json", filename: training_metadata.respond_to?(:path) ? training_metadata.path : nil)
 
       unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
         training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
@@ -205,6 +192,7 @@ module IBMWatson
 
       method_url = "/v1/classifiers"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -228,6 +216,7 @@ module IBMWatson
 
       method_url = "/v1/classifiers"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -253,6 +242,7 @@ module IBMWatson
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -277,6 +267,7 @@ module IBMWatson
 
       method_url = "/v1/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,

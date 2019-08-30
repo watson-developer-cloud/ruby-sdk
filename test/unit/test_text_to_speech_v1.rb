@@ -55,9 +55,14 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "stream.watsonplatform.net"
         }
       ).to_return(status: 200, body: voices_response.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::TextToSpeechV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
     )
     service_response = service.list_voices
     assert_equal(voices_response, service_response.result)
@@ -94,9 +99,14 @@ class TextToSpeechV1Test < Minitest::Test
     response = {
       "pronunciation" => "pronunciation info"
     }
-    service = IBMWatson::TextToSpeechV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/pronunciation?text=this%20is%20some%20text")
       .with(
@@ -143,9 +153,14 @@ class TextToSpeechV1Test < Minitest::Test
 
   def test_custom_voice_models
     response = { "customizations" => "yep" }
-    service = IBMWatson::TextToSpeechV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations")
       .with(
@@ -232,9 +247,14 @@ class TextToSpeechV1Test < Minitest::Test
 
   def test_custom_words
     response = { "customizations" => "yep" }
-    service = IBMWatson::TextToSpeechV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/text-to-speech/api/v1/customizations/custid/words")
       .with(
@@ -313,9 +333,14 @@ class TextToSpeechV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = IBMWatson::TextToSpeechV1.new(
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://stream.watsonplatform.net/text-to-speech/api/v1/user_data?customer_id=id")
       .with(

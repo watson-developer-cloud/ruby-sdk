@@ -49,9 +49,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "character_count" => 19,
@@ -92,9 +95,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "character_count" => 22,
@@ -138,9 +144,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "languages" => [
@@ -190,9 +199,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "languages" => [
@@ -249,9 +261,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "status" => "available",
@@ -314,9 +329,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "status" => "OK"
@@ -351,9 +369,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "status" => "available",
@@ -397,9 +418,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {
       "models" => [
@@ -457,9 +481,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {}
     stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents?version=2018-05-01")
@@ -490,9 +517,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/documents?version=2018-05-01")
       .with do |req|
@@ -519,9 +549,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {}
     stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")
@@ -552,9 +585,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {}
     stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id/translated_document?version=2018-05-01")
@@ -585,9 +621,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
+    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
     service = IBMWatson::LanguageTranslatorV3.new(
       version: "2018-05-01",
-      iam_apikey: "iam_apikey"
+      authenticator: authenticator
     )
     expected = {}
     stub_request(:delete, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")

@@ -25,10 +25,13 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = IBMWatson::ToneAnalyzerV3.new(
-      version: "2017-09-21",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      authenticator: authenticator
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json")
     assert_equal(expected_response.status, service_response.status)
@@ -56,10 +59,13 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = IBMWatson::ToneAnalyzerV3.new(
-      version: "2017-09-21",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      authenticator: authenticator
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json", sentences: false)
     assert_equal(expected_response.status, service_response.status)
@@ -86,10 +92,13 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = IBMWatson::ToneAnalyzerV3.new(
-      version: "2017-09-21",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      authenticator: authenticator
     )
     utterances = [
       {
@@ -128,10 +137,13 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 400, body: tone_response.to_json, headers: headers)
-    service = IBMWatson::ToneAnalyzerV3.new(
-      version: "2017-09-21",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      authenticator: authenticator
     )
     begin
       service.tone(tone_input: text, content_type: "application/json")
@@ -160,10 +172,13 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Custom-Header-One" => "yes"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = IBMWatson::ToneAnalyzerV3.new(
-      version: "2017-09-21",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      authenticator: authenticator
     )
     service_response = service.headers(
       "Custom-Header-One" => "yes",
@@ -188,10 +203,13 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    service = IBMWatson::ToneAnalyzerV3.new(
-      version: "2017-09-21",
+    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::ToneAnalyzerV3.new(
+      version: "2017-09-21",
+      authenticator: authenticator
     )
     service_response = service.tone(tone_input: tone_text, content_type: "application/json")
     assert_equal(tone_response, service_response.result)

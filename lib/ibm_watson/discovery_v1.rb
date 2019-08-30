@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -84,21 +84,14 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/discovery/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "discovery"
+      @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
       args[:display_name] = "Discovery"
       super
-      @version = args[:version]
     end
 
     #########################
@@ -138,6 +131,7 @@ module IBMWatson
 
       method_url = "/v1/environments"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -168,6 +162,7 @@ module IBMWatson
 
       method_url = "/v1/environments"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -197,6 +192,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -239,6 +235,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "PUT",
         url: method_url,
@@ -269,6 +266,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -304,6 +302,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -367,6 +366,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -400,6 +400,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/configurations" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -432,6 +433,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -492,6 +494,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "PUT",
         url: method_url,
@@ -531,6 +534,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/configurations/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(configuration_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -558,9 +562,8 @@ module IBMWatson
     #   the provided configuration is used to process the document. If the
     #   **configuration_id** is also provided (both are present at the same time), then
     #   request is rejected. The maximum supported configuration size is 1 MB.
-    #   Configuration parts larger than 1 MB are rejected.
-    #   See the `GET /configurations/{configuration_id}` operation for an example
-    #   configuration.
+    #   Configuration parts larger than 1 MB are rejected. See the `GET
+    #   /configurations/{configuration_id}` operation for an example configuration.
     # @param file [File] The content of the document to ingest. The maximum supported file size when adding
     #   a file to a collection is 50 megabytes, the maximum supported file size when
     #   testing a confiruration is 1 megabyte. Files larger than the supported size are
@@ -568,10 +571,9 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected.
-    #   Example:  ``` {
-    #     \"Creator\": \"Johnny Appleseed\",
-    #     \"Subject\": \"Apples\"
+    #   are rejected. Example:  ``` {
+    #     "Creator": "Johnny Appleseed",
+    #     "Subject": "Apples"
     #   } ```.
     # @param step [String] Specify to only run the input document through the given step instead of running
     #   the input document through the entire ingestion workflow. Valid values are
@@ -610,6 +612,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/preview" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -657,6 +660,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -690,6 +694,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -722,6 +727,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -763,6 +769,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "PUT",
         url: method_url,
@@ -796,6 +803,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -829,6 +837,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/fields" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -866,6 +875,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -880,8 +890,8 @@ module IBMWatson
     # @!method create_expansions(environment_id:, collection_id:, expansions:)
     # Create or update expansion list.
     # Create or replace the Expansion list for this collection. The maximum number of
-    #   expanded terms per collection is `500`.
-    #   The current expansion list is replaced with the uploaded content.
+    #   expanded terms per collection is `500`. The current expansion list is replaced
+    #   with the uploaded content.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param expansions [Array[Expansion]] An array of query expansion definitions.
@@ -923,6 +933,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -958,6 +969,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/expansions" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -992,6 +1004,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1032,6 +1045,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1066,6 +1080,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/tokenization_dictionary" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1099,6 +1114,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1144,6 +1160,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1179,6 +1196,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/word_lists/stopwords" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1232,10 +1250,9 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected.
-    #   Example:  ``` {
-    #     \"Creator\": \"Johnny Appleseed\",
-    #     \"Subject\": \"Apples\"
+    #   are rejected. Example:  ``` {
+    #     "Creator": "Johnny Appleseed",
+    #     "Subject": "Apples"
     #   } ```.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_document(environment_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
@@ -1266,6 +1283,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/documents" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1306,6 +1324,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1334,10 +1353,9 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected.
-    #   Example:  ``` {
-    #     \"Creator\": \"Johnny Appleseed\",
-    #     \"Subject\": \"Apples\"
+    #   are rejected. Example:  ``` {
+    #     "Creator": "Johnny Appleseed",
+    #     "Subject": "Apples"
     #   } ```.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_document(environment_id:, collection_id:, document_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
@@ -1370,6 +1388,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1409,6 +1428,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/documents/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(document_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -1423,7 +1443,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
     # Query a collection.
     # By using this method, you can construct long queries. For details, see the
     #   [Discovery
@@ -1443,7 +1463,7 @@ module IBMWatson
     #   filters. Useful for applications to build lists, tables, and time series. For a
     #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param return_fields [String] A comma-separated list of the portion of the document hierarchy to return.
+    # @param _return [String] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10 and the offset is 8, it returns the last
     #   two results.
@@ -1484,15 +1504,15 @@ module IBMWatson
     #   a **number** type field is specified, returned results are biased towards higher
     #   field values. This parameter cannot be used in the same query as the **sort**
     #   parameter.
-    # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
+    # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
-        "X-Watson-Logging-Opt-Out" => logging_opt_out
+        "X-Watson-Logging-Opt-Out" => x_watson_logging_opt_out
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query")
       headers.merge!(sdk_headers)
@@ -1508,7 +1528,7 @@ module IBMWatson
         "passages" => passages,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => return_fields,
+        "return" => _return,
         "offset" => offset,
         "sort" => sort,
         "highlight" => highlight,
@@ -1526,6 +1546,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1538,7 +1559,7 @@ module IBMWatson
     end
 
     ##
-    # @!method query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    # @!method query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
     # Query system notices.
     # Queries for notices (errors or warnings) that might have been generated by the
     #   system. Notices are generated when ingesting documents and performing relevance
@@ -1560,7 +1581,7 @@ module IBMWatson
     #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
     #   together in any one query is **10000**.
-    # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
+    # @param _return [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10 and the offset is 8, it returns the last
     #   two results. The maximum for the **count** and **offset** values together in any
@@ -1590,7 +1611,7 @@ module IBMWatson
     #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1608,7 +1629,7 @@ module IBMWatson
         "passages" => passages,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => return_fields.to_a,
+        "return" => _return.to_a,
         "offset" => offset,
         "sort" => sort.to_a,
         "highlight" => highlight,
@@ -1623,6 +1644,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1634,7 +1656,7 @@ module IBMWatson
     end
 
     ##
-    # @!method federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    # @!method federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
     # Query multiple collections.
     # By using this method, you can construct long queries that search multiple
     #   collection. For details, see the [Discovery
@@ -1653,7 +1675,7 @@ module IBMWatson
     #   filters. Useful for applications to build lists, tables, and time series. For a
     #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param return_fields [String] A comma-separated list of the portion of the document hierarchy to return.
+    # @param _return [String] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10 and the offset is 8, it returns the last
     #   two results.
@@ -1694,13 +1716,13 @@ module IBMWatson
     #   a **number** type field is specified, returned results are biased towards higher
     #   field values. This parameter cannot be used in the same query as the **sort**
     #   parameter.
-    # @param logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
+    # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, logging_opt_out: nil)
+    def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
-        "X-Watson-Logging-Opt-Out" => logging_opt_out
+        "X-Watson-Logging-Opt-Out" => x_watson_logging_opt_out
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "federated_query")
       headers.merge!(sdk_headers)
@@ -1716,7 +1738,7 @@ module IBMWatson
         "passages" => passages,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => return_fields,
+        "return" => _return,
         "offset" => offset,
         "sort" => sort,
         "highlight" => highlight,
@@ -1734,6 +1756,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/query" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1746,7 +1769,7 @@ module IBMWatson
     end
 
     ##
-    # @!method federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    # @!method federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
     # Query multiple collection system notices.
     # Queries for notices (errors or warnings) that might have been generated by the
     #   system. Notices are generated when ingesting documents and performing relevance
@@ -1767,7 +1790,7 @@ module IBMWatson
     #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
     #   together in any one query is **10000**.
-    # @param return_fields [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
+    # @param _return [Array[String]] A comma-separated list of the portion of the document hierarchy to return.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10 and the offset is 8, it returns the last
     #   two results. The maximum for the **count** and **offset** values together in any
@@ -1792,7 +1815,7 @@ module IBMWatson
     #   identify similar documents. If not specified, the entire document is used for
     #   comparison.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, return_fields: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+    def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
@@ -1810,7 +1833,7 @@ module IBMWatson
         "natural_language_query" => natural_language_query,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => return_fields.to_a,
+        "return" => _return.to_a,
         "offset" => offset,
         "sort" => sort.to_a,
         "highlight" => highlight,
@@ -1822,6 +1845,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/notices" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1874,6 +1898,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/query_entities" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1931,6 +1956,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/query_relations" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1968,6 +1994,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2012,6 +2039,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2046,6 +2074,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2083,6 +2112,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2120,6 +2150,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2156,6 +2187,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2201,6 +2233,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2241,6 +2274,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2287,6 +2321,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "PUT",
         url: method_url,
@@ -2327,6 +2362,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/collections/%s/training_data/%s/examples/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id), ERB::Util.url_encode(query_id), ERB::Util.url_encode(example_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2367,6 +2403,7 @@ module IBMWatson
 
       method_url = "/v1/user_data"
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2385,7 +2422,7 @@ module IBMWatson
     # Create event.
     # The **Events** API can be used to create log entries that are associated with
     #   specific queries. For example, you can record which documents in the results set
-    #   were \"clicked\" by a user and when that click occured.
+    #   were "clicked" by a user and when that click occured.
     # @param type [String] The event type to be created.
     # @param data [EventData] Query event data object.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -2410,6 +2447,7 @@ module IBMWatson
 
       method_url = "/v1/events"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2459,6 +2497,7 @@ module IBMWatson
 
       method_url = "/v1/logs"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2495,6 +2534,7 @@ module IBMWatson
 
       method_url = "/v1/metrics/number_of_queries"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2509,7 +2549,7 @@ module IBMWatson
     # @!method get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
     # Number of queries with an event over time.
     # Total number of queries using the **natural_language_query** parameter that have a
-    #   corresponding \"click\" event over a specified time window. This metric requires
+    #   corresponding "click" event over a specified time window. This metric requires
     #   having integrated event tracking in your application using the **Events** API.
     # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
@@ -2532,6 +2572,7 @@ module IBMWatson
 
       method_url = "/v1/metrics/number_of_queries_with_event"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2568,6 +2609,7 @@ module IBMWatson
 
       method_url = "/v1/metrics/number_of_queries_with_no_search_results"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2582,9 +2624,8 @@ module IBMWatson
     # @!method get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
     # Percentage of queries with an associated event.
     # The percentage of queries using the **natural_language_query** parameter that have
-    #   a corresponding \"click\" event over a specified time window.  This metric
-    #   requires having integrated event tracking in your application using the **Events**
-    #   API.
+    #   a corresponding "click" event over a specified time window.  This metric requires
+    #   having integrated event tracking in your application using the **Events** API.
     # @param start_time [Time] Metric is computed from data recorded after this timestamp; must be in
     #   `YYYY-MM-DDThh:mm:ssZ` format.
     # @param end_time [Time] Metric is computed from data recorded before this timestamp; must be in
@@ -2606,6 +2647,7 @@ module IBMWatson
 
       method_url = "/v1/metrics/event_rate"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2620,7 +2662,7 @@ module IBMWatson
     # @!method get_metrics_query_token_event(count: nil)
     # Most frequent query tokens with an event.
     # The most frequent query tokens parsed from the **natural_language_query**
-    #   parameter and their corresponding \"click\" event rate within the recording period
+    #   parameter and their corresponding "click" event rate within the recording period
     #   (queries and events are stored for 30 days). A query token is an individual word
     #   or unigram within the query string.
     # @param count [Fixnum] Number of results to return. The maximum for the **count** and **offset** values
@@ -2639,6 +2681,7 @@ module IBMWatson
 
       method_url = "/v1/metrics/top_query_tokens_with_event_rate"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2675,6 +2718,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2731,6 +2775,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/credentials" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2768,6 +2813,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2826,6 +2872,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "PUT",
         url: method_url,
@@ -2860,6 +2907,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/credentials/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(credential_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -2893,6 +2941,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/gateways" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2928,6 +2977,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/gateways" % [ERB::Util.url_encode(environment_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2962,6 +3012,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/gateways/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(gateway_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2995,6 +3046,7 @@ module IBMWatson
 
       method_url = "/v1/environments/%s/gateways/%s" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(gateway_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,

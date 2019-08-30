@@ -10,8 +10,11 @@ if !ENV["NATURAL_LANGUAGE_CLASSIFIER_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_CLA
     include Minitest::Hooks
     attr_accessor :service
     def before_all
+      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+        apikey: ENV["NATURAL_LANGUAGE_CLASSIFIER_APIKEY"]
+      )
       @service = IBMWatson::NaturalLanguageClassifierV1.new(
-        iam_apikey: ENV["NATURAL_LANGUAGE_CLASSIFIER_APIKEY"],
+        authenticator: authenticator,
         url: ENV["NATURAL_LANGUAGE_CLASSIFIER_URL"]
       )
       @service.add_default_headers(

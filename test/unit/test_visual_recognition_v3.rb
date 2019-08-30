@@ -9,10 +9,13 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Visual Recognition V3 Service
 class VisualRecognitionV3Test < Minitest::Test
   def test_get_classifier
-    service = IBMWatson::VisualRecognitionV3.new(
-      version: "2018-03-19"
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
     )
-    service.iam_access_token(iam_access_token: "bogus_access_token")
+    service = IBMWatson::VisualRecognitionV3.new(
+      version: "2018-03-19",
+      authenticator: authenticator
+    )
     response = {
       "classifier_id" => "bogusnumber",
       "name" => "Dog Breeds",
@@ -40,9 +43,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_classifier
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?version=2018-03-19")
       .with(
@@ -59,9 +65,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_list_classifiers
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     response = {
       "classifiers" =>
@@ -91,9 +100,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_create_classifier
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     response = {
       "classifier_id" => "DogBreeds_2014254824",
@@ -130,9 +142,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_update_classifier
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     response = {
       "classifier_id" => "bogusid",
@@ -170,9 +185,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_classify
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     response = {
       "images" =>
@@ -240,9 +258,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_detect_faces
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     response = {
       "images" => [
@@ -304,9 +325,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_user_data
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/user_data?customer_id=id&version=2018-03-19")
       .with(
@@ -323,9 +347,12 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_get_core_ml_model
+    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      bearer_token: "bogus_access_token"
+    )
     service = IBMWatson::VisualRecognitionV3.new(
       version: "2018-03-19",
-      iam_access_token: "bogus_access_token"
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/classifierid/core_ml_model?version=2018-03-19")
       .with(
