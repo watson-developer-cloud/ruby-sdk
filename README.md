@@ -132,7 +132,6 @@ You supply either an IAM service **API key** or an **access token**:
 # In the constructor, letting the SDK manage the IAM token
 authenticator = IBMCloudSdkCore::IamAuthenticator.new(
   apikey: "<iam_apikey>",
-  version: "2018-02-16",
   url: "<iam_url>" # optional - the default value is https://iam.cloud.ibm.com/identity/token
 )
 discovery = IBMWatson::DiscoveryV1.new(
@@ -158,8 +157,8 @@ require "ibm_cloud_sdk_core"
 include IBMWatson
 # In the constructor
 authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
-      username: "<username>",
-      password: "<password>"
+  username: "<username>",
+  password: "<password>"
 )
 discovery = DiscoveryV1.new(
   version: "2017-10-16",
