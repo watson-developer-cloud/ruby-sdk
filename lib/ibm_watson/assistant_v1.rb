@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -82,21 +82,14 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/assistant/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "conversation"
+      @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
       args[:display_name] = "Assistant"
       super
-      @version = args[:version]
     end
 
     #########################
@@ -155,6 +148,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/message" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -170,21 +164,20 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_workspaces(page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List workspaces.
     # List the workspaces associated with a Watson Assistant service instance.
     #
     #   This operation is limited to 500 requests per 30 minutes. For more information,
     #   see **Rate limiting**.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned workspaces will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_workspaces(page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_workspaces")
@@ -193,7 +186,6 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -201,6 +193,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -260,6 +253,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -306,6 +300,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -378,6 +373,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -412,6 +408,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -426,7 +423,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_intents(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List intents.
     # List the intents for a workspace.
     #
@@ -438,14 +435,13 @@ module IBMWatson
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned intents will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_intents(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
@@ -457,7 +453,6 @@ module IBMWatson
         "version" => @version,
         "export" => export,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -465,6 +460,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -516,6 +512,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -561,6 +558,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -614,6 +612,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -651,6 +650,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -665,7 +665,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_examples(workspace_id:, intent:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List user input examples.
     # List the user input examples for an intent, optionally including contextual entity
     #   mentions.
@@ -675,14 +675,13 @@ module IBMWatson
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned examples will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_examples(workspace_id:, intent:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
@@ -695,7 +694,6 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -703,6 +701,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -754,6 +753,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s/examples" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -797,6 +797,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -849,6 +850,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -889,6 +891,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/intents/%s/examples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(intent), ERB::Util.url_encode(text)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -903,7 +906,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_counterexamples(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List counterexamples.
     # List the counterexamples for a workspace. Counterexamples are examples that have
     #   been marked as irrelevant input.
@@ -912,14 +915,13 @@ module IBMWatson
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned counterexamples will be sorted. To reverse the
     #   sort order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_counterexamples(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
@@ -930,7 +932,6 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -938,6 +939,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -985,6 +987,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/counterexamples" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1026,6 +1029,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1074,6 +1078,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1112,6 +1117,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/counterexamples/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(text)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1126,7 +1132,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_entities(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entities.
     # List the entities for a workspace.
     #
@@ -1138,14 +1144,13 @@ module IBMWatson
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned entities will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_entities(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
@@ -1157,7 +1162,6 @@ module IBMWatson
         "version" => @version,
         "export" => export,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1165,6 +1169,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1221,6 +1226,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1266,6 +1272,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1322,6 +1329,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1359,6 +1367,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1406,6 +1415,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/mentions" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1420,7 +1430,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entity values.
     # List the values for an entity.
     #
@@ -1432,14 +1442,13 @@ module IBMWatson
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned entity values will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_values(workspace_id:, entity:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1453,7 +1462,6 @@ module IBMWatson
         "version" => @version,
         "export" => export,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1461,6 +1469,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1472,7 +1481,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_value(workspace_id:, entity:, value:, metadata: nil, value_type: nil, synonyms: nil, patterns: nil)
+    # @!method create_value(workspace_id:, entity:, value:, metadata: nil, type: nil, synonyms: nil, patterns: nil)
     # Create entity value.
     # Create a new value for an entity.
     #
@@ -1488,7 +1497,7 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     # @param metadata [Hash] Any metadata related to the entity value.
-    # @param value_type [String] Specifies the type of entity value.
+    # @param type [String] Specifies the type of entity value.
     # @param synonyms [Array[String]] An array of synonyms for the entity value. A value can specify either synonyms or
     #   patterns (depending on the value type), but not both. A synonym must conform to
     #   the following resrictions:
@@ -1499,7 +1508,7 @@ module IBMWatson
     #   expression; for more information about how to specify a pattern, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-entities#entities-create-dictionary-based).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_value(workspace_id:, entity:, value:, metadata: nil, value_type: nil, synonyms: nil, patterns: nil)
+    def create_value(workspace_id:, entity:, value:, metadata: nil, type: nil, synonyms: nil, patterns: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1518,13 +1527,14 @@ module IBMWatson
       data = {
         "value" => value,
         "metadata" => metadata,
-        "type" => value_type,
+        "type" => type,
         "synonyms" => synonyms,
         "patterns" => patterns
       }
 
       method_url = "/v1/workspaces/%s/entities/%s/values" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1572,6 +1582,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1583,7 +1594,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_value_type: nil, new_synonyms: nil, new_patterns: nil)
+    # @!method update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
     # Update entity value.
     # Update an existing entity value with new or modified data. You must provide
     #   component objects defining the content of the updated entity value.
@@ -1601,7 +1612,7 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     # @param new_metadata [Hash] Any metadata related to the entity value.
-    # @param new_value_type [String] Specifies the type of entity value.
+    # @param new_type [String] Specifies the type of entity value.
     # @param new_synonyms [Array[String]] An array of synonyms for the entity value. A value can specify either synonyms or
     #   patterns (depending on the value type), but not both. A synonym must conform to
     #   the following resrictions:
@@ -1612,7 +1623,7 @@ module IBMWatson
     #   expression; for more information about how to specify a pattern, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-entities#entities-create-dictionary-based).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_value_type: nil, new_synonyms: nil, new_patterns: nil)
+    def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1631,13 +1642,14 @@ module IBMWatson
       data = {
         "value" => new_value,
         "metadata" => new_metadata,
-        "type" => new_value_type,
+        "type" => new_type,
         "synonyms" => new_synonyms,
         "patterns" => new_patterns
       }
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1678,6 +1690,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1692,7 +1705,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entity value synonyms.
     # List the synonyms for an entity value.
     #
@@ -1702,14 +1715,13 @@ module IBMWatson
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned entity value synonyms will be sorted. To reverse
     #   the sort order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1724,7 +1736,6 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1732,6 +1743,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1784,6 +1796,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1830,6 +1843,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1883,6 +1897,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1926,6 +1941,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/entities/%s/values/%s/synonyms/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(entity), ERB::Util.url_encode(value), ERB::Util.url_encode(synonym)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1940,7 +1956,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_dialog_nodes(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List dialog nodes.
     # List the dialog nodes for a workspace.
     #
@@ -1948,14 +1964,13 @@ module IBMWatson
     #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
-    # @param include_count [Boolean] Whether to include information about the number of records returned.
     # @param sort [String] The attribute by which returned dialog nodes will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_dialog_nodes(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
@@ -1966,7 +1981,6 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
-        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1974,6 +1988,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1985,7 +2000,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, node_type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
     # Create dialog node.
     # Create a new dialog node.
     #
@@ -2016,7 +2031,7 @@ module IBMWatson
     #   following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
     #   characters.
-    # @param node_type [String] How the dialog node is processed.
+    # @param type [String] How the dialog node is processed.
     # @param event_name [String] How an `event_handler` node is processed.
     # @param variable [String] The location in the dialog context where output is stored.
     # @param actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
@@ -2026,7 +2041,7 @@ module IBMWatson
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, node_type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -2051,7 +2066,7 @@ module IBMWatson
         "metadata" => metadata,
         "next_step" => next_step,
         "title" => title,
-        "type" => node_type,
+        "type" => type,
         "event_name" => event_name,
         "variable" => variable,
         "actions" => actions,
@@ -2063,6 +2078,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2103,6 +2119,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2114,7 +2131,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_node_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
+    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
     # Update dialog node.
     # Update an existing dialog node with new or modified data.
     #
@@ -2146,7 +2163,7 @@ module IBMWatson
     #   following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
     #   characters.
-    # @param new_node_type [String] How the dialog node is processed.
+    # @param new_type [String] How the dialog node is processed.
     # @param new_event_name [String] How an `event_handler` node is processed.
     # @param new_variable [String] The location in the dialog context where output is stored.
     # @param new_actions [Array[DialogNodeAction]] An array of objects describing any actions to be invoked by the dialog node.
@@ -2156,7 +2173,7 @@ module IBMWatson
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_node_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
+    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -2181,7 +2198,7 @@ module IBMWatson
         "metadata" => new_metadata,
         "next_step" => new_next_step,
         "title" => new_title,
-        "type" => new_node_type,
+        "type" => new_type,
         "event_name" => new_event_name,
         "variable" => new_variable,
         "actions" => new_actions,
@@ -2193,6 +2210,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2230,6 +2248,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2278,6 +2297,7 @@ module IBMWatson
 
       method_url = "/v1/workspaces/%s/logs" % [ERB::Util.url_encode(workspace_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2324,6 +2344,7 @@ module IBMWatson
 
       method_url = "/v1/logs"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2364,6 +2385,7 @@ module IBMWatson
 
       method_url = "/v1/user_data"
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,

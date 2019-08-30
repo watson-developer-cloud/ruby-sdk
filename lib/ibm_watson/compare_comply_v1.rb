@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,21 +81,14 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/compare-comply/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "compare-comply"
+      @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
       args[:display_name] = "Compare Comply"
       super
-      @version = args[:version]
     end
 
     #########################
@@ -103,18 +96,17 @@ module IBMWatson
     #########################
 
     ##
-    # @!method convert_to_html(file:, filename: nil, file_content_type: nil, model: nil)
+    # @!method convert_to_html(file:, file_content_type: nil, model: nil)
     # Convert document to HTML.
     # Converts a document to HTML.
     # @param file [File] The document to convert.
-    # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param model [String] The analysis model to be used by the service. For the **Element classification**
     #   and **Compare two documents** methods, the default is `contracts`. For the
     #   **Extract tables** method, the default is `tables`. These defaults apply to the
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def convert_to_html(file:, filename: nil, file_content_type: nil, model: nil)
+    def convert_to_html(file:, file_content_type: nil, model: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
@@ -132,11 +124,11 @@ module IBMWatson
       unless file.instance_of?(StringIO) || file.instance_of?(File)
         file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
       end
-      filename = file.path if filename.nil? && file.respond_to?(:path)
-      form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
+      form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: file.respond_to?(:path) ? file.path : nil)
 
       method_url = "/v1/html_conversion"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -184,6 +176,7 @@ module IBMWatson
 
       method_url = "/v1/element_classification"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -231,6 +224,7 @@ module IBMWatson
 
       method_url = "/v1/tables"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -291,6 +285,7 @@ module IBMWatson
 
       method_url = "/v1/comparison"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -337,6 +332,7 @@ module IBMWatson
 
       method_url = "/v1/feedback"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -364,7 +360,7 @@ module IBMWatson
     #   specified `model_id`. The only permitted value is `contracts`.
     # @param model_version [String] An optional string that filters the output to include only feedback with the
     #   specified `model_version`.
-    # @param category_removed [String] An optional string in the form of a comma-separated list of categories. If this is
+    # @param category_removed [String] An optional string in the form of a comma-separated list of categories. If it is
     #   specified, the service filters the output to include only feedback that has at
     #   least one category from the list removed.
     # @param category_added [String] An optional string in the form of a comma-separated list of categories. If this is
@@ -422,6 +418,7 @@ module IBMWatson
 
       method_url = "/v1/feedback"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -457,6 +454,7 @@ module IBMWatson
 
       method_url = "/v1/feedback/%s" % [ERB::Util.url_encode(feedback_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -492,6 +490,7 @@ module IBMWatson
 
       method_url = "/v1/feedback/%s" % [ERB::Util.url_encode(feedback_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -583,6 +582,7 @@ module IBMWatson
 
       method_url = "/v1/batches"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -611,6 +611,7 @@ module IBMWatson
 
       method_url = "/v1/batches"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -641,6 +642,7 @@ module IBMWatson
 
       method_url = "/v1/batches/%s" % [ERB::Util.url_encode(batch_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -681,6 +683,7 @@ module IBMWatson
 
       method_url = "/v1/batches/%s" % [ERB::Util.url_encode(batch_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "PUT",
         url: method_url,

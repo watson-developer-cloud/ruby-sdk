@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,18 +85,9 @@ module IBMWatson
       @__async_initialized__ = false
       defaults = {}
       defaults[:url] = "https://stream.watsonplatform.net/text-to-speech/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "text_to_speech"
       args[:display_name] = "Text to Speech"
       super
     end
@@ -123,6 +114,7 @@ module IBMWatson
 
       method_url = "/v1/voices"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -163,6 +155,7 @@ module IBMWatson
 
       method_url = "/v1/voices/%s" % [ERB::Util.url_encode(voice)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -177,7 +170,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method synthesize(text:, voice: nil, customization_id: nil, accept: nil)
+    # @!method synthesize(text:, accept: nil, voice: nil, customization_id: nil)
     # Synthesize audio.
     # Synthesizes text to audio that is spoken in the specified voice. The service bases
     #   its understanding of the language for the input text on the specified voice. Use a
@@ -265,22 +258,22 @@ module IBMWatson
     #    If a request includes invalid query parameters, the service returns a `Warnings`
     #   response header that provides messages about the invalid parameters. The warning
     #   includes a descriptive message and a list of invalid argument strings. For
-    #   example, a message such as `\"Unknown arguments:\"` or `\"Unknown url query
-    #   arguments:\"` followed by a list of the form `\"{invalid_arg_1},
-    #   {invalid_arg_2}.\"` The request succeeds despite the warnings.
+    #   example, a message such as `"Unknown arguments:"` or `"Unknown url query
+    #   arguments:"` followed by a list of the form `"{invalid_arg_1}, {invalid_arg_2}."`
+    #   The request succeeds despite the warnings.
     # @param text [String] The text to synthesize.
+    # @param accept [String] The requested format (MIME type) of the audio. You can use the `Accept` header or
+    #   the `accept` parameter to specify the audio format. For more information about
+    #   specifying an audio format, see **Audio formats (accept types)** in the method
+    #   description.
     # @param voice [String] The voice to use for synthesis.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model to use for the synthesis. If a
     #   custom voice model is specified, it is guaranteed to work only if it matches the
     #   language of the indicated voice. You must make the request with credentials for
     #   the instance of the service that owns the custom model. Omit the parameter to use
     #   the specified voice with no customization.
-    # @param accept [String] The requested format (MIME type) of the audio. You can use the `Accept` header or
-    #   the `accept` parameter to specify the audio format. For more information about
-    #   specifying an audio format, see **Audio formats (accept types)** in the method
-    #   description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def synthesize(text:, voice: nil, customization_id: nil, accept: nil)
+    def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
@@ -300,6 +293,7 @@ module IBMWatson
 
       method_url = "/v1/synthesize"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -357,6 +351,7 @@ module IBMWatson
 
       method_url = "/v1/pronunciation"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -404,6 +399,7 @@ module IBMWatson
 
       method_url = "/v1/customizations"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -444,6 +440,7 @@ module IBMWatson
 
       method_url = "/v1/customizations"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -470,13 +467,13 @@ module IBMWatson
     #   a word. You can specify them in standard International Phonetic Alphabet (IPA)
     #   representation
     #
-    #     <code>&lt;phoneme alphabet=\"ipa\"
-    #   ph=\"t&#601;m&#712;&#593;to\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ipa"
+    #   ph="t&#601;m&#712;&#593;to"&gt;&lt;/phoneme&gt;</code>
     #
     #     or in the proprietary IBM Symbolic Phonetic Representation (SPR)
     #
-    #     <code>&lt;phoneme alphabet=\"ibm\"
-    #   ph=\"1gAstroEntxrYFXs\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ibm"
+    #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
     #   **Note:** This method is currently a beta release.
     #
@@ -511,6 +508,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -546,6 +544,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -578,6 +577,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -605,13 +605,13 @@ module IBMWatson
     #   a word. You can specify them in standard International Phonetic Alphabet (IPA)
     #   representation
     #
-    #     <code>&lt;phoneme alphabet=\"ipa\"
-    #   ph=\"t&#601;m&#712;&#593;to\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ipa"
+    #   ph="t&#601;m&#712;&#593;to"&gt;&lt;/phoneme&gt;</code>
     #
     #     or in the proprietary IBM Symbolic Phonetic Representation (SPR)
     #
-    #     <code>&lt;phoneme alphabet=\"ibm\"
-    #   ph=\"1gAstroEntxrYFXs\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ibm"
+    #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
     #   **Note:** This method is currently a beta release.
     #
@@ -649,6 +649,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -684,6 +685,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -708,13 +710,13 @@ module IBMWatson
     #   a word. You can specify them in standard International Phonetic Alphabet (IPA)
     #   representation
     #
-    #     <code>&lt;phoneme alphabet=\"ipa\"
-    #   ph=\"t&#601;m&#712;&#593;to\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ipa"
+    #   ph="t&#601;m&#712;&#593;to"&gt;&lt;/phoneme&gt;</code>
     #
     #     or in the proprietary IBM Symbolic Phonetic Representation (SPR)
     #
-    #     <code>&lt;phoneme alphabet=\"ibm\"
-    #   ph=\"1gAstroEntxrYFXs\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ibm"
+    #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
     #   **Note:** This method is currently a beta release.
     #
@@ -758,6 +760,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "PUT",
         url: method_url,
@@ -795,6 +798,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -831,6 +835,7 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -873,6 +878,7 @@ module IBMWatson
 
       method_url = "/v1/user_data"
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,

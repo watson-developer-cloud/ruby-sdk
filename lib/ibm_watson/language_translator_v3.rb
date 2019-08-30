@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,12 +71,6 @@ module IBMWatson
     #   'https://iam.cloud.ibm.com/identity/token'.
     # @option args iam_client_id [String] An optional client id for the IAM service API.
     # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
     # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
     #   takes are basic, iam or icp4d.
     def initialize(args = {})
@@ -84,21 +78,14 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/language-translator/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "language_translator"
+      @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
       args[:display_name] = "Language Translator"
       super
-      @version = args[:version]
     end
 
     #########################
@@ -137,6 +124,7 @@ module IBMWatson
 
       method_url = "/v3/translate"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -169,6 +157,7 @@ module IBMWatson
 
       method_url = "/v3/identifiable_languages"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -202,6 +191,7 @@ module IBMWatson
 
       method_url = "/v3/identify"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -217,17 +207,17 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_models(source: nil, target: nil, default_models: nil)
+    # @!method list_models(source: nil, target: nil, default: nil)
     # List models.
     # Lists available translation models.
     # @param source [String] Specify a language code to filter results by source language.
     # @param target [String] Specify a language code to filter results by target language.
-    # @param default_models [Boolean] If the default parameter isn't specified, the service will return all models
+    # @param default [Boolean] If the default parameter isn't specified, the service will return all models
     #   (default and non-default) for each language pair. To return only default models,
     #   set this to `true`. To return only non-default models, set this to `false`. There
     #   is exactly one default model per language pair, the IBM provided base model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_models(source: nil, target: nil, default_models: nil)
+    def list_models(source: nil, target: nil, default: nil)
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_models")
@@ -237,11 +227,12 @@ module IBMWatson
         "version" => @version,
         "source" => source,
         "target" => target,
-        "default" => default_models
+        "default" => default
       }
 
       method_url = "/v3/models"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -318,6 +309,7 @@ module IBMWatson
 
       method_url = "/v3/models"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -349,6 +341,7 @@ module IBMWatson
 
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -381,6 +374,7 @@ module IBMWatson
 
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -411,6 +405,7 @@ module IBMWatson
 
       method_url = "/v3/documents"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -444,7 +439,6 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def translate_document(file:, filename: nil, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
       raise ArgumentError.new("file must be provided") if file.nil?
-      raise ArgumentError.new("filename must be provided") if filename.nil?
 
       headers = {
       }
@@ -473,6 +467,7 @@ module IBMWatson
 
       method_url = "/v3/documents"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -504,6 +499,7 @@ module IBMWatson
 
       method_url = "/v3/documents/%s" % [ERB::Util.url_encode(document_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -534,6 +530,7 @@ module IBMWatson
 
       method_url = "/v3/documents/%s" % [ERB::Util.url_encode(document_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -578,6 +575,7 @@ module IBMWatson
 
       method_url = "/v3/documents/%s/translated_document" % [ERB::Util.url_encode(document_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,

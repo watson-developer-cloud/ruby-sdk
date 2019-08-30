@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,12 +59,6 @@ module IBMWatson
     #   'https://iam.cloud.ibm.com/identity/token'.
     # @option args iam_client_id [String] An optional client id for the IAM service API.
     # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
     # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
     #   takes are basic, iam or icp4d.
     def initialize(args = {})
@@ -72,19 +66,14 @@ module IBMWatson
       defaults = {}
       defaults[:version] = nil
       defaults[:url] = "https://gateway.watsonplatform.net/visual-recognition/api"
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
+      defaults[:authenticator] = nil
       defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "watson_vision_combined"
+      @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
       args[:display_name] = "Visual Recognition"
       super
-      @version = args[:version]
     end
 
     #########################
@@ -163,6 +152,7 @@ module IBMWatson
 
       method_url = "/v3/classify"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -236,6 +226,7 @@ module IBMWatson
 
       method_url = "/v3/detect_faces"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -254,11 +245,18 @@ module IBMWatson
     # @!method create_classifier(name:, positive_examples:, negative_examples: nil, negative_examples_filename: nil)
     # Create a classifier.
     # Train a new multi-faceted classifier on the uploaded image data. Create your
-    #   custom classifier with positive or negative examples. Include at least two sets of
-    #   examples, either two positive example files or one positive and one negative file.
-    #   You can upload a maximum of 256 MB per call.
+    #   custom classifier with positive or negative example training images. Include at
+    #   least two sets of examples, either two positive example files or one positive and
+    #   one negative file. You can upload a maximum of 256 MB per call.
     #
-    #   Encode all names in UTF-8 if they contain non-ASCII characters (.zip and image
+    #   **Tips when creating:**
+    #
+    #   - If you set the **X-Watson-Learning-Opt-Out** header parameter to `true` when you
+    #   create a classifier, the example training images are not stored. Save your
+    #   training images locally. For more information, see [Data
+    #   collection](#data-collection).
+    #
+    #   - Encode all names in UTF-8 if they contain non-ASCII characters (.zip and image
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
     #   it encounters non-ASCII characters.
     # @param name [String] The name of the new classifier. Encode special characters in UTF-8.
@@ -318,6 +316,7 @@ module IBMWatson
 
       method_url = "/v3/classifiers"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -348,6 +347,7 @@ module IBMWatson
 
       method_url = "/v3/classifiers"
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -378,6 +378,7 @@ module IBMWatson
 
       method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -400,10 +401,17 @@ module IBMWatson
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
     #   it encounters non-ASCII characters.
     #
-    #   **Tip:** Don't make retraining calls on a classifier until the status is ready.
-    #   When you submit retraining requests in parallel, the last request overwrites the
-    #   previous requests. The retrained property shows the last time the classifier
-    #   retraining finished.
+    #   **Tips about retraining:**
+    #
+    #   - You can't update the classifier if the **X-Watson-Learning-Opt-Out** header
+    #   parameter was set to `true` when the classifier was created. Training images are
+    #   not stored in that case. Instead, create another classifier. For more information,
+    #   see [Data collection](#data-collection).
+    #
+    #   - Don't make retraining calls on a classifier until the status is ready. When you
+    #   submit retraining requests in parallel, the last request overwrites the previous
+    #   requests. The `retrained` property shows the last time the classifier retraining
+    #   finished.
     # @param classifier_id [String] The ID of the classifier.
     # @param positive_examples [File] A .zip file of images that depict the visual subject of a class in the classifier.
     #   The positive examples create or update classes in the classifier. You can include
@@ -459,6 +467,7 @@ module IBMWatson
 
       method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -489,6 +498,7 @@ module IBMWatson
 
       method_url = "/v3/classifiers/%s" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -506,7 +516,7 @@ module IBMWatson
     # @!method get_core_ml_model(classifier_id:)
     # Retrieve a Core ML model of a classifier.
     # Download a Core ML model file (.mlmodel) of a custom classifier that returns
-    #   <tt>\"core_ml_enabled\": true</tt> in the classifier details.
+    #   <tt>"core_ml_enabled": true</tt> in the classifier details.
     # @param classifier_id [String] The ID of the classifier.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_core_ml_model(classifier_id:)
@@ -523,6 +533,7 @@ module IBMWatson
 
       method_url = "/v3/classifiers/%s/core_ml_model" % [ERB::Util.url_encode(classifier_id)]
 
+      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -563,6 +574,7 @@ module IBMWatson
 
       method_url = "/v3/user_data"
 
+      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
