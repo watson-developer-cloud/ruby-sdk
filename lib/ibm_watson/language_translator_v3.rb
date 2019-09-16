@@ -47,44 +47,21 @@ module IBMWatson
     #   Instead, specify a version date that is compatible with your
     #   application, and don't change it until your application is
     #   ready for a later version.
-    # @option args url [String] The base url to use when contacting the service (e.g.
-    #   "https://gateway.watsonplatform.net/language-translator/api").
-    #   The base url may differ between IBM Cloud regions.
-    # @option args username [String] The username used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args password [String] The password used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
-    #   this API key is provided, the SDK will manage the token and handle the
-    #   refreshing.
-    # @option args iam_access_token [String] An IAM access token is fully managed by the application.
-    #   Responsibility falls on the application to refresh the token, either before
-    #   it expires or reactively upon receiving a 401 from the service as any requests
-    #   made with an expired token will fail.
-    # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.cloud.ibm.com/identity/token'.
-    # @option args iam_client_id [String] An optional client id for the IAM service API.
-    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
-    #   takes are basic, iam or icp4d.
+    # @option args service_url [String] The base service URL to use when contacting the service.
+    #   The base service_url may differ between IBM Cloud regions.
+    # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:url] = "https://gateway.watsonplatform.net/language-translator/api"
+      defaults[:service_url] = "https://gateway.watsonplatform.net/language-translator/api"
       defaults[:authenticator] = nil
-      defaults[:authentication_type] = nil
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:display_name] = "Language Translator"
+      args[:service_name] = "language_translator"
+      args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
     end
 
@@ -124,7 +101,6 @@ module IBMWatson
 
       method_url = "/v3/translate"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -157,7 +133,6 @@ module IBMWatson
 
       method_url = "/v3/identifiable_languages"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -191,7 +166,6 @@ module IBMWatson
 
       method_url = "/v3/identify"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -232,7 +206,6 @@ module IBMWatson
 
       method_url = "/v3/models"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -309,7 +282,6 @@ module IBMWatson
 
       method_url = "/v3/models"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -341,7 +313,6 @@ module IBMWatson
 
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "DELETE",
         url: method_url,
@@ -374,7 +345,6 @@ module IBMWatson
 
       method_url = "/v3/models/%s" % [ERB::Util.url_encode(model_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -405,7 +375,6 @@ module IBMWatson
 
       method_url = "/v3/documents"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -467,7 +436,6 @@ module IBMWatson
 
       method_url = "/v3/documents"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -499,7 +467,6 @@ module IBMWatson
 
       method_url = "/v3/documents/%s" % [ERB::Util.url_encode(document_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -530,7 +497,6 @@ module IBMWatson
 
       method_url = "/v3/documents/%s" % [ERB::Util.url_encode(document_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -575,7 +541,6 @@ module IBMWatson
 
       method_url = "/v3/documents/%s/translated_document" % [ERB::Util.url_encode(document_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
