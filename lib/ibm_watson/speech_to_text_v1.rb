@@ -55,46 +55,17 @@ module IBMWatson
     # Construct a new client for the Speech to Text service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args url [String] The base url to use when contacting the service (e.g.
-    #   "https://stream.watsonplatform.net/speech-to-text/api").
-    #   The base url may differ between IBM Cloud regions.
-    # @option args username [String] The username used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args password [String] The password used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
-    #   this API key is provided, the SDK will manage the token and handle the
-    #   refreshing.
-    # @option args iam_access_token [String] An IAM access token is fully managed by the application.
-    #   Responsibility falls on the application to refresh the token, either before
-    #   it expires or reactively upon receiving a 401 from the service as any requests
-    #   made with an expired token will fail.
-    # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.cloud.ibm.com/identity/token'.
-    # @option args iam_client_id [String] An optional client id for the IAM service API.
-    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
-    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
-    #   takes are basic, iam or icp4d.
+    # @option args service_url [String] The base service URL to use when contacting the service.
+    #   The base service_url may differ between IBM Cloud regions.
+    # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:url] = "https://stream.watsonplatform.net/speech-to-text/api"
+      defaults[:service_url] = "https://stream.watsonplatform.net/speech-to-text/api"
       defaults[:authenticator] = nil
-      defaults[:authentication_type] = nil
       args = defaults.merge(args)
-      args[:display_name] = "Speech to Text"
+      args[:service_name] = "speech_to_text"
+      args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
     end
 
@@ -120,7 +91,6 @@ module IBMWatson
 
       method_url = "/v1/models"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -152,7 +122,6 @@ module IBMWatson
 
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -426,7 +395,6 @@ module IBMWatson
 
       method_url = "/v1/recognize"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -536,8 +504,7 @@ module IBMWatson
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {}
       headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
-      headers = authenticator.authenticate(headers)
-      url = @url.gsub("https:", "wss:")
+      service_url = @service_url.gsub("https:", "wss:")
       params = {
         "model" => model,
         "customization_id" => customization_id,
@@ -547,7 +514,7 @@ module IBMWatson
         "base_model_version" => base_model_version
       }
       params.delete_if { |_, v| v.nil? }
-      url += "/v1/recognize?" + HTTP::URI.form_encode(params)
+      service_url += "/v1/recognize?" + HTTP::URI.form_encode(params)
       options = {
         "content_type" => content_type,
         "inactivity_timeout" => inactivity_timeout,
@@ -568,58 +535,8 @@ module IBMWatson
         "audio_metrics" => audio_metrics
       }
       options.delete_if { |_, v| v.nil? }
-      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
+      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, service_url: service_url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
     end
-
-    # :nocov:
-    # @deprecated This will method be removed in the next major release. Use {#recognize_using_websocket} instead.
-    def recognize_with_websocket(
-      content_type:,
-      recognize_callback:,
-      audio: nil,
-      chunk_data: false,
-      model: nil,
-      customization_id: nil,
-      acoustic_customization_id: nil,
-      customization_weight: nil,
-      base_model_version: nil,
-      inactivity_timeout: nil,
-      interim_results: nil,
-      keywords: nil,
-      keywords_threshold: nil,
-      max_alternatives: nil,
-      word_alternatives_threshold: nil,
-      word_confidence: nil,
-      timestamps: nil,
-      profanity_filter: nil,
-      smart_formatting: nil,
-      speaker_labels: nil
-    )
-      Kernel.warn("[DEPRECATION] `recognize_with_websocket` is deprecated and will be removed in the next major release. Please use `recognize_using_websocket` instead.")
-      recognize_using_websocket(
-        audio: audio,
-        chunk_data: chunk_data,
-        content_type: content_type,
-        model: model,
-        recognize_callback: recognize_callback,
-        customization_id: customization_id,
-        acoustic_customization_id: acoustic_customization_id,
-        customization_weight: customization_weight,
-        base_model_version: base_model_version,
-        inactivity_timeout: inactivity_timeout,
-        interim_results: interim_results,
-        keywords: keywords,
-        keywords_threshold: keywords_threshold,
-        max_alternatives: max_alternatives,
-        word_alternatives_threshold: word_alternatives_threshold,
-        word_confidence: word_confidence,
-        timestamps: timestamps,
-        profanity_filter: profanity_filter,
-        smart_formatting: smart_formatting,
-        speaker_labels: speaker_labels
-      )
-    end
-    # :nocov:
     #########################
     # Asynchronous
     #########################
@@ -687,7 +604,6 @@ module IBMWatson
 
       method_url = "/v1/register_callback"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -723,7 +639,6 @@ module IBMWatson
 
       method_url = "/v1/unregister_callback"
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -1060,7 +975,6 @@ module IBMWatson
 
       method_url = "/v1/recognitions"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1095,7 +1009,6 @@ module IBMWatson
 
       method_url = "/v1/recognitions"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1136,7 +1049,6 @@ module IBMWatson
 
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1171,7 +1083,6 @@ module IBMWatson
 
       method_url = "/v1/recognitions/%s" % [ERB::Util.url_encode(id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1247,7 +1158,6 @@ module IBMWatson
 
       method_url = "/v1/customizations"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1285,7 +1195,6 @@ module IBMWatson
 
       method_url = "/v1/customizations"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1318,7 +1227,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1352,7 +1260,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1441,7 +1348,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -1478,7 +1384,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -1523,7 +1428,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -1560,7 +1464,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/corpora" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1677,7 +1580,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -1716,7 +1618,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1757,7 +1658,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/corpora/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(corpus_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -1814,7 +1714,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -1906,7 +1805,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -2003,7 +1901,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "PUT",
         url: method_url,
@@ -2042,7 +1939,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2084,7 +1980,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/words/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(word_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2121,7 +2016,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/grammars" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2233,7 +2127,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -2272,7 +2165,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2312,7 +2204,6 @@ module IBMWatson
 
       method_url = "/v1/customizations/%s/grammars/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(grammar_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2368,7 +2259,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2406,7 +2296,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations"
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2439,7 +2328,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2473,7 +2361,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -2565,7 +2452,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/train" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "POST",
         url: method_url,
@@ -2604,7 +2490,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/reset" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -2673,7 +2558,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/upgrade_model" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -2713,7 +2597,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/audio" % [ERB::Util.url_encode(customization_id)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2897,7 +2780,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "POST",
         url: method_url,
@@ -2952,7 +2834,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
 
-      headers = authenticator.authenticate(headers)
       response = request(
         method: "GET",
         url: method_url,
@@ -2994,7 +2875,6 @@ module IBMWatson
 
       method_url = "/v1/acoustic_customizations/%s/audio/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(audio_name)]
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
@@ -3037,7 +2917,6 @@ module IBMWatson
 
       method_url = "/v1/user_data"
 
-      headers = authenticator.authenticate(headers)
       request(
         method: "DELETE",
         url: method_url,
