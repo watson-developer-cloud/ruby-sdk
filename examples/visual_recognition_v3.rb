@@ -47,14 +47,6 @@ end
 url_result = visual_recognition.classify(url: test_url).result
 puts JSON.pretty_generate(url_result)
 
-faces_result = visual_recognition.detect_faces(url: test_url).result
-puts JSON.pretty_generate(faces_result)
-
 # puts JSON.pretty_generate(visual_recognition.delete_classifier(classifier_id: "YOUR CLASSIFIER ID"))
 
 puts JSON.pretty_generate(visual_recognition.list_classifiers.result)
-
-File.open(Dir.getwd + "/resources/face.jpg") do |image_file|
-  face_result = visual_recognition.detect_faces(images_file: image_file).result
-  puts JSON.pretty_generate(face_result)
-end
