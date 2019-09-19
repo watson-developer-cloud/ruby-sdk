@@ -40,7 +40,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -86,7 +85,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -135,7 +133,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -190,7 +187,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -252,7 +248,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -320,7 +315,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -360,7 +354,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -409,7 +402,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -472,7 +464,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -508,7 +499,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -540,7 +530,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -576,7 +565,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }
@@ -612,7 +600,6 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic Yng6Yng=",
           "Content-Type" => "application/x-www-form-urlencoded",
           "Host" => "iam.cloud.ibm.com"
         }

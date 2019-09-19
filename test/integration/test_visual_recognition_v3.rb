@@ -37,13 +37,6 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
       refute(dog_results.nil?)
     end
 
-    def test_detect_faces
-      output = @service.detect_faces(
-        url: "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg"
-      ).result
-      refute(output.nil?)
-    end
-
     def test_custom_classifier
       skip "Time Consuming"
       cars = File.open(Dir.getwd + "/resources/cars.zip")

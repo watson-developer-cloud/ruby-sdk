@@ -13,23 +13,23 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 <details>
   <summary>Table of Contents</summary>
 
-  * [Before you begin](#before-you-begin)
-  * [Installation](#installation)
-  * [Examples](#examples)
-  * [Running in IBM Cloud](#running-in-ibm-cloud)
-  * [Authentication](#authentication)
-    * [Getting credentials](#getting-credentials)
-    * [IAM](#iam)
-    * [Username and password](#username-and-password)
-  * [Sending requests asynchronously](#sending-requests-asynchronously)
-  * [Sending request headers](#sending-request-headers)
-  * [Parsing HTTP response info](#parsing-http-response-info)
-  * [Configuring the HTTP client](#configuring-the-http-client)
-  * [Using Websockets](#using-websockets)
-  * [Ruby version](#ruby-version)
-  * [Contributing](#contributing)
-  * [License](#license)
-  * [Featured Projects](#featured-projects)
+* [Before you begin](#before-you-begin)
+* [Installation](#installation)
+* [Examples](#examples)
+* [Running in IBM Cloud](#running-in-ibm-cloud)
+* [Authentication](#authentication)
+  * [Getting credentials](#getting-credentials)
+  * [IAM](#iam)
+  * [Username and password](#username-and-password)
+* [Sending requests asynchronously](#sending-requests-asynchronously)
+* [Sending request headers](#sending-request-headers)
+* [Parsing HTTP response info](#parsing-http-response-info)
+* [Configuring the HTTP client](#configuring-the-http-client)
+* [Using Websockets](#using-websockets)
+* [Ruby version](#ruby-version)
+* [Contributing](#contributing)
+* [License](#license)
+* [Featured Projects](#featured-projects)
 
 </details>
 
@@ -69,8 +69,8 @@ If you run your app in IBM Cloud, the SDK gets credentials from the [`VCAP_SERVI
 
 Watson services are migrating to token-based Identity and Access Management (IAM) authentication.
 
-- With some service instances, you authenticate to the API by using **[IAM](#iam)**.
-- In other instances, you authenticate by providing the **[username and password](#username-and-password)** for the service instance.
+* With some service instances, you authenticate to the API by using **[IAM](#iam)**.
+* In other instances, you authenticate by providing the **[username and password](#username-and-password)** for the service instance.
 
 ### Getting credentials
 
@@ -92,8 +92,8 @@ With a credential file, you just need to put the file in the right place and the
 
 The file downloaded will be called `ibm-credentials.env`. This is the name the SDK will search for and **must** be preserved unless you want to configure the file path (more on that later). The SDK will look for your `ibm-credentials.env` file in the following places (in order):
 
-- Your system's home directory
-- The top-level directory of the project you're using the SDK in
+* Your system's home directory
+* The top-level directory of the project you're using the SDK in
 
  As long as you set that up correctly, you don't have to worry about setting any authentication options in your code. So, for example, if you created and downloaded the credential file for your Discovery instance, you just need to do the following:
 
@@ -123,8 +123,8 @@ IBM Cloud is migrating to token-based Identity and Access Management (IAM) authe
 
 You supply either an IAM service **API key** or an **access token**:
 
-- Use the API key to have the SDK manage the lifecycle of the access token. The SDK requests an access token, ensures that the access token is valid, and refreshes it if necessary.
-- Use the access token if you want to manage the lifecycle yourself. For details, see [Authenticating with IAM tokens](https://cloud.ibm.com/docs/services/watson?topic=watson-iam).
+* Use the API key to have the SDK manage the lifecycle of the access token. The SDK requests an access token, ensures that the access token is valid, and refreshes it if necessary.
+* Use the access token if you want to manage the lifecycle yourself. For details, see [Authenticating with IAM tokens](https://cloud.ibm.com/docs/services/watson?topic=watson-iam).
 
 #### Supplying the IAM API key
 
@@ -138,13 +138,14 @@ discovery = IBMWatson::DiscoveryV1.new(
   version: "2017-10-16",
   authenticator: authenticator
 )
+discover.service_url = "<service-url>" # setting service url
 ```
 
 #### Supplying the access token
 
 ```ruby
 authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
-  bearer_token: "<iam_access_token>"
+  bearer_token: "<access_token>"
 )
 discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16", authenticator)
 ```
@@ -176,7 +177,7 @@ Requests can be sent asynchronously. There are two asynchronous methods availabl
 When `await` is used, the request is made synchronously.
 
 ```ruby
-authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
   username: "<username>",
   password: "<password>"
 )
@@ -195,7 +196,7 @@ output = future.value # The response is accessible at future.value
 When `async` is used, the request is made asynchronously
 
 ```ruby
-authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
   username: "<username>",
   password: "<password>"
 )
@@ -216,6 +217,7 @@ output = future.value
 ## Sending request headers
 
 Custom headers can be passed in any request in the form of a `Hash` as a parameter to the `headers` chainable method. For example, to send a header called `Custom-Header` to a call in Watson Assistant, pass the headers as a parameter to the `headers` chainable method:
+
 ```ruby
 require "ibm_watson"
 include IBMWatson
@@ -253,6 +255,7 @@ p "Result: #{response.result}"
 ```
 
 This would give an output of `DetailedResponse` having the structure:
+
 ```ruby
 Status: 200
 Headers: "<http response headers>"
@@ -260,6 +263,7 @@ Result: "<response returned by service>"
 ```
 
 ## Configuring the HTTP client
+
 To set client configs like timeout or proxy use the `configure_http_client` function and pass in the configurations.
 
 ```ruby
@@ -337,9 +341,10 @@ thr.join # Wait for the thread to finish before ending the program or running ot
 Note: `recognize_with_websocket` has been **deprecated** in favor of **`recognize_using_websocket`**
 
 ## IBM Cloud Pak for Data(CP4D)
+
 If your service instance is of ICP4D, below are two ways of initializing the assistant service.
 
-#### Supplying the `username`, `password`, and `url`
+### Supplying the `username`, `password`, and `url`
 
 The SDK will manage the token for the user
 
@@ -361,6 +366,7 @@ assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL 
 ## Ruby version
 
 Tested on:
+
 * MRI Ruby (RVM): 2.3.7, 2.4.4, 2.5.1
 * RubyInstaller (Windows x64): 2.3.3, 2.4.4, 2.5.1
 
