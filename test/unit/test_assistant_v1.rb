@@ -29,7 +29,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -63,7 +63,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -98,7 +98,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 429, body: error_response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -138,7 +138,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 407, body: error_response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -169,7 +169,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: {}.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -201,7 +201,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -245,7 +245,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -278,7 +278,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -317,7 +317,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -348,7 +348,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -384,7 +384,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -431,7 +431,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -469,7 +469,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -504,7 +504,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -533,7 +533,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -566,7 +566,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -611,7 +611,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -645,7 +645,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -683,7 +683,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -711,7 +711,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -744,7 +744,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -786,7 +786,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -821,7 +821,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -901,7 +901,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -986,7 +986,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1001,7 +1001,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_message
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1095,7 +1095,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1124,7 +1124,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1158,7 +1158,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1207,7 +1207,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1242,7 +1242,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1281,7 +1281,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1309,7 +1309,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1346,7 +1346,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1394,7 +1394,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1433,7 +1433,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1475,7 +1475,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1505,7 +1505,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1542,7 +1542,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1586,7 +1586,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1621,7 +1621,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1641,7 +1641,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_dialog_nodes
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1724,7 +1724,7 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1739,7 +1739,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_update_dialog_node
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1767,7 +1767,7 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_mentions
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

@@ -10,7 +10,7 @@ if !ENV["DISCOVERY_APIKEY"].nil? && !ENV["DISCOVERY_URL"].nil?
     attr_accessor :service, :environment_id, :collection_id
 
     def before_all
-      authenticator = IBMWatson::Auth::IamAuthenticator.new(
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
         apikey: ENV["DISCOVERY_APIKEY"]
       )
       @service = IBMWatson::DiscoveryV1.new(

@@ -25,7 +25,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -80,7 +80,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -120,7 +120,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -163,7 +163,7 @@ class PersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

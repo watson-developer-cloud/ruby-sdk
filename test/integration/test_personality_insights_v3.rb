@@ -9,7 +9,7 @@ if !ENV["PERSONALITY_INSIGHTS_APIKEY"].nil? && !ENV["PERSONALITY_INSIGHTS_URL"].
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMWatson::Auth::IamAuthenticator.new(
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
         apikey: ENV["PERSONALITY_INSIGHTS_APIKEY"]
       )
       @service = IBMWatson::PersonalityInsightsV3.new(

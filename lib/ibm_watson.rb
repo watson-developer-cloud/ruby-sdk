@@ -7,7 +7,7 @@ module IBMWatson
   ApiException = IBMCloudSdkCore::ApiException
   DetailedResponse = IBMCloudSdkCore::DetailedResponse
 
-  module Auth
+  module Authenticators
     BasicAuthenticator = IBMCloudSdkCore::BasicAuthenticator
     BearerTokenAuthenticator = IBMCloudSdkCore::BearerTokenAuthenticator
     CloudPakForDataAuthenticator = IBMCloudSdkCore::CloudPakForDataAuthenticator

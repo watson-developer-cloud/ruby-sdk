@@ -27,7 +27,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    authenticator = IBMWatson::Auth::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
+    authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
     service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       authenticator: authenticator
@@ -62,7 +62,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    authenticator = IBMWatson::Auth::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
+    authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
     service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       authenticator: authenticator
@@ -99,7 +99,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
-    authenticator = IBMWatson::Auth::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
+    authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
     service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       authenticator: authenticator
@@ -139,7 +139,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
-    authenticator = IBMWatson::Auth::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
+    authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
     service = IBMWatson::PersonalityInsightsV3.new(
       version: "2017-10-13",
       authenticator: authenticator

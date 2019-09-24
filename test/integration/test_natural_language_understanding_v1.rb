@@ -9,7 +9,7 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMWatson::Auth::IamAuthenticator.new(
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
         apikey: ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"]
       )
       @service = IBMWatson::NaturalLanguageUnderstandingV1.new(
