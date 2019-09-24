@@ -15,8 +15,8 @@
 # limitations under the License.
 
 # The IBM Watson&trade; Visual Recognition service uses deep learning algorithms to
-# identify scenes, objects, and faces  in images you upload to the service. You can create
-# and train a custom classifier to identify subjects that suit your needs.
+# identify scenes and objects in images that you upload to the service. You can create and
+# train a custom classifier to identify subjects that suit your needs.
 
 require "concurrent"
 require "erb"
@@ -138,79 +138,6 @@ module IBMWatson
       form_data[:classifier_ids] = HTTP::FormData::Part.new(classifier_ids, content_type: "application/json") unless classifier_ids.nil?
 
       method_url = "/v3/classify"
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        form: form_data,
-        accept_json: true
-      )
-      response
-    end
-    #########################
-    # Face
-    #########################
-
-    ##
-    # @!method detect_faces(images_file: nil, images_filename: nil, images_file_content_type: nil, url: nil, accept_language: nil)
-    # Detect faces in images.
-    # **Important:** On April 2, 2018, the identity information in the response to calls
-    #   to the Face model was removed. The identity information refers to the `name` of
-    #   the person, `score`, and `type_hierarchy` knowledge graph. For details about the
-    #   enhanced Face model, see the [Release
-    #   notes](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-release-notes#2april2018).
-    #
-    #   Analyze and get data about faces in images. Responses can include estimated age
-    #   and gender. This feature uses a built-in model, so no training is necessary. The
-    #   **Detect faces** method does not support general biometric facial recognition.
-    #
-    #   Supported image formats include .gif, .jpg, .png, and .tif. The maximum image size
-    #   is 10 MB. The minimum recommended pixel density is 32X32 pixels, but the service
-    #   tends to perform better with images that are at least 224 x 224 pixels.
-    # @param images_file [File] An image file (gif, .jpg, .png, .tif.) or .zip file with images. Limit the .zip
-    #   file to 100 MB. You can include a maximum of 15 images in a request.
-    #
-    #   Encode the image and .zip file names in UTF-8 if they contain non-ASCII
-    #   characters. The service assumes UTF-8 encoding if it encounters non-ASCII
-    #   characters.
-    #
-    #   You can also include an image with the **url** parameter.
-    # @param images_filename [String] The filename for images_file.
-    # @param images_file_content_type [String] The content type of images_file.
-    # @param url [String] The URL of an image to analyze. Must be in .gif, .jpg, .png, or .tif format. The
-    #   minimum recommended pixel density is 32X32 pixels, but the service tends to
-    #   perform better with images that are at least 224 x 224 pixels. The maximum image
-    #   size is 10 MB. Redirects are followed, so you can use a shortened URL.
-    #
-    #   You can also include images with the **images_file** parameter.
-    # @param accept_language [String] The desired language of parts of the response. See the response for details.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def detect_faces(images_file: nil, images_filename: nil, images_file_content_type: nil, url: nil, accept_language: nil)
-      headers = {
-        "Accept-Language" => accept_language
-      }
-      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "detect_faces")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      form_data = {}
-
-      unless images_file.nil?
-        unless images_file.instance_of?(StringIO) || images_file.instance_of?(File)
-          images_file = images_file.respond_to?(:to_json) ? StringIO.new(images_file.to_json) : StringIO.new(images_file)
-        end
-        images_filename = images_file.path if images_filename.nil? && images_file.respond_to?(:path)
-        form_data[:images_file] = HTTP::FormData::File.new(images_file, content_type: images_file_content_type.nil? ? "application/octet-stream" : images_file_content_type, filename: images_filename)
-      end
-
-      form_data[:url] = HTTP::FormData::Part.new(url.to_s, content_type: "text/plain") unless url.nil?
-
-      method_url = "/v3/detect_faces"
 
       response = request(
         method: "POST",
