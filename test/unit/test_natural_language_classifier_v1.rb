@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Natural Language Classifier V1 Service
 class NaturalLanguageClassifierV1Test < Minitest::Test
   def test_success
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -129,7 +129,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
   end
 
   def test_classify_collection
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

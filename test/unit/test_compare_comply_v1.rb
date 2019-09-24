@@ -11,7 +11,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 class CompareComplyV1 < Minitest::Test
   def test_convert_to_html
     # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -31,7 +31,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_classify_elements
     # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -54,7 +54,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_extract_tables
     # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -77,7 +77,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_compare_documents
     # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -101,7 +101,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_list_feedback
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -133,7 +133,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_add_feedback
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -162,7 +162,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_get_feedback
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -191,7 +191,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_delete_feedback
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -215,7 +215,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_create_batch
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -240,7 +240,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_list_batches
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -267,7 +267,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_get_batch
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(
@@ -291,7 +291,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_update_batch
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::CompareComplyV1.new(

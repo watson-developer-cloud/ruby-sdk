@@ -10,7 +10,7 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Auth::IamAuthenticator.new(
         apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"]
       )
       @service = IBMWatson::LanguageTranslatorV3.new(

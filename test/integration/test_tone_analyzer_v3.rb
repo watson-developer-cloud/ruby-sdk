@@ -9,7 +9,7 @@ if !ENV["TONE_ANALYZER_APIKEY"].nil? && !ENV["TONE_ANALYZER_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Auth::IamAuthenticator.new(
         apikey: ENV["TONE_ANALYZER_APIKEY"]
       )
       @service = IBMWatson::ToneAnalyzerV3.new(

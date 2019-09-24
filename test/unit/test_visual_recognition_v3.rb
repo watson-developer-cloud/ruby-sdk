@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Visual Recognition V3 Service
 class VisualRecognitionV3Test < Minitest::Test
   def test_get_classifier
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -43,7 +43,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_classifier
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -65,7 +65,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_list_classifiers
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -100,7 +100,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_create_classifier
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -142,7 +142,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_update_classifier
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -185,7 +185,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_classify
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -258,7 +258,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_delete_user_data
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(
@@ -280,7 +280,7 @@ class VisualRecognitionV3Test < Minitest::Test
   end
 
   def test_get_core_ml_model
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "bogus_access_token"
     )
     service = IBMWatson::VisualRecognitionV3.new(

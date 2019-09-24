@@ -13,7 +13,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
+    expected_response = IBMWatson::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
       .with(
@@ -25,7 +25,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -48,7 +48,7 @@ class ToneAnalyzerV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    expected_response = IBMCloudSdkCore::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
+    expected_response = IBMWatson::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?sentences=false&version=2017-09-21")
       .with(
         body: tone_text,
@@ -59,7 +59,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -81,7 +81,7 @@ class ToneAnalyzerV3Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    expected_response = IBMCloudSdkCore::DetailedResponse.new(body: tone_response, status: 200, headers: headers)
+    expected_response = IBMWatson::DetailedResponse.new(body: tone_response, status: 200, headers: headers)
     stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone_chat?version=2017-09-21")
       .with(
         body: "{\"utterances\":[{\"text\":\"I am very happy\",\"user\":\"glenn\"}]}",
@@ -92,7 +92,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -137,7 +137,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 400, body: tone_response.to_json, headers: headers)
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -172,7 +172,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Custom-Header-One" => "yes"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -203,7 +203,7 @@ class ToneAnalyzerV3Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

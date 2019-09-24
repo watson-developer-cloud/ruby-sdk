@@ -9,7 +9,7 @@ if !ENV["TEXT_TO_SPEECH_APIKEY"].nil? && !ENV["TEXT_TO_SPEECH_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Auth::IamAuthenticator.new(
         apikey: ENV["TEXT_TO_SPEECH_APIKEY"]
       )
       @service = IBMWatson::TextToSpeechV1.new(
