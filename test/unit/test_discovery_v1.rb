@@ -46,7 +46,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -67,7 +67,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -92,7 +92,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -118,7 +118,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -143,7 +143,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -166,7 +166,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -181,7 +181,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collection
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -270,7 +270,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -304,7 +304,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -388,7 +388,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_document
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -505,7 +505,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_all_training_data
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -528,7 +528,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_data
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -595,7 +595,7 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -624,7 +624,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_data
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -668,7 +668,7 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -693,7 +693,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -723,7 +723,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_example
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -753,7 +753,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -786,7 +786,7 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -816,7 +816,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_expansions
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -875,7 +875,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_tokenization_dictionary
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -934,7 +934,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -956,7 +956,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_notices
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -980,7 +980,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1006,7 +1006,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query_notices
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1030,7 +1030,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_examples
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1065,7 +1065,7 @@ class DiscoveryV1Test < Minitest::Test
       "type" => "click",
       "data" => "data"
     }
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1092,7 +1092,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_log
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1117,7 +1117,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1142,7 +1142,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query_event
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1167,7 +1167,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query_token_event
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1191,7 +1191,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_event_rate
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1216,7 +1216,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query_no_results
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1241,7 +1241,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_credentials
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1264,7 +1264,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_credentials
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1290,7 +1290,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_credentials
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1314,7 +1314,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_credentials
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1341,7 +1341,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_credentials
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1365,7 +1365,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_collection
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1393,7 +1393,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_stopword_list_status
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1417,7 +1417,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_fields
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1441,7 +1441,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_stopword_list
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1463,7 +1463,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_stopword_list
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1486,7 +1486,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_gateways
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1509,7 +1509,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_gateway
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1532,7 +1532,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_gateway
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -1556,7 +1556,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_gateway
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Natural Language Understanding V1 Service
 class NaturalLanguageUnderstandingV1Test < Minitest::Test
   def test_text_analyze
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -37,7 +37,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_html_analyze
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -68,7 +68,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_url_analyze
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -101,7 +101,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
   end
 
   def test_list_models
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -123,7 +123,7 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
 
   def test_delete_model
     model_id = "invalid_model_id"
-    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
