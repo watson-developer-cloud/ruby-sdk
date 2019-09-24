@@ -9,7 +9,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the configure_http_client customizations, such as proxies and timeouts
 class HTTPConfigTest < Minitest::Test
   def test_proxy_address_port
-    authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+    authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
       bearer_token: "token"
     )
     service = IBMWatson::NaturalLanguageUnderstandingV1.new(
@@ -28,7 +28,7 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_proxy_username_password
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -53,7 +53,7 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_proxy_headers
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -78,7 +78,7 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_proxy_username_password_headers
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -107,7 +107,7 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_timeout_per_operation
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -138,7 +138,7 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_timeout_global
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -163,7 +163,7 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_disable_ssl_verification
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

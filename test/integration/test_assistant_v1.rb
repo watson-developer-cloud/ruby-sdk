@@ -11,7 +11,7 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Auth::IamAuthenticator.new(
         apikey: ENV["ASSISTANT_APIKEY"],
         version: "2018-02-16"
       )

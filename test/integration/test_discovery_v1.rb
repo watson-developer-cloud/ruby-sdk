@@ -10,7 +10,7 @@ if !ENV["DISCOVERY_APIKEY"].nil? && !ENV["DISCOVERY_URL"].nil?
     attr_accessor :service, :environment_id, :collection_id
 
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Auth::IamAuthenticator.new(
         apikey: ENV["DISCOVERY_APIKEY"]
       )
       @service = IBMWatson::DiscoveryV1.new(
@@ -202,9 +202,6 @@ if !ENV["DISCOVERY_APIKEY"].nil? && !ENV["DISCOVERY_URL"].nil?
       delete_doc = delete_doc
       assert_equal("deleted", delete_doc["status"])
     end
-
-    # def test_queries
-    # end
 
     def test_list_credentials
       credentials = @service.list_credentials(

@@ -36,7 +36,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -93,7 +93,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_using_websocket_disable_ssl_verification
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -127,7 +127,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_get_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -159,7 +159,7 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -220,7 +220,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_callbacks
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -253,7 +253,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -328,7 +328,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_acoustic_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -404,7 +404,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_corpora
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -476,7 +476,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_words
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -623,7 +623,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_list_grammars
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -645,7 +645,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_add_grammar
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -670,7 +670,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_get_grammar
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -693,7 +693,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_delete_grammar
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -716,7 +716,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_audio_resources
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -784,7 +784,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -805,7 +805,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_await
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -844,7 +844,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_async
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -884,7 +884,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_reset_language_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -904,7 +904,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_upgrade_language_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -924,7 +924,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_upgrade_acoustic_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )
@@ -944,7 +944,7 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_reset_acoustic_model
-    authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+    authenticator = IBMWatson::Auth::BasicAuthenticator.new(
       username: "username",
       password: "password"
     )

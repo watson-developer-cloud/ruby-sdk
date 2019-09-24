@@ -48,7 +48,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -93,7 +93,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -141,7 +141,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -195,7 +195,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -256,7 +256,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -323,7 +323,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -362,7 +362,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -410,7 +410,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -472,7 +472,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -507,7 +507,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -538,7 +538,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -573,7 +573,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(
@@ -608,7 +608,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         body: token_response.to_json,
         headers: {}
       )
-    authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+    authenticator = IBMWatson::Auth::IamAuthenticator.new(
       apikey: "iam_apikey"
     )
     service = IBMWatson::LanguageTranslatorV3.new(

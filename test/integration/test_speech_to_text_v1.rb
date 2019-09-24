@@ -28,7 +28,7 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Auth::IamAuthenticator.new(
         apikey: ENV["SPEECH_TO_TEXT_APIKEY"]
       )
       @service = IBMWatson::SpeechToTextV1.new(
@@ -246,7 +246,7 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
       audio_file = File.open(Dir.getwd + "/resources/speech.wav")
       atomic_boolean = Concurrent::AtomicBoolean.new
       mycallback = MyRecognizeCallback.new(atomic_boolean: atomic_boolean)
-      authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+      authenticator = IBMWatson::Auth::BearerTokenAuthenticator.new(
         bearer_token: "bogus_iam_access_token"
       )
       temp_service = IBMWatson::SpeechToTextV1.new(
