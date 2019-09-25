@@ -11,7 +11,7 @@ if !ENV["COMPARE_COMPLY_APIKEY"].nil?
     attr_accessor :service, :environment_id, :collection_id
 
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
         apikey: ENV["ASSISTANT_APIKEY"]
       )
       @service = IBMWatson::CompareComplyV1.new(

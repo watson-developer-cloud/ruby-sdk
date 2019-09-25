@@ -505,84 +505,6 @@ module IBMWatson
       response
     end
     #########################
-    # Test your configuration on a document
-    #########################
-
-    ##
-    # @!method test_configuration_in_environment(environment_id:, configuration: nil, file: nil, filename: nil, file_content_type: nil, metadata: nil, step: nil, configuration_id: nil)
-    # Test configuration.
-    # **Deprecated** This method is no longer supported and is scheduled to be removed
-    #   from service on July 31st 2019.
-    #
-    #    Runs a sample document through the default or your configuration and returns
-    #   diagnostic information designed to help you understand how the document was
-    #   processed. The document is not added to the index.
-    # @param environment_id [String] The ID of the environment.
-    # @param configuration [String] The configuration to use to process the document. If this part is provided, then
-    #   the provided configuration is used to process the document. If the
-    #   **configuration_id** is also provided (both are present at the same time), then
-    #   request is rejected. The maximum supported configuration size is 1 MB.
-    #   Configuration parts larger than 1 MB are rejected. See the `GET
-    #   /configurations/{configuration_id}` operation for an example configuration.
-    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
-    #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
-    #   rejected.
-    # @param filename [String] The filename for file.
-    # @param file_content_type [String] The content type of file.
-    # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected. Example:  ``` {
-    #     "Creator": "Johnny Appleseed",
-    #     "Subject": "Apples"
-    #   } ```.
-    # @param step [String] Specify to only run the input document through the given step instead of running
-    #   the input document through the entire ingestion workflow. Valid values are
-    #   `convert`, `enrich`, and `normalize`.
-    # @param configuration_id [String] The ID of the configuration to use to process the document. If the
-    #   **configuration** form part is also provided (both are present at the same time),
-    #   then the request will be rejected.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def test_configuration_in_environment(environment_id:, configuration: nil, file: nil, filename: nil, file_content_type: nil, metadata: nil, step: nil, configuration_id: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "test_configuration_in_environment")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version,
-        "step" => step,
-        "configuration_id" => configuration_id
-      }
-
-      form_data = {}
-
-      form_data[:configuration] = HTTP::FormData::Part.new(configuration.to_s, content_type: "text/plain") unless configuration.nil?
-
-      unless file.nil?
-        unless file.instance_of?(StringIO) || file.instance_of?(File)
-          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
-        end
-        filename = file.path if filename.nil? && file.respond_to?(:path)
-        form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
-      end
-
-      form_data[:metadata] = HTTP::FormData::Part.new(metadata.to_s, content_type: "text/plain") unless metadata.nil?
-
-      method_url = "/v1/environments/%s/preview" % [ERB::Util.url_encode(environment_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        form: form_data,
-        accept_json: true
-      )
-      response
-    end
-    #########################
     # Collections
     #########################
 
@@ -1383,7 +1305,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
     # Query a collection.
     # By using this method, you can construct long queries. For details, see the
     #   [Discovery
@@ -1425,8 +1347,6 @@ module IBMWatson
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
     #   **offset** is not considered. This parameter is currently Beta functionality.
-    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against. Required when
-    #   querying multiple collections, invalid when performing a single collection query.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
     #   specified in the **similar.document_ids** parameter.
     # @param similar_document_ids [String] A comma-separated list of document IDs to find similar documents.
@@ -1446,7 +1366,7 @@ module IBMWatson
     #   parameter.
     # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1477,7 +1397,6 @@ module IBMWatson
         "passages.characters" => passages_characters,
         "deduplicate" => deduplicate,
         "deduplicate.field" => deduplicate_field,
-        "collection_ids" => collection_ids,
         "similar" => similar,
         "similar.document_ids" => similar_document_ids,
         "similar.fields" => similar_fields,
@@ -1594,12 +1513,13 @@ module IBMWatson
     end
 
     ##
-    # @!method federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+    # @!method federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
     # Query multiple collections.
     # By using this method, you can construct long queries that search multiple
     #   collection. For details, see the [Discovery
     #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-query-concepts#query-concepts).
     # @param environment_id [String] The ID of the environment.
+    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against.
     # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
     #   Filter searches are better for metadata-type searches and for assessing the
     #   concepts in the data set.
@@ -1635,8 +1555,6 @@ module IBMWatson
     # @param deduplicate_field [String] When specified, duplicate results based on the field specified are removed from
     #   the returned results. Duplicate comparison is limited to the current query only,
     #   **offset** is not considered. This parameter is currently Beta functionality.
-    # @param collection_ids [String] A comma-separated list of collection IDs to be queried against. Required when
-    #   querying multiple collections, invalid when performing a single collection query.
     # @param similar [Boolean] When `true`, results are returned based on their similarity to the document IDs
     #   specified in the **similar.document_ids** parameter.
     # @param similar_document_ids [String] A comma-separated list of document IDs to find similar documents.
@@ -1656,7 +1574,7 @@ module IBMWatson
     #   parameter.
     # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def federated_query(environment_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, collection_ids: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+    def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -1670,6 +1588,7 @@ module IBMWatson
       }
 
       data = {
+        "collection_ids" => collection_ids,
         "filter" => filter,
         "query" => query,
         "natural_language_query" => natural_language_query,
@@ -1685,7 +1604,6 @@ module IBMWatson
         "passages.characters" => passages_characters,
         "deduplicate" => deduplicate,
         "deduplicate.field" => deduplicate_field,
-        "collection_ids" => collection_ids,
         "similar" => similar,
         "similar.document_ids" => similar_document_ids,
         "similar.fields" => similar_fields,
@@ -1787,116 +1705,6 @@ module IBMWatson
         url: method_url,
         headers: headers,
         params: params,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
-    # Knowledge Graph entity query.
-    # See the [Knowledge Graph
-    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-kg#kg)
-    #   for more details.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param feature [String] The entity query feature to perform. Supported features are `disambiguate` and
-    #   `similar_entities`.
-    # @param entity [QueryEntitiesEntity] A text string that appears within the entity text field.
-    # @param context [QueryEntitiesContext] Entity text to provide context for the queried entity and rank based on that
-    #   association. For example, if you wanted to query the city of London in England
-    #   your query would look for `London` with the context of `England`.
-    # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
-    # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
-    #   maximum number of evidence items per query is 10,000.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def query_entities(environment_id:, collection_id:, feature: nil, entity: nil, context: nil, count: nil, evidence_count: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_entities")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "feature" => feature,
-        "entity" => entity,
-        "context" => context,
-        "count" => count,
-        "evidence_count" => evidence_count
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/query_entities" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
-    end
-
-    ##
-    # @!method query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
-    # Knowledge Graph relationship query.
-    # See the [Knowledge Graph
-    #   documentation](https://cloud.ibm.com/docs/services/discovery?topic=discovery-kg#kg)
-    #   for more details.
-    # @param environment_id [String] The ID of the environment.
-    # @param collection_id [String] The ID of the collection.
-    # @param entities [Array[QueryRelationsEntity]] An array of entities to find relationships for.
-    # @param context [QueryEntitiesContext] Entity text to provide context for the queried entity and rank based on that
-    #   association. For example, if you wanted to query the city of London in England
-    #   your query would look for `London` with the context of `England`.
-    # @param sort [String] The sorting method for the relationships, can be `score` or `frequency`.
-    #   `frequency` is the number of unique times each entity is identified. The default
-    #   is `score`. This parameter cannot be used in the same query as the **bias**
-    #   parameter.
-    # @param filter [QueryRelationsFilter]
-    # @param count [Fixnum] The number of results to return. The default is `10`. The maximum is `1000`.
-    # @param evidence_count [Fixnum] The number of evidence items to return for each result. The default is `0`. The
-    #   maximum number of evidence items per query is 10,000.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def query_relations(environment_id:, collection_id:, entities: nil, context: nil, sort: nil, filter: nil, count: nil, evidence_count: nil)
-      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_relations")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "entities" => entities,
-        "context" => context,
-        "sort" => sort,
-        "filter" => filter,
-        "count" => count,
-        "evidence_count" => evidence_count
-      }
-
-      method_url = "/v1/environments/%s/collections/%s/query_relations" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
         accept_json: true
       )
       response

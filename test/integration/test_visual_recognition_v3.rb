@@ -10,7 +10,7 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service, :classifier_id
     def before_all
-      authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
         apikey: ENV["VISUAL_RECOGNITION_APIKEY"]
       )
       @service = IBMWatson::VisualRecognitionV3.new(

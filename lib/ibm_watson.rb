@@ -7,6 +7,15 @@ module IBMWatson
   ApiException = IBMCloudSdkCore::ApiException
   DetailedResponse = IBMCloudSdkCore::DetailedResponse
 
+  module Authenticators
+    BasicAuthenticator = IBMCloudSdkCore::BasicAuthenticator
+    BearerTokenAuthenticator = IBMCloudSdkCore::BearerTokenAuthenticator
+    CloudPakForDataAuthenticator = IBMCloudSdkCore::CloudPakForDataAuthenticator
+    ConfigBasedAuthenticatorFactory = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory
+    IamAuthenticator = IBMCloudSdkCore::IamAuthenticator
+    NoAuthAuthenticator = IBMCloudSdkCore::NoAuthAuthenticator
+  end
+
   require_relative("./ibm_watson/personality_insights_v3.rb")
   require_relative("./ibm_watson/tone_analyzer_v3.rb")
   require_relative("./ibm_watson/assistant_v1.rb")
