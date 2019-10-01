@@ -47,6 +47,7 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
         collection_ids: @collection_id,
         features: "objects"
       ).result
+      assert_equal(result["images"].length, 2)
       refute(result.nil?)
     end
 
