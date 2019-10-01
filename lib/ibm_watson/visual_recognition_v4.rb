@@ -119,16 +119,18 @@ module IBMWatson
 
       form_data[:features] = HTTP::FormData::Part.new(features.to_s, content_type: "text/plain")
 
+      form_data[:images_file] = []
       images_file&.each do |item|
         unless item[:data].instance_of?(StringIO) || item[:data].instance_of?(File)
-          item.data = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item[:data])
+          item[:data] = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item[:data])
         end
         item[:filename] = item[:data].path if item[:filename].nil? && item[:data].respond_to?(:path)
-        form_data[:images_file] = HTTP::FormData::File.new(item[:data], content_type: item[:content_type], filename: item[:filename])
+        form_data[:images_file].push(HTTP::FormData::File.new(item[:data], content_type: item[:content_type], filename: item[:filename]))
       end
 
+      form_data[:image_url] = []
       image_url&.each do |item|
-        form_data[:image_url] = HTTP::FormData::Part.new(item.to_s, content_type: "text/plain")
+        form_data[:image_url].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
       end
 
       form_data[:threshold] = HTTP::FormData::Part.new(threshold.to_s, content_type: "application/json") unless threshold.nil?
@@ -367,16 +369,18 @@ module IBMWatson
 
       form_data = {}
 
+      form_data[:images_file] = []
       images_file&.each do |item|
         unless item[:data].instance_of?(StringIO) || item[:data].instance_of?(File)
-          item.data = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item[:data])
+          item[:data] = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item[:data])
         end
         item[:filename] = item[:data].path if item[:filename].nil? && item[:data].respond_to?(:path)
-        form_data[:images_file] = HTTP::FormData::File.new(item[:data], content_type: item[:content_type], filename: item[:filename])
+        form_data[:images_file].push(HTTP::FormData::File.new(item[:data], content_type: item[:content_type], filename: item[:filename]))
       end
 
+      form_data[:image_url] = []
       image_url&.each do |item|
-        form_data[:image_url] = HTTP::FormData::Part.new(item.to_s, content_type: "text/plain")
+        form_data[:image_url].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
       end
 
       form_data[:training_data] = HTTP::FormData::Part.new(training_data.to_s, content_type: "text/plain") unless training_data.nil?
