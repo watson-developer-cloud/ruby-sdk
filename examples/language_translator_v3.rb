@@ -21,13 +21,6 @@ language_translator = IBMWatson::LanguageTranslatorV3.new(
 )
 language_translator.service_url = "{service_url}"
 
-# If you have username & password in your credentials use:
-# language_translator = IBMWatson::LanguageTranslatorV3.new(
-#   version: "2018-05-31",
-#   username: "username",
-#   password: "password"
-# )
-
 ## Translate
 translation = language_translator.translate(
   text: "Hello",

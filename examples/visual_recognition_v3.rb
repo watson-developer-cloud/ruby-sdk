@@ -24,13 +24,6 @@ visual_recognition = IBMWatson::VisualRecognitionV3.new(
 )
 visual_recognition.service_url = "{service_url}"
 
-# If you have username & password in your credentials use:
-# visual_recognition = IBMWatson::VisualRecognitionV3.new(
-#   version: "2018-03-19",
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD"
-# )
-
 # cars = File.open(Dir.getwd + "/resources/cars.zip")
 # trucks = File.open(Dir.getwd + "/resources/trucks.zip")
 # puts JSON.pretty_generate(visual_recognition.create_classifier(

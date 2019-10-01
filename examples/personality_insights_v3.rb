@@ -23,13 +23,6 @@ personality_insights = IBMWatson::PersonalityInsightsV3.new(
 )
 personality_insights.service_url = "{service_url}"
 
-# If you have username & password in your credentials use:
-# personality_insights = IBMWatson::PersonalityInsightsV3.new(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD",
-#   version: "2017-10-13"
-# )
-
 profile = nil
 File.open(Dir.getwd + "/resources/personality-v3.json") do |profile_json|
   profile = personality_insights.profile(

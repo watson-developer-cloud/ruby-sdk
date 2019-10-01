@@ -21,13 +21,6 @@ natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
 )
 natural_language_understanding.service_url = "{service_url}"
 
-# If you have username & password in your credentials use:
-# natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD",
-#   version: "2018-03-16"
-# )
-
 response = natural_language_understanding.analyze(
   text: "Bruce Banner is the Hulk and Bruce Wayne is BATMAN! " \
         "Superman fears not Banner, but Wayne",
