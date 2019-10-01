@@ -1305,7 +1305,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+    # @!method query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, spelling_suggestions: nil, x_watson_logging_opt_out: nil)
     # Query a collection.
     # By using this method, you can construct long queries. For details, see the
     #   [Discovery
@@ -1364,9 +1364,15 @@ module IBMWatson
     #   a **number** type field is specified, returned results are biased towards higher
     #   field values. This parameter cannot be used in the same query as the **sort**
     #   parameter.
+    # @param spelling_suggestions [Boolean] When `true` and the **natural_language_query** parameter is used, the
+    #   **natural_languge_query** parameter is spell checked. The most likely correction
+    #   is retunred in the **suggested_query** field of the response (if one exists).
+    #
+    #   **Important:** this parameter is only valid when using the Cloud Pak version of
+    #   Discovery.
     # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+    def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, spelling_suggestions: nil, x_watson_logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1400,7 +1406,8 @@ module IBMWatson
         "similar" => similar,
         "similar.document_ids" => similar_document_ids,
         "similar.fields" => similar_fields,
-        "bias" => bias
+        "bias" => bias,
+        "spelling_suggestions" => spelling_suggestions
       }
 
       method_url = "/v1/environments/%s/collections/%s/query" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
@@ -1699,6 +1706,49 @@ module IBMWatson
       }
 
       method_url = "/v1/environments/%s/notices" % [ERB::Util.url_encode(environment_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_autocompletion(environment_id:, collection_id:, field: nil, prefix: nil, count: nil)
+    # Get Autocomplete Suggestions.
+    # Returns completion query suggestions for the specified prefix.  /n/n
+    #   **Important:** this method is only valid when using the Cloud Pak version of
+    #   Discovery.
+    # @param environment_id [String] The ID of the environment.
+    # @param collection_id [String] The ID of the collection.
+    # @param field [String] The field in the result documents that autocompletion suggestions are identified
+    #   from.
+    # @param prefix [String] The prefix to use for autocompletion. For example, the prefix `Ho` could
+    #   autocomplete to `Hot`, `Housing`, or `How do I upgrade`. Possible completions are.
+    # @param count [Fixnum] The number of autocompletion suggestions to return.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_autocompletion(environment_id:, collection_id:, field: nil, prefix: nil, count: nil)
+      raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_autocompletion")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "field" => field,
+        "prefix" => prefix,
+        "count" => count
+      }
+
+      method_url = "/v1/environments/%s/collections/%s/autocompletion" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
 
       response = request(
         method: "GET",
