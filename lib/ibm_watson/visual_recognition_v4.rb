@@ -121,7 +121,7 @@ module IBMWatson
 
       images_file&.each do |item|
         unless item[:data].instance_of?(StringIO) || item[:data].instance_of?(File)
-          item.data = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item.data)
+          item.data = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item[:data])
         end
         item[:filename] = item[:data].path if item[:filename].nil? && item[:data].respond_to?(:path)
         form_data[:images_file] = HTTP::FormData::File.new(item[:data], content_type: item[:content_type], filename: item[:filename])
@@ -367,14 +367,12 @@ module IBMWatson
 
       form_data = {}
 
-      puts "im", images_file
       images_file&.each do |item|
-        puts item
-        unless item.data.instance_of?(StringIO) || item.data.instance_of?(File)
-          item.data = item.data.respond_to?(:to_json) ? StringIO.new(item.data.to_json) : StringIO.new(item.data)
+        unless item[:data].instance_of?(StringIO) || item[:data].instance_of?(File)
+          item.data = item[:data].respond_to?(:to_json) ? StringIO.new(item[:data].to_json) : StringIO.new(item[:data])
         end
-        item.filename = item.data.path if item.filename.nil? && item.data.respond_to?(:path)
-        form_data[:images_file] = HTTP::FormData::File.new(item.data, content_type: item.content_type, filename: item.filename)
+        item[:filename] = item[:data].path if item[:filename].nil? && item[:data].respond_to?(:path)
+        form_data[:images_file] = HTTP::FormData::File.new(item[:data], content_type: item[:content_type], filename: item[:filename])
       end
 
       image_url&.each do |item|
