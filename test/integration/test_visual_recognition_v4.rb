@@ -43,8 +43,8 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
             "content_type": "image/jpeg"
           }
         ],
-        collection_ids: @collection_id,
-        features: "objects"
+        collection_ids: [@collection_id],
+        features: ["objects"]
       ).result
       assert_equal(2, result["images"].length)
       refute(result.nil?)

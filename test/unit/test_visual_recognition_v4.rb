@@ -31,8 +31,8 @@ class VisualRecognitionV4Test < Minitest::Test
           "content_type": "image/jpeg"
         }
       ],
-      collection_ids: "collid",
-      features: "animal"
+      collection_ids: ["collid"],
+      features: ["animal"]
     )
   end
 
@@ -53,8 +53,8 @@ class VisualRecognitionV4Test < Minitest::Test
       image_url: [
         "www.somethingfunny.com"
       ],
-      collection_ids: "collid",
-      features: "animal"
+      collection_ids: ["collid"],
+      features: ["animal"]
     )
   end
 
