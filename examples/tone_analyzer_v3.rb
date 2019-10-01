@@ -21,13 +21,6 @@ tone_analyzer = IBMWatson::ToneAnalyzerV3.new(
 )
 tone_analyzer.service_url = "{service_url}"
 
-# If you have username & password in your credentials use:
-# tone_analyzer = ToneAnalyzerV3(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD",
-#   version: "2017-09-21"
-# )
-
 utterances = [
   {
     "text" => "I am very happy.",
