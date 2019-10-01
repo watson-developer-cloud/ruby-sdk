@@ -1,13 +1,25 @@
 # frozen_string_literal: true
 
-require("ibm_watson/tone_analyzer_v3")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/tone_analyzer_v3"
 
 # If using IAM
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
+)
+
+# If you have username & password in your credentials use:
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
+# )
+
 tone_analyzer = IBMWatson::ToneAnalyzerV3.new(
-  iam_apikey: "IAM API KEY",
+  authenticator: authenticator,
   version: "2017-09-21"
 )
+tone_analyzer.service_url = "{service_url}"
 
 # If you have username & password in your credentials use:
 # tone_analyzer = ToneAnalyzerV3(

@@ -1,18 +1,25 @@
 # frozen_string_literal: true
 
-require("ibm_watson/text_to_speech_v1")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/text_to_speech_v1"
 
 # If using IAM
-text_to_speech = IBMWatson::TextToSpeechV1.new(
-  iam_apikey: "IAM API KEY"
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
 )
 
 # If you have username & password in your credentials use:
-# text_to_speech = IBMWatson::TextToSpeechV1.new(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD"
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
 # )
+
+# If you have username & password in your credentials use:
+text_to_speech = IBMWatson::TextToSpeechV1.new(
+  authenticator: authenticator
+)
+text_to_speech.service_url = "{service_url}"
 
 puts JSON.pretty_generate(text_to_speech.list_voices.result)
 

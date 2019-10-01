@@ -1,19 +1,25 @@
 # frozen_string_literal: true
 
-require("ibm_watson/speech_to_text_v1")
-require("ibm_watson/websocket/recognize_callback")
-require("json")
+require "ibm_watson/speech_to_text_v1"
+require "ibm_watson/websocket/recognize_callback"
+require "ibm_watson/authenticators"
+require "json"
 
 # If using IAM
-speech_to_text = IBMWatson::SpeechToTextV1.new(
-  iam_apikey: "IAM API KEY"
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
 )
 
 # If you have username & password in your credentials use:
-# speech_to_text = IBMWatson::SpeechToTextV1.new(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD"
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
 # )
+
+speech_to_text = IBMWatson::SpeechToTextV1.new(
+  authenticator: authenticator
+)
+speech_to_text.service_url = "{service_url}"
 
 puts JSON.pretty_generate(speech_to_text.list_models.result)
 

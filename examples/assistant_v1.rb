@@ -1,20 +1,25 @@
 # frozen_string_literal: true
 
-require("ibm_watson/assistant_v1")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/assistant_v1"
 
 # If using IAM
-assistant = IBMWatson::AssistantV1.new(
-  iam_apikey: "IAM API KEY",
-  version: "2018-02-16"
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
 )
 
 # If you have username & password in your credentials use:
-# assistant = AssistantV1(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD",
-#   version: "2018-02-16"
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
 # )
+
+assistant = IBMWatson::AssistantV1.new(
+  version: "2018-02-16",
+  authenticator: authenticator
+)
+assistant.service_url = "{service_url}"
 
 #########################
 # Workspaces

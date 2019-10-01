@@ -1,15 +1,28 @@
 # frozen_string_literal: true
 
-require("ibm_watson/visual_recognition_v3")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/visual_recognition_v3"
+
+# If using IAM
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
+)
+
+# If you have username & password in your credentials use:
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
+# )
 
 test_url = "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg"
 
 # If using IAM
 visual_recognition = IBMWatson::VisualRecognitionV3.new(
   version: "2018-03-19",
-  iam_apikey: "IAM API KEY"
+  authenticator: authenticator
 )
+visual_recognition.service_url = "{service_url}"
 
 # If you have username & password in your credentials use:
 # visual_recognition = IBMWatson::VisualRecognitionV3.new(

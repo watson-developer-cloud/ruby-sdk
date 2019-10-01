@@ -1,20 +1,25 @@
 # frozen_string_literal: true
 
-require("ibm_watson/discovery_v1")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/discovery_v1"
 
 # If using IAM
-discovery = IBMWatson::DiscoveryV1.new(
-  iam_apikey: "IAM API KEY",
-  version: "2018-03-05"
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
 )
 
 # If you have username & password in your credentials use:
-# discovery = IBMWatson::DiscoveryV1.new(
-#   username: "username",
-#   password: "password",
-#   version: "2018-03-05"
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
 # )
+
+discovery = IBMWatson::DiscoveryV1.new(
+  version: "2019-04-30",
+  authenticator: authenticator
+)
+discovery.service_url = "{service_url}"
 
 environments = discovery.list_environments.result
 puts JSON.pretty_generate(environments)
