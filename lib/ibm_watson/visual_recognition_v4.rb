@@ -115,6 +115,9 @@ module IBMWatson
 
       form_data = {}
 
+      collection_ids *= "," unless collection_ids.nil?
+      features *= "," unless features.nil?
+
       form_data[:collection_ids] = HTTP::FormData::Part.new(collection_ids.to_s, content_type: "text/plain")
 
       form_data[:features] = HTTP::FormData::Part.new(features.to_s, content_type: "text/plain")
