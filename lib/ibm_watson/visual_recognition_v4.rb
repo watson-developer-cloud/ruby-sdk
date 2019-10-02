@@ -81,8 +81,8 @@ module IBMWatson
     #   Encode the image and .zip file names in UTF-8 if they contain non-ASCII
     #   characters. The service assumes UTF-8 encoding if it encounters non-ASCII
     #   characters.
-    # @param collection_ids [String] The IDs of the collections to analyze. Separate multiple values with commas.
-    # @param features [String] The features to analyze. Separate multiple values with commas.
+    # @param collection_ids [Array[String]] An array of IDs of the collections to analyze. Separate multiple values with commas.
+    # @param features [Array[String]] An array of features to analyze. Separate multiple values with commas.
     # @param images_file [Array[FileWithMetadata]] An array of image files (.jpg or .png) or .zip files with images.
     #   - Include a maximum of 20 images in a request.
     #   - Limit the .zip file to 100 MB.
