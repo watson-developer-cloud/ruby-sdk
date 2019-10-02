@@ -81,8 +81,8 @@ module IBMWatson
     #   Encode the image and .zip file names in UTF-8 if they contain non-ASCII
     #   characters. The service assumes UTF-8 encoding if it encounters non-ASCII
     #   characters.
-    # @param collection_ids [Array[String]] An array of IDs of the collections to analyze. Separate multiple values with commas.
-    # @param features [Array[String]] An array of features to analyze. Separate multiple values with commas.
+    # @param collection_ids [Array[String]] The IDs of the collections to analyze.
+    # @param features [Array[String]] The features to analyze.
     # @param images_file [Array[FileWithMetadata]] An array of image files (.jpg or .png) or .zip files with images.
     #   - Include a maximum of 20 images in a request.
     #   - Limit the .zip file to 100 MB.
@@ -582,7 +582,7 @@ module IBMWatson
     #   - To delete the training data, provide an empty value for the training data.
     # @param collection_id [String] The identifier of the collection.
     # @param image_id [String] The identifier of the image.
-    # @param objects [Array[BaseObject]] Training data for specific objects.
+    # @param objects [Array[TrainingDataObject]] Training data for specific objects.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_image_training_data(collection_id:, image_id:, objects: nil)
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
