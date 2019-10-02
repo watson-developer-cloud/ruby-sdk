@@ -260,10 +260,11 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_fields")
       headers.merge!(sdk_headers)
+      collection_ids *= "," unless collection_ids.nil?
 
       params = {
         "version" => @version,
-        "collection_ids" => collection_ids.to_a
+        "collection_ids" => collection_ids
       }
 
       method_url = "/v1/environments/%s/fields" % [ERB::Util.url_encode(environment_id)]
@@ -1485,6 +1486,11 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_notices")
       headers.merge!(sdk_headers)
+      _return *= "," unless _return.nil?
+      sort *= "," unless sort.nil?
+      passages_fields *= "," unless passages_fields.nil?
+      similar_document_ids *= "," unless similar_document_ids.nil?
+      similar_fields *= "," unless similar_fields.nil?
 
       params = {
         "version" => @version,
@@ -1494,17 +1500,17 @@ module IBMWatson
         "passages" => passages,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => _return.to_a,
+        "return" => _return,
         "offset" => offset,
-        "sort" => sort.to_a,
+        "sort" => sort,
         "highlight" => highlight,
-        "passages.fields" => passages_fields.to_a,
+        "passages.fields" => passages_fields,
         "passages.count" => passages_count,
         "passages.characters" => passages_characters,
         "deduplicate.field" => deduplicate_field,
         "similar" => similar,
-        "similar.document_ids" => similar_document_ids.to_a,
-        "similar.fields" => similar_fields.to_a
+        "similar.document_ids" => similar_document_ids,
+        "similar.fields" => similar_fields
       }
 
       method_url = "/v1/environments/%s/collections/%s/notices" % [ERB::Util.url_encode(environment_id), ERB::Util.url_encode(collection_id)]
@@ -1686,23 +1692,28 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "federated_query_notices")
       headers.merge!(sdk_headers)
+      collection_ids *= "," unless collection_ids.nil?
+      _return *= "," unless _return.nil?
+      sort *= "," unless sort.nil?
+      similar_document_ids *= "," unless similar_document_ids.nil?
+      similar_fields *= "," unless similar_fields.nil?
 
       params = {
         "version" => @version,
-        "collection_ids" => collection_ids.to_a,
+        "collection_ids" => collection_ids,
         "filter" => filter,
         "query" => query,
         "natural_language_query" => natural_language_query,
         "aggregation" => aggregation,
         "count" => count,
-        "return" => _return.to_a,
+        "return" => _return,
         "offset" => offset,
-        "sort" => sort.to_a,
+        "sort" => sort,
         "highlight" => highlight,
         "deduplicate.field" => deduplicate_field,
         "similar" => similar,
-        "similar.document_ids" => similar_document_ids.to_a,
-        "similar.fields" => similar_fields.to_a
+        "similar.document_ids" => similar_document_ids,
+        "similar.fields" => similar_fields
       }
 
       method_url = "/v1/environments/%s/notices" % [ERB::Util.url_encode(environment_id)]
@@ -2265,6 +2276,7 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_log")
       headers.merge!(sdk_headers)
+      sort *= "," unless sort.nil?
 
       params = {
         "version" => @version,
@@ -2272,7 +2284,7 @@ module IBMWatson
         "query" => query,
         "count" => count,
         "offset" => offset,
-        "sort" => sort.to_a
+        "sort" => sort
       }
 
       method_url = "/v1/logs"

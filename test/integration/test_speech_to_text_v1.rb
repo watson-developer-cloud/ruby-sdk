@@ -80,7 +80,7 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
           content_type: "audio/l16; rate=44100",
           timestamps: true,
           word_alternatives_threshold: 0.9,
-          keywords: %w"[colorado tornado]",
+          keywords: %w[colorado tornado],
           keywords_threshold: 0.5
         )
         refute_nil(output.result["results"][0]["alternatives"][0]["transcript"])

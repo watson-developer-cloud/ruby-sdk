@@ -26,19 +26,19 @@ if !ENV["TONE_ANALYZER_APIKEY"].nil? && !ENV["TONE_ANALYZER_URL"].nil?
     end
 
     def test_tone
-      tone_text = File.read(Dir.getwd + "/resources/personality.txt")
+      tone_text = File.read(Dir.getwd + "/resources/tone-example.json")
       service_response = service.tone(
         tone_input: tone_text,
-        content_type: "text/plain"
+        content_type: "application/json"
       )
       assert((200..299).cover?(service_response.status))
     end
 
     def test_tone_with_args
-      tone_text = File.read(Dir.getwd + "/resources/personality.txt")
+      tone_text = File.read(Dir.getwd + "/resources/tone-example.json")
       service_response = service.tone(
         tone_input: tone_text,
-        content_type: "text/plain",
+        content_type: "application/json",
         sentences: false
       )
       assert((200..299).cover?(service_response.status))

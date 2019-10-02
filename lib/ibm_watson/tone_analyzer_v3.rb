@@ -134,11 +134,12 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("tone_analyzer", "V3", "tone")
       headers.merge!(sdk_headers)
+      tones *= "," unless tones.nil?
 
       params = {
         "version" => @version,
         "sentences" => sentences,
-        "tones" => tones.to_a
+        "tones" => tones
       }
 
       if content_type.start_with?("application/json") && tone_input.instance_of?(Hash)
