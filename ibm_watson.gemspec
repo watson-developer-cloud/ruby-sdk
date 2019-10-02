@@ -47,7 +47,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest-hooks", "~> 1.5"
   spec.add_development_dependency "minitest-reporters", "~> 1.3"
   spec.add_development_dependency "minitest-retry", "~> 0.1"
-  spec.add_development_dependency "rake", "~> 12.3"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rubocop", "0.62"
   spec.add_development_dependency "simplecov", "~> 0.16"
   spec.add_development_dependency "webmock", "~> 3.4"
