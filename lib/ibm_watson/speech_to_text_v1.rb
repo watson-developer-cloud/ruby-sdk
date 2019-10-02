@@ -365,9 +365,9 @@ module IBMWatson
       headers = {
         "Content-Type" => content_type
       }
-      keywords *= "," unless keywords.nil?
       sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "recognize")
       headers.merge!(sdk_headers)
+      keywords *= "," unless keywords.nil?
 
       params = {
         "model" => model,
@@ -942,6 +942,7 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "create_job")
       headers.merge!(sdk_headers)
+      keywords *= "," unless keywords.nil?
 
       params = {
         "model" => model,
@@ -954,7 +955,7 @@ module IBMWatson
         "base_model_version" => base_model_version,
         "customization_weight" => customization_weight,
         "inactivity_timeout" => inactivity_timeout,
-        "keywords" => keywords.to_a,
+        "keywords" => keywords,
         "keywords_threshold" => keywords_threshold,
         "max_alternatives" => max_alternatives,
         "word_alternatives_threshold" => word_alternatives_threshold,

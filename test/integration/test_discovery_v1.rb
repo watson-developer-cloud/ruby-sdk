@@ -104,7 +104,7 @@ if !ENV["DISCOVERY_APIKEY"].nil? && !ENV["DISCOVERY_URL"].nil?
 
       fields = @service.list_fields(
         environment_id: @environment_id,
-        collection_ids: [new_collection_id]
+        collection_ids: [new_collection_id, @collection_id]
       )
       refute(fields.nil?)
 
