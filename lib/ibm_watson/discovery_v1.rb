@@ -1729,23 +1729,25 @@ module IBMWatson
     end
 
     ##
-    # @!method get_autocompletion(environment_id:, collection_id:, field: nil, prefix: nil, count: nil)
+    # @!method get_autocompletion(environment_id:, collection_id:, prefix:, field: nil, count: nil)
     # Get Autocomplete Suggestions.
     # Returns completion query suggestions for the specified prefix.  /n/n
     #   **Important:** this method is only valid when using the Cloud Pak version of
     #   Discovery.
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
-    # @param field [String] The field in the result documents that autocompletion suggestions are identified
-    #   from.
     # @param prefix [String] The prefix to use for autocompletion. For example, the prefix `Ho` could
     #   autocomplete to `Hot`, `Housing`, or `How do I upgrade`. Possible completions are.
+    # @param field [String] The field in the result documents that autocompletion suggestions are identified
+    #   from.
     # @param count [Fixnum] The number of autocompletion suggestions to return.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_autocompletion(environment_id:, collection_id:, field: nil, prefix: nil, count: nil)
+    def get_autocompletion(environment_id:, collection_id:, prefix:, field: nil, count: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("prefix must be provided") if prefix.nil?
 
       headers = {
       }
@@ -1754,8 +1756,8 @@ module IBMWatson
 
       params = {
         "version" => @version,
-        "field" => field,
         "prefix" => prefix,
+        "field" => field,
         "count" => count
       }
 
