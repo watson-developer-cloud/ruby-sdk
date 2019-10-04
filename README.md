@@ -92,8 +92,8 @@ With a credential file, you just need to put the file in the right place and the
 
 The file downloaded will be called `ibm-credentials.env`. This is the name the SDK will search for and **must** be preserved unless you want to configure the file path (more on that later). The SDK will look for your `ibm-credentials.env` file in the following places (in order):
 
-* Your system's home directory
 * The top-level directory of the project you're using the SDK in
+* Your system's home directory
 
  As long as you set that up correctly, you don't have to worry about setting any authentication options in your code. So, for example, if you created and downloaded the credential file for your Discovery instance, you just need to do the following:
 
@@ -130,7 +130,7 @@ You supply either an IAM service **API key** or an **access token**:
 
 ```ruby
 # In the constructor, letting the SDK manage the IAM token
-authenticator = IBMCloudSdkCore::IamAuthenticator.new(
+authenticator = IBMWatson::Authenticators::::IamAuthenticator.new(
   apikey: "<iam_apikey>",
   url: "<iam_url>" # optional - the default value is https://iam.cloud.ibm.com/identity/token
 )
@@ -144,7 +144,7 @@ discover.service_url = "<service-url>" # setting service url
 #### Supplying the access token
 
 ```ruby
-authenticator = IBMCloudSdkCore::BearerTokenAuthenticator.new(
+authenticator = IBMWatson::Authenticators::::BearerTokenAuthenticator.new(
   bearer_token: "<access_token>"
 )
 discovery = IBMWatson::DiscoveryV1.new(version: "2017-10-16", authenticator)
@@ -157,7 +157,7 @@ require "ibm_watson"
 require "ibm_cloud_sdk_core"
 include IBMWatson
 # In the constructor
-authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+authenticator = IBMWatson::Authenticators::::BasicAuthenticator.new(
   username: "<username>",
   password: "<password>"
 )
@@ -177,7 +177,7 @@ Requests can be sent asynchronously. There are two asynchronous methods availabl
 When `await` is used, the request is made synchronously.
 
 ```ruby
-authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+authenticator = IBMWatson::Authenticators::::BasicAuthenticator.new(
   username: "<username>",
   password: "<password>"
 )
@@ -196,7 +196,7 @@ output = future.value # The response is accessible at future.value
 When `async` is used, the request is made asynchronously
 
 ```ruby
-authenticator = IBMCloudSdkCore::BasicAuthenticator.new(
+authenticator = IBMWatson::Authenticators::::BasicAuthenticator.new(
   username: "<username>",
   password: "<password>"
 )
@@ -350,7 +350,7 @@ The SDK will manage the token for the user
 
 ```ruby
 
-authenticator = IBMCloudSdkCore::CLoudPakForDataAuthenticator.new(
+authenticator = IBMWatson::Authenticators::::CLoudPakForDataAuthenticator.new(
   username: "<username>",
   password: "<password>",
   url: "<authentication url>",

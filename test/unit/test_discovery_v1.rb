@@ -1038,7 +1038,7 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-03-05",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/autocompletion?version=2018-03-05")
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/autocompletion?prefix=hi&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -1048,7 +1048,8 @@ class DiscoveryV1Test < Minitest::Test
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_autocompletion(
       environment_id: "envid",
-      collection_id: "collid"
+      collection_id: "collid",
+      prefix: "hi"
     )
     assert_equal({ "received" => "true" }, service_response.result)
   end
