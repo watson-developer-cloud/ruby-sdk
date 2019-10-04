@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,58 +62,22 @@ module IBMWatson
     #   Instead, specify a version date that is compatible with your
     #   application, and don't change it until your application is
     #   ready for a later version.
-    # @option args url [String] The base url to use when contacting the service (e.g.
-    #   "https://gateway.watsonplatform.net/personality-insights/api").
-    #   The base url may differ between IBM Cloud regions.
-    # @option args username [String] The username used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args password [String] The password used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
-    #   this API key is provided, the SDK will manage the token and handle the
-    #   refreshing.
-    # @option args iam_access_token [String] An IAM access token is fully managed by the application.
-    #   Responsibility falls on the application to refresh the token, either before
-    #   it expires or reactively upon receiving a 401 from the service as any requests
-    #   made with an expired token will fail.
-    # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.cloud.ibm.com/identity/token'.
-    # @option args iam_client_id [String] An optional client id for the IAM service API.
-    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
-    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
-    #   takes are basic, iam or icp4d.
+    # @option args service_url [String] The base service URL to use when contacting the service.
+    #   The base service_url may differ between IBM Cloud regions.
+    # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:url] = "https://gateway.watsonplatform.net/personality-insights/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
-      defaults[:authentication_type] = nil
+      defaults[:service_url] = "https://gateway.watsonplatform.net/personality-insights/api"
+      defaults[:authenticator] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "personality_insights"
-      args[:display_name] = "Personality Insights"
-      super
       @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
+      args[:service_name] = "personality_insights"
+      args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
+      super
     end
 
     #########################
@@ -121,7 +85,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
+    # @!method profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
     # Get profile.
     # Generates a personality profile for the author of the input text. The service
     #   accepts a maximum of 20 MB of input content, but it requires much less text to
@@ -172,6 +136,8 @@ module IBMWatson
     #   For JSON input, provide an object of type `Content`.
     # @param accept [String] The type of the response. For more information, see **Accept types** in the method
     #   description.
+    # @param content_type [String] The type of the input. For more information, see **Content types** in the method
+    #   description.
     # @param content_language [String] The language of the input text for the request: Arabic, English, Japanese, Korean,
     #   or Spanish. Regional variants are treated as their parent language; for example,
     #   `en-US` is interpreted as `en`.
@@ -196,19 +162,17 @@ module IBMWatson
     #   (`text/csv`).
     # @param consumption_preferences [Boolean] Indicates whether consumption preferences are returned with the results. By
     #   default, no consumption preferences are returned.
-    # @param content_type [String] The type of the input. For more information, see **Content types** in the method
-    #   description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def profile(content:, accept:, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil, content_type: nil)
+    def profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
       raise ArgumentError.new("content must be provided") if content.nil?
 
       raise ArgumentError.new("accept must be provided") if accept.nil?
 
       headers = {
         "Accept" => accept,
+        "Content-Type" => content_type,
         "Content-Language" => content_language,
-        "Accept-Language" => accept_language,
-        "Content-Type" => content_type
+        "Accept-Language" => accept_language
       }
       sdk_headers = Common.new.get_sdk_headers("personality_insights", "V3", "profile")
       headers.merge!(sdk_headers)

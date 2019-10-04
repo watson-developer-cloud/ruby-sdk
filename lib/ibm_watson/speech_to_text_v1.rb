@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,55 +55,17 @@ module IBMWatson
     # Construct a new client for the Speech to Text service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args url [String] The base url to use when contacting the service (e.g.
-    #   "https://stream.watsonplatform.net/speech-to-text/api").
-    #   The base url may differ between IBM Cloud regions.
-    # @option args username [String] The username used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args password [String] The password used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
-    #   this API key is provided, the SDK will manage the token and handle the
-    #   refreshing.
-    # @option args iam_access_token [String] An IAM access token is fully managed by the application.
-    #   Responsibility falls on the application to refresh the token, either before
-    #   it expires or reactively upon receiving a 401 from the service as any requests
-    #   made with an expired token will fail.
-    # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.cloud.ibm.com/identity/token'.
-    # @option args iam_client_id [String] An optional client id for the IAM service API.
-    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
-    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
-    #   takes are basic, iam or icp4d.
+    # @option args service_url [String] The base service URL to use when contacting the service.
+    #   The base service_url may differ between IBM Cloud regions.
+    # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:url] = "https://stream.watsonplatform.net/speech-to-text/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
-      defaults[:authentication_type] = nil
+      defaults[:service_url] = "https://stream.watsonplatform.net/speech-to-text/api"
+      defaults[:authenticator] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "speech_to_text"
-      args[:display_name] = "Speech to Text"
+      args[:service_name] = "speech_to_text"
+      args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
     end
 
@@ -173,7 +135,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, content_type: nil)
+    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. You can
     #   pass a maximum of 100 MB and a minimum of 100 bytes of audio with a request. The
@@ -212,7 +174,7 @@ module IBMWatson
     #   * For all other formats, you can omit the `Content-Type` header or specify
     #   `application/octet-stream` with the header to have the service automatically
     #   detect the format of the audio. (With the `curl` command, you can specify either
-    #   `\"Content-Type:\"` or `\"Content-Type: application/octet-stream\"`.)
+    #   `"Content-Type:"` or `"Content-Type: application/octet-stream"`.)
     #
     #   Where indicated, the format that you specify must include the sampling rate and
     #   can optionally include the number of channels and the endianness of the audio.
@@ -262,6 +224,8 @@ module IBMWatson
     #   **See also:** [Making a multipart HTTP
     #   request](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-http#HTTP-multi).
     # @param audio [String] The audio to transcribe.
+    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
+    #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
     #   [Languages and
     #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models).
@@ -327,7 +291,7 @@ module IBMWatson
     #   the service uses the default value, `1`. See [Maximum
     #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
-    #   possible word alternative (also known as \"Confusion Networks\"). An alternative
+    #   possible word alternative (also known as "Confusion Networks"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. By default, the service computes no
     #   alternative words. See [Word
@@ -359,7 +323,8 @@ module IBMWatson
     #   parameter to be `true`, regardless of whether you specify `false` for the
     #   parameter.
     #
-    #   **Note:** Applies to US English, Japanese, and Spanish transcription only. To
+    #   **Note:** Applies to US English, Japanese, and Spanish (both broadband and
+    #   narrowband models) and UK English (narrowband model) transcription only. To
     #   determine whether a language model supports speaker labels, you can also use the
     #   **Get a model** method and check that the attribute `speaker_labels` is set to
     #   `true`.
@@ -393,18 +358,16 @@ module IBMWatson
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
-    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
-    #   audio format, see **Audio formats (content types)** in the method description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def recognize(audio:, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, content_type: nil)
+    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
         "Content-Type" => content_type
       }
-      keywords *= "," unless keywords.nil?
       sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "recognize")
       headers.merge!(sdk_headers)
+      keywords *= "," unless keywords.nil?
 
       params = {
         "model" => model,
@@ -541,13 +504,7 @@ module IBMWatson
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {}
       headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
-      if !token_manager.nil?
-        access_token = token_manager.token
-        headers["Authorization"] = "Bearer #{access_token}"
-      elsif !username.nil? && !password.nil?
-        headers["Authorization"] = "Basic " + Base64.strict_encode64("#{username}:#{password}")
-      end
-      url = @url.gsub("https:", "wss:")
+      service_url = @service_url.gsub("https:", "wss:")
       params = {
         "model" => model,
         "customization_id" => customization_id,
@@ -557,7 +514,7 @@ module IBMWatson
         "base_model_version" => base_model_version
       }
       params.delete_if { |_, v| v.nil? }
-      url += "/v1/recognize?" + HTTP::URI.form_encode(params)
+      service_url += "/v1/recognize?" + HTTP::URI.form_encode(params)
       options = {
         "content_type" => content_type,
         "inactivity_timeout" => inactivity_timeout,
@@ -578,58 +535,8 @@ module IBMWatson
         "audio_metrics" => audio_metrics
       }
       options.delete_if { |_, v| v.nil? }
-      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, url: url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
+      WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, service_url: service_url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
     end
-
-    # :nocov:
-    # @deprecated This will method be removed in the next major release. Use {#recognize_using_websocket} instead.
-    def recognize_with_websocket(
-      content_type:,
-      recognize_callback:,
-      audio: nil,
-      chunk_data: false,
-      model: nil,
-      customization_id: nil,
-      acoustic_customization_id: nil,
-      customization_weight: nil,
-      base_model_version: nil,
-      inactivity_timeout: nil,
-      interim_results: nil,
-      keywords: nil,
-      keywords_threshold: nil,
-      max_alternatives: nil,
-      word_alternatives_threshold: nil,
-      word_confidence: nil,
-      timestamps: nil,
-      profanity_filter: nil,
-      smart_formatting: nil,
-      speaker_labels: nil
-    )
-      Kernel.warn("[DEPRECATION] `recognize_with_websocket` is deprecated and will be removed in the next major release. Please use `recognize_using_websocket` instead.")
-      recognize_using_websocket(
-        audio: audio,
-        chunk_data: chunk_data,
-        content_type: content_type,
-        model: model,
-        recognize_callback: recognize_callback,
-        customization_id: customization_id,
-        acoustic_customization_id: acoustic_customization_id,
-        customization_weight: customization_weight,
-        base_model_version: base_model_version,
-        inactivity_timeout: inactivity_timeout,
-        interim_results: interim_results,
-        keywords: keywords,
-        keywords_threshold: keywords_threshold,
-        max_alternatives: max_alternatives,
-        word_alternatives_threshold: word_alternatives_threshold,
-        word_confidence: word_confidence,
-        timestamps: timestamps,
-        profanity_filter: profanity_filter,
-        smart_formatting: smart_formatting,
-        speaker_labels: speaker_labels
-      )
-    end
-    # :nocov:
     #########################
     # Asynchronous
     #########################
@@ -743,7 +650,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_job(audio:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, content_type: nil)
+    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil)
     # Create a job.
     # Creates a job for a new asynchronous recognition request. The job is owned by the
     #   instance of the service whose credentials are used to create it. How you learn the
@@ -811,7 +718,7 @@ module IBMWatson
     #   * For all other formats, you can omit the `Content-Type` header or specify
     #   `application/octet-stream` with the header to have the service automatically
     #   detect the format of the audio. (With the `curl` command, you can specify either
-    #   `\"Content-Type:\"` or `\"Content-Type: application/octet-stream\"`.)
+    #   `"Content-Type:"` or `"Content-Type: application/octet-stream"`.)
     #
     #   Where indicated, the format that you specify must include the sampling rate and
     #   can optionally include the number of channels and the endianness of the audio.
@@ -842,6 +749,8 @@ module IBMWatson
     #    **See also:** [Audio
     #   formats](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
     # @param audio [String] The audio to transcribe.
+    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
+    #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
     #   [Languages and
     #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models).
@@ -941,7 +850,7 @@ module IBMWatson
     #   the service uses the default value, `1`. See [Maximum
     #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
-    #   possible word alternative (also known as \"Confusion Networks\"). An alternative
+    #   possible word alternative (also known as "Confusion Networks"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. By default, the service computes no
     #   alternative words. See [Word
@@ -973,7 +882,8 @@ module IBMWatson
     #   parameter to be `true`, regardless of whether you specify `false` for the
     #   parameter.
     #
-    #   **Note:** Applies to US English, Japanese, and Spanish transcription only. To
+    #   **Note:** Applies to US English, Japanese, and Spanish (both broadband and
+    #   narrowband models) and UK English (narrowband model) transcription only. To
     #   determine whether a language model supports speaker labels, you can also use the
     #   **Get a model** method and check that the attribute `speaker_labels` is set to
     #   `true`.
@@ -1004,7 +914,6 @@ module IBMWatson
     #
     #   See [Numeric
     #   redaction](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#redaction).
-    #
     # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
     #   input audio. The service returns processing metrics at the interval specified by
     #   the `processing_metrics_interval` parameter. It also returns processing metrics
@@ -1012,7 +921,7 @@ module IBMWatson
     #   the service returns no processing metrics.
     # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
     #   return processing metrics. The parameter is ignored unless the
-    #   `processing_metrics` parameter is set to `true`.    #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
+    #   `processing_metrics` parameter is set to `true`.
     #
     #   The parameter accepts a minimum value of 0.1 seconds. The level of precision is
     #   not restricted, so you can specify values such as 0.25 and 0.125.
@@ -1024,10 +933,8 @@ module IBMWatson
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
-    # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
-    #   audio format, see **Audio formats (content types)** in the method description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_job(audio:, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, content_type: nil)
+    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -1035,6 +942,7 @@ module IBMWatson
       }
       sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "create_job")
       headers.merge!(sdk_headers)
+      keywords *= "," unless keywords.nil?
 
       params = {
         "model" => model,
@@ -1047,7 +955,7 @@ module IBMWatson
         "base_model_version" => base_model_version,
         "customization_weight" => customization_weight,
         "inactivity_timeout" => inactivity_timeout,
-        "keywords" => keywords.to_a,
+        "keywords" => keywords,
         "keywords_threshold" => keywords_threshold,
         "max_alternatives" => max_alternatives,
         "word_alternatives_threshold" => word_alternatives_threshold,
@@ -1211,16 +1119,24 @@ module IBMWatson
     #   to `true`. You can also refer to [Language support for
     #   customization](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-customization#languageSupport).
     # @param dialect [String] The dialect of the specified language that is to be used with the custom language
-    #   model. The parameter is meaningful only for Spanish models, for which the service
-    #   creates a custom language model that is suited for speech in one of the following
-    #   dialects:
-    #   * `es-ES` for Castilian Spanish (the default)
-    #   * `es-LA` for Latin American Spanish
-    #   * `es-US` for North American (Mexican) Spanish
+    #   model. For most languages, the dialect matches the language of the base model by
+    #   default. For example, `en-US` is used for either of the US English language
+    #   models.
     #
-    #   A specified dialect must be valid for the base model. By default, the dialect
-    #   matches the language of the base model; for example, `en-US` for either of the US
-    #   English language models.
+    #   For a Spanish language, the service creates a custom language model that is suited
+    #   for speech in one of the following dialects:
+    #   * `es-ES` for Castilian Spanish (`es-ES` models)
+    #   * `es-LA` for Latin American Spanish (`es-AR`, `es-CL`, `es-CO`, and `es-PE`
+    #   models)
+    #   * `es-US` for Mexican (North American) Spanish (`es-MX` models)
+    #
+    #   The parameter is meaningful only for Spanish models, for which you can always
+    #   safely omit the parameter to have the service create the correct mapping.
+    #
+    #   If you specify the `dialect` parameter for non-Spanish language models, its value
+    #   must match the language of the base model. If you specify the `dialect` for
+    #   Spanish language models, its value must match one of the defined mappings as
+    #   indicated (`es-ES`, `es-LA`, or `es-MX`). All dialect values are case-insensitive.
     # @param description [String] A description of the new custom language model. Use a localized description that
     #   matches the language of the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -2692,7 +2608,7 @@ module IBMWatson
     end
 
     ##
-    # @!method add_audio(customization_id:, audio_name:, audio_resource:, contained_content_type: nil, allow_overwrite: nil, content_type: nil)
+    # @!method add_audio(customization_id:, audio_name:, audio_resource:, content_type: nil, contained_content_type: nil, allow_overwrite: nil)
     # Add an audio resource.
     # Adds an audio resource to a custom acoustic model. Add audio content that reflects
     #   the acoustic characteristics of the audio that you plan to transcribe. You must
@@ -2816,6 +2732,13 @@ module IBMWatson
     #
     #   With the `curl` command, use the `--data-binary` option to upload the file for the
     #   request.
+    # @param content_type [String] For an audio-type resource, the format (MIME type) of the audio. For more
+    #   information, see **Content types for audio-type resources** in the method
+    #   description.
+    #
+    #   For an archive-type resource, the media type of the archive file. For more
+    #   information, see **Content types for archive-type resources** in the method
+    #   description.
     # @param contained_content_type [String] **For an archive-type resource,** specify the format of the audio files that are
     #   contained in the archive file if they are of type `audio/alaw`, `audio/basic`,
     #   `audio/l16`, or `audio/mulaw`. Include the `rate`, `channels`, and `endianness`
@@ -2835,15 +2758,8 @@ module IBMWatson
     #   the same name. If `false`, the request fails if an audio resource with the same
     #   name already exists. The parameter has no effect if an audio resource with the
     #   same name does not already exist.
-    # @param content_type [String] For an audio-type resource, the format (MIME type) of the audio. For more
-    #   information, see **Content types for audio-type resources** in the method
-    #   description.
-    #
-    #   For an archive-type resource, the media type of the archive file. For more
-    #   information, see **Content types for archive-type resources** in the method
-    #   description.
     # @return [nil]
-    def add_audio(customization_id:, audio_name:, audio_resource:, contained_content_type: nil, allow_overwrite: nil, content_type: nil)
+    def add_audio(customization_id:, audio_name:, audio_resource:, content_type: nil, contained_content_type: nil, allow_overwrite: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       raise ArgumentError.new("audio_name must be provided") if audio_name.nil?
@@ -2851,8 +2767,8 @@ module IBMWatson
       raise ArgumentError.new("audio_resource must be provided") if audio_resource.nil?
 
       headers = {
-        "Contained-Content-Type" => contained_content_type,
-        "Content-Type" => content_type
+        "Content-Type" => content_type,
+        "Contained-Content-Type" => contained_content_type
       }
       sdk_headers = Common.new.get_sdk_headers("speech_to_text", "V1", "add_audio")
       headers.merge!(sdk_headers)

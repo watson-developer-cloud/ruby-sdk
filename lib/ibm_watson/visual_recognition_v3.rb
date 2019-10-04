@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 # limitations under the License.
 
 # The IBM Watson&trade; Visual Recognition service uses deep learning algorithms to
-# identify scenes, objects, and faces  in images you upload to the service. You can create
-# and train a custom classifier to identify subjects that suit your needs.
+# identify scenes and objects in images that you upload to the service. You can create and
+# train a custom classifier to identify subjects that suit your needs.
 
 require "concurrent"
 require "erb"
@@ -45,46 +45,22 @@ module IBMWatson
     #   Instead, specify a version date that is compatible with your
     #   application, and don't change it until your application is
     #   ready for a later version.
-    # @option args url [String] The base url to use when contacting the service (e.g.
-    #   "https://gateway.watsonplatform.net/visual-recognition/api").
-    #   The base url may differ between IBM Cloud regions.
-    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
-    #   this API key is provided, the SDK will manage the token and handle the
-    #   refreshing.
-    # @option args iam_access_token [String] An IAM access token is fully managed by the application.
-    #   Responsibility falls on the application to refresh the token, either before
-    #   it expires or reactively upon receiving a 401 from the service as any requests
-    #   made with an expired token will fail.
-    # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.cloud.ibm.com/identity/token'.
-    # @option args iam_client_id [String] An optional client id for the IAM service API.
-    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
-    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
-    #   takes are basic, iam or icp4d.
+    # @option args service_url [String] The base service URL to use when contacting the service.
+    #   The base service_url may differ between IBM Cloud regions.
+    # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:url] = "https://gateway.watsonplatform.net/visual-recognition/api"
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
-      defaults[:authentication_type] = nil
+      defaults[:service_url] = "https://gateway.watsonplatform.net/visual-recognition/api"
+      defaults[:authenticator] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "watson_vision_combined"
-      args[:display_name] = "Visual Recognition"
-      super
       @version = args[:version]
+      raise ArgumentError.new("version must be provided") if @version.nil?
+
+      args[:service_name] = "visual_recognition"
+      args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
+      super
     end
 
     #########################
@@ -174,79 +150,6 @@ module IBMWatson
       response
     end
     #########################
-    # Face
-    #########################
-
-    ##
-    # @!method detect_faces(images_file: nil, images_filename: nil, images_file_content_type: nil, url: nil, accept_language: nil)
-    # Detect faces in images.
-    # **Important:** On April 2, 2018, the identity information in the response to calls
-    #   to the Face model was removed. The identity information refers to the `name` of
-    #   the person, `score`, and `type_hierarchy` knowledge graph. For details about the
-    #   enhanced Face model, see the [Release
-    #   notes](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-release-notes#2april2018).
-    #
-    #   Analyze and get data about faces in images. Responses can include estimated age
-    #   and gender. This feature uses a built-in model, so no training is necessary. The
-    #   **Detect faces** method does not support general biometric facial recognition.
-    #
-    #   Supported image formats include .gif, .jpg, .png, and .tif. The maximum image size
-    #   is 10 MB. The minimum recommended pixel density is 32X32 pixels, but the service
-    #   tends to perform better with images that are at least 224 x 224 pixels.
-    # @param images_file [File] An image file (gif, .jpg, .png, .tif.) or .zip file with images. Limit the .zip
-    #   file to 100 MB. You can include a maximum of 15 images in a request.
-    #
-    #   Encode the image and .zip file names in UTF-8 if they contain non-ASCII
-    #   characters. The service assumes UTF-8 encoding if it encounters non-ASCII
-    #   characters.
-    #
-    #   You can also include an image with the **url** parameter.
-    # @param images_filename [String] The filename for images_file.
-    # @param images_file_content_type [String] The content type of images_file.
-    # @param url [String] The URL of an image to analyze. Must be in .gif, .jpg, .png, or .tif format. The
-    #   minimum recommended pixel density is 32X32 pixels, but the service tends to
-    #   perform better with images that are at least 224 x 224 pixels. The maximum image
-    #   size is 10 MB. Redirects are followed, so you can use a shortened URL.
-    #
-    #   You can also include images with the **images_file** parameter.
-    # @param accept_language [String] The desired language of parts of the response. See the response for details.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def detect_faces(images_file: nil, images_filename: nil, images_file_content_type: nil, url: nil, accept_language: nil)
-      headers = {
-        "Accept-Language" => accept_language
-      }
-      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "detect_faces")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      form_data = {}
-
-      unless images_file.nil?
-        unless images_file.instance_of?(StringIO) || images_file.instance_of?(File)
-          images_file = images_file.respond_to?(:to_json) ? StringIO.new(images_file.to_json) : StringIO.new(images_file)
-        end
-        images_filename = images_file.path if images_filename.nil? && images_file.respond_to?(:path)
-        form_data[:images_file] = HTTP::FormData::File.new(images_file, content_type: images_file_content_type.nil? ? "application/octet-stream" : images_file_content_type, filename: images_filename)
-      end
-
-      form_data[:url] = HTTP::FormData::Part.new(url.to_s, content_type: "text/plain") unless url.nil?
-
-      method_url = "/v3/detect_faces"
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        form: form_data,
-        accept_json: true
-      )
-      response
-    end
-    #########################
     # Custom
     #########################
 
@@ -254,11 +157,18 @@ module IBMWatson
     # @!method create_classifier(name:, positive_examples:, negative_examples: nil, negative_examples_filename: nil)
     # Create a classifier.
     # Train a new multi-faceted classifier on the uploaded image data. Create your
-    #   custom classifier with positive or negative examples. Include at least two sets of
-    #   examples, either two positive example files or one positive and one negative file.
-    #   You can upload a maximum of 256 MB per call.
+    #   custom classifier with positive or negative example training images. Include at
+    #   least two sets of examples, either two positive example files or one positive and
+    #   one negative file. You can upload a maximum of 256 MB per call.
     #
-    #   Encode all names in UTF-8 if they contain non-ASCII characters (.zip and image
+    #   **Tips when creating:**
+    #
+    #   - If you set the **X-Watson-Learning-Opt-Out** header parameter to `true` when you
+    #   create a classifier, the example training images are not stored. Save your
+    #   training images locally. For more information, see [Data
+    #   collection](#data-collection).
+    #
+    #   - Encode all names in UTF-8 if they contain non-ASCII characters (.zip and image
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
     #   it encounters non-ASCII characters.
     # @param name [String] The name of the new classifier. Encode special characters in UTF-8.
@@ -400,10 +310,17 @@ module IBMWatson
     #   file names, and classifier and class names). The service assumes UTF-8 encoding if
     #   it encounters non-ASCII characters.
     #
-    #   **Tip:** Don't make retraining calls on a classifier until the status is ready.
-    #   When you submit retraining requests in parallel, the last request overwrites the
-    #   previous requests. The retrained property shows the last time the classifier
-    #   retraining finished.
+    #   **Tips about retraining:**
+    #
+    #   - You can't update the classifier if the **X-Watson-Learning-Opt-Out** header
+    #   parameter was set to `true` when the classifier was created. Training images are
+    #   not stored in that case. Instead, create another classifier. For more information,
+    #   see [Data collection](#data-collection).
+    #
+    #   - Don't make retraining calls on a classifier until the status is ready. When you
+    #   submit retraining requests in parallel, the last request overwrites the previous
+    #   requests. The `retrained` property shows the last time the classifier retraining
+    #   finished.
     # @param classifier_id [String] The ID of the classifier.
     # @param positive_examples [File] A .zip file of images that depict the visual subject of a class in the classifier.
     #   The positive examples create or update classes in the classifier. You can include
@@ -506,7 +423,7 @@ module IBMWatson
     # @!method get_core_ml_model(classifier_id:)
     # Retrieve a Core ML model of a classifier.
     # Download a Core ML model file (.mlmodel) of a custom classifier that returns
-    #   <tt>\"core_ml_enabled\": true</tt> in the classifier details.
+    #   <tt>"core_ml_enabled": true</tt> in the classifier details.
     # @param classifier_id [String] The ID of the classifier.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_core_ml_model(classifier_id:)

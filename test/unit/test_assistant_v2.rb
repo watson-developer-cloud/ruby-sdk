@@ -10,10 +10,13 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the Watson Assistant V1 Service
 class AssistantV2Test < Minitest::Test
   def test_message
-    service = IBMWatson::AssistantV2.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV2.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     # service.set_default_headers("x-watson-learning-opt-out" => true)
     assistant_id = "f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec"
@@ -106,10 +109,13 @@ class AssistantV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
-    service = IBMWatson::AssistantV2.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV2.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_session(
       assistant_id: "pizza_app-e0f3"
@@ -126,10 +132,13 @@ class AssistantV2Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
-    service = IBMWatson::AssistantV2.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV2.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_session(
       assistant_id: "pizza_app-e0f3",

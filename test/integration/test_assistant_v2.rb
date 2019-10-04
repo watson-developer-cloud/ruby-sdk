@@ -2,6 +2,8 @@
 
 require_relative("./../test_helper.rb")
 SimpleCov.command_name "test:integration"
+require("minitest/hooks/test")
+require("ibm_cloud_sdk_core")
 
 if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
   # Integration tests for the Watson Assistant V2 Service
@@ -9,9 +11,12 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+        apikey: ENV["ASSISTANT_APIKEY"]
+      )
       @service = IBMWatson::AssistantV2.new(
         version: "2018-12-31",
-        iam_apikey: ENV["ASSISTANT_APIKEY"],
+        authenticator: authenticator,
         url: ENV["ASSISTANT_URL"],
         assistant_id: ENV["ASSISTANT_ASSISTANT_ID"]
       )

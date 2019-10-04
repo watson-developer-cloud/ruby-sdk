@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright 2018 IBM All Rights Reserved.
+# (C) Copyright IBM Corp. 2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,55 +49,17 @@ module IBMWatson
     # Construct a new client for the Text to Speech service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args url [String] The base url to use when contacting the service (e.g.
-    #   "https://stream.watsonplatform.net/text-to-speech/api").
-    #   The base url may differ between IBM Cloud regions.
-    # @option args username [String] The username used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args password [String] The password used to authenticate with the service.
-    #   Username and password credentials are only required to run your
-    #   application locally or outside of IBM Cloud. When running on
-    #   IBM Cloud, the credentials will be automatically loaded from the
-    #   `VCAP_SERVICES` environment variable.
-    # @option args iam_apikey [String] An API key that can be used to request IAM tokens. If
-    #   this API key is provided, the SDK will manage the token and handle the
-    #   refreshing.
-    # @option args iam_access_token [String] An IAM access token is fully managed by the application.
-    #   Responsibility falls on the application to refresh the token, either before
-    #   it expires or reactively upon receiving a 401 from the service as any requests
-    #   made with an expired token will fail.
-    # @option args iam_url [String] An optional URL for the IAM service API. Defaults to
-    #   'https://iam.cloud.ibm.com/identity/token'.
-    # @option args iam_client_id [String] An optional client id for the IAM service API.
-    # @option args iam_client_secret [String] An optional client secret for the IAM service API.
-    # @option args icp4d_access_token [STRING]  A ICP4D(IBM Cloud Pak for Data) access token is
-    #   fully managed by the application. Responsibility falls on the application to
-    #   refresh the token, either before it expires or reactively upon receiving a 401
-    #   from the service as any requests made with an expired token will fail.
-    # @option args icp4d_url [STRING] In order to use an SDK-managed token with ICP4D authentication, this
-    #   URL must be passed in.
-    # @option args authentication_type [STRING] Specifies the authentication pattern to use. Values that it
-    #   takes are basic, iam or icp4d.
+    # @option args service_url [String] The base service URL to use when contacting the service.
+    #   The base service_url may differ between IBM Cloud regions.
+    # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:url] = "https://stream.watsonplatform.net/text-to-speech/api"
-      defaults[:username] = nil
-      defaults[:password] = nil
-      defaults[:iam_apikey] = nil
-      defaults[:iam_access_token] = nil
-      defaults[:iam_url] = nil
-      defaults[:iam_client_id] = nil
-      defaults[:iam_client_secret] = nil
-      defaults[:icp4d_access_token] = nil
-      defaults[:icp4d_url] = nil
-      defaults[:authentication_type] = nil
+      defaults[:service_url] = "https://stream.watsonplatform.net/text-to-speech/api"
+      defaults[:authenticator] = nil
       args = defaults.merge(args)
-      args[:vcap_services_name] = "text_to_speech"
-      args[:display_name] = "Text to Speech"
+      args[:service_name] = "text_to_speech"
+      args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
     end
 
@@ -177,7 +139,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method synthesize(text:, voice: nil, customization_id: nil, accept: nil)
+    # @!method synthesize(text:, accept: nil, voice: nil, customization_id: nil)
     # Synthesize audio.
     # Synthesizes text to audio that is spoken in the specified voice. The service bases
     #   its understanding of the language for the input text on the specified voice. Use a
@@ -196,7 +158,8 @@ module IBMWatson
     #    The service can return audio in the following formats (MIME types).
     #   * Where indicated, you can optionally specify the sampling rate (`rate`) of the
     #   audio. You must specify a sampling rate for the `audio/l16` and `audio/mulaw`
-    #   formats. A specified sampling rate must lie in the range of 8 kHz to 192 kHz.
+    #   formats. A specified sampling rate must lie in the range of 8 kHz to 192 kHz. Some
+    #   formats restrict the sampling rate to certain values, as noted.
     #   * For the `audio/l16` format, you can optionally specify the endianness
     #   (`endianness`) of the audio: `endianness=big-endian` or
     #   `endianness=little-endian`.
@@ -205,55 +168,33 @@ module IBMWatson
     #   of the response audio. If you omit an audio format altogether, the service returns
     #   the audio in Ogg format with the Opus codec (`audio/ogg;codecs=opus`). The service
     #   always returns single-channel audio.
-    #   * `audio/basic`
-    #
-    #     The service returns audio with a sampling rate of 8000 Hz.
-    #   * `audio/flac`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
-    #   * `audio/l16`
-    #
-    #     You must specify the `rate` of the audio. You can optionally specify the
-    #   `endianness` of the audio. The default endianness is `little-endian`.
-    #   * `audio/mp3`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
-    #   * `audio/mpeg`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
-    #   * `audio/mulaw`
-    #
-    #     You must specify the `rate` of the audio.
-    #   * `audio/ogg`
-    #
-    #     The service returns the audio in the `vorbis` codec. You can optionally specify
-    #   the `rate` of the audio. The default sampling rate is 22,050 Hz.
-    #   * `audio/ogg;codecs=opus`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
-    #   * `audio/ogg;codecs=vorbis`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
-    #   * `audio/wav`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
-    #   * `audio/webm`
-    #
-    #     The service returns the audio in the `opus` codec. The service returns audio
-    #   with a sampling rate of 48,000 Hz.
-    #   * `audio/webm;codecs=opus`
-    #
-    #     The service returns audio with a sampling rate of 48,000 Hz.
-    #   * `audio/webm;codecs=vorbis`
-    #
-    #     You can optionally specify the `rate` of the audio. The default sampling rate is
-    #   22,050 Hz.
+    #   * `audio/basic` - The service returns audio with a sampling rate of 8000 Hz.
+    #   * `audio/flac` - You can optionally specify the `rate` of the audio. The default
+    #   sampling rate is 22,050 Hz.
+    #   * `audio/l16` - You must specify the `rate` of the audio. You can optionally
+    #   specify the `endianness` of the audio. The default endianness is `little-endian`.
+    #   * `audio/mp3` - You can optionally specify the `rate` of the audio. The default
+    #   sampling rate is 22,050 Hz.
+    #   * `audio/mpeg` - You can optionally specify the `rate` of the audio. The default
+    #   sampling rate is 22,050 Hz.
+    #   * `audio/mulaw` - You must specify the `rate` of the audio.
+    #   * `audio/ogg` - The service returns the audio in the `vorbis` codec. You can
+    #   optionally specify the `rate` of the audio. The default sampling rate is 22,050
+    #   Hz.
+    #   * `audio/ogg;codecs=opus` - You can optionally specify the `rate` of the audio.
+    #   Only the following values are valid sampling rates: `48000`, `24000`, `16000`,
+    #   `12000`, or `8000`. If you specify a value other than one of these, the service
+    #   returns an error. The default sampling rate is 48,000 Hz.
+    #   * `audio/ogg;codecs=vorbis` - You can optionally specify the `rate` of the audio.
+    #   The default sampling rate is 22,050 Hz.
+    #   * `audio/wav` - You can optionally specify the `rate` of the audio. The default
+    #   sampling rate is 22,050 Hz.
+    #   * `audio/webm` - The service returns the audio in the `opus` codec. The service
+    #   returns audio with a sampling rate of 48,000 Hz.
+    #   * `audio/webm;codecs=opus` - The service returns audio with a sampling rate of
+    #   48,000 Hz.
+    #   * `audio/webm;codecs=vorbis` - You can optionally specify the `rate` of the audio.
+    #   The default sampling rate is 22,050 Hz.
     #
     #   For more information about specifying an audio format, including additional
     #   details about some of the formats, see [Audio
@@ -265,22 +206,22 @@ module IBMWatson
     #    If a request includes invalid query parameters, the service returns a `Warnings`
     #   response header that provides messages about the invalid parameters. The warning
     #   includes a descriptive message and a list of invalid argument strings. For
-    #   example, a message such as `\"Unknown arguments:\"` or `\"Unknown url query
-    #   arguments:\"` followed by a list of the form `\"{invalid_arg_1},
-    #   {invalid_arg_2}.\"` The request succeeds despite the warnings.
+    #   example, a message such as `"Unknown arguments:"` or `"Unknown url query
+    #   arguments:"` followed by a list of the form `"{invalid_arg_1}, {invalid_arg_2}."`
+    #   The request succeeds despite the warnings.
     # @param text [String] The text to synthesize.
+    # @param accept [String] The requested format (MIME type) of the audio. You can use the `Accept` header or
+    #   the `accept` parameter to specify the audio format. For more information about
+    #   specifying an audio format, see **Audio formats (accept types)** in the method
+    #   description.
     # @param voice [String] The voice to use for synthesis.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model to use for the synthesis. If a
     #   custom voice model is specified, it is guaranteed to work only if it matches the
     #   language of the indicated voice. You must make the request with credentials for
     #   the instance of the service that owns the custom model. Omit the parameter to use
     #   the specified voice with no customization.
-    # @param accept [String] The requested format (MIME type) of the audio. You can use the `Accept` header or
-    #   the `accept` parameter to specify the audio format. For more information about
-    #   specifying an audio format, see **Audio formats (accept types)** in the method
-    #   description.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def synthesize(text:, voice: nil, customization_id: nil, accept: nil)
+    def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
@@ -470,13 +411,13 @@ module IBMWatson
     #   a word. You can specify them in standard International Phonetic Alphabet (IPA)
     #   representation
     #
-    #     <code>&lt;phoneme alphabet=\"ipa\"
-    #   ph=\"t&#601;m&#712;&#593;to\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ipa"
+    #   ph="t&#601;m&#712;&#593;to"&gt;&lt;/phoneme&gt;</code>
     #
     #     or in the proprietary IBM Symbolic Phonetic Representation (SPR)
     #
-    #     <code>&lt;phoneme alphabet=\"ibm\"
-    #   ph=\"1gAstroEntxrYFXs\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ibm"
+    #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
     #   **Note:** This method is currently a beta release.
     #
@@ -605,13 +546,13 @@ module IBMWatson
     #   a word. You can specify them in standard International Phonetic Alphabet (IPA)
     #   representation
     #
-    #     <code>&lt;phoneme alphabet=\"ipa\"
-    #   ph=\"t&#601;m&#712;&#593;to\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ipa"
+    #   ph="t&#601;m&#712;&#593;to"&gt;&lt;/phoneme&gt;</code>
     #
     #     or in the proprietary IBM Symbolic Phonetic Representation (SPR)
     #
-    #     <code>&lt;phoneme alphabet=\"ibm\"
-    #   ph=\"1gAstroEntxrYFXs\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ibm"
+    #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
     #   **Note:** This method is currently a beta release.
     #
@@ -708,13 +649,13 @@ module IBMWatson
     #   a word. You can specify them in standard International Phonetic Alphabet (IPA)
     #   representation
     #
-    #     <code>&lt;phoneme alphabet=\"ipa\"
-    #   ph=\"t&#601;m&#712;&#593;to\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ipa"
+    #   ph="t&#601;m&#712;&#593;to"&gt;&lt;/phoneme&gt;</code>
     #
     #     or in the proprietary IBM Symbolic Phonetic Representation (SPR)
     #
-    #     <code>&lt;phoneme alphabet=\"ibm\"
-    #   ph=\"1gAstroEntxrYFXs\"&gt;&lt;/phoneme&gt;</code>
+    #     <code>&lt;phoneme alphabet="ibm"
+    #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
     #   **Note:** This method is currently a beta release.
     #

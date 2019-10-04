@@ -3,6 +3,7 @@
 require("json")
 require_relative("./../test_helper.rb")
 require("webmock/minitest")
+require("ibm_cloud_sdk_core")
 SimpleCov.command_name "test:unit"
 
 WebMock.disable_net_connect!(allow_localhost: true)
@@ -28,10 +29,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
-      version: "2018-02-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_counterexample(
       workspace_id: "boguswid",
@@ -54,15 +58,18 @@ class AssistantV1Test < Minitest::Test
         body: "{\"text\":\"I want financial advice today.\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic YXBpa2V5OmljcC14eXo=",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+      username: "username",
+      password: "password"
+    )
     service = IBMWatson::AssistantV1.new(
       version: "2018-02-16",
-      username: "apikey",
-      password: "icp-xyz"
+      authenticator: authenticator
     )
     service_response = service.create_counterexample(
       workspace_id: "boguswid",
@@ -91,10 +98,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 429, body: error_response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     begin
       service.create_counterexample(
@@ -128,10 +138,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 407, body: error_response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     begin
       service.create_counterexample(
@@ -156,10 +169,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: {}.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_counterexample(
       workspace_id: "boguswid",
@@ -185,10 +201,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_counterexample(
       workspace_id: "boguswid",
@@ -226,10 +245,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_counterexamples(
       workspace_id: "boguswid"
@@ -256,10 +278,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.update_counterexample(
       workspace_id: "boguswid",
@@ -292,10 +317,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_entity(
       workspace_id: "boguswid",
@@ -320,10 +348,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_entity(
       workspace_id: "boguswid",
@@ -353,10 +384,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_entity(
       workspace_id: "boguswid",
@@ -397,10 +431,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_entities(
       workspace_id: "boguswid",
@@ -432,10 +469,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.update_entity(
       workspace_id: "boguswid",
@@ -464,10 +504,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_example(
       workspace_id: "boguswid",
@@ -490,10 +533,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_example(
       workspace_id: "boguswid",
@@ -520,10 +566,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_example(
       workspace_id: "boguswid",
@@ -562,10 +611,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_examples(
       workspace_id: "boguswid",
@@ -593,10 +645,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.update_example(
       workspace_id: "boguswid",
@@ -628,10 +683,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_intent(
       workspace_id: "boguswid",
@@ -653,10 +711,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_intent(
       workspace_id: "boguswid",
@@ -683,10 +744,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_intent(
       workspace_id: "boguswid",
@@ -722,10 +786,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_intents(
       workspace_id: "boguswid",
@@ -754,9 +821,12 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      authenticator: authenticator,
       version: "2018-02-16"
     )
     service_response = service.update_intent(
@@ -831,10 +901,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_logs(
       workspace_id: "boguswid"
@@ -913,10 +986,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_all_logs(
       filter: "language::en,request.context.metadata.deployment::deployment_1"
@@ -925,10 +1001,13 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_message
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     # service.set_default_headers("x-watson-learning-opt-out" => true)
     workspace_id = "f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec"
@@ -1016,10 +1095,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_synonym(
       workspace_id: "boguswid",
@@ -1042,10 +1124,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_synonym(
       workspace_id: "boguswid",
@@ -1073,10 +1158,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_synonym(
       workspace_id: "boguswid",
@@ -1119,10 +1207,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_synonyms(
       workspace_id: "boguswid",
@@ -1151,10 +1242,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.update_synonym(
       workspace_id: "boguswid",
@@ -1187,10 +1281,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_value(
       workspace_id: "boguswid",
@@ -1212,10 +1309,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_value(
       workspace_id: "boguswid",
@@ -1246,10 +1346,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_value(
       workspace_id: "boguswid",
@@ -1291,10 +1394,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_values(
       workspace_id: "boguswid",
@@ -1327,10 +1433,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.update_value(
       workspace_id: "boguswid",
@@ -1366,10 +1475,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.create_workspace(
       name: "Pizza app",
@@ -1393,10 +1505,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_workspace(
       workspace_id: "boguswid"
@@ -1427,10 +1542,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.get_workspace(
       workspace_id: "boguswid",
@@ -1468,10 +1586,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.list_workspaces
     assert_equal(response, service_response.result)
@@ -1500,10 +1621,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.update_workspace(
       workspace_id: "pizza_app-e0f3",
@@ -1517,10 +1641,13 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_dialog_nodes
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     headers = {
       "Content-Type" => "application/json"
@@ -1597,10 +1724,13 @@ class AssistantV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: headers)
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     service_response = service.delete_user_data(
       customer_id: "id"
@@ -1609,10 +1739,13 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_update_dialog_node
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/dialog_nodes/dialog_node?version=2018-02-16")
       .with(
@@ -1634,10 +1767,13 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_mentions
-    service = IBMWatson::AssistantV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-02-16"
+      password: "password"
+    )
+    service = IBMWatson::AssistantV1.new(
+      version: "2018-02-16",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/entities/entity/mentions?export=true&include_audit=true&version=2018-02-16")
       .with(

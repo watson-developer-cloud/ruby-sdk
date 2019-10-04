@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
-require("ibm_watson/natural_language_classifier_v1")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/natural_language_classifier_v1"
 
 # If using IAM
-natural_language_classifier = IBMWatson::NaturalLanguageClassifierV1.new(
-  iam_apikey: "IAM API KEY"
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
 )
 
 # If you have username & password in your credentials use:
-# natural_language_classifier = IBMWatson::NaturalLanguageClassifierV1.new(
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD"
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
 # )
+
+natural_language_classifier = IBMWatson::NaturalLanguageClassifierV1.new(
+  authenticator: authenticator
+)
+natural_language_classifier.service_url = "{service_url}"
 
 classifiers = natural_language_classifier.list_classifiers.result
 puts JSON.pretty_generate(classifiers)

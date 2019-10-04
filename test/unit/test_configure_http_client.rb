@@ -9,10 +9,12 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # Unit tests for the configure_http_client customizations, such as proxies and timeouts
 class HTTPConfigTest < Minitest::Test
   def test_proxy_address_port
+    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
+      bearer_token: "token"
+    )
     service = IBMWatson::NaturalLanguageUnderstandingV1.new(
       version: "2018-03-16",
-      username: "username",
-      password: "password"
+      authenticator: authenticator
     )
     service.configure_http_client(
       proxy: {
@@ -26,10 +28,14 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_proxy_username_password
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     service.configure_http_client(
       proxy: {
@@ -47,10 +53,14 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_proxy_headers
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     service.configure_http_client(
       proxy: {
@@ -68,10 +78,14 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_proxy_username_password_headers
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     service.configure_http_client(
       proxy: {
@@ -93,10 +107,14 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_timeout_per_operation
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     service.configure_http_client(
       timeout: {
@@ -120,10 +138,14 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_timeout_global
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     service.configure_http_client(
       timeout: {
@@ -141,10 +163,14 @@ class HTTPConfigTest < Minitest::Test
   end
 
   def test_disable_ssl_verification
-    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
-      version: "2018-03-16",
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+
+    service = IBMWatson::NaturalLanguageUnderstandingV1.new(
+      version: "2018-03-16",
+      authenticator: authenticator
     )
     service.configure_http_client(disable_ssl_verification: true)
     refute_nil(service.conn.default_options.ssl_context)

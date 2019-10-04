@@ -10,8 +10,11 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
     include Minitest::Hooks
     attr_accessor :service
     def before_all
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+        apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"]
+      )
       @service = IBMWatson::LanguageTranslatorV3.new(
-        iam_apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"],
+        authenticator: authenticator,
         url: ENV["LANGUAGE_TRANSLATOR_URL"],
         version: "2018-05-01"
       )
@@ -59,11 +62,6 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
     end
 
     def test_translate_document
-      @service = IBMWatson::LanguageTranslatorV3.new(
-        iam_apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"],
-        url: ENV["LANGUAGE_TRANSLATOR_URL"],
-        version: "2018-05-01"
-      )
       @service.add_default_headers(
         headers: {
           "X-Watson-Test" => "1"
@@ -81,16 +79,6 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
     end
 
     def test_list_documents
-      @service = IBMWatson::LanguageTranslatorV3.new(
-        iam_apikey: ENV["LANGUAGE_TRANSLATOR_APIKEY"],
-        url: ENV["LANGUAGE_TRANSLATOR_URL"],
-        version: "2018-05-01"
-      )
-      @service.add_default_headers(
-        headers: {
-          "X-Watson-Test" => "1"
-        }
-      )
       service_response = service.list_documents.result
       refute(service_response.nil?)
     end

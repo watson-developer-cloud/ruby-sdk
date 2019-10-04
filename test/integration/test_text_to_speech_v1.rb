@@ -9,9 +9,12 @@ if !ENV["TEXT_TO_SPEECH_APIKEY"].nil? && !ENV["TEXT_TO_SPEECH_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+        apikey: ENV["TEXT_TO_SPEECH_APIKEY"]
+      )
       @service = IBMWatson::TextToSpeechV1.new(
-        iam_apikey: ENV["TEXT_TO_SPEECH_APIKEY"],
-        url: ENV["TEXT_TO_SPEECH_URL"]
+        url: ENV["TEXT_TO_SPEECH_URL"],
+        authenticator: authenticator
       )
       @service.add_default_headers(
         headers: {

@@ -1,22 +1,25 @@
 # frozen_string_literal: true
 
-require("ibm_watson/language_translator_v3")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/language_translator_v3"
 
 # If using IAM
-language_translator = IBMWatson::LanguageTranslatorV3.new(
-  version: "2018-05-31",
-  ### url is optional, and defaults to the URL below. Use the correct URL for your region.
-  # url: "https://gateway.watsonplatform.net/language-translator/api",
-  iam_apikey: "your_api_key"
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
 )
 
 # If you have username & password in your credentials use:
-# language_translator = IBMWatson::LanguageTranslatorV3.new(
-#   version: "2018-05-31",
-#   username: "username",
-#   password: "password"
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
 # )
+
+language_translator = IBMWatson::LanguageTranslatorV3.new(
+  version: "2018-05-31",
+  authenticator: authenticator
+)
+language_translator.service_url = "{service_url}"
 
 ## Translate
 translation = language_translator.translate(

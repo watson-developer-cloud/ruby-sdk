@@ -10,10 +10,13 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service, :classifier_id
     def before_all
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+        apikey: ENV["VISUAL_RECOGNITION_APIKEY"]
+      )
       @service = IBMWatson::VisualRecognitionV3.new(
-        iam_apikey: ENV["VISUAL_RECOGNITION_APIKEY"],
         version: "2018-03-19",
-        url: ENV["VISUAL_RECOGNITION_URL"]
+        url: ENV["VISUAL_RECOGNITION_URL"],
+        authenticator: authenticator
       )
       @classifier_id = "doxnotxdeletexsdksxintegration_718351350"
       @service.add_default_headers(
@@ -32,13 +35,6 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
         classifier_ids: %w[default food]
       ).result
       refute(dog_results.nil?)
-    end
-
-    def test_detect_faces
-      output = @service.detect_faces(
-        url: "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg"
-      ).result
-      refute(output.nil?)
     end
 
     def test_custom_classifier

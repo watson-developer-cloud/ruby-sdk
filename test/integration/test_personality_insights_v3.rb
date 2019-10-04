@@ -9,10 +9,13 @@ if !ENV["PERSONALITY_INSIGHTS_APIKEY"].nil? && !ENV["PERSONALITY_INSIGHTS_URL"].
     include Minitest::Hooks
     attr_accessor :service
     def before_all
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+        apikey: ENV["PERSONALITY_INSIGHTS_APIKEY"]
+      )
       @service = IBMWatson::PersonalityInsightsV3.new(
         version: "2017-10-13",
-        iam_apikey: ENV["PERSONALITY_INSIGHTS_APIKEY"],
-        url: ENV["PERSONALITY_INSIGHTS_URL"]
+        url: ENV["PERSONALITY_INSIGHTS_URL"],
+        authenticator: authenticator
       )
       @service.add_default_headers(
         headers: {

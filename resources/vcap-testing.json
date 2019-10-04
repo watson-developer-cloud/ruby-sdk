@@ -1,13 +1,13 @@
 {
-  "personality_insights": [
+  "sample_service": [
   	{
   		"credentials": {
   			"password": "password",
   			"url": "https://gateway.watsonplatform.net/personality-insights/api",
   			"username": "username"
   		},
-  		"label": "personality_insights",
-  		"name": "personality-insights-service",
+  		"label": "personality",
+  		"name": "personality",
   		"plan": "standard",
   		"tags": [
   			"watson",

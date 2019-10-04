@@ -1,22 +1,28 @@
 # frozen_string_literal: true
 
-require("ibm_watson/visual_recognition_v3")
-require("json")
+require "json"
+require "ibm_watson/authenticators"
+require "ibm_watson/visual_recognition_v3"
+
+# If using IAM
+authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+  apikey: "{iam_api_key}"
+)
+
+# If you have username & password in your credentials use:
+# authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}"
+# )
 
 test_url = "https://www.ibm.com/ibm/ginni/images/ginni_bio_780x981_v4_03162016.jpg"
 
 # If using IAM
 visual_recognition = IBMWatson::VisualRecognitionV3.new(
   version: "2018-03-19",
-  iam_apikey: "IAM API KEY"
+  authenticator: authenticator
 )
-
-# If you have username & password in your credentials use:
-# visual_recognition = IBMWatson::VisualRecognitionV3.new(
-#   version: "2018-03-19",
-#   username: "YOUR SERVICE USERNAME",
-#   password: "YOUR SERVICE PASSWORD"
-# )
+visual_recognition.service_url = "{service_url}"
 
 # cars = File.open(Dir.getwd + "/resources/cars.zip")
 # trucks = File.open(Dir.getwd + "/resources/trucks.zip")
@@ -47,14 +53,6 @@ end
 url_result = visual_recognition.classify(url: test_url).result
 puts JSON.pretty_generate(url_result)
 
-faces_result = visual_recognition.detect_faces(url: test_url).result
-puts JSON.pretty_generate(faces_result)
-
 # puts JSON.pretty_generate(visual_recognition.delete_classifier(classifier_id: "YOUR CLASSIFIER ID"))
 
 puts JSON.pretty_generate(visual_recognition.list_classifiers.result)
-
-File.open(Dir.getwd + "/resources/face.jpg") do |image_file|
-  face_result = visual_recognition.detect_faces(images_file: image_file).result
-  puts JSON.pretty_generate(face_result)
-end

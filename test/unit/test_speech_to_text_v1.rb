@@ -36,9 +36,12 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/models")
       .with(
@@ -90,9 +93,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_using_websocket_disable_ssl_verification
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
 
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
@@ -121,9 +127,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_get_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/models/modelid")
       .with(
@@ -150,9 +159,12 @@ class SpeechToTextV1Test < Minitest::Test
         }
       ]
     }
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions")
       .with(
@@ -208,9 +220,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_callbacks
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/register_callback?callback_url=monitorcalls.com")
       .with(
@@ -238,9 +253,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations")
       .with(
@@ -310,9 +328,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_acoustic_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations")
       .with(
@@ -383,9 +404,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_corpora
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora")
       .with(
@@ -452,9 +476,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_words
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:put, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/IEEE")
       .with(
@@ -596,9 +623,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_list_grammars
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars")
       .with(
@@ -615,9 +645,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_add_grammar
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
       .with(
@@ -637,9 +670,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_get_grammar
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
       .with(
@@ -657,9 +693,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_delete_grammar
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
       .with(
@@ -677,9 +716,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_custom_audio_resources
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/custid/audio/hiee")
@@ -742,9 +784,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/user_data?customer_id=id")
       .with(
@@ -760,9 +805,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_await
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
     recognize_response = {
@@ -796,9 +844,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_recognize_async
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
     recognize_response = {
@@ -833,9 +884,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_reset_language_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customization_id/reset")
       .with(
@@ -850,9 +904,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_upgrade_language_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customization_id/upgrade_model")
       .with(
@@ -867,9 +924,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_upgrade_acoustic_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customization_id/upgrade_model")
       .with(
@@ -884,9 +944,12 @@ class SpeechToTextV1Test < Minitest::Test
   end
 
   def test_reset_acoustic_model
-    service = IBMWatson::SpeechToTextV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
       password: "password"
+    )
+    service = IBMWatson::SpeechToTextV1.new(
+      authenticator: authenticator
     )
     stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customization_id/reset")
       .with(

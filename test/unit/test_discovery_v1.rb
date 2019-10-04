@@ -46,10 +46,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.list_environments
     assert_equal(discovery_response_body, service_response.result)
@@ -64,10 +67,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.get_environment(
       environment_id: "envid"
@@ -86,10 +92,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.create_environment(
       name: "my name",
@@ -109,10 +118,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.update_environment(
       environment_id: "envid",
@@ -131,10 +143,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.delete_environment(
       environment_id: "envid"
@@ -151,10 +166,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.list_collections(
       environment_id: "envid"
@@ -163,10 +181,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collection
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections?version=2018-03-05")
       .with(
@@ -249,10 +270,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query?version=2018-03-05")
       .with(
@@ -260,60 +284,10 @@ class DiscoveryV1Test < Minitest::Test
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net",
-          "X-Watson-Logging-Opt-Out" => true
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.query(
-      environment_id: "envid",
-      collection_id: "collid",
-      count: 10,
-      logging_opt_out: true
-    )
-    assert_equal({ "body" => "hello" }, service_response.result)
-  end
-
-  def test_query_relations
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query_relations?version=2018-03-05")
-      .with(
-        body: "{\"count\":10}",
-        headers: {
-          "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
-        }
-      ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
-      username: "username",
-      password: "password",
-      version: "2018-03-05"
-    )
-    service_response = service.query_relations(
-      environment_id: "envid",
-      collection_id: "collid",
-      count: 10
-    )
-    assert_equal({ "body" => "hello" }, service_response.result)
-  end
-
-  def test_query_entities
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query_entities?version=2018-03-05")
-      .with(
-        body: "{\"count\":10}",
-        headers: {
-          "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
-        }
-      ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
-      username: "username",
-      password: "password",
-      version: "2018-03-05"
-    )
-    service_response = service.query_entities(
       environment_id: "envid",
       collection_id: "collid",
       count: 10
@@ -330,10 +304,13 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations?version=2018-03-05")
       .with(
@@ -411,49 +388,14 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_document
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/preview?configuration_id=bogus&version=2018-03-05")
-      .with(
-        headers: {
-          "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
-        }
-      ).to_return(status: 200, body: { configurations: [] }.to_json, headers: { "Content-Type" => "application/json" })
-    File.open(Dir.getwd + "/resources/simple.html") do |file_info|
-      service_response = service.test_configuration_in_environment(
-        environment_id: "envid",
-        configuration_id: "bogus",
-        file: file_info,
-        filename: "simple.html"
-      )
-      refute(service_response.nil?)
-
-      service_response = service.test_configuration_in_environment(
-        environment_id: "envid",
-        configuration_id: "bogus",
-        file: "file_info"
-      )
-      refute(service_response.nil?)
-
-      stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/preview?version=2018-03-05")
-        .with(
-          headers: {
-            "Accept" => "application/json",
-            "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-            "Host" => "gateway.watsonplatform.net"
-          }
-        ).to_return(status: 200, body: { configurations: [] }.to_json, headers: { "Content-Type" => "application/json" })
-      service_response = service.test_configuration_in_environment(
-        environment_id: "envid",
-        file: file_info
-      )
-      refute(service_response.nil?)
-    end
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
+    )
     doc_status = {
       "document_id" => "45556e23-f2b1-449d-8f27-489b514000ff",
       "configuration_id" => "2e079259-7dd2-40a9-998f-3e716f5a7b88",
@@ -563,10 +505,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_all_training_data
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
@@ -583,10 +528,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_data
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     mock_response = {
       "environment_id" => "string",
@@ -647,10 +595,13 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
@@ -673,10 +624,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_data
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
       .with(
@@ -714,10 +668,13 @@ class DiscoveryV1Test < Minitest::Test
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     service_response = service.get_training_data(
       environment_id: "envid",
@@ -736,10 +693,13 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
       .with(
@@ -763,10 +723,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_example
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
@@ -790,10 +753,13 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
@@ -820,10 +786,13 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
@@ -847,10 +816,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_expansions
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
@@ -903,10 +875,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_tokenization_dictionary
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
@@ -959,10 +934,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/user_data?customer_id=id&version=2018-03-05")
       .with(
@@ -978,10 +956,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_notices
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/notices?version=2018-03-05")
       .with(
@@ -999,10 +980,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?&version=2018-03-05")
       .with(
@@ -1022,10 +1006,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query_notices
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/notices?collection_ids=collid&version=2018-03-05")
       .with(
@@ -1042,11 +1029,39 @@ class DiscoveryV1Test < Minitest::Test
     assert_equal({ "received" => "true" }, service_response.result)
   end
 
-  def test_list_training_examples
-    service = IBMWatson::DiscoveryV1.new(
+  def test_get_autocompletion
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/autocompletion?prefix=hi&version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_autocompletion(
+      environment_id: "envid",
+      collection_id: "collid",
+      prefix: "hi"
+    )
+    assert_equal({ "received" => "true" }, service_response.result)
+  end
+
+  def test_list_training_examples
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+      username: "username",
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
       .with(
@@ -1075,10 +1090,13 @@ class DiscoveryV1Test < Minitest::Test
       "type" => "click",
       "data" => "data"
     }
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-05-23",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/events?version=2018-05-23")
       .with(
@@ -1099,12 +1117,15 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_log
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/logs?count=10&query=test&version=2018-05-23")
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
+    )
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/logs?count=10&query=test&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -1121,10 +1142,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-05-23",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
@@ -1143,10 +1167,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query_event
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-05-23",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries_with_event?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
@@ -1165,10 +1192,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query_token_event
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-05-23",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/top_query_tokens_with_event_rate?count=10&version=2018-05-23")
       .with(
@@ -1186,10 +1216,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_event_rate
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-05-23",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/event_rate?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
@@ -1208,10 +1241,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_metrics_query_no_results
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-05-23"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-05-23",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries_with_no_search_results?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
@@ -1230,10 +1266,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_credentials
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
       .with(
@@ -1250,10 +1289,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_credentials
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
       .with(
@@ -1273,10 +1315,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_credentials
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
@@ -1294,10 +1339,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_credentials
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
@@ -1318,10 +1366,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_credentials
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
@@ -1339,10 +1390,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_collection
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
@@ -1364,10 +1418,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_stopword_list_status
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/stopwords?version=2018-03-05")
       .with(
@@ -1385,10 +1442,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_fields
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/fields?collection_ids=collid&version=2018-03-05")
       .with(
@@ -1406,10 +1466,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_stopword_list
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
 
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05").with do |req|
@@ -1425,10 +1488,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_stopword_list
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05")
       .with(
@@ -1445,10 +1511,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_gateways
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
       .with(
@@ -1465,10 +1534,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_gateway
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
       .with(
@@ -1485,10 +1557,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_gateway
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
       .with(
@@ -1506,10 +1581,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_gateway
-    service = IBMWatson::DiscoveryV1.new(
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
-      password: "password",
-      version: "2018-03-05"
+      password: "password"
+    )
+    service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
     )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
       .with(
