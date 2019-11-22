@@ -8,12 +8,12 @@ require "ibm_watson/discovery_v2"
 
 ## Authentication ##
 ## Option 1: username/password
-authenticator = IBMWatson::Authenticators::CloudPakForDataAuthenticator.new(
-  username: "{username}",
-  password: "{password}",
-  url: "{authentication_url}",
-  disable_ssl: true
-)
+# authenticator = IBMWatson::Authenticators::CloudPakForDataAuthenticator.new(
+#   username: "{username}",
+#   password: "{password}",
+#   url: "{authentication_url}",
+#   disable_ssl: true
+# )
 
 ## Option 2: bearer token
 authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
