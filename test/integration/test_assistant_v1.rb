@@ -11,10 +11,8 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
     include Minitest::Hooks
     attr_accessor :service
     def before_all
-      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
-        apikey: ENV["ASSISTANT_APIKEY"],
-        version: "2018-02-16"
-      )
+      puts "before"
+      authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "assistant")
       @service = IBMWatson::AssistantV1.new(
         version: "2018-02-16",
         url: ENV["ASSISTANT_URL"],
