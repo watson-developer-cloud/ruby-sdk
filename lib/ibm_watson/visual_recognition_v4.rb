@@ -16,11 +16,6 @@
 
 # Provide images to the IBM Watson&trade; Visual Recognition service for analysis. The
 # service detects objects based on a set of images with training data.
-#
-# **Beta:** The Visual Recognition v4 API and Object Detection model are beta features.
-# For more information about beta features, see the [Release
-# notes](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-release-notes#beta).
-# {: important}
 
 require "concurrent"
 require "erb"
@@ -503,7 +498,9 @@ module IBMWatson
     # Download a JPEG representation of an image.
     # @param collection_id [String] The identifier of the collection.
     # @param image_id [String] The identifier of the image.
-    # @param size [String] Specify the image size.
+    # @param size [String] The image size. Specify `thumbnail` to return a version that maintains the
+    #   original aspect ratio but is no larger than 200 pixels in the larger dimension.
+    #   For example, an original 800 x 1000 image is resized to 160 x 200 pixels.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_jpeg_image(collection_id:, image_id:, size: nil)
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -610,6 +607,42 @@ module IBMWatson
         headers: headers,
         params: params,
         json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_training_usage(start_time: nil, end_time: nil)
+    # Get training usage.
+    # Information about the completed training events. You can use this information to
+    #   determine how close you are to the training limits for the month.
+    # @param start_time [String] The earliest day to include training events. Specify dates in YYYY-MM-DD format.
+    #   If empty or not specified, the earliest training event is included.
+    # @param end_time [String] The most recent day to include training events. Specify dates in YYYY-MM-DD
+    #   format. All events for the day are included. If empty or not specified, the
+    #   current day is used. Specify the same value as `start_time` to request events for
+    #   a single day.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_training_usage(start_time: nil, end_time: nil)
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "get_training_usage")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "start_time" => start_time,
+        "end_time" => end_time
+      }
+
+      method_url = "/v4/training_usage"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
         accept_json: true
       )
       response
