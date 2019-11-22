@@ -13,6 +13,7 @@ module IBMWatson
   require_relative("./ibm_watson/assistant_v2.rb")
   require_relative("./ibm_watson/text_to_speech_v1.rb")
   require_relative("./ibm_watson/discovery_v1.rb")
+  require_relative("./ibm_watson/discovery_v2.rb")
   require_relative("./ibm_watson/natural_language_understanding_v1.rb")
   require_relative("./ibm_watson/speech_to_text_v1.rb")
   require_relative("./ibm_watson/visual_recognition_v3.rb")

@@ -74,7 +74,10 @@ module IBMWatson
     # @!method create_session(assistant_id:)
     # Create a session.
     # Create a new session. A session is used to send user input to a skill and receive
-    #   responses. It also maintains the state of the conversation.
+    #   responses. It also maintains the state of the conversation. A session persists
+    #   until it is deleted, or until it times out because of inactivity. (For more
+    #   information, see the
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-settings).
     # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
     #   Assistant user interface, open the assistant settings and click **API Details**.
     #   For information about creating assistants, see the
@@ -109,7 +112,9 @@ module IBMWatson
     ##
     # @!method delete_session(assistant_id:, session_id:)
     # Delete session.
-    # Deletes a session explicitly before it times out.
+    # Deletes a session explicitly before it times out. (For more information about the
+    #   session inactivity timeout, see the
+    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-assistant-settings)).
     # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
     #   Assistant user interface, open the assistant settings and click **API Details**.
     #   For information about creating assistants, see the
