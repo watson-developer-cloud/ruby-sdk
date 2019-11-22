@@ -15,7 +15,8 @@ class DiscoveryV2Test < Minitest::Test
     authenticator = IBMWatson::Authenticators::NoAuthAuthenticator.new
     @service = IBMWatson::DiscoveryV2.new(
       version: "2018-03-05",
-      authenticator: authenticator
+      authenticator: authenticator,
+      service_url: "https://gateway.watsonplatform.net/discovery/api"
     )
   end
 
