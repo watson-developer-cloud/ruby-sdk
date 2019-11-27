@@ -9,15 +9,17 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 # Unit tests for the Watson Assistant V1 Service
 class CompareComplyV1 < Minitest::Test
-  def test_convert_to_html
-    # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
+  include Minitest::Hooks
+  attr_accessor :service
+  def before_all
+    authenticator = IBMWatson::Authenticators::NoAuthAuthenticator.new
+    @service = IBMWatson::CompareComplyV1.new(
       version: "2018-10-15",
       authenticator: authenticator
     )
+  end
+
+  def test_convert_to_html
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
     stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/html_conversion?version=2018-10-15").with do |req|
       # Test the headers.
@@ -30,14 +32,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_classify_elements
-    # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
     stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/element_classification?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
@@ -53,14 +47,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_extract_tables
-    # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
     stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/tables?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
@@ -76,14 +62,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_compare_documents
-    # service.set_default_headers("x-watson-learning-opt-out" => true)
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
     stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/comparison?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
@@ -101,13 +79,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_list_feedback
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = {
       "feedback" => [
         {
@@ -123,7 +94,6 @@ class CompareComplyV1 < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
@@ -133,13 +103,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_add_feedback
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = {
       "feedback_id" => "another_one"
     }
@@ -150,7 +113,6 @@ class CompareComplyV1 < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
@@ -162,13 +124,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_get_feedback
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = {
       "feedback_id" => "messi"
     }
@@ -179,7 +134,6 @@ class CompareComplyV1 < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
@@ -191,19 +145,11 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_delete_feedback
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = "200"
     stub_request(:delete, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response, headers: {})
@@ -215,13 +161,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_create_batch
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches?function=tables&version=2018-10-15")
       .with do |req|
         assert_equal req.headers["Accept"], "application/json"
@@ -240,13 +179,6 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_list_batches
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = {
       "batches" => []
     }
@@ -257,7 +189,6 @@ class CompareComplyV1 < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
@@ -267,19 +198,11 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_get_batch
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = "200"
     stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response, headers: {})
@@ -291,19 +214,11 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_update_batch
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "token"
-    )
-    service = IBMWatson::CompareComplyV1.new(
-      version: "2018-10-15",
-      authenticator: authenticator
-    )
     message_response = "200"
     stub_request(:put, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?action=goal&version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Bearer token",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: message_response, headers: {})

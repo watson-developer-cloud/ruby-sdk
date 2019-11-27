@@ -12,7 +12,7 @@ if !ENV["COMPARE_COMPLY_APIKEY"].nil?
 
     def before_all
       authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
-        apikey: ENV["ASSISTANT_APIKEY"]
+        apikey: ENV["COMPARE_COMPLY_APIKEY"]
       )
       @service = IBMWatson::CompareComplyV1.new(
         version: "2018-10-15",

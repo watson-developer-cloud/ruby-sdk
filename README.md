@@ -16,6 +16,7 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 * [Before you begin](#before-you-begin)
 * [Installation](#installation)
 * [Examples](#examples)
+* [Discovery v2 only on CP4D](#discovery-v2-only-on-cp4d)
 * [Running in IBM Cloud](#running-in-ibm-cloud)
 * [Authentication](#authentication)
   * [Getting credentials](#getting-credentials)
@@ -60,6 +61,10 @@ require "ibm_watson"
 ## Examples
 
 The [examples][examples] folder has basic and advanced examples. The examples within each service assume that you already have [service credentials](#getting-credentials).
+
+## Discovery v2 only on CP4D
+
+Discovery v2 is only available on Cloud Pak for Data.
 
 ## Running in IBM Cloud
 
@@ -350,7 +355,7 @@ The SDK will manage the token for the user
 
 ```ruby
 
-authenticator = IBMWatson::Authenticators::CLoudPakForDataAuthenticator.new(
+authenticator = IBMWatson::Authenticators::CloudPakForDataAuthenticator.new(
   username: "<username>",
   password: "<password>",
   url: "<authentication url>",
@@ -360,7 +365,7 @@ assistant = IBMWatson::AssistantV1.new(
   version: "<version>",
   authenticator: authenticator
 )
-assistant.configure_http_client(disable_ssl_verification: true) # MAKE SURE SSL VERIFICATION IS DISABLED
+
 ```
 
 ## Ruby version

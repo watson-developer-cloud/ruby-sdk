@@ -8,14 +8,17 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 # Unit tests for the Visual Recognition V3 Service
 class VisualRecognitionV4Test < Minitest::Test
-  def test_analyze
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
+  include Minitest::Hooks
+  attr_accessor :service
+  def before_all
+    authenticator = IBMWatson::Authenticators::NoAuthAuthenticator.new
+    @service = IBMWatson::VisualRecognitionV4.new(
       version: "2018-03-19",
       authenticator: authenticator
     )
+  end
+
+  def test_analyze
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
     stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/analyze?version=2018-03-19").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
@@ -37,13 +40,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_analyze_url
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/analyze?version=2018-03-19").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
@@ -59,13 +55,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_create_collection
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid",
       "name" => "Dog Breeds",
@@ -82,22 +71,17 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.create_collection
+    service_response = service.create_collection(
+      name: "my-collection",
+      description: "A description of my collection"
+    )
     assert_equal(response, service_response.result)
   end
 
   def test_list_collections
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collections" => []
     }
@@ -105,8 +89,7 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_collections
@@ -114,13 +97,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_get_collection
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid",
       "name" => "Dog Breeds",
@@ -137,8 +113,7 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_collection(
@@ -148,13 +123,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_update_collection
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid",
       "name" => "Dog Breeds",
@@ -171,8 +139,7 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_collection(
@@ -182,20 +149,12 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_delete_collection
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {}
     stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_collection(
@@ -205,13 +164,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_add_images
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid"
     }
@@ -220,8 +172,7 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_images(
@@ -238,13 +189,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_list_images
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collections" => []
     }
@@ -252,8 +196,7 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_images(
@@ -263,13 +206,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_get_image_details
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid"
     }
@@ -277,8 +213,7 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_image_details(
@@ -289,20 +224,12 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_delete_image
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {}
     stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images/imageid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_image(
@@ -313,21 +240,13 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_get_jpeg_image
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid"
     }
     stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images/imageid/jpeg?version=2018-03-19")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_jpeg_image(
@@ -338,21 +257,13 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_train
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid"
     }
     stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/train?version=2018-03-19")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.train(
@@ -362,13 +273,6 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_add_image_training_data
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {
       "collection_id" => "collid"
     }
@@ -376,37 +280,56 @@ class VisualRecognitionV4Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_image_training_data(
       collection_id: "collid",
-      image_id: "imageid"
+      image_id: "imageid",
+      objects: [
+        {
+          object: "2018-Fit",
+          location: {
+            top: 5,
+            left: 13,
+            width: 760,
+            height: 419
+          }
+        }
+      ]
     )
     assert_equal(response, service_response.result)
   end
 
   def test_delete_user_data
-    authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-      bearer_token: "bogus_access_token"
-    )
-    service = IBMWatson::VisualRecognitionV4.new(
-      version: "2018-03-19",
-      authenticator: authenticator
-    )
     response = {}
     stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/user_data?version=2018-03-19&customer_id=customer")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
-          "Authorization" => "Bearer bogus_access_token"
+          "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_user_data(
       customer_id: "customer"
     )
     assert_nil(service_response)
+  end
+
+  def test_get_training_usage
+    response = {
+      "usage" => "usage"
+    }
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/training_usage?end_time=end&start_time=start&version=2018-03-19")
+      .with(
+        headers: {
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_training_usage(
+      start_time: "start",
+      end_time: "end"
+    )
+    assert_equal(response, service_response.result)
   end
 end

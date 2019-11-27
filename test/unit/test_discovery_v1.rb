@@ -9,6 +9,16 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 # Unit tests for the Discovery V1 Service
 class DiscoveryV1Test < Minitest::Test
+  include Minitest::Hooks
+  attr_accessor :service
+  def before_all
+    authenticator = IBMWatson::Authenticators::NoAuthAuthenticator.new
+    @service = IBMWatson::DiscoveryV1.new(
+      version: "2018-03-05",
+      authenticator: authenticator
+    )
+  end
+
   def test_environments
     discovery_response_body = {
       "environments" => [
@@ -42,18 +52,9 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.list_environments
     assert_equal(discovery_response_body, service_response.result)
   end
@@ -63,18 +64,9 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.get_environment(
       environment_id: "envid"
     )
@@ -87,19 +79,10 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"name\":\"my name\",\"description\":\"my description\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.create_environment(
       name: "my name",
       description: "my description"
@@ -113,19 +96,10 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"name\":\"hello\",\"description\":\"new\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.update_environment(
       environment_id: "envid",
       name: "hello",
@@ -139,18 +113,9 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.delete_environment(
       environment_id: "envid"
     )
@@ -162,18 +127,9 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.list_collections(
       environment_id: "envid"
     )
@@ -181,20 +137,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collection
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections?version=2018-03-05")
       .with(
         body: "{\"name\":\"name\",\"description\":\"\",\"configuration_id\":\"confid\",\"language\":\"\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -213,7 +160,6 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"name\":\"name\",\"description\":\"\",\"language\":\"es\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -230,7 +176,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -244,7 +189,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -258,7 +202,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -270,20 +213,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query?version=2018-03-05")
       .with(
         body: "{\"count\":10}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -304,19 +238,10 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: results.to_json, headers: { "Content-Type" => "application/json" })
@@ -329,7 +254,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
@@ -344,7 +268,6 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"name\":\"my name\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -360,7 +283,6 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"name\":\"my new name\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -376,7 +298,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "deleted" => "bogus -- ok" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -388,14 +309,6 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_document
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     doc_status = {
       "document_id" => "45556e23-f2b1-449d-8f27-489b514000ff",
       "configuration_id" => "2e079259-7dd2-40a9-998f-3e716f5a7b88",
@@ -409,7 +322,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
@@ -425,7 +337,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: doc_status.to_json, headers: { "Content-Type" => "application/json" })
@@ -440,7 +351,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
@@ -465,7 +375,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
@@ -505,18 +414,9 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_all_training_data
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 204, body: "", headers: {})
@@ -528,14 +428,6 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_data
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     mock_response = {
       "environment_id" => "string",
       "collection_id" => "string",
@@ -558,7 +450,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
@@ -595,20 +486,11 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
         body: "{\"natural_language_query\":\"why is the sky blue\",\"filter\":\"text:meteorology\",\"examples\":[{\"document_id\":\"54f95ac0-3e4f-4756-bea6-7a67b2713c81\",\"relevance\":1},{\"document_id\":\"01bcca32-7300-4c9f-8d32-33ed7ea643da\",\"cross_reference\":\"my_id_field:1463\",\"relevance\":5}]}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -624,18 +506,9 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_data
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
@@ -664,18 +537,9 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     service_response = service.get_training_data(
       environment_id: "envid",
       collection_id: "collid",
@@ -693,20 +557,11 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
       .with(
         body: "{\"document_id\":\"string\",\"cross_reference\":\"string\",\"relevance\":0}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -723,18 +578,9 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_example
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 204, body: "", headers: {})
@@ -753,19 +599,10 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
@@ -786,20 +623,11 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         body: "{\"cross_reference\":\"string\",\"relevance\":0}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -816,19 +644,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_expansions
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { expansions: "results" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -843,7 +662,6 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"expansions\":[{\"input_terms\":\"dumb\",\"expanded_terms\":\"dumb2\"}]}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -863,7 +681,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { description: "success" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -875,19 +692,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_tokenization_dictionary
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { tokenization_dictionary: "results" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -902,7 +710,6 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"tokenization_rules\":[{\"rule1\":\"messi\",\"rule2\":\"ronaldo\"}]}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -922,7 +729,6 @@ class DiscoveryV1Test < Minitest::Test
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { description: "success" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -934,18 +740,9 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/user_data?customer_id=id&version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
@@ -956,19 +753,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_notices
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/notices?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -980,20 +768,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?&version=2018-03-05")
       .with(
         body: "{\"collection_ids\":[\"collid\"]}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net",
           "Content-type" => "application/json"
         }
@@ -1006,19 +785,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query_notices
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/notices?collection_ids=collid&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1030,19 +800,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_autocompletion
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/autocompletion?prefix=hi&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1055,19 +816,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_examples
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1103,7 +855,6 @@ class DiscoveryV1Test < Minitest::Test
         body: "{\"type\":\"click\",\"data\":{\"environment_id\":\"envid\",\"session_token\":\"token\",\"collection_id\":\"collid\",\"document_id\":\"docid\"}}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -1117,19 +868,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_log
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/logs?count=10&query=test&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       )
@@ -1154,7 +896,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       )
@@ -1179,7 +920,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       )
@@ -1204,7 +944,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       )
@@ -1228,7 +967,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       )
@@ -1253,7 +991,6 @@ class DiscoveryV1Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       )
@@ -1266,19 +1003,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_credentials
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1289,20 +1017,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_credentials
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
       .with(
         body: "{\"source_type\":\"salesforce\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -1315,19 +1034,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_credentials
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1339,20 +1049,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_credentials
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
         body: "{\"source_type\":\"salesforce\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -1366,19 +1067,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_credentials
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "deleted" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1390,20 +1082,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_collection
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
         body: "{\"name\":\"name\",\"description\":\"updated description\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -1418,19 +1101,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_stopword_list_status
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/stopwords?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1442,19 +1116,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_fields
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/fields?collection_ids=collid&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1466,15 +1131,6 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_stopword_list
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
-
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
@@ -1488,18 +1144,9 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_stopword_list
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05")
       .with(
         headers: {
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "deleted" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1511,19 +1158,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_gateways
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1534,19 +1172,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_gateway
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1557,19 +1186,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_gateway
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1581,19 +1201,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_gateway
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::DiscoveryV1.new(
-      version: "2018-03-05",
-      authenticator: authenticator
-    )
     stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })

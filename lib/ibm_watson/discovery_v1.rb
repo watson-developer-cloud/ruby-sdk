@@ -1112,7 +1112,7 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @param file [File] The content of the document to ingest. The maximum supported file size when adding
     #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   testing a configuration is 1 megabyte. Files larger than the supported size are
     #   rejected.
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
@@ -1213,7 +1213,7 @@ module IBMWatson
     # @param document_id [String] The ID of the document.
     # @param file [File] The content of the document to ingest. The maximum supported file size when adding
     #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   testing a configuration is 1 megabyte. Files larger than the supported size are
     #   rejected.
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.

@@ -9,15 +9,17 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 # Unit tests for the Watson Assistant V1 Service
 class AssistantV2Test < Minitest::Test
-  def test_message
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::AssistantV2.new(
+  include Minitest::Hooks
+  attr_accessor :service
+  def before_all
+    authenticator = IBMWatson::Authenticators::NoAuthAuthenticator.new
+    @service = IBMWatson::AssistantV2.new(
       version: "2018-02-16",
       authenticator: authenticator
     )
+  end
+
+  def test_message
     # service.set_default_headers("x-watson-learning-opt-out" => true)
     assistant_id = "f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec"
     session_id = "session"
@@ -46,7 +48,6 @@ class AssistantV2Test < Minitest::Test
         body: "{\"input\":{\"text\":\"Turn on the lights\"}}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -74,7 +75,6 @@ class AssistantV2Test < Minitest::Test
         body: "{\"input\":{\"text\":\"Turn on the lights\"},\"context\":\"{\\\"conversation_id\\\":\\\"1b7b67c0-90ed-45dc-8508-9488bc483d5b\\\",\\\"system\\\":{\\\"dialog_stack\\\":[\\\"root\\\"],\\\"dialog_turn_counter\\\":2,\\\"dialog_request_counter\\\":1}}\"}",
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
           "Host" => "gateway.watsonplatform.net"
         }
@@ -105,18 +105,9 @@ class AssistantV2Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::AssistantV2.new(
-      version: "2018-02-16",
-      authenticator: authenticator
-    )
     service_response = service.create_session(
       assistant_id: "pizza_app-e0f3"
     )
@@ -128,18 +119,9 @@ class AssistantV2Test < Minitest::Test
       .with(
         headers: {
           "Accept" => "application/json",
-          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Host" => "gateway.watsonplatform.net"
         }
       ).to_return(status: 200, body: "", headers: {})
-    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
-      username: "username",
-      password: "password"
-    )
-    service = IBMWatson::AssistantV2.new(
-      version: "2018-02-16",
-      authenticator: authenticator
-    )
     service_response = service.delete_session(
       assistant_id: "pizza_app-e0f3",
       session_id: "session"

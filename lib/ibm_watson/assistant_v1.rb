@@ -177,7 +177,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil)
+    # @!method create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil)
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
@@ -199,8 +199,9 @@ module IBMWatson
     # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
     # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
+    # @param webhooks [Array[Webhook]]
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil)
+    def create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil)
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_workspace")
@@ -220,7 +221,8 @@ module IBMWatson
         "intents" => intents,
         "entities" => entities,
         "dialog_nodes" => dialog_nodes,
-        "counterexamples" => counterexamples
+        "counterexamples" => counterexamples,
+        "webhooks" => webhooks
       }
 
       method_url = "/v1/workspaces"
@@ -282,7 +284,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, append: nil)
+    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil)
     # Update workspace.
     # Update an existing workspace with new or modified data. You must provide component
     #   objects defining the content of the updated workspace.
@@ -305,6 +307,7 @@ module IBMWatson
     # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
     # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
+    # @param webhooks [Array[Webhook]]
     # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
     #   **append**=`false`, elements included in the new data completely replace the
     #   corresponding existing elements, including all subelements. For example, if the
@@ -315,7 +318,7 @@ module IBMWatson
     #   added. If any elements in the new data collide with existing elements, the update
     #   request fails.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, append: nil)
+    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
@@ -338,7 +341,8 @@ module IBMWatson
         "intents" => intents,
         "entities" => entities,
         "dialog_nodes" => dialog_nodes,
-        "counterexamples" => counterexamples
+        "counterexamples" => counterexamples,
+        "webhooks" => webhooks
       }
 
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
@@ -1936,7 +1940,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil)
     # Create dialog node.
     # Create a new dialog node.
     #
@@ -1976,8 +1980,9 @@ module IBMWatson
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
+    # @param disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil)
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -2009,7 +2014,8 @@ module IBMWatson
         "digress_in" => digress_in,
         "digress_out" => digress_out,
         "digress_out_slots" => digress_out_slots,
-        "user_label" => user_label
+        "user_label" => user_label,
+        "disambiguation_opt_out" => disambiguation_opt_out
       }
 
       method_url = "/v1/workspaces/%s/dialog_nodes" % [ERB::Util.url_encode(workspace_id)]
@@ -2065,7 +2071,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
+    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil, new_disambiguation_opt_out: nil)
     # Update dialog node.
     # Update an existing dialog node with new or modified data.
     #
@@ -2106,8 +2112,9 @@ module IBMWatson
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
+    # @param new_disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil)
+    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil, new_disambiguation_opt_out: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -2139,7 +2146,8 @@ module IBMWatson
         "digress_in" => new_digress_in,
         "digress_out" => new_digress_out,
         "digress_out_slots" => new_digress_out_slots,
-        "user_label" => new_user_label
+        "user_label" => new_user_label,
+        "disambiguation_opt_out" => new_disambiguation_opt_out
       }
 
       method_url = "/v1/workspaces/%s/dialog_nodes/%s" % [ERB::Util.url_encode(workspace_id), ERB::Util.url_encode(dialog_node)]
@@ -2249,8 +2257,8 @@ module IBMWatson
     #   more information, see **Rate limiting**.
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. You must specify a filter query that includes a value for `language`, as
-    #   well as a value for `workspace_id` or `request.context.metadata.deployment`. For
-    #   more information, see the
+    #   well as a value for `request.context.system.assistant_id`, `workspace_id`, or
+    #   `request.context.metadata.deployment`. For more information, see the
     #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-filter-reference#filter-reference).
     # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
