@@ -21,6 +21,8 @@ install:
   - npm install -g semantic-release
   - npm install -g @semantic-release/exec
   - npm install -g @semantic-release/git
+  - npm install -g @semantic-release/github
+  - npm install -g @semantic-release/commit-analyzer
   - bundle _1.16.3_ install
 script:
 - bundle exec rake
