@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -387,14 +387,14 @@ module IBMWatson
     #   **_/v2/projects/{project_id}/collections/{collection_id}/documents** method.
     #
     #   **Note:** This operation only works on collections created to accept direct file
-    #   uploads. It cannot be used to modify a collection that conects to an external
+    #   uploads. It cannot be used to modify a collection that connects to an external
     #   source such as Microsoft SharePoint.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
     # @param collection_id [String] The ID of the collection.
     # @param file [File] The content of the document to ingest. The maximum supported file size when adding
     #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   testing a configuration is 1 megabyte. Files larger than the supported size are
     #   rejected.
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
@@ -459,7 +459,7 @@ module IBMWatson
     #   any document stored with the same **document_id** if it exists.
     #
     #   **Note:** This operation only works on collections created to accept direct file
-    #   uploads. It cannot be used to modify a collection that conects to an external
+    #   uploads. It cannot be used to modify a collection that connects to an external
     #   source such as Microsoft SharePoint.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
@@ -467,7 +467,7 @@ module IBMWatson
     # @param document_id [String] The ID of the document.
     # @param file [File] The content of the document to ingest. The maximum supported file size when adding
     #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a confiruration is 1 megabyte. Files larger than the supported size are
+    #   testing a configuration is 1 megabyte. Files larger than the supported size are
     #   rejected.
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
@@ -529,7 +529,7 @@ module IBMWatson
     #   'deleted'.
     #
     #   **Note:** This operation only works on collections created to accept direct file
-    #   uploads. It cannot be used to modify a collection that conects to an external
+    #   uploads. It cannot be used to modify a collection that connects to an external
     #   source such as Microsoft SharePoint.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
@@ -646,6 +646,10 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_training_query(project_id:, natural_language_query:, examples:, filter: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("natural_language_query must be provided") if natural_language_query.nil?
+
+      raise ArgumentError.new("examples must be provided") if examples.nil?
 
       headers = {
       }

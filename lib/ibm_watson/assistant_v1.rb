@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2306,6 +2306,9 @@ module IBMWatson
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
     #   security](https://cloud.ibm.com/docs/services/assistant?topic=assistant-information-security#information-security).
+    #
+    #   This operation is limited to 4 requests per minute. For more information, see
+    #   **Rate limiting**.
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)

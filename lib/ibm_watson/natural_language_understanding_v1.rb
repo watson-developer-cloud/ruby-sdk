@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@
 #
 # You can create [custom
 # models](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-customizing)
-# with Watson Knowledge Studio to detect custom entities, relations, and categories in
-# Natural Language Understanding.
+# with Watson Knowledge Studio to detect custom entities and relations in Natural Language
+# Understanding.
 
 require "concurrent"
 require "erb"
@@ -87,6 +87,10 @@ module IBMWatson
     #   - Semantic roles
     #   - Sentiment
     #   - Syntax (Experimental).
+    #
+    #   If a language for the input text is not specified with the `language` parameter,
+    #   the service [automatically detects the
+    #   language](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-detectable-languages).
     # @param features [Features] Specific features to analyze the document for.
     # @param text [String] The plain text to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.

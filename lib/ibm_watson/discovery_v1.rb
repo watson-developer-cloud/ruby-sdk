@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -630,6 +630,8 @@ module IBMWatson
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
@@ -1590,6 +1592,8 @@ module IBMWatson
     def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
+      raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
+
       headers = {
         "X-Watson-Logging-Opt-Out" => x_watson_logging_opt_out
       }
@@ -2216,7 +2220,7 @@ module IBMWatson
     # Create event.
     # The **Events** API can be used to create log entries that are associated with
     #   specific queries. For example, you can record which documents in the results set
-    #   were "clicked" by a user and when that click occured.
+    #   were "clicked" by a user and when that click occurred.
     # @param type [String] The event type to be created.
     # @param data [EventData] Query event data object.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
