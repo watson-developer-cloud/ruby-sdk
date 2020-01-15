@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil)
+    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. You can
     #   pass a maximum of 100 MB and a minimum of 100 bytes of audio with a request. The
@@ -358,8 +358,38 @@ module IBMWatson
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
+    #
+    #   See [Audio
+    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
+    #   splits a transcript into multiple final results. If the service detects pauses or
+    #   extended silence before it reaches the end of the audio stream, its response can
+    #   include multiple final results. Silence indicates a point at which the speaker
+    #   pauses between spoken words or phrases.
+    #
+    #   Specify a value for the pause interval in the range of 0.0 to 120.0.
+    #   * A value greater than 0 specifies the interval that the service is to use for
+    #   speech recognition.
+    #   * A value of 0 indicates that the service is to use the default interval. It is
+    #   equivalent to omitting the parameter.
+    #
+    #   The default pause interval for most languages is 0.8 seconds; the default for
+    #   Chinese is 0.6 seconds.
+    #
+    #   See [End of phrase silence
+    #   time](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#silence_time).
+    # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
+    #   based on semantic features of the input, for example, at the conclusion of
+    #   meaningful phrases such as sentences. The service bases its understanding of
+    #   semantic features on the base language model that you use with a request. Custom
+    #   language models and grammars can also influence how and where the service splits a
+    #   transcript. By default, the service splits transcripts based solely on the pause
+    #   interval.
+    #
+    #   See [Split transcript at phrase
+    #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil)
+    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -388,7 +418,9 @@ module IBMWatson
         "customization_id" => customization_id,
         "grammar_name" => grammar_name,
         "redaction" => redaction,
-        "audio_metrics" => audio_metrics
+        "audio_metrics" => audio_metrics,
+        "end_of_phrase_silence_time" => end_of_phrase_silence_time,
+        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end
       }
 
       data = audio
@@ -407,7 +439,7 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
@@ -469,6 +501,36 @@ module IBMWatson
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
     # @return [WebSocketClient] Returns a new WebSocketClient object
+    #
+    #   See [Audio
+    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
+    #   splits a transcript into multiple final results. If the service detects pauses or
+    #   extended silence before it reaches the end of the audio stream, its response can
+    #   include multiple final results. Silence indicates a point at which the speaker
+    #   pauses between spoken words or phrases.
+    #
+    #   Specify a value for the pause interval in the range of 0.0 to 120.0.
+    #   * A value greater than 0 specifies the interval that the service is to use for
+    #   speech recognition.
+    #   * A value of 0 indicates that the service is to use the default interval. It is
+    #   equivalent to omitting the parameter.
+    #
+    #   The default pause interval for most languages is 0.8 seconds; the default for
+    #   Chinese is 0.6 seconds.
+    #
+    #   See [End of phrase silence
+    #   time](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#silence_time).
+    # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
+    #   based on semantic features of the input, for example, at the conclusion of
+    #   meaningful phrases such as sentences. The service bases its understanding of
+    #   semantic features on the base language model that you use with a request. Custom
+    #   language models and grammars can also influence how and where the service splits a
+    #   transcript. By default, the service splits transcripts based solely on the pause
+    #   interval.
+    #
+    #   See [Split transcript at phrase
+    #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
     def recognize_using_websocket(
       content_type: nil,
       recognize_callback:,
@@ -495,7 +557,9 @@ module IBMWatson
       redaction: nil,
       processing_metrics: nil,
       processing_metrics_interval: nil,
-      audio_metrics: nil
+      audio_metrics: nil,
+      end_of_phrase_silence_time: nil,
+      split_transcript_at_phrase_end: nil
     )
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
@@ -532,7 +596,9 @@ module IBMWatson
         "redaction" => redaction,
         "processing_metrics" => processing_metrics,
         "processing_metrics_interval" => processing_metrics_interval,
-        "audio_metrics" => audio_metrics
+        "audio_metrics" => audio_metrics,
+        "end_of_phrase_silence_time" => end_of_phrase_silence_time,
+        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end
       }
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, service_url: service_url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
@@ -650,7 +716,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil)
+    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
     # Create a job.
     # Creates a job for a new asynchronous recognition request. The job is owned by the
     #   instance of the service whose credentials are used to create it. How you learn the
@@ -919,6 +985,9 @@ module IBMWatson
     #   the `processing_metrics_interval` parameter. It also returns processing metrics
     #   for transcription events, for example, for final and interim results. By default,
     #   the service returns no processing metrics.
+    #
+    #   See [Processing
+    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
     # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
     #   return processing metrics. The parameter is ignored unless the
     #   `processing_metrics` parameter is set to `true`.
@@ -930,11 +999,44 @@ module IBMWatson
     #   metrics only for transcription events instead of at periodic intervals, set the
     #   value to a large number. If the value is larger than the duration of the audio,
     #   the service returns processing metrics only for transcription events.
+    #
+    #   See [Processing
+    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
+    #
+    #   See [Audio
+    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
+    #   splits a transcript into multiple final results. If the service detects pauses or
+    #   extended silence before it reaches the end of the audio stream, its response can
+    #   include multiple final results. Silence indicates a point at which the speaker
+    #   pauses between spoken words or phrases.
+    #
+    #   Specify a value for the pause interval in the range of 0.0 to 120.0.
+    #   * A value greater than 0 specifies the interval that the service is to use for
+    #   speech recognition.
+    #   * A value of 0 indicates that the service is to use the default interval. It is
+    #   equivalent to omitting the parameter.
+    #
+    #   The default pause interval for most languages is 0.8 seconds; the default for
+    #   Chinese is 0.6 seconds.
+    #
+    #   See [End of phrase silence
+    #   time](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#silence_time).
+    # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
+    #   based on semantic features of the input, for example, at the conclusion of
+    #   meaningful phrases such as sentences. The service bases its understanding of
+    #   semantic features on the base language model that you use with a request. Custom
+    #   language models and grammars can also influence how and where the service splits a
+    #   transcript. By default, the service splits transcripts based solely on the pause
+    #   interval.
+    #
+    #   See [Split transcript at phrase
+    #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil)
+    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -969,7 +1071,9 @@ module IBMWatson
         "redaction" => redaction,
         "processing_metrics" => processing_metrics,
         "processing_metrics_interval" => processing_metrics_interval,
-        "audio_metrics" => audio_metrics
+        "audio_metrics" => audio_metrics,
+        "end_of_phrase_silence_time" => end_of_phrase_silence_time,
+        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end
       }
 
       data = audio
@@ -1104,9 +1208,9 @@ module IBMWatson
     #   model is owned by the instance of the service whose credentials are used to create
     #   it.
     #
-    #   You can create a maximum of 1024 custom language models, per credential. The
-    #   service returns an error if you attempt to create more than 1024 models. You do
-    #   not lose any models, but you cannot create any more until your model count is
+    #   You can create a maximum of 1024 custom language models per owning credentials.
+    #   The service returns an error if you attempt to create more than 1024 models. You
+    #   do not lose any models, but you cannot create any more until your model count is
     #   below the limit.
     #
     #   **See also:** [Create a custom language
@@ -2230,9 +2334,9 @@ module IBMWatson
     #   model is owned by the instance of the service whose credentials are used to create
     #   it.
     #
-    #   You can create a maximum of 1024 custom acoustic models, per credential. The
-    #   service returns an error if you attempt to create more than 1024 models. You do
-    #   not lose any models, but you cannot create any more until your model count is
+    #   You can create a maximum of 1024 custom acoustic models per owning credentials.
+    #   The service returns an error if you attempt to create more than 1024 models. You
+    #   do not lose any models, but you cannot create any more until your model count is
     #   below the limit.
     #
     #   **See also:** [Create a custom acoustic
