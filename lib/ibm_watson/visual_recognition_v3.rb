@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -177,7 +177,8 @@ module IBMWatson
     #
     #   Specify the parameter name by appending `_positive_examples` to the class name.
     #   For example, `goldenretriever_positive_examples` creates the class
-    #   **goldenretriever**.
+    #   **goldenretriever**. The string cannot contain the following characters: ``$ * - {
+    #   } \ | / ' " ` [ ]``.
     #
     #   Include at least 10 images in .jpg or .png format. The minimum recommended image
     #   resolution is 32X32 pixels. The maximum number of images is 10,000 images or 100
@@ -328,7 +329,8 @@ module IBMWatson
     #
     #   Specify the parameter name by appending `_positive_examples` to the class name.
     #   For example, `goldenretriever_positive_examples` creates the class
-    #   `goldenretriever`.
+    #   `goldenretriever`. The string cannot contain the following characters: ``$ * - { }
+    #   \ | / ' " ` [ ]``.
     #
     #   Include at least 10 images in .jpg or .png format. The minimum recommended image
     #   resolution is 32X32 pixels. The maximum number of images is 10,000 images or 100

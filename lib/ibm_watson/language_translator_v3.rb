@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -391,7 +391,7 @@ module IBMWatson
     # Submit a document for translation. You can submit the document contents in the
     #   `file` parameter, or you can reference a previously submitted document by document
     #   ID.
-    # @param file [File] The source file to translate.
+    # @param file [File] The contents of the source file to translate.
     #
     #   [Supported file
     #   types](https://cloud.ibm.com/docs/services/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats)

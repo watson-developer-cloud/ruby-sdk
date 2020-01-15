@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2019.
+# (C) Copyright IBM Corp. 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -263,7 +263,8 @@ module IBMWatson
     #   specific voice to see the default translation for the language of that voice or
     #   for a specific custom voice model to see the translation for that voice model.
     #
-    #   **Note:** This method is currently a beta release.
+    #   **Note:** This method is currently a beta release. The method does not support the
+    #   Arabic, Chinese, and Dutch languages.
     #
     #   **See also:** [Querying a word from a
     #   language](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryLanguage).
@@ -319,7 +320,8 @@ module IBMWatson
     #   model. The model is owned by the instance of the service whose credentials are
     #   used to create it.
     #
-    #   **Note:** This method is currently a beta release.
+    #   **Note:** This method is currently a beta release. The service does not support
+    #   voice model customization for the Arabic, Chinese, and Dutch languages.
     #
     #   **See also:** [Creating a custom
     #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customModels#cuModelsCreate).

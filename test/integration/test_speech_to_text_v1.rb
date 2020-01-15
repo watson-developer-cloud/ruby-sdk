@@ -88,7 +88,7 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
     end
 
     def test_recognize_with_single_keyword
-      file = File.open(Dir.getwd + "/resources/speech.wav")
+      file = File.open(Dir.getwd + "/resources/sound-with-pause.wav")
       output = nil
       File.open(file) do |audio_file|
         output = @service.recognize(
@@ -97,9 +97,12 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
           timestamps: true,
           word_alternatives_threshold: 0.9,
           keywords: %w"[colorado]",
-          keywords_threshold: 0.5
+          keywords_threshold: 0.5,
+          split_transcript_at_phrase_end: true,
+          end_of_phrase_silence_time: nil
         )
         refute_nil(output.result["results"][0]["alternatives"][0]["transcript"])
+        assert(3, output.result["results"].length)
       end
     end
 
