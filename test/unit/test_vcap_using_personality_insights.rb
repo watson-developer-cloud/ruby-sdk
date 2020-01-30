@@ -17,14 +17,14 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     expected_response = IBMWatson::DetailedResponse.new(status: 200, body: JSON.parse(profile_response), headers: headers)
-    stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
+    stub_request(:post, "https://gateway-wdc.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
       .with(
         body: personality_text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "text/plain;charset=utf-8",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway-wdc.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
     authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
@@ -52,14 +52,14 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       "Content-Type" => "applicaiton/json"
     }
     expected_response = IBMWatson::DetailedResponse.new(status: 200, body: profile_response, headers: headers)
-    stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&raw_scores=true&version=2017-10-13")
+    stub_request(:post, "https://gateway-wdc.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&raw_scores=true&version=2017-10-13")
       .with(
         body: personality_text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway-wdc.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
     authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
@@ -89,14 +89,14 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       "Content-Type" => "text/csv"
     }
     expected_response = IBMWatson::DetailedResponse.new(status: 200, body: profile_response, headers: headers)
-    stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&csv_headers=true&raw_scores=true&version=2017-10-13")
+    stub_request(:post, "https://gateway-wdc.watsonplatform.net/personality-insights/api/v3/profile?consumption_preferences=true&csv_headers=true&raw_scores=true&version=2017-10-13")
       .with(
         body: personality_text,
         headers: {
           "Accept" => "text/csv",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway-wdc.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response, headers: headers)
     authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
@@ -127,7 +127,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     expected_response = IBMWatson::DetailedResponse.new(status: 200, body: profile_response, headers: headers)
-    stub_request(:post, "https://gateway.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
+    stub_request(:post, "https://gateway-wdc.watsonplatform.net/personality-insights/api/v3/profile?version=2017-10-13")
       .with(
         body: personality_text,
         headers: {
@@ -136,7 +136,7 @@ class VcapPersonalityInsightsV3Test < Minitest::Test
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Language" => "es",
           "Content-Type" => "text/plain;charset=utf-8",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "gateway-wdc.watsonplatform.net"
         }
       ).to_return(status: 200, body: profile_response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: "sample_service")
