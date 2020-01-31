@@ -33,6 +33,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       authenticator: authenticator
     )
+    service.service_url = "https://gateway.watsonplatform.net/personality-insights/api"
     service_response = service.profile(
       accept: "application/json",
       content: personality_text,
@@ -88,6 +89,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       authenticator: authenticator
     )
+    service.service_url = "https://gateway.watsonplatform.net/personality-insights/api"
     service_response = service.profile(
       accept: "application/json",
       content: personality_text,
@@ -128,6 +130,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       authenticator: authenticator
     )
+    service.service_url = "https://gateway.watsonplatform.net/personality-insights/api"
     service_response = service.profile(
       content: personality_text,
       content_type: "application/json",
@@ -171,6 +174,7 @@ class PersonalityInsightsV3Test < Minitest::Test
       version: "2017-10-13",
       authenticator: authenticator
     )
+    service.service_url = "https://gateway.watsonplatform.net/personality-insights/api"
     service_response = service.profile(
       accept: "application/json",
       content: personality_text,

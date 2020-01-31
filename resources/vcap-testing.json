@@ -3,7 +3,7 @@
   	{
   		"credentials": {
   			"password": "password",
-  			"url": "https://gateway.watsonplatform.net/personality-insights/api",
+  			"url": "https://gateway-wdc.watsonplatform.net/personality-insights/api",
   			"username": "username"
   		},
   		"label": "personality",

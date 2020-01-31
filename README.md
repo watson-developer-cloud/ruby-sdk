@@ -267,6 +267,28 @@ Headers: "<http response headers>"
 Result: "<response returned by service>"
 ```
 
+### Transaction IDs
+
+Every SDK call will return a response which will contain a transaction ID, accessible via the `x-global-transaction-id` header. This transaction ID is useful for troubleshooting and accessing relevant logs from your service instance.
+
+```ruby
+require "ibm_watson"
+include IBMWatson
+
+assistant = AssistantV1.new(
+  authenticator: "<authenticator>"
+  version: "2017-04-21"
+)
+
+begin
+  response = assistant.list_workspaces
+  p "Global transaction id: #{response.headers["X-Global-Transaction-Id"]}"
+rescue IBMCloudSdkCore::ApiException => e
+  # Global transaction on failed api call is contained in the error message
+  print "Error: ##{e}"
+end
+```
+
 ## Configuring the HTTP client
 
 To set client configs like timeout or proxy use the `configure_http_client` function and pass in the configurations.
