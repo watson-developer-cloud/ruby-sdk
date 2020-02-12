@@ -529,6 +529,150 @@ module IBMWatson
       response
     end
     #########################
+    # Objects
+    #########################
+
+    ##
+    # @!method list_object_metadata(collection_id:)
+    # List object metadata.
+    # Retrieves a list of object names in a collection.
+    # @param collection_id [String] The identifier of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_object_metadata(collection_id:)
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "list_object_metadata")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v4/collections/%s/objects" % [ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_object_metadata(collection_id:, object:, new_object:)
+    # Update an object name.
+    # Update the name of an object. A successful request updates the training data for
+    #   all images that use the object.
+    # @param collection_id [String] The identifier of the collection.
+    # @param object [String] The name of the object.
+    # @param new_object [String] The updated name of the object. The name can contain alphanumeric, underscore,
+    #   hyphen, space, and dot characters. It cannot begin with the reserved prefix
+    #   `sys-`.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_object_metadata(collection_id:, object:, new_object:)
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("object must be provided") if object.nil?
+
+      raise ArgumentError.new("new_object must be provided") if new_object.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "update_object_metadata")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "object" => new_object
+      }
+
+      method_url = "/v4/collections/%s/objects/%s" % [ERB::Util.url_encode(collection_id), ERB::Util.url_encode(object)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_object_metadata(collection_id:, object:)
+    # Get object metadata.
+    # Get the number of bounding boxes for a single object in a collection.
+    # @param collection_id [String] The identifier of the collection.
+    # @param object [String] The name of the object.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_object_metadata(collection_id:, object:)
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("object must be provided") if object.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "get_object_metadata")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v4/collections/%s/objects/%s" % [ERB::Util.url_encode(collection_id), ERB::Util.url_encode(object)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_object(collection_id:, object:)
+    # Delete an object.
+    # Delete one object from a collection. A successful request deletes the training
+    #   data from all images that use the object.
+    # @param collection_id [String] The identifier of the collection.
+    # @param object [String] The name of the object.
+    # @return [nil]
+    def delete_object(collection_id:, object:)
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("object must be provided") if object.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "delete_object")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v4/collections/%s/objects/%s" % [ERB::Util.url_encode(collection_id), ERB::Util.url_encode(object)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      nil
+    end
+    #########################
     # Training
     #########################
 
@@ -660,7 +804,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://cloud.ibm.com/docs/services/visual-recognition?topic=visual-recognition-information-security).
+    #   security](https://cloud.ibm.com/docs/visual-recognition?topic=visual-recognition-information-security).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
