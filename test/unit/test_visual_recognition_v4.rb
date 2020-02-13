@@ -332,4 +332,73 @@ class VisualRecognitionV4Test < Minitest::Test
     )
     assert_equal(response, service_response.result)
   end
+
+  def test_list_object_metadata
+    response = {
+      "objects" => []
+    }
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects?version=2018-03-19")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_object_metadata(
+      collection_id: "collid"
+    )
+    assert_equal(response, service_response.result)
+  end
+
+  def test_update_object_metadata
+    response = {
+      "objects" => []
+    }
+    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects/old_object?version=2018-03-19")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.update_object_metadata(
+      collection_id: "collid",
+      object: "old_object",
+      new_object: "new_object"
+    )
+    assert_equal(response, service_response.result)
+  end
+
+  def test_get_object_metadata
+    response = {
+      "objects" => []
+    }
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects/object?version=2018-03-19")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_object_metadata(
+      collection_id: "collid",
+      object: "object"
+    )
+    assert_equal(response, service_response.result)
+  end
+
+  def test_delete_object
+    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects/object?version=2018-03-19")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: {}.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_object(
+      collection_id: "collid",
+      object: "object"
+    )
+    assert_nil(service_response)
+  end
 end
