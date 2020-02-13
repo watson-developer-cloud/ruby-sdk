@@ -78,7 +78,7 @@ module IBMWatson
     #   **Important:** This method has been superseded by the new v2 runtime API. The v2
     #   API offers significant advantages, including ease of deployment, automatic state
     #   management, versioning, and search capabilities. For more information, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-api-overview).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-api-overview).
     #
     #   There is no rate limit for this operation.
     # @param workspace_id [String] Unique identifier of the workspace.
@@ -177,7 +177,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil)
+    # @!method create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, include_audit: nil)
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
@@ -200,15 +200,18 @@ module IBMWatson
     # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
     # @param webhooks [Array[Webhook]]
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil)
+    def create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, include_audit: nil)
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_workspace")
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -284,7 +287,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil)
+    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil, include_audit: nil)
     # Update workspace.
     # Update an existing workspace with new or modified data. You must provide component
     #   objects defining the content of the updated workspace.
@@ -308,17 +311,20 @@ module IBMWatson
     # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
     #   input.
     # @param webhooks [Array[Webhook]]
-    # @param append [Boolean] Whether the new data is to be appended to the existing data in the workspace. If
+    # @param append [Boolean] Whether the new data is to be appended to the existing data in the object. If
     #   **append**=`false`, elements included in the new data completely replace the
     #   corresponding existing elements, including all subelements. For example, if the
-    #   new data includes **entities** and **append**=`false`, all existing entities in
-    #   the workspace are discarded and replaced with the new entities.
+    #   new data for a workspace includes **entities** and **append**=`false`, all
+    #   existing entities in the workspace are discarded and replaced with the new
+    #   entities.
     #
     #   If **append**=`true`, existing elements are preserved, and the new elements are
     #   added. If any elements in the new data collide with existing elements, the update
     #   request fails.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil)
+    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       headers = {
@@ -328,7 +334,8 @@ module IBMWatson
 
       params = {
         "version" => @version,
-        "append" => append
+        "append" => append,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -443,7 +450,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_intent(workspace_id:, intent:, description: nil, examples: nil)
+    # @!method create_intent(workspace_id:, intent:, description: nil, examples: nil, include_audit: nil)
     # Create intent.
     # Create a new intent.
     #
@@ -460,8 +467,10 @@ module IBMWatson
     # @param description [String] The description of the intent. This string cannot contain carriage return,
     #   newline, or tab characters.
     # @param examples [Array[Example]] An array of user input examples for the intent.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_intent(workspace_id:, intent:, description: nil, examples: nil)
+    def create_intent(workspace_id:, intent:, description: nil, examples: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
@@ -472,7 +481,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -539,7 +549,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
+    # @!method update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil, append: nil, include_audit: nil)
     # Update intent.
     # Update an existing intent with new or modified data. You must provide component
     #   objects defining the content of the updated intent.
@@ -558,8 +568,19 @@ module IBMWatson
     # @param new_description [String] The description of the intent. This string cannot contain carriage return,
     #   newline, or tab characters.
     # @param new_examples [Array[Example]] An array of user input examples for the intent.
+    # @param append [Boolean] Whether the new data is to be appended to the existing data in the object. If
+    #   **append**=`false`, elements included in the new data completely replace the
+    #   corresponding existing elements, including all subelements. For example, if the
+    #   new data for the intent includes **examples** and **append**=`false`, all existing
+    #   examples for the intent are discarded and replaced with the new examples.
+    #
+    #   If **append**=`true`, existing elements are preserved, and the new elements are
+    #   added. If any elements in the new data collide with existing elements, the update
+    #   request fails.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil)
+    def update_intent(workspace_id:, intent:, new_intent: nil, new_description: nil, new_examples: nil, append: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
@@ -570,7 +591,9 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "append" => append,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -679,7 +702,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_example(workspace_id:, intent:, text:, mentions: nil)
+    # @!method create_example(workspace_id:, intent:, text:, mentions: nil, include_audit: nil)
     # Create user input example.
     # Add a new user input example to an intent.
     #
@@ -695,8 +718,10 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     # @param mentions [Array[Mention]] An array of contextual entity mentions.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_example(workspace_id:, intent:, text:, mentions: nil)
+    def create_example(workspace_id:, intent:, text:, mentions: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
@@ -709,7 +734,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -773,7 +799,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
+    # @!method update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil, include_audit: nil)
     # Update user input example.
     # Update the text of a user input example.
     #
@@ -790,8 +816,10 @@ module IBMWatson
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
     # @param new_mentions [Array[Mention]] An array of contextual entity mentions.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil)
+    def update_example(workspace_id:, intent:, text:, new_text: nil, new_mentions: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
@@ -804,7 +832,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -912,7 +941,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_counterexample(workspace_id:, text:)
+    # @!method create_counterexample(workspace_id:, text:, include_audit: nil)
     # Create counterexample.
     # Add a new counterexample to a workspace. Counterexamples are examples that have
     #   been marked as irrelevant input.
@@ -927,8 +956,10 @@ module IBMWatson
     #   the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_counterexample(workspace_id:, text:)
+    def create_counterexample(workspace_id:, text:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("text must be provided") if text.nil?
@@ -939,7 +970,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1000,7 +1032,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_counterexample(workspace_id:, text:, new_text: nil)
+    # @!method update_counterexample(workspace_id:, text:, new_text: nil, include_audit: nil)
     # Update counterexample.
     # Update the text of a counterexample. Counterexamples are examples that have been
     #   marked as irrelevant input.
@@ -1016,8 +1048,10 @@ module IBMWatson
     #   the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_counterexample(workspace_id:, text:, new_text: nil)
+    def update_counterexample(workspace_id:, text:, new_text: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("text must be provided") if text.nil?
@@ -1028,7 +1062,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1137,7 +1172,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil)
+    # @!method create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil, include_audit: nil)
     # Create entity.
     # Create a new entity, or enable a system entity.
     #
@@ -1157,8 +1192,10 @@ module IBMWatson
     # @param metadata [Hash] Any metadata related to the entity.
     # @param fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
     # @param values [Array[CreateValue]] An array of objects describing the entity values.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil)
+    def create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1169,7 +1206,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1238,7 +1276,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
+    # @!method update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil, append: nil, include_audit: nil)
     # Update entity.
     # Update an existing entity with new or modified data. You must provide component
     #   objects defining the content of the updated entity.
@@ -1258,8 +1296,19 @@ module IBMWatson
     # @param new_metadata [Hash] Any metadata related to the entity.
     # @param new_fuzzy_match [Boolean] Whether to use fuzzy matching for the entity.
     # @param new_values [Array[CreateValue]] An array of objects describing the entity values.
+    # @param append [Boolean] Whether the new data is to be appended to the existing data in the entity. If
+    #   **append**=`false`, elements included in the new data completely replace the
+    #   corresponding existing elements, including all subelements. For example, if the
+    #   new data for the entity includes **values** and **append**=`false`, all existing
+    #   values for the entity are discarded and replaced with the new values.
+    #
+    #   If **append**=`true`, existing elements are preserved, and the new elements are
+    #   added. If any elements in the new data collide with existing elements, the update
+    #   request fails.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil)
+    def update_entity(workspace_id:, entity:, new_entity: nil, new_description: nil, new_metadata: nil, new_fuzzy_match: nil, new_values: nil, append: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1270,7 +1319,9 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "append" => append,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1431,7 +1482,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_value(workspace_id:, entity:, value:, metadata: nil, type: nil, synonyms: nil, patterns: nil)
+    # @!method create_value(workspace_id:, entity:, value:, metadata: nil, type: nil, synonyms: nil, patterns: nil, include_audit: nil)
     # Create entity value.
     # Create a new value for an entity.
     #
@@ -1456,9 +1507,11 @@ module IBMWatson
     # @param patterns [Array[String]] An array of patterns for the entity value. A value can specify either synonyms or
     #   patterns (depending on the value type), but not both. A pattern is a regular
     #   expression; for more information about how to specify a pattern, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-entities#entities-create-dictionary-based).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-entities#entities-create-dictionary-based).
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_value(workspace_id:, entity:, value:, metadata: nil, type: nil, synonyms: nil, patterns: nil)
+    def create_value(workspace_id:, entity:, value:, metadata: nil, type: nil, synonyms: nil, patterns: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1471,7 +1524,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1542,7 +1596,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
+    # @!method update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil, append: nil, include_audit: nil)
     # Update entity value.
     # Update an existing entity value with new or modified data. You must provide
     #   component objects defining the content of the updated entity value.
@@ -1569,9 +1623,21 @@ module IBMWatson
     # @param new_patterns [Array[String]] An array of patterns for the entity value. A value can specify either synonyms or
     #   patterns (depending on the value type), but not both. A pattern is a regular
     #   expression; for more information about how to specify a pattern, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-entities#entities-create-dictionary-based).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-entities#entities-create-dictionary-based).
+    # @param append [Boolean] Whether the new data is to be appended to the existing data in the entity value.
+    #   If **append**=`false`, elements included in the new data completely replace the
+    #   corresponding existing elements, including all subelements. For example, if the
+    #   new data for the entity value includes **synonyms** and **append**=`false`, all
+    #   existing synonyms for the entity value are discarded and replaced with the new
+    #   synonyms.
+    #
+    #   If **append**=`true`, existing elements are preserved, and the new elements are
+    #   added. If any elements in the new data collide with existing elements, the update
+    #   request fails.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil)
+    def update_value(workspace_id:, entity:, value:, new_value: nil, new_metadata: nil, new_type: nil, new_synonyms: nil, new_patterns: nil, append: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1584,7 +1650,9 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "append" => append,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1700,7 +1768,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_synonym(workspace_id:, entity:, value:, synonym:)
+    # @!method create_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
     # Create entity value synonym.
     # Add a new synonym to an entity value.
     #
@@ -1716,8 +1784,10 @@ module IBMWatson
     # @param synonym [String] The text of the synonym. This string must conform to the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_synonym(workspace_id:, entity:, value:, synonym:)
+    def create_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1732,7 +1802,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1798,7 +1869,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
+    # @!method update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil, include_audit: nil)
     # Update entity value synonym.
     # Update an existing entity value synonym with new text.
     #
@@ -1815,8 +1886,10 @@ module IBMWatson
     # @param new_synonym [String] The text of the synonym. This string must conform to the following restrictions:
     #   - It cannot contain carriage return, newline, or tab characters.
     #   - It cannot consist of only whitespace characters.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil)
+    def update_synonym(workspace_id:, entity:, value:, synonym:, new_synonym: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
@@ -1831,7 +1904,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -1940,7 +2014,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil)
+    # @!method create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil, include_audit: nil)
     # Create dialog node.
     # Create a new dialog node.
     #
@@ -1963,7 +2037,7 @@ module IBMWatson
     #   node has no previous sibling.
     # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
     # @param context [Hash] The context for the dialog node.
     # @param metadata [Hash] The metadata for the dialog node.
     # @param next_step [DialogNodeNextStep] The next step to execute following this dialog node.
@@ -1981,8 +2055,10 @@ module IBMWatson
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
     # @param disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil)
+    def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -1993,7 +2069,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -2071,7 +2148,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil, new_disambiguation_opt_out: nil)
+    # @!method update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil, new_disambiguation_opt_out: nil, include_audit: nil)
     # Update dialog node.
     # Update an existing dialog node with new or modified data.
     #
@@ -2095,7 +2172,7 @@ module IBMWatson
     #   node has no previous sibling.
     # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
     # @param new_context [Hash] The context for the dialog node.
     # @param new_metadata [Hash] The metadata for the dialog node.
     # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
@@ -2113,8 +2190,10 @@ module IBMWatson
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
     # @param new_disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions.
+    # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
+    #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil, new_disambiguation_opt_out: nil)
+    def update_dialog_node(workspace_id:, dialog_node:, new_dialog_node: nil, new_description: nil, new_conditions: nil, new_parent: nil, new_previous_sibling: nil, new_output: nil, new_context: nil, new_metadata: nil, new_next_step: nil, new_title: nil, new_type: nil, new_event_name: nil, new_variable: nil, new_actions: nil, new_digress_in: nil, new_digress_out: nil, new_digress_out_slots: nil, new_user_label: nil, new_disambiguation_opt_out: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
@@ -2125,7 +2204,8 @@ module IBMWatson
       headers.merge!(sdk_headers)
 
       params = {
-        "version" => @version
+        "version" => @version,
+        "include_audit" => include_audit
       }
 
       data = {
@@ -2215,7 +2295,7 @@ module IBMWatson
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. For more information, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-filter-reference#filter-reference).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-filter-reference#filter-reference).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -2259,7 +2339,7 @@ module IBMWatson
     #   filter. You must specify a filter query that includes a value for `language`, as
     #   well as a value for `request.context.system.assistant_id`, `workspace_id`, or
     #   `request.context.metadata.deployment`. For more information, see the
-    #   [documentation](https://cloud.ibm.com/docs/services/assistant?topic=assistant-filter-reference#filter-reference).
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-filter-reference#filter-reference).
     # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
     # @param page_limit [Fixnum] The number of records to return in each page of results.
@@ -2305,7 +2385,7 @@ module IBMWatson
     #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
-    #   security](https://cloud.ibm.com/docs/services/assistant?topic=assistant-information-security#information-security).
+    #   security](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security).
     #
     #   This operation is limited to 4 requests per minute. For more information, see
     #   **Rate limiting**.
