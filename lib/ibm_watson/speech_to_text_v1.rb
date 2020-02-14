@@ -81,7 +81,7 @@ module IBMWatson
     #   among other things.
     #
     #   **See also:** [Languages and
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_models
       headers = {
@@ -108,7 +108,7 @@ module IBMWatson
     #   sampling rate in Hertz, among other things.
     #
     #   **See also:** [Languages and
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
     # @param model_id [String] The identifier of the model in the form of its name from the output of the **Get a
     #   model** method.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -146,7 +146,7 @@ module IBMWatson
     #   upload the file for the request.)
     #
     #   **See also:** [Making a basic HTTP
-    #   request](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-http#HTTP-basic).
+    #   request](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-http#HTTP-basic).
     #
     #
     #   ### Streaming mode
@@ -161,9 +161,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Audio
-    #   transmission](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#transmission)
+    #   transmission](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#transmission)
     #   *
-    #   [Timeouts](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#timeouts)
+    #   [Timeouts](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#timeouts)
     #
     #
     #   ### Audio formats (content types)
@@ -203,7 +203,7 @@ module IBMWatson
     #   fails.
     #
     #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
+    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
     #
     #
     #   ### Multipart speech recognition
@@ -222,19 +222,19 @@ module IBMWatson
     #   want to spot a very large number of keywords.
     #
     #   **See also:** [Making a multipart HTTP
-    #   request](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-http#HTTP-multi).
+    #   request](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-http#HTTP-multi).
     # @param audio [String] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
     #   [Languages and
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
     # @param language_customization_id [String] The customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. The base model of the specified custom language model must
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
     #   default, no custom language model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
     #
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
@@ -244,13 +244,13 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
     #   default, no custom acoustic model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
     # @param base_model_version [String] The version of the specified base model that is to be used with the recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
     #   models that have been upgraded for a new base model. The default value depends on
     #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#version).
+    #   version](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#version).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
     #   recognition request, the customization weight tells the service how much weight to
     #   give to words from the custom language model compared to those from the base model
@@ -268,45 +268,45 @@ module IBMWatson
     #   phrases.
     #
     #   See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
     #   streaming audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
     #   walks away. Use `-1` for infinity. See [Inactivity
-    #   timeout](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#timeouts-inactivity).
+    #   timeout](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#timeouts-inactivity).
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
     #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
     #   an empty array if you do not need to spot keywords. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
     #   threshold. Specify a probability between 0.0 and 1.0. If you specify a threshold,
     #   you must also specify one or more keywords. The service performs no keyword
     #   spotting if you omit either parameter. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
     #   default, the service returns a single transcript. If you specify a value of `0`,
     #   the service uses the default value, `1`. See [Maximum
-    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#max_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as "Confusion Networks"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. By default, the service computes no
     #   alternative words. See [Word
-    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#word_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_alternatives).
     # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
     #   each word. By default, the service returns no word confidence scores. See [Word
-    #   confidence](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#word_confidence).
+    #   confidence](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_confidence).
     # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
     #   timestamps are returned. See [Word
-    #   timestamps](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#word_timestamps).
+    #   timestamps](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_timestamps).
     # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
     #   transcription only. See [Profanity
-    #   filtering](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#profanity_filter).
+    #   filtering](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#profanity_filter).
     # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
     #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
@@ -316,7 +316,7 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Spanish transcription only.
     #
     #   See [Smart
-    #   formatting](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#smart_formatting).
+    #   formatting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#smart_formatting).
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, the service returns no
     #   speaker labels. Setting `speaker_labels` to `true` forces the `timestamps`
@@ -330,7 +330,7 @@ module IBMWatson
     #   `true`.
     #
     #   See [Speaker
-    #   labels](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#speaker_labels).
+    #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
     # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
@@ -339,7 +339,7 @@ module IBMWatson
     #   specify the name of the custom language model for which the grammar is defined.
     #   The service recognizes only strings that are recognized by the specified grammar;
     #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#grammars-input).
+    #   [Grammars](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#grammars-input).
     # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
     #   feature redacts any number that has three or more consecutive digits by replacing
     #   each digit with an `X` character. It is intended to redact sensitive numeric data,
@@ -354,13 +354,13 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Korean transcription only.
     #
     #   See [Numeric
-    #   redaction](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#redaction).
+    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#redaction).
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
     #
     #   See [Audio
-    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
     # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
     #   splits a transcript into multiple final results. If the service detects pauses or
     #   extended silence before it reaches the end of the audio stream, its response can
@@ -377,7 +377,7 @@ module IBMWatson
     #   Chinese is 0.6 seconds.
     #
     #   See [End of phrase silence
-    #   time](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#silence_time).
+    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#silence_time).
     # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
     #   based on semantic features of the input, for example, at the conclusion of
     #   meaningful phrases such as sentences. The service bases its understanding of
@@ -387,7 +387,7 @@ module IBMWatson
     #   interval.
     #
     #   See [Split transcript at phrase
-    #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
+    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
@@ -643,7 +643,7 @@ module IBMWatson
     #   a one-hour span of time.
     #
     #   **See also:** [Registering a callback
-    #   URL](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-async#register).
+    #   URL](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-async#register).
     # @param callback_url [String] An HTTP or HTTPS URL to which callback notifications are to be sent. To be
     #   white-listed, the URL must successfully echo the challenge string during URL
     #   verification. During verification, the client can also check the signature that
@@ -688,7 +688,7 @@ module IBMWatson
     #   URL can no longer be used with asynchronous recognition requests.
     #
     #   **See also:** [Unregistering a callback
-    #   URL](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-async#unregister).
+    #   URL](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-async#unregister).
     # @param callback_url [String] The callback URL that is to be unregistered.
     # @return [nil]
     def unregister_callback(callback_url:)
@@ -756,7 +756,7 @@ module IBMWatson
     #   option to upload the file for the request.)
     #
     #   **See also:** [Creating a
-    #   job](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-async#create).
+    #   job](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-async#create).
     #
     #
     #   ### Streaming mode
@@ -771,9 +771,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Audio
-    #   transmission](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#transmission)
+    #   transmission](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#transmission)
     #   *
-    #   [Timeouts](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#timeouts)
+    #   [Timeouts](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#timeouts)
     #
     #
     #   ### Audio formats (content types)
@@ -813,13 +813,13 @@ module IBMWatson
     #   fails.
     #
     #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
+    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
     # @param audio [String] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
     #   [Languages and
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
     # @param callback_url [String] A URL to which callback notifications are to be sent. The URL must already be
     #   successfully white-listed by using the **Register a callback** method. You can
     #   include the same callback URL with any number of job creation requests. Omit the
@@ -859,7 +859,7 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
     #   default, no custom language model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
     #
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
@@ -869,13 +869,13 @@ module IBMWatson
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
     #   default, no custom acoustic model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
     # @param base_model_version [String] The version of the specified base model that is to be used with the recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
     #   models that have been upgraded for a new base model. The default value depends on
     #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#version).
+    #   version](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#version).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
     #   recognition request, the customization weight tells the service how much weight to
     #   give to words from the custom language model compared to those from the base model
@@ -893,45 +893,45 @@ module IBMWatson
     #   phrases.
     #
     #   See [Custom
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
     #   streaming audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
     #   walks away. Use `-1` for infinity. See [Inactivity
-    #   timeout](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#timeouts-inactivity).
+    #   timeout](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#timeouts-inactivity).
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
     #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
     #   an empty array if you do not need to spot keywords. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
     #   threshold. Specify a probability between 0.0 and 1.0. If you specify a threshold,
     #   you must also specify one or more keywords. The service performs no keyword
     #   spotting if you omit either parameter. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
     #   default, the service returns a single transcript. If you specify a value of `0`,
     #   the service uses the default value, `1`. See [Maximum
-    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#max_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#max_alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as "Confusion Networks"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. By default, the service computes no
     #   alternative words. See [Word
-    #   alternatives](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#word_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_alternatives).
     # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
     #   each word. By default, the service returns no word confidence scores. See [Word
-    #   confidence](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#word_confidence).
+    #   confidence](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_confidence).
     # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
     #   timestamps are returned. See [Word
-    #   timestamps](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#word_timestamps).
+    #   timestamps](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_timestamps).
     # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
     #   transcription only. See [Profanity
-    #   filtering](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#profanity_filter).
+    #   filtering](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#profanity_filter).
     # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
     #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
@@ -941,7 +941,7 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Spanish transcription only.
     #
     #   See [Smart
-    #   formatting](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#smart_formatting).
+    #   formatting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#smart_formatting).
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, the service returns no
     #   speaker labels. Setting `speaker_labels` to `true` forces the `timestamps`
@@ -955,7 +955,7 @@ module IBMWatson
     #   `true`.
     #
     #   See [Speaker
-    #   labels](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#speaker_labels).
+    #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
     # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
@@ -964,7 +964,7 @@ module IBMWatson
     #   specify the name of the custom language model for which the grammar is defined.
     #   The service recognizes only strings that are recognized by the specified grammar;
     #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-input#grammars-input).
+    #   [Grammars](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#grammars-input).
     # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
     #   feature redacts any number that has three or more consecutive digits by replacing
     #   each digit with an `X` character. It is intended to redact sensitive numeric data,
@@ -979,7 +979,7 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Korean transcription only.
     #
     #   See [Numeric
-    #   redaction](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#redaction).
+    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#redaction).
     # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
     #   input audio. The service returns processing metrics at the interval specified by
     #   the `processing_metrics_interval` parameter. It also returns processing metrics
@@ -987,7 +987,7 @@ module IBMWatson
     #   the service returns no processing metrics.
     #
     #   See [Processing
-    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
     # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
     #   return processing metrics. The parameter is ignored unless the
     #   `processing_metrics` parameter is set to `true`.
@@ -1001,13 +1001,13 @@ module IBMWatson
     #   the service returns processing metrics only for transcription events.
     #
     #   See [Processing
-    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
     #
     #   See [Audio
-    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
     # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
     #   splits a transcript into multiple final results. If the service detects pauses or
     #   extended silence before it reaches the end of the audio stream, its response can
@@ -1024,7 +1024,7 @@ module IBMWatson
     #   Chinese is 0.6 seconds.
     #
     #   See [End of phrase silence
-    #   time](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#silence_time).
+    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#silence_time).
     # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
     #   based on semantic features of the input, for example, at the conclusion of
     #   meaningful phrases such as sentences. The service bases its understanding of
@@ -1034,7 +1034,7 @@ module IBMWatson
     #   interval.
     #
     #   See [Split transcript at phrase
-    #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
+    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
@@ -1104,7 +1104,7 @@ module IBMWatson
     #   first.
     #
     #   **See also:** [Checking the status of the latest
-    #   jobs](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-async#jobs).
+    #   jobs](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-async#jobs).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def check_jobs
       headers = {
@@ -1139,7 +1139,7 @@ module IBMWatson
     #   recent jobs associated with the calling credentials.
     #
     #   **See also:** [Checking the status and retrieving the results of a
-    #   job](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-async#job).
+    #   job](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-async#job).
     # @param id [String] The identifier of the asynchronous job that is to be used for the request. You
     #   must make the request with credentials for the instance of the service that owns
     #   the job.
@@ -1173,7 +1173,7 @@ module IBMWatson
     #   owns a job to delete it.
     #
     #   **See also:** [Deleting a
-    #   job](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-async#delete-async).
+    #   job](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-async#delete-async).
     # @param id [String] The identifier of the asynchronous job that is to be used for the request. You
     #   must make the request with credentials for the instance of the service that owns
     #   the job.
@@ -1214,7 +1214,7 @@ module IBMWatson
     #   below the limit.
     #
     #   **See also:** [Create a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-languageCreate#createModel-language).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#createModel-language).
     # @param name [String] A user-defined name for the new custom language model. Use a name that is unique
     #   among all custom language models that you own. Use a localized name that matches
     #   the language of the custom model. Use a name that describes the domain of the
@@ -1226,7 +1226,7 @@ module IBMWatson
     #   To determine whether a base model supports language model customization, use the
     #   **Get a model** method and check that the attribute `custom_language_model` is set
     #   to `true`. You can also refer to [Language support for
-    #   customization](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-customization#languageSupport).
+    #   customization](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customization#languageSupport).
     # @param dialect [String] The dialect of the specified language that is to be used with the custom language
     #   model. For most languages, the dialect matches the language of the base model by
     #   default. For example, `en-US` is used for either of the US English language
@@ -1288,7 +1288,7 @@ module IBMWatson
     #   a model to list information about it.
     #
     #   **See also:** [Listing custom language
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageLanguageModels#listModels-language).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageLanguageModels#listModels-language).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned (for example, `en-US`). Omit the parameter to see all custom
     #   language or custom acoustic models that are owned by the requesting credentials.
@@ -1322,7 +1322,7 @@ module IBMWatson
     #   for the instance of the service that owns a model to list information about it.
     #
     #   **See also:** [Listing custom language
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageLanguageModels#listModels-language).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageLanguageModels#listModels-language).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1355,7 +1355,7 @@ module IBMWatson
     #   owns a model to delete it.
     #
     #   **See also:** [Deleting a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageLanguageModels#deleteModel-language).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageLanguageModels#deleteModel-language).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1403,7 +1403,7 @@ module IBMWatson
     #   requests to add new resources until the existing request completes.
     #
     #   **See also:** [Train the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-languageCreate#trainModel-language).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#trainModel-language).
     #
     #
     #   ### Training failures
@@ -1479,7 +1479,7 @@ module IBMWatson
     #   it.
     #
     #   **See also:** [Resetting a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageLanguageModels#resetModel-language).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageLanguageModels#resetModel-language).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1523,7 +1523,7 @@ module IBMWatson
     #   subsequent requests for the model until the upgrade completes.
     #
     #   **See also:** [Upgrading a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-customUpgrade#upgradeLanguage).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customUpgrade#upgradeLanguage).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1559,7 +1559,7 @@ module IBMWatson
     #   that owns a model to list its corpora.
     #
     #   **See also:** [Listing corpora for a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageCorpora#listCorpora).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageCorpora#listCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1628,9 +1628,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Working with
-    #   corpora](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#workingCorpora)
+    #   corpora](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#workingCorpora)
     #   * [Add a corpus to the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-languageCreate#addCorpus).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addCorpus).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1656,7 +1656,7 @@ module IBMWatson
     #   Make sure that you know the character encoding of the file. You must use that
     #   encoding when working with the words in the custom language model. For more
     #   information, see [Character
-    #   encoding](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
+    #   encoding](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
     #
     #
     #   With the `curl` command, use the `--data-binary` option to upload the file for the
@@ -1710,7 +1710,7 @@ module IBMWatson
     #   that owns a model to list its corpora.
     #
     #   **See also:** [Listing corpora for a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageCorpora#listCorpora).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageCorpora#listCorpora).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1750,7 +1750,7 @@ module IBMWatson
     #   corpora.
     #
     #   **See also:** [Deleting a corpus from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageCorpora#deleteCorpus).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageCorpora#deleteCorpus).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1792,7 +1792,7 @@ module IBMWatson
     #   service that owns a model to list information about its words.
     #
     #   **See also:** [Listing words from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageWords#listWords).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageWords#listWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1890,9 +1890,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Working with custom
-    #   words](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#workingWords)
+    #   words](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#workingWords)
     #   * [Add words to the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-languageCreate#addWords).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1961,9 +1961,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Working with custom
-    #   words](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#workingWords)
+    #   words](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#workingWords)
     #   * [Add words to the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-languageCreate#addWords).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1971,7 +1971,7 @@ module IBMWatson
     #   not include spaces in the word. Use a `-` (dash) or `_` (underscore) to connect
     #   the tokens of compound words. URL-encode the word if it includes non-ASCII
     #   characters. For more information, see [Character
-    #   encoding](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
+    #   encoding](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
     # @param word [String] For the **Add custom words** method, you must specify the custom word that is to
     #   be added to or updated in the custom model. Do not include spaces in the word. Use
     #   a `-` (dash) or `_` (underscore) to connect the tokens of compound words.
@@ -2029,13 +2029,13 @@ module IBMWatson
     #   about its words.
     #
     #   **See also:** [Listing words from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageWords#listWords).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageWords#listWords).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
     # @param word_name [String] The custom word that is to be read from the custom language model. URL-encode the
     #   word if it includes non-ASCII characters. For more information, see [Character
-    #   encoding](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
+    #   encoding](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_word(customization_id:, word_name:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2070,13 +2070,13 @@ module IBMWatson
     #   instance of the service that owns a model to delete its words.
     #
     #   **See also:** [Deleting a word from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageWords#deleteWord).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageWords#deleteWord).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
     # @param word_name [String] The custom word that is to be deleted from the custom language model. URL-encode
     #   the word if it includes non-ASCII characters. For more information, see [Character
-    #   encoding](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
+    #   encoding](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#charEncoding).
     # @return [nil]
     def delete_word(customization_id:, word_name:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2111,7 +2111,7 @@ module IBMWatson
     #   model to list its grammars.
     #
     #   **See also:** [Listing grammars from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageGrammars#listGrammars).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageGrammars#listGrammars).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2175,9 +2175,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Understanding
-    #   grammars](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-grammarUnderstand#grammarUnderstand)
+    #   grammars](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-grammarUnderstand#grammarUnderstand)
     #   * [Add a grammar to the custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-grammarAdd#addGrammar).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-grammarAdd#addGrammar).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2257,7 +2257,7 @@ module IBMWatson
     #   model to list its grammars.
     #
     #   **See also:** [Listing grammars from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageGrammars#listGrammars).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageGrammars#listGrammars).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2296,7 +2296,7 @@ module IBMWatson
     #   for the instance of the service that owns a model to delete its grammar.
     #
     #   **See also:** [Deleting a grammar from a custom language
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageGrammars#deleteGrammar).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageGrammars#deleteGrammar).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2340,7 +2340,7 @@ module IBMWatson
     #   below the limit.
     #
     #   **See also:** [Create a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-acoustic#createModel-acoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-acoustic#createModel-acoustic).
     # @param name [String] A user-defined name for the new custom acoustic model. Use a name that is unique
     #   among all custom acoustic models that you own. Use a localized name that matches
     #   the language of the custom model. Use a name that describes the acoustic
@@ -2352,7 +2352,7 @@ module IBMWatson
     #
     #   To determine whether a base model supports acoustic model customization, refer to
     #   [Language support for
-    #   customization](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-customization#languageSupport).
+    #   customization](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customization#languageSupport).
     # @param description [String] A description of the new custom acoustic model. Use a localized description that
     #   matches the language of the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -2394,7 +2394,7 @@ module IBMWatson
     #   a model to list information about it.
     #
     #   **See also:** [Listing custom acoustic
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAcousticModels#listModels-acoustic).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAcousticModels#listModels-acoustic).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned (for example, `en-US`). Omit the parameter to see all custom
     #   language or custom acoustic models that are owned by the requesting credentials.
@@ -2428,7 +2428,7 @@ module IBMWatson
     #   for the instance of the service that owns a model to list information about it.
     #
     #   **See also:** [Listing custom acoustic
-    #   models](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAcousticModels#listModels-acoustic).
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAcousticModels#listModels-acoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2461,7 +2461,7 @@ module IBMWatson
     #   model to delete it.
     #
     #   **See also:** [Deleting a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAcousticModels#deleteModel-acoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAcousticModels#deleteModel-acoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2523,9 +2523,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Train the custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-acoustic#trainModel-acoustic)
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-acoustic#trainModel-acoustic)
     #   * [Using custom acoustic and custom language models
-    #   together](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-useBoth#useBoth)
+    #   together](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-useBoth#useBoth)
     #
     #
     #   ### Training failures
@@ -2590,7 +2590,7 @@ module IBMWatson
     #   owns a model to reset it.
     #
     #   **See also:** [Resetting a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAcousticModels#resetModel-acoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAcousticModels#resetModel-acoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2643,7 +2643,7 @@ module IBMWatson
     #   acoustic model was not trained with a custom language model.
     #
     #   **See also:** [Upgrading a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-customUpgrade#upgradeAcoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customUpgrade#upgradeAcoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2656,7 +2656,7 @@ module IBMWatson
     #   upgrade of a custom acoustic model that is trained with a custom language model,
     #   and only if you receive a 400 response code and the message `No input data
     #   modified since last training`. See [Upgrading a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-customUpgrade#upgradeAcoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customUpgrade#upgradeAcoustic).
     # @return [nil]
     def upgrade_acoustic_model(customization_id:, custom_language_model_id: nil, force: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2697,7 +2697,7 @@ module IBMWatson
     #   the instance of the service that owns a model to list its audio resources.
     #
     #   **See also:** [Listing audio resources for a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAudio#listAudio).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAudio#listAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2761,7 +2761,7 @@ module IBMWatson
     #   every few seconds until it becomes `ok`.
     #
     #   **See also:** [Add audio to the custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-acoustic#addAudio).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-acoustic#addAudio).
     #
     #
     #   ### Content types for audio-type resources
@@ -2795,7 +2795,7 @@ module IBMWatson
     #   service labels the audio file as `invalid`.
     #
     #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
+    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
     #
     #
     #   ### Content types for archive-type resources
@@ -2931,7 +2931,7 @@ module IBMWatson
     #   its audio resources.
     #
     #   **See also:** [Listing audio resources for a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAudio#listAudio).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAudio#listAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2972,7 +2972,7 @@ module IBMWatson
     #   service that owns a model to delete its audio resources.
     #
     #   **See also:** [Deleting an audio resource from a custom acoustic
-    #   model](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-manageAudio#deleteAudio).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAudio#deleteAudio).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -3015,7 +3015,7 @@ module IBMWatson
     #   with a request that passes the data.
     #
     #   **See also:** [Information
-    #   security](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-information-security#information-security).
+    #   security](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-information-security#information-security).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)

@@ -75,7 +75,7 @@ module IBMWatson
     #   about a specific voice, use the **Get a voice** method.
     #
     #   **See also:** [Listing all available
-    #   voices](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-voices#listVoices).
+    #   voices](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-voices#listVoices).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_voices
       headers = {
@@ -104,7 +104,7 @@ module IBMWatson
     #   **List voices** method.
     #
     #   **See also:** [Listing a specific
-    #   voice](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-voices#listVoice).
+    #   voice](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-voices#listVoice).
     # @param voice [String] The voice for which information is to be returned.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model for which information is to be
     #   returned. You must make the request with credentials for the instance of the
@@ -150,7 +150,7 @@ module IBMWatson
     #   specify. The service returns the synthesized audio stream as an array of bytes.
     #
     #   **See also:** [The HTTP
-    #   interface](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-usingHTTP#usingHTTP).
+    #   interface](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-usingHTTP#usingHTTP).
     #
     #
     #   ### Audio formats (accept types)
@@ -198,7 +198,7 @@ module IBMWatson
     #
     #   For more information about specifying an audio format, including additional
     #   details about some of the formats, see [Audio
-    #   formats](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-audioFormats#audioFormats).
+    #   formats](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-audioFormats#audioFormats).
     #
     #
     #   ### Warning messages
@@ -267,7 +267,7 @@ module IBMWatson
     #   Arabic, Chinese, and Dutch languages.
     #
     #   **See also:** [Querying a word from a
-    #   language](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryLanguage).
+    #   language](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryLanguage).
     # @param text [String] The word for which the pronunciation is requested.
     # @param voice [String] A voice that specifies the language in which the pronunciation is to be returned.
     #   All voices for the same language (for example, `en-US`) return the same
@@ -324,7 +324,7 @@ module IBMWatson
     #   voice model customization for the Arabic, Chinese, and Dutch languages.
     #
     #   **See also:** [Creating a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customModels#cuModelsCreate).
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsCreate).
     # @param name [String] The name of the new custom voice model.
     # @param language [String] The language of the new custom voice model. Omit the parameter to use the the
     #   default language, `en-US`.
@@ -370,7 +370,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying all custom
-    #   models](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customModels#cuModelsQueryAll).
+    #   models](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsQueryAll).
     # @param language [String] The language for which custom voice models that are owned by the requesting
     #   credentials are to be returned. Omit the parameter to see all custom voice models
     #   that are owned by the requester.
@@ -425,11 +425,11 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Updating a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customModels#cuModelsUpdate)
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsUpdate)
     #   * [Adding words to a Japanese custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
     #   * [Understanding
-    #   customization](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customIntro#customIntro).
+    #   customization](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customIntro#customIntro).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @param name [String] A new name for the custom voice model.
@@ -475,7 +475,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customModels#cuModelsQuery).
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsQuery).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -507,7 +507,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Deleting a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customModels#cuModelsDelete).
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsDelete).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @return [nil]
@@ -560,11 +560,11 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Adding multiple words to a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordsAdd)
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsAdd)
     #   * [Adding words to a Japanese custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
     #   * [Understanding
-    #   customization](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customIntro#customIntro).
+    #   customization](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customIntro#customIntro).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @param words [Array[Word]] The **Add custom words** method accepts an array of `Word` objects. Each object
@@ -613,7 +613,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying all words from a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryModel).
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryModel).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -663,11 +663,11 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Adding a single word to a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordAdd)
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordAdd)
     #   * [Adding words to a Japanese custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
     #   * [Understanding
-    #   customization](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customIntro#customIntro).
+    #   customization](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customIntro#customIntro).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @param word [String] The word that is to be added or updated for the custom voice model.
@@ -680,7 +680,7 @@ module IBMWatson
     #   with or without a single part of speech, for any word; you cannot create multiple
     #   entries with different parts of speech for the same word. For more information,
     #   see [Working with Japanese
-    #   entries](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-rules#jaNotes).
+    #   entries](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-rules#jaNotes).
     # @return [nil]
     def add_word(customization_id:, word:, translation:, part_of_speech: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -721,7 +721,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a single word from a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordQueryModel).
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordQueryModel).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @param word [String] The word that is to be queried from the custom voice model.
@@ -757,7 +757,7 @@ module IBMWatson
     #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Deleting a word from a custom
-    #   model](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-customWords#cuWordDelete).
+    #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordDelete).
     # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
     #   with credentials for the instance of the service that owns the custom model.
     # @param word [String] The word that is to be deleted from the custom voice model.
@@ -799,7 +799,7 @@ module IBMWatson
     #   with a request that passes the data.
     #
     #   **See also:** [Information
-    #   security](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-information-security#information-security).
+    #   security](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-information-security#information-security).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)

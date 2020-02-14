@@ -26,9 +26,9 @@
 # is timestamped, can report temporal behavior.
 # * For information about the meaning of the models that the service uses to describe
 # personality characteristics, see [Personality
-# models](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-models#models).
+# models](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-models#models).
 # * For information about the meaning of the consumption preferences, see [Consumption
-# preferences](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-preferences#preferences).
+# preferences](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-preferences#preferences).
 #
 #
 # **Note:** Request logging is disabled for the Personality Insights service. Regardless
@@ -95,9 +95,9 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Requesting a
-    #   profile](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#input)
+    #   profile](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-input#input)
     #   * [Providing sufficient
-    #   input](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#sufficient)
+    #   input](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-input#sufficient)
     #
     #
     #   ### Content types
@@ -115,7 +115,7 @@ module IBMWatson
     #   `Content-Type: text/plain;charset=utf-8`.
     #
     #   **See also:** [Specifying request and response
-    #   formats](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#formats)
+    #   formats](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-input#formats)
     #
     #
     #   ### Accept types
@@ -127,12 +127,12 @@ module IBMWatson
     #
     #   **See also:**
     #   * [Understanding a JSON
-    #   profile](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-output#output)
+    #   profile](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-output#output)
     #   * [Understanding a CSV
-    #   profile](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-outputCSV#outputCSV).
+    #   profile](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-outputCSV#outputCSV).
     # @param content [Content] A maximum of 20 MB of content to analyze, though the service requires much less
     #   text; for more information, see [Providing sufficient
-    #   input](https://cloud.ibm.com/docs/services/personality-insights?topic=personality-insights-input#sufficient).
+    #   input](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-input#sufficient).
     #   For JSON input, provide an object of type `Content`.
     # @param accept [String] The type of the response. For more information, see **Accept types** in the method
     #   description.
