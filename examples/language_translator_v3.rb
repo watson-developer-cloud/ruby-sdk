@@ -76,6 +76,7 @@ puts JSON.pretty_generate(document_status.result)
 document_status = language_translator.get_document_status(
   document_id: "1bdb9528-bf73-45eb-87fa-c4f519af23a0"
 )
+puts JSON.pretty_generate(document_status)
 
 # delete document
 language_translator.delete_document(
