@@ -59,3 +59,31 @@ puts JSON.pretty_generate(translation)
 ## Get model details
 # model = language_translator.get_model(model_id: "fdadfc3b-0b96-4276-a6e5-f5c4a29711fc").result
 # puts JSON.pretty_generate(model)
+
+## Document translation
+# list documents
+document_list = language_translator.list_documents
+puts JSON.pretty_generate(document_list.result)
+
+# translate document
+file = File.open(Dir.getwd + "translation_doc.txt")
+document_status = language_translator.translate_document(
+  file: file
+)
+puts JSON.pretty_generate(document_status.result)
+
+# get document status
+document_status = language_translator.get_document_status(
+  document_id: "1bdb9528-bf73-45eb-87fa-c4f519af23a0"
+)
+
+# delete document
+language_translator.delete_document(
+  document_id: "1bdb9528-bf73-45eb-87fa-c4f519af23a0"
+)
+
+# get translated document
+translated_document = language_translator.get_translated_document(
+  document_id: "1bdb9528-bf73-45eb-87fa-c4f519af23a0"
+)
+puts JSON.pretty_generate(translated_document.result)
