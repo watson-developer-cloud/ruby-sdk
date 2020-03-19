@@ -50,6 +50,8 @@ module IBMWatson
   # The Speech to Text V1 service.
   class SpeechToTextV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "speech_to_text"
+    DEFAULT_SERVICE_URL = "https://stream.watsonplatform.net/speech-to-text/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Speech to Text service.
@@ -58,15 +60,19 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:service_url] = "https://stream.watsonplatform.net/speech-to-text/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
-      args[:service_name] = "speech_to_text"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -277,8 +283,14 @@ module IBMWatson
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
-    #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
-    #   an empty array if you do not need to spot keywords. See [Keyword
+    #   threshold. Omit the parameter or specify an empty array if you do not need to spot
+    #   keywords.
+    #
+    #   You can spot a maximum of 1000 keywords with a single request. A single keyword
+    #   can have a maximum length of 1024 characters, though the maximum effective length
+    #   for double-byte languages might be shorter. Keywords are case-insensitive.
+    #
+    #   See [Keyword
     #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
@@ -568,6 +580,7 @@ module IBMWatson
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {}
       headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
+      @authenticator.authenticate(headers)
       service_url = @service_url.gsub("https:", "wss:")
       params = {
         "model" => model,
@@ -902,8 +915,14 @@ module IBMWatson
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
-    #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
-    #   an empty array if you do not need to spot keywords. See [Keyword
+    #   threshold. Omit the parameter or specify an empty array if you do not need to spot
+    #   keywords.
+    #
+    #   You can spot a maximum of 1000 keywords with a single request. A single keyword
+    #   can have a maximum length of 1024 characters, though the maximum effective length
+    #   for double-byte languages might be shorter. Keywords are case-insensitive.
+    #
+    #   See [Keyword
     #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
@@ -1599,10 +1618,10 @@ module IBMWatson
     #
     #   The call returns an HTTP 201 response code if the corpus is valid. The service
     #   then asynchronously processes the contents of the corpus and automatically
-    #   extracts new words that it finds. This can take on the order of a minute or two to
-    #   complete depending on the total number of words and the number of new words in the
-    #   corpus, as well as the current load on the service. You cannot submit requests to
-    #   add additional resources to the custom model or to train the model until the
+    #   extracts new words that it finds. This operation can take on the order of minutes
+    #   to complete depending on the total number of words and the number of new words in
+    #   the corpus, as well as the current load on the service. You cannot submit requests
+    #   to add additional resources to the custom model or to train the model until the
     #   service's analysis of the corpus for the current request completes. Use the **List
     #   a corpus** method to check the status of the analysis.
     #
@@ -2147,12 +2166,12 @@ module IBMWatson
     #
     #   The call returns an HTTP 201 response code if the grammar is valid. The service
     #   then asynchronously processes the contents of the grammar and automatically
-    #   extracts new words that it finds. This can take a few seconds to complete
-    #   depending on the size and complexity of the grammar, as well as the current load
-    #   on the service. You cannot submit requests to add additional resources to the
-    #   custom model or to train the model until the service's analysis of the grammar for
-    #   the current request completes. Use the **Get a grammar** method to check the
-    #   status of the analysis.
+    #   extracts new words that it finds. This operation can take a few seconds or minutes
+    #   to complete depending on the size and complexity of the grammar, as well as the
+    #   current load on the service. You cannot submit requests to add additional
+    #   resources to the custom model or to train the model until the service's analysis
+    #   of the grammar for the current request completes. Use the **Get a grammar** method
+    #   to check the status of the analysis.
     #
     #   The service populates the model's words resource with any word that is recognized
     #   by the grammar that is not found in the model's base vocabulary. These are
@@ -2499,7 +2518,7 @@ module IBMWatson
     #   to complete depending on the total amount of audio data on which the custom
     #   acoustic model is being trained and the current load on the service. Typically,
     #   training a custom acoustic model takes approximately two to four times the length
-    #   of its audio data. The range of time depends on the model being trained and the
+    #   of its audio data. The actual time depends on the model being trained and the
     #   nature of the audio, such as whether the audio is clean or noisy. The method
     #   returns an HTTP 200 response code to indicate that the training process has begun.
     #
@@ -2518,8 +2537,9 @@ module IBMWatson
     #   Train with a custom language model if you have verbatim transcriptions of the
     #   audio files that you have added to the custom model or you have either corpora
     #   (text files) or a list of words that are relevant to the contents of the audio
-    #   files. Both of the custom models must be based on the same version of the same
-    #   base model for training to succeed.
+    #   files. For training to succeed, both of the custom models must be based on the
+    #   same version of the same base model, and the custom language model must be fully
+    #   trained and available.
     #
     #   **See also:**
     #   * [Train the custom acoustic
@@ -2535,6 +2555,9 @@ module IBMWatson
     #   another training request or a request to add audio resources to the model.
     #   * The custom model contains less than 10 minutes or more than 200 hours of audio
     #   data.
+    #   * You passed a custom language model with the `custom_language_model_id` query
+    #   parameter that is not in the available state. A custom language model must be
+    #   fully trained and available to be used to train a custom acoustic model.
     #   * You passed an incompatible custom language model with the
     #   `custom_language_model_id` query parameter. Both custom models must be based on
     #   the same version of the same base model.
@@ -2550,8 +2573,8 @@ module IBMWatson
     #   been trained with verbatim transcriptions of the audio resources or that contains
     #   words that are relevant to the contents of the audio resources. The custom
     #   language model must be based on the same version of the same base model as the
-    #   custom acoustic model. The credentials specified with the request must own both
-    #   custom models.
+    #   custom acoustic model, and the custom language model must be fully trained and
+    #   available. The credentials specified with the request must own both custom models.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def train_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2649,8 +2672,9 @@ module IBMWatson
     #   service that owns the custom model.
     # @param custom_language_model_id [String] If the custom acoustic model was trained with a custom language model, the
     #   customization ID (GUID) of that custom language model. The custom language model
-    #   must be upgraded before the custom acoustic model can be upgraded. The credentials
-    #   specified with the request must own both custom models.
+    #   must be upgraded before the custom acoustic model can be upgraded. The custom
+    #   language model must be fully trained and available. The credentials specified with
+    #   the request must own both custom models.
     # @param force [Boolean] If `true`, forces the upgrade of a custom acoustic model for which no input data
     #   has been modified since it was last trained. Use this parameter only to force the
     #   upgrade of a custom acoustic model that is trained with a custom language model,
@@ -2745,14 +2769,14 @@ module IBMWatson
     #   same name as an existing audio resource, set the `allow_overwrite` parameter to
     #   `true`; otherwise, the request fails.
     #
-    #   The method is asynchronous. It can take several seconds to complete depending on
-    #   the duration of the audio and, in the case of an archive file, the total number of
-    #   audio files being processed. The service returns a 201 response code if the audio
-    #   is valid. It then asynchronously analyzes the contents of the audio file or files
-    #   and automatically extracts information about the audio such as its length,
-    #   sampling rate, and encoding. You cannot submit requests to train or upgrade the
-    #   model until the service's analysis of all audio resources for current requests
-    #   completes.
+    #   The method is asynchronous. It can take several seconds or minutes to complete
+    #   depending on the duration of the audio and, in the case of an archive file, the
+    #   total number of audio files being processed. The service returns a 201 response
+    #   code if the audio is valid. It then asynchronously analyzes the contents of the
+    #   audio file or files and automatically extracts information about the audio such as
+    #   its length, sampling rate, and encoding. You cannot submit requests to train or
+    #   upgrade the model until the service's analysis of all audio resources for current
+    #   requests completes.
     #
     #   To determine the status of the service's analysis of the audio, use the **Get an
     #   audio resource** method to poll the status of the audio. The method accepts the
