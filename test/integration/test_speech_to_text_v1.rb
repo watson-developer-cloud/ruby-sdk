@@ -189,6 +189,7 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
       end
       thr = Thread.new { speech.start }
       thr.join
+      assert(atomic_boolean.false?)
     end
 
     def test_recognize_websocket
@@ -206,6 +207,7 @@ if !ENV["SPEECH_TO_TEXT_APIKEY"].nil? && !ENV["SPEECH_TO_TEXT_URL"].nil?
       )
       thr = Thread.new { speech.start }
       thr.join
+      assert(atomic_boolean.false?)
     end
 
     def test_inactivity_timeout_using_websocket

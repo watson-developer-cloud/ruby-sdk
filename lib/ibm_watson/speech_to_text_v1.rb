@@ -568,6 +568,7 @@ module IBMWatson
       require_relative("./websocket/speech_to_text_websocket_listener.rb")
       headers = {}
       headers = conn.default_options.headers.to_hash unless conn.default_options.headers.to_hash.empty?
+      @authenticator.authenticate(headers)
       service_url = @service_url.gsub("https:", "wss:")
       params = {
         "model" => model,
