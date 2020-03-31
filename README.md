@@ -390,6 +390,10 @@ assistant = IBMWatson::AssistantV1.new(
 
 ```
 
+## Questions
+
+If you have issues with the APIs or have a question about the Watson services, see [Stack Overflow](https://stackoverflow.com/questions/tagged/ibm-watson+ruby).
+
 ## Ruby version
 
 Tested on:
