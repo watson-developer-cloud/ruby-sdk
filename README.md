@@ -129,7 +129,7 @@ IBM Cloud is migrating to token-based Identity and Access Management (IAM) authe
 You supply either an IAM service **API key** or an **access token**:
 
 * Use the API key to have the SDK manage the lifecycle of the access token. The SDK requests an access token, ensures that the access token is valid, and refreshes it if necessary.
-* Use the access token if you want to manage the lifecycle yourself. For details, see [Authenticating with IAM tokens](https://cloud.ibm.com/docs/services/watson?topic=watson-iam).
+* Use the access token if you want to manage the lifecycle yourself. For details, see [Authenticating with IAM tokens](https://cloud.ibm.com/docs/watson?topic=watson-iam).
 
 #### Supplying the IAM API key
 
@@ -423,6 +423,6 @@ We'd love to highlight cool open-source projects that use this SDK! If you'd lik
 [examples]: https://github.com/watson-developer-cloud/ruby-sdk/tree/master/examples
 [CONTRIBUTING]: https://github.com/watson-developer-cloud/ruby-sdk/blob/master/CONTRIBUTING.md
 [license]: http://www.apache.org/licenses/LICENSE-2.0
-[vcap_services]: https://cloud.ibm.com/docs/services/watson?topic=watson-vcapServices
+[vcap_services]: https://cloud.ibm.com/docs/watson?topic=watson-vcapServices
 [ibm-cloud-onboarding]: http://cloud.ibm.com/registration?target=/developer/watson&cm_sp=WatsonPlatform-WatsonServices-_-OnPageNavLink-IBMWatson_SDKs-_-Ruby
 [ivar]: http://ruby-concurrency.github.io/concurrent-ruby/Concurrent/IVar.html

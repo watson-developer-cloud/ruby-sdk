@@ -29,6 +29,8 @@ module IBMWatson
   # The Compare Comply V1 service.
   class CompareComplyV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "compare-comply"
+    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/compare-comply/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Compare Comply service.
@@ -47,19 +49,23 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:service_url] = "https://gateway.watsonplatform.net/compare-comply/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:service_name] = "compare_comply"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -473,10 +479,10 @@ module IBMWatson
     # Run Compare and Comply methods over a collection of input documents.
     #
     #   **Important:** Batch processing requires the use of the [IBM Cloud Object Storage
-    #   service](https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-about#about-ibm-cloud-object-storage).
+    #   service](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-about#about-ibm-cloud-object-storage).
     #   The use of IBM Cloud Object Storage with Compare and Comply is discussed at [Using
     #   batch
-    #   processing](https://cloud.ibm.com/docs/services/compare-comply?topic=compare-comply-batching#before-you-batch).
+    #   processing](https://cloud.ibm.com/docs/compare-comply?topic=compare-comply-batching#before-you-batch).
     # @param function [String] The Compare and Comply method to run across the submitted input documents.
     # @param input_credentials_file [File] A JSON file containing the input Cloud Object Storage credentials. At a minimum,
     #   the credentials must enable `READ` permissions on the bucket defined by the

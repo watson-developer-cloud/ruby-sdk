@@ -30,6 +30,8 @@ module IBMWatson
   # The Visual Recognition V3 service.
   class VisualRecognitionV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "watson_vision_combined"
+    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/visual-recognition/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Visual Recognition service.
@@ -48,19 +50,23 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:service_url] = "https://gateway.watsonplatform.net/visual-recognition/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:service_name] = "visual_recognition"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -126,16 +132,19 @@ module IBMWatson
         form_data[:images_file] = HTTP::FormData::File.new(images_file, content_type: images_file_content_type.nil? ? "application/octet-stream" : images_file_content_type, filename: images_filename)
       end
 
-      classifier_ids *= "," unless classifier_ids.nil?
-      owners *= "," unless owners.nil?
-
       form_data[:url] = HTTP::FormData::Part.new(url.to_s, content_type: "text/plain") unless url.nil?
 
       form_data[:threshold] = HTTP::FormData::Part.new(threshold.to_s, content_type: "application/json") unless threshold.nil?
 
-      form_data[:owners] = HTTP::FormData::Part.new(owners, content_type: "application/json") unless owners.nil?
+      form_data[:owners] = []
+      owners&.each do |item|
+        form_data[:owners].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
+      end
 
-      form_data[:classifier_ids] = HTTP::FormData::Part.new(classifier_ids, content_type: "application/json") unless classifier_ids.nil?
+      form_data[:classifier_ids] = []
+      classifier_ids&.each do |item|
+        form_data[:classifier_ids].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
+      end
 
       method_url = "/v3/classify"
 

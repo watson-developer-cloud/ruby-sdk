@@ -32,6 +32,8 @@ module IBMWatson
   # The Discovery V2 service.
   class DiscoveryV2 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "discovery"
+    DEFAULT_SERVICE_URL = nil
     ##
     # @!method initialize(args)
     # Construct a new client for the Discovery service.
@@ -50,19 +52,23 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:service_url] = nil
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:service_name] = "discovery"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -107,7 +113,7 @@ module IBMWatson
     # @!method query(project_id:, collection_ids: nil, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, spelling_suggestions: nil, table_results: nil, suggested_refinements: nil, passages: nil)
     # Query a project.
     # By using this method, you can construct queries. For details, see the [Discovery
-    #   documentation](https://cloud.ibm.com/docs/services/discovery-data?topic=discovery-data-query-concepts).
+    #   documentation](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-query-concepts).
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.

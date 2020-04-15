@@ -34,9 +34,9 @@
 # is a formal language specification that lets you restrict the phrases that the service
 # can recognize.
 #
-# Language model customization is generally available for production use with most
-# supported languages. Acoustic model customization is beta functionality that is
-# available for all supported languages.
+# Language model customization and acoustic model customization are generally available
+# for production use with all language models that are generally available. Grammars are
+# beta functionality for all language models that support language model customization.
 
 require "concurrent"
 require "erb"
@@ -50,6 +50,8 @@ module IBMWatson
   # The Speech to Text V1 service.
   class SpeechToTextV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "speech_to_text"
+    DEFAULT_SERVICE_URL = "https://stream.watsonplatform.net/speech-to-text/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Speech to Text service.
@@ -58,15 +60,19 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:service_url] = "https://stream.watsonplatform.net/speech-to-text/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
-      args[:service_name] = "speech_to_text"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -135,7 +141,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
+    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. You can
     #   pass a maximum of 100 MB and a minimum of 100 bytes of audio with a request. The
@@ -277,8 +283,14 @@ module IBMWatson
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
-    #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
-    #   an empty array if you do not need to spot keywords. See [Keyword
+    #   threshold. Omit the parameter or specify an empty array if you do not need to spot
+    #   keywords.
+    #
+    #   You can spot a maximum of 1000 keywords with a single request. A single keyword
+    #   can have a maximum length of 1024 characters, though the maximum effective length
+    #   for double-byte languages might be shorter. Keywords are case-insensitive.
+    #
+    #   See [Keyword
     #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
@@ -323,11 +335,11 @@ module IBMWatson
     #   parameter to be `true`, regardless of whether you specify `false` for the
     #   parameter.
     #
-    #   **Note:** Applies to US English, Japanese, and Spanish (both broadband and
-    #   narrowband models) and UK English (narrowband model) transcription only. To
-    #   determine whether a language model supports speaker labels, you can also use the
-    #   **Get a model** method and check that the attribute `speaker_labels` is set to
-    #   `true`.
+    #   **Note:** Applies to US English, German, Japanese, Korean, and Spanish (both
+    #   broadband and narrowband models) and UK English (narrowband model) transcription
+    #   only. To determine whether a language model supports speaker labels, you can also
+    #   use the **Get a model** method and check that the attribute `speaker_labels` is
+    #   set to `true`.
     #
     #   See [Speaker
     #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
@@ -388,8 +400,33 @@ module IBMWatson
     #
     #   See [Split transcript at phrase
     #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
+    # @param speech_detector_sensitivity [Float] The sensitivity of speech activity detection that the service is to perform. Use
+    #   the parameter to suppress word insertions from music, coughing, and other
+    #   non-speech events. The service biases the audio it passes for speech recognition
+    #   by evaluating the input audio against prior models of speech and non-speech
+    #   activity.
+    #
+    #   Specify a value between 0.0 and 1.0:
+    #   * 0.0 suppresses all audio (no speech is transcribed).
+    #   * 0.5 (the default) provides a reasonable compromise for the level of sensitivity.
+    #   * 1.0 suppresses no audio (speech detection sensitivity is disabled).
+    #
+    #   The values increase on a monotonic curve. See [Speech Activity
+    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    # @param background_audio_suppression [Float] The level to which the service is to suppress background audio based on its volume
+    #   to prevent it from being transcribed as speech. Use the parameter to suppress side
+    #   conversations or background noise.
+    #
+    #   Specify a value in the range of 0.0 to 1.0:
+    #   * 0.0 (the default) provides no suppression (background audio suppression is
+    #   disabled).
+    #   * 0.5 provides a reasonable level of audio suppression for general usage.
+    #   * 1.0 suppresses all audio (no audio is transcribed).
+    #
+    #   The values increase on a monotonic curve. See [Speech Activity
+    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
+    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -420,7 +457,9 @@ module IBMWatson
         "redaction" => redaction,
         "audio_metrics" => audio_metrics,
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
-        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end
+        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
+        "speech_detector_sensitivity" => speech_detector_sensitivity,
+        "background_audio_suppression" => background_audio_suppression
       }
 
       data = audio
@@ -439,7 +478,7 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
@@ -531,6 +570,32 @@ module IBMWatson
     #
     #   See [Split transcript at phrase
     #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
+    # @param speech_detector_sensitivity [Float] The sensitivity of speech activity detection that the service is to perform. Use
+    #   the parameter to suppress word insertions from music, coughing, and other
+    #   non-speech events. The service biases the audio it passes for speech recognition
+    #   by evaluating the input audio against prior models of speech and non-speech
+    #   activity.
+    #
+    #   Specify a value between 0.0 and 1.0:
+    #   * 0.0 suppresses all audio (no speech is transcribed).
+    #   * 0.5 (the default) provides a reasonable compromise for the level of sensitivity.
+    #   * 1.0 suppresses no audio (speech detection sensitivity is disabled).
+    #
+    #   The values increase on a monotonic curve. See [Speech Activity
+    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    # @param background_audio_suppression [Float] The level to which the service is to suppress background audio based on its volume
+    #   to prevent it from being transcribed as speech. Use the parameter to suppress side
+    #   conversations or background noise.
+    #
+    #   Specify a value in the range of 0.0 to 1.0:
+    #   * 0.0 (the default) provides no suppression (background audio suppression is
+    #   disabled).
+    #   * 0.5 provides a reasonable level of audio suppression for general usage.
+    #   * 1.0 suppresses all audio (no audio is transcribed).
+    #
+    #   The values increase on a monotonic curve. See [Speech Activity
+    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def recognize_using_websocket(
       content_type: nil,
       recognize_callback:,
@@ -559,7 +624,9 @@ module IBMWatson
       processing_metrics_interval: nil,
       audio_metrics: nil,
       end_of_phrase_silence_time: nil,
-      split_transcript_at_phrase_end: nil
+      split_transcript_at_phrase_end: nil,
+      speech_detector_sensitivity: nil,
+      background_audio_suppression: nil
     )
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
@@ -599,7 +666,9 @@ module IBMWatson
         "processing_metrics_interval" => processing_metrics_interval,
         "audio_metrics" => audio_metrics,
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
-        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end
+        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
+        "speech_detector_sensitivity" => speech_detector_sensitivity,
+        "background_audio_suppression" => background_audio_suppression
       }
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, service_url: service_url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
@@ -717,7 +786,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
+    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
     # Create a job.
     # Creates a job for a new asynchronous recognition request. The job is owned by the
     #   instance of the service whose credentials are used to create it. How you learn the
@@ -903,8 +972,14 @@ module IBMWatson
     # @param keywords [Array[String]] An array of keyword strings to spot in the audio. Each keyword string can include
     #   one or more string tokens. Keywords are spotted only in the final results, not in
     #   interim hypotheses. If you specify any keywords, you must also specify a keywords
-    #   threshold. You can spot a maximum of 1000 keywords. Omit the parameter or specify
-    #   an empty array if you do not need to spot keywords. See [Keyword
+    #   threshold. Omit the parameter or specify an empty array if you do not need to spot
+    #   keywords.
+    #
+    #   You can spot a maximum of 1000 keywords with a single request. A single keyword
+    #   can have a maximum length of 1024 characters, though the maximum effective length
+    #   for double-byte languages might be shorter. Keywords are case-insensitive.
+    #
+    #   See [Keyword
     #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
@@ -949,11 +1024,11 @@ module IBMWatson
     #   parameter to be `true`, regardless of whether you specify `false` for the
     #   parameter.
     #
-    #   **Note:** Applies to US English, Japanese, and Spanish (both broadband and
-    #   narrowband models) and UK English (narrowband model) transcription only. To
-    #   determine whether a language model supports speaker labels, you can also use the
-    #   **Get a model** method and check that the attribute `speaker_labels` is set to
-    #   `true`.
+    #   **Note:** Applies to US English, German, Japanese, Korean, and Spanish (both
+    #   broadband and narrowband models) and UK English (narrowband model) transcription
+    #   only. To determine whether a language model supports speaker labels, you can also
+    #   use the **Get a model** method and check that the attribute `speaker_labels` is
+    #   set to `true`.
     #
     #   See [Speaker
     #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
@@ -1036,8 +1111,33 @@ module IBMWatson
     #
     #   See [Split transcript at phrase
     #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
+    # @param speech_detector_sensitivity [Float] The sensitivity of speech activity detection that the service is to perform. Use
+    #   the parameter to suppress word insertions from music, coughing, and other
+    #   non-speech events. The service biases the audio it passes for speech recognition
+    #   by evaluating the input audio against prior models of speech and non-speech
+    #   activity.
+    #
+    #   Specify a value between 0.0 and 1.0:
+    #   * 0.0 suppresses all audio (no speech is transcribed).
+    #   * 0.5 (the default) provides a reasonable compromise for the level of sensitivity.
+    #   * 1.0 suppresses no audio (speech detection sensitivity is disabled).
+    #
+    #   The values increase on a monotonic curve. See [Speech Activity
+    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    # @param background_audio_suppression [Float] The level to which the service is to suppress background audio based on its volume
+    #   to prevent it from being transcribed as speech. Use the parameter to suppress side
+    #   conversations or background noise.
+    #
+    #   Specify a value in the range of 0.0 to 1.0:
+    #   * 0.0 (the default) provides no suppression (background audio suppression is
+    #   disabled).
+    #   * 0.5 provides a reasonable level of audio suppression for general usage.
+    #   * 1.0 suppresses all audio (no audio is transcribed).
+    #
+    #   The values increase on a monotonic curve. See [Speech Activity
+    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil)
+    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -1074,7 +1174,9 @@ module IBMWatson
         "processing_metrics_interval" => processing_metrics_interval,
         "audio_metrics" => audio_metrics,
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
-        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end
+        "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
+        "speech_detector_sensitivity" => speech_detector_sensitivity,
+        "background_audio_suppression" => background_audio_suppression
       }
 
       data = audio
@@ -1600,18 +1702,20 @@ module IBMWatson
     #
     #   The call returns an HTTP 201 response code if the corpus is valid. The service
     #   then asynchronously processes the contents of the corpus and automatically
-    #   extracts new words that it finds. This can take on the order of a minute or two to
-    #   complete depending on the total number of words and the number of new words in the
-    #   corpus, as well as the current load on the service. You cannot submit requests to
-    #   add additional resources to the custom model or to train the model until the
+    #   extracts new words that it finds. This operation can take on the order of minutes
+    #   to complete depending on the total number of words and the number of new words in
+    #   the corpus, as well as the current load on the service. You cannot submit requests
+    #   to add additional resources to the custom model or to train the model until the
     #   service's analysis of the corpus for the current request completes. Use the **List
     #   a corpus** method to check the status of the analysis.
     #
     #   The service auto-populates the model's words resource with words from the corpus
-    #   that are not found in its base vocabulary. These are referred to as
-    #   out-of-vocabulary (OOV) words. You can use the **List custom words** method to
-    #   examine the words resource. You can use other words method to eliminate typos and
-    #   modify how words are pronounced as needed.
+    #   that are not found in its base vocabulary. These words are referred to as
+    #   out-of-vocabulary (OOV) words. After adding a corpus, you must validate the words
+    #   resource to ensure that each OOV word's definition is complete and valid. You can
+    #   use the **List custom words** method to examine the words resource. You can use
+    #   other words method to eliminate typos and modify how words are pronounced as
+    #   needed.
     #
     #   To add a corpus file that has the same name as an existing corpus, set the
     #   `allow_overwrite` parameter to `true`; otherwise, the request fails. Overwriting
@@ -1628,10 +1732,12 @@ module IBMWatson
     #   directly.
     #
     #   **See also:**
+    #   * [Add a corpus to the custom language
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addCorpus)
     #   * [Working with
     #   corpora](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#workingCorpora)
-    #   * [Add a corpus to the custom language
-    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addCorpus).
+    #   * [Validating a words
+    #   resource](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#validateModel).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1860,7 +1966,10 @@ module IBMWatson
     #   the parameter for words that are difficult to pronounce, foreign words, acronyms,
     #   and so on. For example, you might specify that the word `IEEE` can sound like `i
     #   triple e`. You can specify a maximum of five sounds-like pronunciations for a
-    #   word.
+    #   word. If you omit the `sounds_like` field, the service attempts to set the field
+    #   to its pronunciation of the word. It cannot generate a pronunciation for all
+    #   words, so you must review the word's definition to ensure that it is complete and
+    #   valid.
     #   * The `display_as` field provides a different way of spelling the word in a
     #   transcript. Use the parameter when you want the word to appear different from its
     #   usual representation or from its spelling in training data. For example, you might
@@ -1890,10 +1999,12 @@ module IBMWatson
     #
     #
     #   **See also:**
+    #   * [Add words to the custom language
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addWords)
     #   * [Working with custom
     #   words](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#workingWords)
-    #   * [Add words to the custom language
-    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addWords).
+    #   * [Validating a words
+    #   resource](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#validateModel).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -1949,7 +2060,10 @@ module IBMWatson
     #   the parameter for words that are difficult to pronounce, foreign words, acronyms,
     #   and so on. For example, you might specify that the word `IEEE` can sound like `i
     #   triple e`. You can specify a maximum of five sounds-like pronunciations for a
-    #   word.
+    #   word. If you omit the `sounds_like` field, the service attempts to set the field
+    #   to its pronunciation of the word. It cannot generate a pronunciation for all
+    #   words, so you must review the word's definition to ensure that it is complete and
+    #   valid.
     #   * The `display_as` field provides a different way of spelling the word in a
     #   transcript. Use the parameter when you want the word to appear different from its
     #   usual representation or from its spelling in training data. For example, you might
@@ -1961,10 +2075,12 @@ module IBMWatson
     #   the **List a custom word** method to review the word that you add.
     #
     #   **See also:**
+    #   * [Add words to the custom language
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addWords)
     #   * [Working with custom
     #   words](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#workingWords)
-    #   * [Add words to the custom language
-    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageCreate#addWords).
+    #   * [Validating a words
+    #   resource](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-corporaWords#validateModel).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2148,12 +2264,12 @@ module IBMWatson
     #
     #   The call returns an HTTP 201 response code if the grammar is valid. The service
     #   then asynchronously processes the contents of the grammar and automatically
-    #   extracts new words that it finds. This can take a few seconds to complete
-    #   depending on the size and complexity of the grammar, as well as the current load
-    #   on the service. You cannot submit requests to add additional resources to the
-    #   custom model or to train the model until the service's analysis of the grammar for
-    #   the current request completes. Use the **Get a grammar** method to check the
-    #   status of the analysis.
+    #   extracts new words that it finds. This operation can take a few seconds or minutes
+    #   to complete depending on the size and complexity of the grammar, as well as the
+    #   current load on the service. You cannot submit requests to add additional
+    #   resources to the custom model or to train the model until the service's analysis
+    #   of the grammar for the current request completes. Use the **Get a grammar** method
+    #   to check the status of the analysis.
     #
     #   The service populates the model's words resource with any word that is recognized
     #   by the grammar that is not found in the model's base vocabulary. These are
@@ -2500,7 +2616,7 @@ module IBMWatson
     #   to complete depending on the total amount of audio data on which the custom
     #   acoustic model is being trained and the current load on the service. Typically,
     #   training a custom acoustic model takes approximately two to four times the length
-    #   of its audio data. The range of time depends on the model being trained and the
+    #   of its audio data. The actual time depends on the model being trained and the
     #   nature of the audio, such as whether the audio is clean or noisy. The method
     #   returns an HTTP 200 response code to indicate that the training process has begun.
     #
@@ -2519,8 +2635,9 @@ module IBMWatson
     #   Train with a custom language model if you have verbatim transcriptions of the
     #   audio files that you have added to the custom model or you have either corpora
     #   (text files) or a list of words that are relevant to the contents of the audio
-    #   files. Both of the custom models must be based on the same version of the same
-    #   base model for training to succeed.
+    #   files. For training to succeed, both of the custom models must be based on the
+    #   same version of the same base model, and the custom language model must be fully
+    #   trained and available.
     #
     #   **See also:**
     #   * [Train the custom acoustic
@@ -2536,6 +2653,9 @@ module IBMWatson
     #   another training request or a request to add audio resources to the model.
     #   * The custom model contains less than 10 minutes or more than 200 hours of audio
     #   data.
+    #   * You passed a custom language model with the `custom_language_model_id` query
+    #   parameter that is not in the available state. A custom language model must be
+    #   fully trained and available to be used to train a custom acoustic model.
     #   * You passed an incompatible custom language model with the
     #   `custom_language_model_id` query parameter. Both custom models must be based on
     #   the same version of the same base model.
@@ -2551,8 +2671,8 @@ module IBMWatson
     #   been trained with verbatim transcriptions of the audio resources or that contains
     #   words that are relevant to the contents of the audio resources. The custom
     #   language model must be based on the same version of the same base model as the
-    #   custom acoustic model. The credentials specified with the request must own both
-    #   custom models.
+    #   custom acoustic model, and the custom language model must be fully trained and
+    #   available. The credentials specified with the request must own both custom models.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def train_acoustic_model(customization_id:, custom_language_model_id: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2650,8 +2770,9 @@ module IBMWatson
     #   service that owns the custom model.
     # @param custom_language_model_id [String] If the custom acoustic model was trained with a custom language model, the
     #   customization ID (GUID) of that custom language model. The custom language model
-    #   must be upgraded before the custom acoustic model can be upgraded. The credentials
-    #   specified with the request must own both custom models.
+    #   must be upgraded before the custom acoustic model can be upgraded. The custom
+    #   language model must be fully trained and available. The credentials specified with
+    #   the request must own both custom models.
     # @param force [Boolean] If `true`, forces the upgrade of a custom acoustic model for which no input data
     #   has been modified since it was last trained. Use this parameter only to force the
     #   upgrade of a custom acoustic model that is trained with a custom language model,
@@ -2746,14 +2867,14 @@ module IBMWatson
     #   same name as an existing audio resource, set the `allow_overwrite` parameter to
     #   `true`; otherwise, the request fails.
     #
-    #   The method is asynchronous. It can take several seconds to complete depending on
-    #   the duration of the audio and, in the case of an archive file, the total number of
-    #   audio files being processed. The service returns a 201 response code if the audio
-    #   is valid. It then asynchronously analyzes the contents of the audio file or files
-    #   and automatically extracts information about the audio such as its length,
-    #   sampling rate, and encoding. You cannot submit requests to train or upgrade the
-    #   model until the service's analysis of all audio resources for current requests
-    #   completes.
+    #   The method is asynchronous. It can take several seconds or minutes to complete
+    #   depending on the duration of the audio and, in the case of an archive file, the
+    #   total number of audio files being processed. The service returns a 201 response
+    #   code if the audio is valid. It then asynchronously analyzes the contents of the
+    #   audio file or files and automatically extracts information about the audio such as
+    #   its length, sampling rate, and encoding. You cannot submit requests to train or
+    #   upgrade the model until the service's analysis of all audio resources for current
+    #   requests completes.
     #
     #   To determine the status of the service's analysis of the audio, use the **Get an
     #   audio resource** method to poll the status of the audio. The method accepts the
