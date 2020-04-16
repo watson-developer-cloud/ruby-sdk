@@ -33,7 +33,7 @@ module IBMWatson
   # The Assistant V2 service.
   class AssistantV2 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
-    DEFAULT_SERVICE_NAME = "conversation"
+    DEFAULT_SERVICE_NAME = "assistant"
     DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/assistant/api"
     ##
     # @!method initialize(args)

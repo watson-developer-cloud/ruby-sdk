@@ -29,7 +29,7 @@ module IBMWatson
   # The Compare Comply V1 service.
   class CompareComplyV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
-    DEFAULT_SERVICE_NAME = "compare-comply"
+    DEFAULT_SERVICE_NAME = "compare_comply"
     DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/compare-comply/api"
     ##
     # @!method initialize(args)

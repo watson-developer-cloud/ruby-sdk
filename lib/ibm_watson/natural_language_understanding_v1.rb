@@ -36,7 +36,7 @@ module IBMWatson
   # The Natural Language Understanding V1 service.
   class NaturalLanguageUnderstandingV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
-    DEFAULT_SERVICE_NAME = "natural-language-understanding"
+    DEFAULT_SERVICE_NAME = "natural_language_understanding"
     DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/natural-language-understanding/api"
     ##
     # @!method initialize(args)
