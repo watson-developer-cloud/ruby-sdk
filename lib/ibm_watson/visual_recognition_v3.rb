@@ -30,7 +30,7 @@ module IBMWatson
   # The Visual Recognition V3 service.
   class VisualRecognitionV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
-    DEFAULT_SERVICE_NAME = "watson_vision_combined"
+    DEFAULT_SERVICE_NAME = "visual_recognition"
     DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/visual-recognition/api"
     ##
     # @!method initialize(args)
@@ -132,19 +132,16 @@ module IBMWatson
         form_data[:images_file] = HTTP::FormData::File.new(images_file, content_type: images_file_content_type.nil? ? "application/octet-stream" : images_file_content_type, filename: images_filename)
       end
 
+      classifier_ids *= "," unless classifier_ids.nil?
+      owners *= "," unless owners.nil?
+
       form_data[:url] = HTTP::FormData::Part.new(url.to_s, content_type: "text/plain") unless url.nil?
 
       form_data[:threshold] = HTTP::FormData::Part.new(threshold.to_s, content_type: "application/json") unless threshold.nil?
 
-      form_data[:owners] = []
-      owners&.each do |item|
-        form_data[:owners].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
-      end
+      form_data[:owners] = HTTP::FormData::Part.new(owners, content_type: "application/json") unless owners.nil?
 
-      form_data[:classifier_ids] = []
-      classifier_ids&.each do |item|
-        form_data[:classifier_ids].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
-      end
+      form_data[:classifier_ids] = HTTP::FormData::Part.new(classifier_ids, content_type: "application/json") unless classifier_ids.nil?
 
       method_url = "/v3/classify"
 

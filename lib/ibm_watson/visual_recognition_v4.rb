@@ -29,7 +29,7 @@ module IBMWatson
   # The Visual Recognition V4 service.
   class VisualRecognitionV4 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
-    DEFAULT_SERVICE_NAME = "watson_vision_combined"
+    DEFAULT_SERVICE_NAME = "visual_recognition"
     DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/visual-recognition/api"
     ##
     # @!method initialize(args)
@@ -116,15 +116,12 @@ module IBMWatson
 
       form_data = {}
 
-      form_data[:collection_ids] = []
-      collection_ids&.each do |item|
-        form_data[:collection_ids].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
-      end
+      collection_ids *= "," unless collection_ids.nil?
+      features *= "," unless features.nil?
 
-      form_data[:features] = []
-      features&.each do |item|
-        form_data[:features].push(HTTP::FormData::Part.new(item.to_s, content_type: "text/plain"))
-      end
+      form_data[:collection_ids] = HTTP::FormData::Part.new(collection_ids.to_s, content_type: "text/plain")
+
+      form_data[:features] = HTTP::FormData::Part.new(features.to_s, content_type: "text/plain")
 
       form_data[:images_file] = []
       images_file&.each do |item|
