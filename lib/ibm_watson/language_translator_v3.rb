@@ -32,6 +32,8 @@ module IBMWatson
   # The Language Translator V3 service.
   class LanguageTranslatorV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "language_translator"
+    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/language-translator/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Language Translator service.
@@ -50,19 +52,23 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:service_url] = "https://gateway.watsonplatform.net/language-translator/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:service_name] = "language_translator"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -72,13 +78,18 @@ module IBMWatson
     ##
     # @!method translate(text:, model_id: nil, source: nil, target: nil)
     # Translate.
-    # Translates the input text from the source language to the target language.
+    # Translates the input text from the source language to the target language. A
+    #   target language or translation model ID is required. The service attempts to
+    #   detect the language of the source text if it is not specified.
     # @param text [Array[String]] Input text in UTF-8 encoding. Multiple entries will result in multiple
     #   translations in the response.
-    # @param model_id [String] A globally unique string that identifies the underlying model that is used for
-    #   translation.
-    # @param source [String] Translation source language code.
-    # @param target [String] Translation target language code.
+    # @param model_id [String] The model to use for translation. For example, `en-de` selects the IBM provided
+    #   base model for English to German translation. A model ID overrides the source and
+    #   target parameters and is required if you use a custom model. If no model ID is
+    #   specified, you must specify a target language.
+    # @param source [String] Language code that specifies the language of the source document.
+    # @param target [String] Language code that specifies the target language for translation. Required if
+    #   model ID is not specified.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def translate(text:, model_id: nil, source: nil, target: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
@@ -394,15 +405,18 @@ module IBMWatson
     # @param file [File] The contents of the source file to translate.
     #
     #   [Supported file
-    #   types](https://cloud.ibm.com/docs/services/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats)
+    #   types](https://cloud.ibm.com/docs/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats)
     #
     #   Maximum file size: **20 MB**.
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
-    # @param model_id [String] The model to use for translation. `model_id` or both `source` and `target` are
-    #   required.
+    # @param model_id [String] The model to use for translation. For example, `en-de` selects the IBM provided
+    #   base model for English to German translation. A model ID overrides the source and
+    #   target parameters and is required if you use a custom model. If no model ID is
+    #   specified, you must specify a target language.
     # @param source [String] Language code that specifies the language of the source document.
-    # @param target [String] Language code that specifies the target language for translation.
+    # @param target [String] Language code that specifies the target language for translation. Required if
+    #   model ID is not specified.
     # @param document_id [String] To use a previously submitted document as the source for a new translation, enter
     #   the `document_id` of the document.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.

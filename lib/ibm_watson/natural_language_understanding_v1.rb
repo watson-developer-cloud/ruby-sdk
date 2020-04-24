@@ -20,7 +20,7 @@
 # can ignore most advertisements and other unwanted content.
 #
 # You can create [custom
-# models](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-customizing)
+# models](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-customizing)
 # with Watson Knowledge Studio to detect custom entities and relations in Natural Language
 # Understanding.
 
@@ -36,6 +36,8 @@ module IBMWatson
   # The Natural Language Understanding V1 service.
   class NaturalLanguageUnderstandingV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "natural_language_understanding"
+    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/natural-language-understanding/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Natural Language Understanding service.
@@ -54,19 +56,23 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:service_url] = "https://gateway.watsonplatform.net/natural-language-understanding/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:service_name] = "natural_language_understanding"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -90,7 +96,7 @@ module IBMWatson
     #
     #   If a language for the input text is not specified with the `language` parameter,
     #   the service [automatically detects the
-    #   language](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-detectable-languages).
+    #   language](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-detectable-languages).
     # @param features [Features] Specific features to analyze the document for.
     # @param text [String] The plain text to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
@@ -100,10 +106,10 @@ module IBMWatson
     #   required.
     # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
     #   cleaning, see the [Analyzing
-    #   webpages](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages)
+    #   webpages](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages)
     #   documentation.
     # @param xpath [String] An [XPath
-    #   query](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages#xpath)
+    #   query](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages#xpath)
     #   to perform on `html` or `url` input. Results of the query will be appended to the
     #   cleaned webpage text before it is analyzed. To analyze only the results of the
     #   XPath query, set the `clean` parameter to `false`.
@@ -112,7 +118,7 @@ module IBMWatson
     # @param language [String] ISO 639-1 code that specifies the language of your text. This overrides automatic
     #   language detection. Language support differs depending on the features you include
     #   in your analysis. See [Language
-    #   support](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-language-support)
+    #   support](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-language-support)
     #   for more information.
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -161,7 +167,7 @@ module IBMWatson
     # @!method list_models
     # List models.
     # Lists Watson Knowledge Studio [custom entities and relations
-    #   models](https://cloud.ibm.com/docs/services/natural-language-understanding?topic=natural-language-understanding-customizing)
+    #   models](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-customizing)
     #   that are deployed to your Natural Language Understanding service.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_models

@@ -33,6 +33,8 @@ module IBMWatson
   # The Assistant V1 service.
   class AssistantV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "assistant"
+    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/assistant/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Assistant service.
@@ -51,19 +53,23 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
       defaults[:version] = nil
-      defaults[:service_url] = "https://gateway.watsonplatform.net/assistant/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
       raise ArgumentError.new("version must be provided") if @version.nil?
 
-      args[:service_name] = "assistant"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -706,7 +712,7 @@ module IBMWatson
     # Create user input example.
     # Add a new user input example to an intent.
     #
-    #   If you want to add multiple exaples with a single API call, consider using the
+    #   If you want to add multiple examples with a single API call, consider using the
     #   **[Update intent](#update-intent)** method instead.
     #
     #   This operation is limited to 1000 requests per 30 minutes. For more information,
@@ -2054,7 +2060,8 @@ module IBMWatson
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
-    # @param disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions.
+    # @param disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions. Valid
+    #   only when **type**=`standard` or `frame`.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -2189,7 +2196,8 @@ module IBMWatson
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
     #   users.
-    # @param new_disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions.
+    # @param new_disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions. Valid
+    #   only when **type**=`standard` or `frame`.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.

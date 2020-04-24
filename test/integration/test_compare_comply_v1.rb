@@ -69,18 +69,7 @@ if !ENV["COMPARE_COMPLY_APIKEY"].nil?
     end
 
     def test_get_feedback
-      @service_dup = IBMWatson::CompareComplyV1.new(
-        iam_apikey: ENV["COMPARE_COMPLY_APIKEY"],
-        version: "2018-10-15"
-      )
-      @service_dup.add_default_headers(
-        headers: {
-          "X-Watson-Learning-Opt-Out" => "1",
-          "X-Watson-Test" => "1",
-          "x-watson-metadata" => "customer_id=sdk-test-customer-id"
-        }
-      )
-      response = @service_dup.get_feedback(
+      response = @service.get_feedback(
         feedback_id: ENV["COMPARE_COMPLY_FEEDBACK_ID"]
       ).result
       refute(response.nil?)

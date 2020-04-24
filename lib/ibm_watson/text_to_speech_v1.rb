@@ -30,7 +30,8 @@
 # one or more words that, when combined, sound like the word. A phonetic translation is
 # based on the SSML phoneme format for representing a word. You can specify a phonetic
 # translation in standard International Phonetic Alphabet (IPA) representation or in the
-# proprietary IBM Symbolic Phonetic Representation (SPR).
+# proprietary IBM Symbolic Phonetic Representation (SPR). The Arabic, Chinese, Dutch, and
+# Korean languages support only IPA.
 
 require "concurrent"
 require "erb"
@@ -44,6 +45,8 @@ module IBMWatson
   # The Text to Speech V1 service.
   class TextToSpeechV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
+    DEFAULT_SERVICE_NAME = "text_to_speech"
+    DEFAULT_SERVICE_URL = "https://stream.watsonplatform.net/text-to-speech/api"
     ##
     # @!method initialize(args)
     # Construct a new client for the Text to Speech service.
@@ -52,15 +55,19 @@ module IBMWatson
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
+    # @option args service_name [String] The name of the service to configure. Will be used as the key to load
+    #   any external configuration, if applicable.
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:service_url] = "https://stream.watsonplatform.net/text-to-speech/api"
+      defaults[:service_url] = DEFAULT_SERVICE_URL
+      defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
-      args[:service_name] = "text_to_speech"
       args[:authenticator] = IBMCloudSdkCore::ConfigBasedAuthenticatorFactory.new.get_authenticator(service_name: args[:service_name]) if args[:authenticator].nil?
       super
+      @service_url = user_service_url unless user_service_url.nil?
     end
 
     #########################
@@ -216,10 +223,10 @@ module IBMWatson
     #   description.
     # @param voice [String] The voice to use for synthesis.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model to use for the synthesis. If a
-    #   custom voice model is specified, it is guaranteed to work only if it matches the
-    #   language of the indicated voice. You must make the request with credentials for
-    #   the instance of the service that owns the custom model. Omit the parameter to use
-    #   the specified voice with no customization.
+    #   custom voice model is specified, it works only if it matches the language of the
+    #   indicated voice. You must make the request with credentials for the instance of
+    #   the service that owns the custom model. Omit the parameter to use the specified
+    #   voice with no customization.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def synthesize(text:, accept: nil, voice: nil, customization_id: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
@@ -263,8 +270,7 @@ module IBMWatson
     #   specific voice to see the default translation for the language of that voice or
     #   for a specific custom voice model to see the translation for that voice model.
     #
-    #   **Note:** This method is currently a beta release. The method does not support the
-    #   Arabic, Chinese, and Dutch languages.
+    #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Querying a word from a
     #   language](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryLanguage).
@@ -272,8 +278,9 @@ module IBMWatson
     # @param voice [String] A voice that specifies the language in which the pronunciation is to be returned.
     #   All voices for the same language (for example, `en-US`) return the same
     #   translation.
-    # @param format [String] The phoneme format in which to return the pronunciation. Omit the parameter to
-    #   obtain the pronunciation in the default format.
+    # @param format [String] The phoneme format in which to return the pronunciation. The Arabic, Chinese,
+    #   Dutch, and Korean languages support only IPA. Omit the parameter to obtain the
+    #   pronunciation in the default format.
     # @param customization_id [String] The customization ID (GUID) of a custom voice model for which the pronunciation is
     #   to be returned. The language of a specified custom model must match the language
     #   of the specified voice. If the word is not defined in the specified custom model,
@@ -320,14 +327,15 @@ module IBMWatson
     #   model. The model is owned by the instance of the service whose credentials are
     #   used to create it.
     #
-    #   **Note:** This method is currently a beta release. The service does not support
-    #   voice model customization for the Arabic, Chinese, and Dutch languages.
+    #   **Note:** This method is currently a beta release.
     #
     #   **See also:** [Creating a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsCreate).
     # @param name [String] The name of the new custom voice model.
-    # @param language [String] The language of the new custom voice model. Omit the parameter to use the the
-    #   default language, `en-US`.
+    # @param language [String] The language of the new custom voice model. You create a custom voice model for a
+    #   specific language, not for a specific voice. A custom model can be used with any
+    #   voice, standard or neural, for its specified language. Omit the parameter to use
+    #   the the default language, `en-US`.
     # @param description [String] A description of the new custom voice model. Specifying a description is
     #   recommended.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -673,8 +681,9 @@ module IBMWatson
     # @param word [String] The word that is to be added or updated for the custom voice model.
     # @param translation [String] The phonetic or sounds-like translation for the word. A phonetic translation is
     #   based on the SSML format for representing the phonetic string of a word either as
-    #   an IPA translation or as an IBM SPR translation. A sounds-like is one or more
-    #   words that, when combined, sound like the word.
+    #   an IPA translation or as an IBM SPR translation. The Arabic, Chinese, Dutch, and
+    #   Korean languages support only IPA. A sounds-like is one or more words that, when
+    #   combined, sound like the word.
     # @param part_of_speech [String] **Japanese only.** The part of speech for the word. The service uses the value to
     #   produce the correct intonation for the word. You can create only a single entry,
     #   with or without a single part of speech, for any word; you cannot create multiple
