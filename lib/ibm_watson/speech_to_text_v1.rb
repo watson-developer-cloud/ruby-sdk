@@ -488,7 +488,7 @@ module IBMWatson
     # @param customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
     # @param acoustic_customization_id [String] The GUID of a custom acoustic model that is to be used with the request. The base model of the specified custom acoustic model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom acoustic model is used.
     # @param language_customization_id [String] The GUID of a custom language model that is to be used with the request. The base model of the specified custom language model must match the model specified with the `model` parameter. You must make the request with service credentials created for the instance of the service that owns the custom model. By default, no custom language model is used.
-    # @param base_model_version [String] The version of the specified base `model` that is to be used for speech recognition. Multiple versions of a base model can exist when a model is updated for internal improvements. The parameter is intended primarily for use with custom models that have been upgraded for a new base model. The default value depends on whether the parameter is used with or without a custom model. For more information, see [Base model version](https://console.bluemix.net/docs/services/speech-to-text/input.html#version).
+    # @param base_model_version [String] The version of the specified base `model` that is to be used for speech recognition. Multiple versions of a base model can exist when a model is updated for internal improvements. The parameter is intended primarily for use with custom models that have been upgraded for a new base model. The default value depends on whether the parameter is used with or without a custom model. For more information, see [Base model version](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#version).
     # @param inactivity_timeout [Integer] The time in seconds after which, if only silence (no speech) is detected in submitted audio, the connection is closed with a 400 error. Useful for stopping audio submission from a live microphone when a user simply walks away. Use `-1` for infinity.
     # @param interim_results [Boolean] Send back non-final previews of each "sentence" as it is being processed. These results are ignored in text mode.
     # @param keywords [Array<String>] Array of keyword strings to spot in the audio. Each keyword string can include one or more tokens. Keywords are spotted only in the final hypothesis, not in interim results. If you specify any keywords, you must also specify a keywords threshold. Omit the parameter or specify an empty array if you do not need to spot keywords.
@@ -499,13 +499,13 @@ module IBMWatson
     # @param timestamps [Boolean] If `true`, time alignment for each word is returned.
     # @param profanity_filter [Boolean] If `true` (the default), filters profanity from all output except for keyword results by replacing inappropriate words with a series of asterisks. Set the parameter to `false` to return results with no censoring. Applies to US English transcription only.
     # @param smart_formatting [Boolean] If `true`, converts dates, times, series of digits and numbers, phone numbers, currency values, and Internet addresses into more readable, conventional representations in the final transcript of a recognition request. If `false` (the default), no formatting is performed. Applies to US English transcription only.
-    # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://console.bluemix.net/docs/services/speech-to-text/output.html#speaker_labels).
+    # @param speaker_labels [Boolean] Indicates whether labels that identify which words were spoken by which participants in a multi-person exchange are to be included in the response. The default is `false`; no speaker labels are returned. Setting `speaker_labels` to `true` forces the `timestamps` parameter to be `true`, regardless of whether you specify `false` for the parameter.   To determine whether a language model supports speaker labels, use the `GET /v1/models` method and check that the attribute `speaker_labels` is set to `true`. You can also refer to [Speaker labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
     # @param grammar_name [String] The name of a grammar that is to be used with the recognition request. If you
     #   specify a grammar, you must also use the `language_customization_id` parameter to
     #   specify the name of the custom language model for which the grammar is defined.
     #   The service recognizes only strings that are recognized by the specified grammar;
     #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/services/speech-to-text/output.html).
+    #   [Grammars](https://cloud.ibm.com/docs/speech-to-text/output.html).
     # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
     #   feature redacts any number that has three or more consecutive digits by replacing
     #   each digit with an `X` character. It is intended to redact sensitive numeric data,
@@ -520,7 +520,7 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Korean transcription only.
     #
     #   See [Numeric
-    #   redaction](https://cloud.ibm.com/docs/services/speech-to-text/output.html#redaction).
+    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#redaction).
     #
     # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
     #   input audio. The service returns processing metrics at the interval specified by
@@ -542,7 +542,7 @@ module IBMWatson
     # @return [WebSocketClient] Returns a new WebSocketClient object
     #
     #   See [Audio
-    #   metrics](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
     # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
     #   splits a transcript into multiple final results. If the service detects pauses or
     #   extended silence before it reaches the end of the audio stream, its response can
@@ -559,7 +559,7 @@ module IBMWatson
     #   Chinese is 0.6 seconds.
     #
     #   See [End of phrase silence
-    #   time](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#silence_time).
+    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#silence_time).
     # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
     #   based on semantic features of the input, for example, at the conclusion of
     #   meaningful phrases such as sentences. The service bases its understanding of
@@ -569,7 +569,7 @@ module IBMWatson
     #   interval.
     #
     #   See [Split transcript at phrase
-    #   end](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-output#split_transcript).
+    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
     # @param speech_detector_sensitivity [Float] The sensitivity of speech activity detection that the service is to perform. Use
     #   the parameter to suppress word insertions from music, coughing, and other
     #   non-speech events. The service biases the audio it passes for speech recognition
