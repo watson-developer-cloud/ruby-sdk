@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+Dir.glob("./*.rake").each { |r| load r }
+
+task default: %w[patch]
+
+desc "Run post-generation patches"
+task :patch, [:path] do |_t, args|
+  Rake::Task["speech_to_text"].invoke(args[:path])
+end
