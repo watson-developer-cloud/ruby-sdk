@@ -6,7 +6,7 @@ sudo: required
 rvm:
 - 2.5.1
 - 2.6.1
-- 2.7.1
+# - 2.7.1
 
 before_install:
   - git fetch --tags
