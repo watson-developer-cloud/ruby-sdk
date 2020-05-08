@@ -401,6 +401,8 @@ Tested on:
 * MRI Ruby (RVM): 2.5.1, 2.6.1
 * RubyInstaller (Windows x64): 2.5.1, 2.6.1
 
+2.3.7 and 2.4.4 should still work but support will be deprecated in next major release.
+
 ## Contributing
 
 See [CONTRIBUTING.md][CONTRIBUTING].
