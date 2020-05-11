@@ -398,8 +398,10 @@ If you have issues with the APIs or have a question about the Watson services, s
 
 Tested on:
 
-* MRI Ruby (RVM): 2.3.7, 2.4.4, 2.5.1
-* RubyInstaller (Windows x64): 2.3.3, 2.4.4, 2.5.1
+* MRI Ruby (RVM): 2.5.1, 2.6.1
+* RubyInstaller (Windows x64): 2.5.1, 2.6.1
+
+2.3.7 and 2.4.4 should still work but support will be deprecated in next major release.
 
 ## Contributing
 
