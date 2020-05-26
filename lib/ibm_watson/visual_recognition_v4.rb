@@ -325,6 +325,51 @@ module IBMWatson
       )
       nil
     end
+
+    ##
+    # @!method get_model_file(collection_id:, feature:, model_format:)
+    # Get a model.
+    # Download a model that you can deploy to detect objects in images. The collection
+    #   must include a generated model, which is indicated in the response for the
+    #   collection details as `"rscnn_ready": true`. If the value is `false`, train or
+    #   retrain the collection to generate the model.
+    #
+    #   Currently, the model format is specific to Android apps. For more information
+    #   about how to deploy the model to your app, see the [Watson Visual Recognition on
+    #   Android](https://github.com/matt-ny/rscnn) project in GitHub.
+    # @param collection_id [String] The identifier of the collection.
+    # @param feature [String] The feature for the model.
+    # @param model_format [String] The format of the returned model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_model_file(collection_id:, feature:, model_format:)
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      raise ArgumentError.new("feature must be provided") if feature.nil?
+
+      raise ArgumentError.new("model_format must be provided") if model_format.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "get_model_file")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "feature" => feature,
+        "model_format" => model_format
+      }
+
+      method_url = "/v4/collections/%s/model" % [ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      response
+    end
     #########################
     # Images
     #########################
