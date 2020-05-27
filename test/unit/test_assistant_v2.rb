@@ -128,4 +128,70 @@ class AssistantV2Test < Minitest::Test
     )
     assert_nil(service_response)
   end
+
+  def test_message_stateless
+    # service.set_default_headers("x-watson-learning-opt-out" => true)
+    assistant_id = "f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec"
+    message_response = {
+      "context" => {
+        "conversation_id" => "1b7b67c0-90ed-45dc-8508-9488bc483d5b",
+        "system" => {
+          "dialog_stack" => ["root"],
+          "dialog_turn_counter" => 1,
+          "dialog_request_counter" => 1
+        }
+      },
+      "intents" => [],
+      "entities" => [],
+      "input" => {},
+      "output" => {
+        "text" => "okay",
+        "log_messages" => []
+      }
+    }
+    headers = {
+      "Content-Type" => "application/json"
+    }
+    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v2/assistants/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/message?version=2018-02-16")
+      .with(
+        body: "{\"input\":{\"text\":\"Turn on the lights\"}}",
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: message_response.to_json, headers: headers)
+    service_response = service.message_stateless(
+      assistant_id: assistant_id,
+      input: { "text" => "Turn on the lights" },
+      context: nil
+    )
+    assert_equal(message_response, service_response.result)
+
+    message_ctx = {
+      "context" => {
+        "conversation_id" => "1b7b67c0-90ed-45dc-8508-9488bc483d5b",
+        "system" => {
+          "dialog_stack" => ["root"],
+          "dialog_turn_counter" => 2,
+          "dialog_request_counter" => 1
+        }
+      }
+    }
+    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v2/assistants/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/message?version=2018-02-16")
+      .with(
+        body: "{\"input\":{\"text\":\"Turn on the lights\"},\"context\":\"{\\\"conversation_id\\\":\\\"1b7b67c0-90ed-45dc-8508-9488bc483d5b\\\",\\\"system\\\":{\\\"dialog_stack\\\":[\\\"root\\\"],\\\"dialog_turn_counter\\\":2,\\\"dialog_request_counter\\\":1}}\"}",
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: message_response.to_json, headers: headers)
+    service_response = service.message_stateless(
+      assistant_id: assistant_id,
+      input: { "text" => "Turn on the lights" },
+      context: message_ctx["context"].to_json
+    )
+    assert_equal(message_response, service_response.result)
+  end
 end

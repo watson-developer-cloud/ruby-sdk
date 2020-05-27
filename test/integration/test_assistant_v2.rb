@@ -52,6 +52,13 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
       )
       assert((200..299).cover?(service_response.status))
 
+      service_response = service.message_stateless(
+        assistant_id: ENV["ASSISTANT_ASSISTANT_ID"],
+        input: { "text" => "Turn on the lights" },
+        context: nil
+      )
+      assert((200..299).cover?(service_response.status))
+
       service.delete_session(
         assistant_id: ENV["ASSISTANT_ASSISTANT_ID"],
         session_id: session_id
