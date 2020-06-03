@@ -68,6 +68,15 @@ if !ENV["VISUAL_RECOGNITION_APIKEY"].nil? && !ENV["VISUAL_RECOGNITION_URL"].nil?
       ).result
       refute(result.nil?)
     end
+
+    def test_get_model_file
+      result = @service.get_model_file(
+        collection_id: @collection_id,
+        feature: "objects",
+        model_format: "rscnn"
+      ).result
+      refute(result.nil?)
+    end
   end
 else
   class VisualRecognitionV4Test < Minitest::Test

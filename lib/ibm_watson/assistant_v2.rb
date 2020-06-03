@@ -160,8 +160,10 @@ module IBMWatson
 
     ##
     # @!method message(assistant_id:, session_id:, input: nil, context: nil)
-    # Send user input to assistant.
-    # Send user input to an assistant and receive a response.
+    # Send user input to assistant (stateful).
+    # Send user input to an assistant and receive a response, with conversation state
+    #   (including context data) stored by Watson Assistant for the duration of the
+    #   session.
     #
     #   There is no rate limit for this operation.
     # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
@@ -172,9 +174,12 @@ module IBMWatson
     #   **Note:** Currently, the v2 API does not support creating assistants.
     # @param session_id [String] Unique identifier of the session.
     # @param input [MessageInput] An input object that includes the input text.
-    # @param context [MessageContext] State information for the conversation. The context is stored by the assistant on
-    #   a per-session basis. You can use this property to set or modify context variables,
-    #   which can also be accessed by dialog nodes.
+    # @param context [MessageContext] Context data for the conversation. You can use this property to set or modify
+    #   context variables, which can also be accessed by dialog nodes. The context is
+    #   stored by the assistant on a per-session basis.
+    #
+    #   **Note:** The total size of the context data stored for a stateful session cannot
+    #   exceed 100KB.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def message(assistant_id:, session_id:, input: nil, context: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
@@ -196,6 +201,58 @@ module IBMWatson
       }
 
       method_url = "/v2/assistants/%s/sessions/%s/message" % [ERB::Util.url_encode(assistant_id), ERB::Util.url_encode(session_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method message_stateless(assistant_id:, input: nil, context: nil)
+    # Send user input to assistant (stateless).
+    # Send user input to an assistant and receive a response, with conversation state
+    #   (including context data) managed by your application.
+    #
+    #   There is no rate limit for this operation.
+    # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
+    #   Assistant user interface, open the assistant settings and click **API Details**.
+    #   For information about creating assistants, see the
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-assistant-add#assistant-add-task).
+    #
+    #   **Note:** Currently, the v2 API does not support creating assistants.
+    # @param input [MessageInputStateless] An input object that includes the input text.
+    # @param context [MessageContextStateless] Context data for the conversation. You can use this property to set or modify
+    #   context variables, which can also be accessed by dialog nodes. The context is not
+    #   stored by the assistant. To maintain session state, include the context from the
+    #   previous response.
+    #
+    #   **Note:** The total size of the context data for a stateless session cannot exceed
+    #   250KB.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def message_stateless(assistant_id:, input: nil, context: nil)
+      raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "message_stateless")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "input" => input,
+        "context" => context
+      }
+
+      method_url = "/v2/assistants/%s/message" % [ERB::Util.url_encode(assistant_id)]
 
       response = request(
         method: "POST",

@@ -401,4 +401,22 @@ class VisualRecognitionV4Test < Minitest::Test
     )
     assert_nil(service_response)
   end
+
+  def test_get_model_file
+    response = {
+      "binary" => []
+    }
+    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/model?feature=objects&model_format=rscnn_ready&version=2018-03-19")
+      .with(
+        headers: {
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_model_file(
+      collection_id: "collid",
+      feature: "objects",
+      model_format: "rscnn_ready"
+    )
+    assert_equal(response, service_response.result)
+  end
 end
