@@ -193,7 +193,7 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
       enrichment_data = File.open(Dir.getwd + "/resources/test_enrichments.csv")
       # enrichment_metadata = { "name" => "ruby_enrichment", "description" => "none", "type" => "dictonary", options: { "languages" => "en", "entity_type" => "1", "regular_expression" => "1", "result_field" => "1" } }
       # enrichment_metadata = { name: "ruby_enrichment", description: "none", type: "none", options: { languages: "en", entity_type: "1", regular_expression: "1", result_field: "1" } }
-      enrichment_metadata = {}
+      enrichment_metadata = { Name: "ruby_enrichment", Description: "none", Type: "dictionary", Options: { Languages: %w[en it], EntityType: "keyword" } }
 
       service_response = service.create_enrichment(
         project_id: @project_id,
