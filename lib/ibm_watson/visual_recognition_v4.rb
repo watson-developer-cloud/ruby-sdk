@@ -30,7 +30,7 @@ module IBMWatson
   class VisualRecognitionV4 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "visual_recognition"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/visual-recognition/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.visual-recognition.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Visual Recognition service.

@@ -34,7 +34,7 @@ module IBMWatson
   class AssistantV2 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "assistant"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/assistant/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.assistant.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Assistant service.
@@ -164,8 +164,6 @@ module IBMWatson
     # Send user input to an assistant and receive a response, with conversation state
     #   (including context data) stored by Watson Assistant for the duration of the
     #   session.
-    #
-    #   There is no rate limit for this operation.
     # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
     #   Assistant user interface, open the assistant settings and click **API Details**.
     #   For information about creating assistants, see the
@@ -218,8 +216,6 @@ module IBMWatson
     # Send user input to assistant (stateless).
     # Send user input to an assistant and receive a response, with conversation state
     #   (including context data) managed by your application.
-    #
-    #   There is no rate limit for this operation.
     # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
     #   Assistant user interface, open the assistant settings and click **API Details**.
     #   For information about creating assistants, see the
@@ -263,6 +259,100 @@ module IBMWatson
         accept_json: true
       )
       response
+    end
+    #########################
+    # Logs
+    #########################
+
+    ##
+    # @!method list_logs(assistant_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
+    # List log events for an assistant.
+    # List the events from the log of an assistant.
+    #
+    #   This method is available only with Premium plans.
+    # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
+    #   Assistant user interface, open the assistant settings and click **API Details**.
+    #   For information about creating assistants, see the
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-assistant-add#assistant-add-task).
+    #
+    #   **Note:** Currently, the v2 API does not support creating assistants.
+    # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
+    #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
+    # @param filter [String] A cacheable parameter that limits the results to those matching the specified
+    #   filter. For more information, see the
+    #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-filter-reference#filter-reference).
+    # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param cursor [String] A token identifying the page of results to retrieve.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_logs(assistant_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
+      raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "list_logs")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "sort" => sort,
+        "filter" => filter,
+        "page_limit" => page_limit,
+        "cursor" => cursor
+      }
+
+      method_url = "/v2/assistants/%s/logs" % [ERB::Util.url_encode(assistant_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # User data
+    #########################
+
+    ##
+    # @!method delete_user_data(customer_id:)
+    # Delete labeled data.
+    # Deletes all data associated with a specified customer ID. The method has no effect
+    #   if no data is associated with the customer ID.
+    #
+    #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
+    #   with a request that passes data. For more information about personal data and
+    #   customer IDs, see [Information
+    #   security](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security).
+    #
+    #   This operation is limited to 4 requests per minute. For more information, see
+    #   **Rate limiting**.
+    # @param customer_id [String] The customer ID for which all data is to be deleted.
+    # @return [nil]
+    def delete_user_data(customer_id:)
+      raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "delete_user_data")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "customer_id" => customer_id
+      }
+
+      method_url = "/v2/user_data"
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      nil
     end
   end
 end

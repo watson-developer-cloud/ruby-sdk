@@ -48,7 +48,7 @@ module IBMWatson
   class PersonalityInsightsV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "personality_insights"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/personality-insights/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.personality-insights.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Personality Insights service.

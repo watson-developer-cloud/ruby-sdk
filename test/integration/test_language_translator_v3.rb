@@ -103,6 +103,11 @@ if !ENV["LANGUAGE_TRANSLATOR_APIKEY"].nil? && !ENV["LANGUAGE_TRANSLATOR_URL"].ni
       ).result
       assert_equal("OK", service_response["status"])
     end
+
+    def test_list_languages
+      service_response = service.list_languages.result
+      refute(service_response.nil?)
+    end
   end
 else
   class LanguageTranslatorV3Test < Minitest::Test

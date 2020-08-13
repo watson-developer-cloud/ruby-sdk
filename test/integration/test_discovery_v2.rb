@@ -3,16 +3,18 @@
 require_relative("./../test_helper.rb")
 require("minitest/hooks/test")
 
-if !ENV["DISCOVERY_V2_TOKEN"].nil?
+if !ENV["DISCOVERY_V2_APIKEY"].nil?
   # Integration tests for the Discovery V2 Service
   class DiscoveryV2Test < Minitest::Test
     include Minitest::Hooks
     attr_accessor :service, :environment_id, :collection_id
 
     def before_all
-      token = ENV["DISCOVERY_V2_TOKEN"]
-      authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
-        bearer_token: token
+      # authenticator = IBMWatson::Authenticators::BearerTokenAuthenticator.new(
+      # bearer_token: ENV["DISCOVERY_V2_TOKEN"]
+      # )
+      authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+        apikey: ENV["DISCOVERY_V2_APIKEY"]
       )
       @service = IBMWatson::DiscoveryV2.new(
         authenticator: authenticator,
@@ -31,11 +33,10 @@ if !ENV["DISCOVERY_V2_TOKEN"].nil?
       )
     end
 
-    def test_collections
+    def test_list_collections
       service_response = service.list_collections(
         project_id: @project_id
       )
-      puts service_response.result
       refute(service_response.result["collections"].nil?)
     end
 
@@ -133,6 +134,81 @@ if !ENV["DISCOVERY_V2_TOKEN"].nil?
         examples: []
       )
       refute(service_response.nil?)
+    end
+
+    def test_create_get_update_delete_collection
+      service_response = service.create_collection(
+        project_id: @project_id,
+        name: "ruby_collection"
+      )
+      create_collection_id = service_response.result["collection_id"]
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.get_collection(
+        project_id: @project_id,
+        collection_id: create_collection_id
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.update_collection(
+        project_id: @project_id,
+        collection_id: create_collection_id
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.delete_collection(
+        project_id: @project_id,
+        collection_id: create_collection_id
+      )
+      assert(service_response.nil?)
+    end
+
+    def test_create_list_get_update_delete_project
+      service_response = service.create_project(
+        name: "ruby_project"
+      )
+      create_project_id = service_response.result["project_id"]
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.list_projects
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.get_project(
+        project_id: create_project_id
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.update_project(
+        project_id: create_project_id
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.delete_project(
+        project_id: create_project_id
+      )
+      assert(service_response.nil?)
+    end
+
+    def test_create_list_get_update_delete_enrichment
+      enrichment_data = File.open(Dir.getwd + "/resources/test_enrichments.csv")
+      # enrichment_metadata = { "name" => "ruby_enrichment", "description" => "none", "type" => "dictonary", options: { "languages" => "en", "entity_type" => "1", "regular_expression" => "1", "result_field" => "1" } }
+      # enrichment_metadata = { name: "ruby_enrichment", description: "none", type: "none", options: { languages: "en", entity_type: "1", regular_expression: "1", result_field: "1" } }
+      enrichment_metadata = {}
+
+      service_response = service.create_enrichment(
+        project_id: @project_id,
+        file: enrichment_data,
+        enrichment: enrichment_metadata
+      )
+      puts JSON.pretty_generate(service_response.result)
+      assert((200..299).cover?(service_response.status))
+      create_enrichment_id = service_response.result["enrichment_id"]
+
+      service_response = service.delete_enrichment(
+        project_id: @project_id,
+        enrichment_id: create_enrichment_id
+      )
+      assert(service_response.nil?)
     end
   end
 else

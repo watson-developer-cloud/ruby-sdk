@@ -37,7 +37,7 @@ module IBMWatson
   class NaturalLanguageUnderstandingV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "natural_language_understanding"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/natural-language-understanding/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Natural Language Understanding service.
@@ -92,7 +92,7 @@ module IBMWatson
     #   - Relations
     #   - Semantic roles
     #   - Sentiment
-    #   - Syntax (Experimental).
+    #   - Syntax.
     #
     #   If a language for the input text is not specified with the `language` parameter,
     #   the service [automatically detects the
@@ -104,10 +104,9 @@ module IBMWatson
     #   required.
     # @param url [String] The webpage to analyze. One of the `text`, `html`, or `url` parameters is
     #   required.
-    # @param clean [Boolean] Set this to `false` to disable webpage cleaning. To learn more about webpage
-    #   cleaning, see the [Analyzing
-    #   webpages](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages)
-    #   documentation.
+    # @param clean [Boolean] Set this to `false` to disable webpage cleaning. For more information about
+    #   webpage cleaning, see [Analyzing
+    #   webpages](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages).
     # @param xpath [String] An [XPath
     #   query](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-analyzing-webpages#xpath)
     #   to perform on `html` or `url` input. Results of the query will be appended to the
@@ -117,9 +116,8 @@ module IBMWatson
     # @param return_analyzed_text [Boolean] Whether or not to return the analyzed text.
     # @param language [String] ISO 639-1 code that specifies the language of your text. This overrides automatic
     #   language detection. Language support differs depending on the features you include
-    #   in your analysis. See [Language
-    #   support](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-language-support)
-    #   for more information.
+    #   in your analysis. For more information, see [Language
+    #   support](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-language-support).
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)

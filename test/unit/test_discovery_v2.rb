@@ -234,4 +234,231 @@ class DiscoveryV2Test < Minitest::Test
     )
     assert_equal({ "body" => "hello" }, service_response.result)
   end
+
+  def test_create_collection
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/collections?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_collection(
+      project_id: "project"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_get_collection
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/collections/collection?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_collection(
+      project_id: "project",
+      collection_id: "collection"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_update_collection
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/collections/collection?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.update_collection(
+      project_id: "project",
+      collection_id: "collection"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_delete_collection
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/collections/collection?version=2018-03-05")
+      .with(
+        headers: {
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_collection(
+      project_id: "project",
+      collection_id: "collection"
+    )
+    assert_nil(service_response)
+  end
+
+  def test_analyze_document
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/collections/collid/analyze?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.analyze_document(
+      project_id: "project",
+      collection_id: "collid",
+      file: "file",
+      filename: "file.name"
+    )
+    assert_equal({ "body" => [] }, service_response.result)
+  end
+
+  def test_delete_user_data
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v2/user_data?customer_id=customer&version=2018-03-05")
+      .with(
+        headers: {
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_user_data(
+      customer_id: "customer"
+    )
+    assert_nil(service_response)
+  end
+
+  def test_create_enrichment
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/enrichments?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_enrichment(
+      project_id: "project"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_list_enrichments
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/enrichments?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_enrichments(
+      project_id: "project"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_get_enrichment
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/enrichments/enrichment?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_enrichment(
+      project_id: "project",
+      enrichment_id: "enrichment"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_update_enrichment
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/enrichments/enrichment?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.update_enrichment(
+      project_id: "project",
+      enrichment_id: "enrichment"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_delete_enrichment
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/enrichments/enrichment?version=2018-03-05")
+      .with(
+        headers: {
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_enrichment(
+      project_id: "project",
+      enrichment_id: "enrichment"
+    )
+    assert_nil(service_response)
+  end
+
+  def test_create_project
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.create_project(
+      name: "projectname"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_list_projects
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v2/projects?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_projects
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_get_project
+    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_project(
+      project_id: "project"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_update_project
+    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.update_project(
+      project_id: "project"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
+
+  def test_delete_project
+    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project?version=2018-03-05")
+      .with(
+        headers: {
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_project(
+      project_id: "project"
+    )
+    assert_nil(service_response)
+  end
 end

@@ -194,4 +194,32 @@ class AssistantV2Test < Minitest::Test
     )
     assert_equal(message_response, service_response.result)
   end
+
+  def test_list_logs
+    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v2/assistants/pizza_app-e0f3/logs?version=2018-02-16")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.list_logs(
+      assistant_id: "pizza_app-e0f3"
+    )
+    assert_equal("", service_response.result)
+  end
+
+  def test_delete_user_data
+    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v2/user_data?customer_id=pizza_app-e0f3&version=2018-02-16")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "gateway.watsonplatform.net"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.delete_user_data(
+      customer_id: "pizza_app-e0f3"
+    )
+    assert_nil(service_response)
+  end
 end

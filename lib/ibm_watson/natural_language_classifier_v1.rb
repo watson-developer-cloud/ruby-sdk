@@ -32,7 +32,7 @@ module IBMWatson
   class NaturalLanguageClassifierV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "natural_language_classifier"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/natural-language-classifier/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Natural Language Classifier service.

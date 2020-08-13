@@ -626,4 +626,65 @@ class LanguageTranslatorV3Test < Minitest::Test
     service_response = service.delete_document(document_id: "id")
     assert_nil(service_response)
   end
+
+  def test_list_languages
+    token_response = token
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: token_response.to_json,
+        headers: {}
+      )
+    authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      authenticator: authenticator
+    )
+    expected = {
+      "languages" => [
+        {
+          "name" => "German",
+          "language" => "de"
+        },
+        {
+          "name" => "Greek",
+          "language" => "el"
+        },
+        {
+          "name" => "English",
+          "language" => "en"
+        },
+        {
+          "name" => "Esperanto",
+          "language" => "eo"
+        },
+        {
+          "name" => "Spanish",
+          "language" => "es"
+        },
+        {
+          "name" => "Chinese",
+          "language" => "zh"
+        }
+      ]
+    }
+    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/languages?version=2018-05-01")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Bearer " + token_response["access_token"]
+        }
+      ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_languages
+    assert_equal(expected, service_response.result)
+  end
 end
