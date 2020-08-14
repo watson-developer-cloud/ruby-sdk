@@ -190,10 +190,13 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
     end
 
     def test_create_list_get_update_delete_enrichment
+      # skip "cant get create to work"
+
       enrichment_data = File.open(Dir.getwd + "/resources/test_enrichments.csv")
-      # enrichment_metadata = { "name" => "ruby_enrichment", "description" => "none", "type" => "dictonary", options: { "languages" => "en", "entity_type" => "1", "regular_expression" => "1", "result_field" => "1" } }
-      # enrichment_metadata = { name: "ruby_enrichment", description: "none", type: "none", options: { languages: "en", entity_type: "1", regular_expression: "1", result_field: "1" } }
-      enrichment_metadata = { Name: "ruby_enrichment", Description: "none", Type: "dictionary", Options: { Languages: %w[en it], EntityType: "keyword" } }
+      # enrichment_metadata = { "enrichment_id" => "ruby_enrichment_id", "name" => "ruby_enrichment", "type" => "dictionary", "description" => "none", options: { "languages" => %w[en], "entity_type" => "keyword" } }
+      # enrichment_metadata = { "name" => "ruby_enrichment", "type" => "dictionary", "description" => "none", options: { "languages" => %w[en], "entity_type" => "keyword" } }
+      enrichment_metadata = { name: "ruby_enrichment", type: "dictionary", description: "none", options: { languages: %w[en], entity_type: "keyword" } }
+      # enrichment_metadata = { enrichment_id: "ruby_enrichment_id", name: "ruby_enrichment", type: "dictionary", description: "none", options: { languages: %w[en], entity_type: "keyword" } }
 
       service_response = service.create_enrichment(
         project_id: @project_id,
@@ -207,6 +210,36 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
       service_response = service.delete_enrichment(
         project_id: @project_id,
         enrichment_id: create_enrichment_id
+      )
+      assert(service_response.nil?)
+    end
+
+    def test_crud_enrichment
+      service_response = service.list_enrichments(
+        project_id: @project_id
+      )
+      # puts JSON.pretty_generate(service_response.result)
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.get_enrichment(
+        project_id: @project_id,
+        enrichment_id: "140a9292-f688-b633-0000-0173e0074793"
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.update_enrichment(
+        project_id: @project_id,
+        enrichment_id: "140a9292-f688-b633-0000-0173e0074793",
+        name: "Cucumber !"
+      )
+      assert((200..299).cover?(service_response.status))
+    end
+
+    def test_delete_user_data
+      skip "Covered with the unit test.  No need to run it here"
+
+      service_response = service.delete_user_data(
+        customer_id: "000010000"
       )
       assert(service_response.nil?)
     end
