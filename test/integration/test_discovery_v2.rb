@@ -201,6 +201,7 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
       }
 
       em_json = JSON[enrichment_metadata]
+      # {"name":"Dictionary","description":"test dictionary","type":"dictionary","options":{"languages":["en"],"entity_type":"keyword"}}
       enrichment_data = File.open(Dir.getwd + "/resources/test_enrichments.csv")
 
       service_response = service.create_enrichment(
