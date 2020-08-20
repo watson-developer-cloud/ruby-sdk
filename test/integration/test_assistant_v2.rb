@@ -67,7 +67,7 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
     end
 
     def test_list_logs
-      # skip "Premium plan only.  Need Premium credentials"
+      skip "Premium plan only.  Need Premium credentials"
 
       service_response = service.list_logs(
         assistant_id: ENV["ASSISTANT_ASSISTANT_ID"]
