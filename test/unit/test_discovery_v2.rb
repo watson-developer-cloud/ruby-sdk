@@ -244,7 +244,8 @@ class DiscoveryV2Test < Minitest::Test
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_collection(
-      project_id: "project"
+      project_id: "project",
+      name: "collection1"
     )
     assert_equal({ "body" => "hello" }, service_response.result)
   end
@@ -294,6 +295,8 @@ class DiscoveryV2Test < Minitest::Test
   end
 
   def test_analyze_document
+    skip "not available yet"
+
     stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v2/projects/project/collections/collid/analyze?version=2018-03-05")
       .with(
         headers: {
@@ -332,7 +335,8 @@ class DiscoveryV2Test < Minitest::Test
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_enrichment(
-      project_id: "project"
+      project_id: "project",
+      enrichment: "enrichment1"
     )
     assert_equal({ "body" => "hello" }, service_response.result)
   end
@@ -376,7 +380,8 @@ class DiscoveryV2Test < Minitest::Test
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_enrichment(
       project_id: "project",
-      enrichment_id: "enrichment"
+      enrichment_id: "enrichment",
+      name: "newname"
     )
     assert_equal({ "body" => "hello" }, service_response.result)
   end
@@ -404,7 +409,8 @@ class DiscoveryV2Test < Minitest::Test
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_project(
-      name: "projectname"
+      name: "projectname",
+      type: "new"
     )
     assert_equal({ "body" => "hello" }, service_response.result)
   end

@@ -107,7 +107,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_collection(project_id:, name: nil, description: nil, language: nil, enrichments: nil)
+    # @!method create_collection(project_id:, name:, description: nil, language: nil, enrichments: nil)
     # Create a collection.
     # Create a new collection in the specified project.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
@@ -117,8 +117,10 @@ module IBMWatson
     # @param language [String] The language of the collection.
     # @param enrichments [Array[CollectionEnrichment]] An array of enrichments that are applied to this collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_collection(project_id:, name: nil, description: nil, language: nil, enrichments: nil)
+    def create_collection(project_id:, name:, description: nil, language: nil, enrichments: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
@@ -184,7 +186,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_collection(project_id:, collection_id:, name: nil, description: nil, language: nil, enrichments: nil)
+    # @!method update_collection(project_id:, collection_id:, name: nil, description: nil, enrichments: nil)
     # Update a collection.
     # Updates the specified collection's name, description, and enrichments.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
@@ -192,10 +194,9 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @param name [String] The name of the collection.
     # @param description [String] A description of the collection.
-    # @param language [String] The language of the collection.
     # @param enrichments [Array[CollectionEnrichment]] An array of enrichments that are applied to this collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_collection(project_id:, collection_id:, name: nil, description: nil, language: nil, enrichments: nil)
+    def update_collection(project_id:, collection_id:, name: nil, description: nil, enrichments: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -212,7 +213,6 @@ module IBMWatson
       data = {
         "name" => name,
         "description" => description,
-        "language" => language,
         "enrichments" => enrichments
       }
 
@@ -945,77 +945,6 @@ module IBMWatson
       response
     end
     #########################
-    # analyze
-    #########################
-
-    ##
-    # @!method analyze_document(project_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
-    # Analyze a Document.
-    # Process a document using the specified collection's settings and return it for
-    #   realtime use.
-    #
-    #   **Note:** Documents processed using this method are not added to the specified
-    #   collection.
-    #
-    #   **Note:** This method is only supported on IBM Cloud Pak for Data instances of
-    #   Discovery.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
-    # @param collection_id [String] The ID of the collection.
-    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
-    #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a configuration is 1 megabyte. Files larger than the supported size are
-    #   rejected.
-    # @param filename [String] The filename for file.
-    # @param file_content_type [String] The content type of file.
-    # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected.
-    #
-    #
-    #   Example:  ``` {
-    #     "Creator": "Johnny Appleseed",
-    #     "Subject": "Apples"
-    #   } ```.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def analyze_document(project_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
-      raise ArgumentError.new("project_id must be provided") if project_id.nil?
-
-      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "analyze_document")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      form_data = {}
-
-      unless file.nil?
-        unless file.instance_of?(StringIO) || file.instance_of?(File)
-          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
-        end
-        filename = file.path if filename.nil? && file.respond_to?(:path)
-        form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
-      end
-
-      form_data[:metadata] = HTTP::FormData::Part.new(metadata.to_s, content_type: "text/plain") unless metadata.nil?
-
-      method_url = "/v2/projects/%s/collections/%s/analyze" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(collection_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        form: form_data,
-        accept_json: true
-      )
-      response
-    end
-    #########################
     # enrichments
     #########################
 
@@ -1051,16 +980,18 @@ module IBMWatson
     end
 
     ##
-    # @!method create_enrichment(project_id:, file: nil, enrichment: nil)
+    # @!method create_enrichment(project_id:, enrichment:, file: nil)
     # Create an enrichment.
     # Create an enrichment for use with the specified project/.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
+    # @param enrichment [CreateEnrichment]
     # @param file [File] The enrichment file to upload.
-    # @param enrichment [Enrichment]
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_enrichment(project_id:, file: nil, enrichment: nil)
+    def create_enrichment(project_id:, enrichment:, file: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("enrichment must be provided") if enrichment.nil?
 
       headers = {
       }
@@ -1073,14 +1004,14 @@ module IBMWatson
 
       form_data = {}
 
+      form_data[:enrichment] = HTTP::FormData::Part.new(enrichment.to_s, content_type: "application/json")
+
       unless file.nil?
         unless file.instance_of?(StringIO) || file.instance_of?(File)
           file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
         end
         form_data[:file] = HTTP::FormData::File.new(file, content_type: "application/octet-stream", filename: file.respond_to?(:path) ? file.path : nil)
       end
-
-      form_data[:enrichment] = HTTP::FormData::Part.new(enrichment.to_s, content_type: "application/json") unless enrichment.nil?
 
       method_url = "/v2/projects/%s/enrichments" % [ERB::Util.url_encode(project_id)]
 
@@ -1130,7 +1061,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_enrichment(project_id:, enrichment_id:, name: nil, description: nil)
+    # @!method update_enrichment(project_id:, enrichment_id:, name:, description: nil)
     # Update an enrichment.
     # Updates an existing enrichment's name and description.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
@@ -1139,10 +1070,12 @@ module IBMWatson
     # @param name [String] A new name for the enrichment.
     # @param description [String] A new description for the enrichment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_enrichment(project_id:, enrichment_id:, name: nil, description: nil)
+    def update_enrichment(project_id:, enrichment_id:, name:, description: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
+
+      raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
@@ -1238,15 +1171,18 @@ module IBMWatson
     end
 
     ##
-    # @!method create_project(name: nil, type: nil, relevancy_training_status: nil, default_query_parameters: nil)
+    # @!method create_project(name:, type:, default_query_parameters: nil)
     # Create a Project.
     # Create a new project for this instance.
     # @param name [String] The human readable name of this project.
     # @param type [String] The project type of this project.
-    # @param relevancy_training_status [ProjectRelTrainStatus] Relevancy training status information for this project.
     # @param default_query_parameters [DefaultQueryParams] Default query parameters for this project.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_project(name: nil, type: nil, relevancy_training_status: nil, default_query_parameters: nil)
+    def create_project(name:, type:, default_query_parameters: nil)
+      raise ArgumentError.new("name must be provided") if name.nil?
+
+      raise ArgumentError.new("type must be provided") if type.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "create_project")
@@ -1259,7 +1195,6 @@ module IBMWatson
       data = {
         "name" => name,
         "type" => type,
-        "relevancy_training_status" => relevancy_training_status,
         "default_query_parameters" => default_query_parameters
       }
 

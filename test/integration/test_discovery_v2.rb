@@ -165,7 +165,8 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
 
     def test_create_list_get_update_delete_project
       service_response = service.create_project(
-        name: "ruby_project"
+        name: "ruby_project",
+        type: "document_retrieval"
       )
       create_project_id = service_response.result["project_id"]
       assert((200..299).cover?(service_response.status))
