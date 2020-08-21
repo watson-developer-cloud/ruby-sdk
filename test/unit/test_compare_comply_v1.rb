@@ -7,7 +7,7 @@ SimpleCov.command_name "test:unit"
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-# Unit tests for the Watson Assistant V1 Service
+# Unit test for the Watson Assistant V1 Service
 class CompareComplyV1 < Minitest::Test
   include Minitest::Hooks
   attr_accessor :service
