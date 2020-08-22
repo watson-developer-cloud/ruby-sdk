@@ -20,7 +20,7 @@ class VisualRecognitionV4Test < Minitest::Test
 
   def test_analyze
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/analyze?version=2018-03-19").with do |req|
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/analyze?version=2018-03-19").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -40,7 +40,7 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_analyze_url
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/analyze?version=2018-03-19").with do |req|
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/analyze?version=2018-03-19").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data; name="image_url"/, req.body)
@@ -67,11 +67,11 @@ class VisualRecognitionV4Test < Minitest::Test
         }
       ]
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_collection(
@@ -85,11 +85,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "collections" => []
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_collections
@@ -109,11 +109,11 @@ class VisualRecognitionV4Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_collection(
@@ -135,11 +135,11 @@ class VisualRecognitionV4Test < Minitest::Test
         }
       ]
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_collection(
@@ -150,11 +150,11 @@ class VisualRecognitionV4Test < Minitest::Test
 
   def test_delete_collection
     response = {}
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid?version=2018-03-19")
+    stub_request(:delete, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_collection(
@@ -168,11 +168,11 @@ class VisualRecognitionV4Test < Minitest::Test
       "collection_id" => "collid"
     }
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/images?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_images(
@@ -192,11 +192,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "collections" => []
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/images?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_images(
@@ -209,11 +209,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "collection_id" => "collid"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images/imageid?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/images/imageid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_image_details(
@@ -225,11 +225,11 @@ class VisualRecognitionV4Test < Minitest::Test
 
   def test_delete_image
     response = {}
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images/imageid?version=2018-03-19")
+    stub_request(:delete, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/images/imageid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_image(
@@ -243,10 +243,10 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "collection_id" => "collid"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images/imageid/jpeg?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/images/imageid/jpeg?version=2018-03-19")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_jpeg_image(
@@ -260,10 +260,10 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "collection_id" => "collid"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/train?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/train?version=2018-03-19")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.train(
@@ -276,11 +276,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "collection_id" => "collid"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/images/imageid/training_data?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/images/imageid/training_data?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_image_training_data(
@@ -303,11 +303,11 @@ class VisualRecognitionV4Test < Minitest::Test
 
   def test_delete_user_data
     response = {}
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/user_data?version=2018-03-19&customer_id=customer")
+    stub_request(:delete, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/user_data?version=2018-03-19&customer_id=customer")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_user_data(
@@ -320,10 +320,10 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "usage" => "usage"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/training_usage?end_time=end&start_time=start&version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/training_usage?end_time=end&start_time=start&version=2018-03-19")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_training_usage(
@@ -337,11 +337,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "objects" => []
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/objects?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_object_metadata(
@@ -354,11 +354,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "objects" => []
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects/old_object?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/objects/old_object?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_object_metadata(
@@ -373,11 +373,11 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "objects" => []
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects/object?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/objects/object?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_object_metadata(
@@ -388,11 +388,11 @@ class VisualRecognitionV4Test < Minitest::Test
   end
 
   def test_delete_object
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/objects/object?version=2018-03-19")
+    stub_request(:delete, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/objects/object?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: {}.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_object(
@@ -406,10 +406,10 @@ class VisualRecognitionV4Test < Minitest::Test
     response = {
       "binary" => []
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v4/collections/collid/model?feature=objects&model_format=rscnn_ready&version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v4/collections/collid/model?feature=objects&model_format=rscnn_ready&version=2018-03-19")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_model_file(

@@ -48,11 +48,11 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: discovery_response_body.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_environments
@@ -60,11 +60,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_environment
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_environment(
@@ -74,13 +74,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_environment
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments?version=2018-03-05")
       .with(
         body: "{\"name\":\"my name\",\"description\":\"my description\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_environment(
@@ -91,13 +91,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_environment
-    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid?version=2018-03-05")
+    stub_request(:put, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid?version=2018-03-05")
       .with(
         body: "{\"name\":\"hello\",\"description\":\"new\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_environment(
@@ -109,11 +109,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_environment
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "resulting_key" => true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_environment(
@@ -123,11 +123,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collections
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_collections(
@@ -137,13 +137,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_collection
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections?version=2018-03-05")
       .with(
         body: "{\"name\":\"name\",\"description\":\"\",\"configuration_id\":\"confid\",\"language\":\"\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "body" => "create" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_collection(
@@ -155,13 +155,13 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "body" => "create" }, service_response.result)
 
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections?version=2018-03-05")
       .with(
         body: "{\"name\":\"name\",\"description\":\"\",\"language\":\"es\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "body" => "create" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_collection(
@@ -172,11 +172,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "body" => "create" }, service_response.result)
 
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_collection(
@@ -185,11 +185,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "body" => "hello" }, service_response.result)
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_collection(
@@ -198,11 +198,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "body" => "hello" }, service_response.result)
 
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/fields?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/fields?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_collection_fields(
@@ -213,12 +213,12 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/query?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/query?version=2018-03-05")
       .with(
         body: "{\"count\":10}",
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: "hello" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.query(
@@ -238,11 +238,11 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/configurations?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: results.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_configurations(
@@ -250,11 +250,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal(results, service_response.result)
 
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations/confid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/configurations/confid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_configuration(
@@ -263,13 +263,13 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal(results["configurations"][0], service_response.result)
 
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/configurations?version=2018-03-05")
       .with(
         body: "{\"name\":\"my name\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_configuration(
@@ -278,13 +278,13 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal(results["configurations"][0], service_response.result)
 
-    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations/confid?version=2018-03-05")
+    stub_request(:put, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/configurations/confid?version=2018-03-05")
       .with(
         body: "{\"name\":\"my new name\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: results["configurations"][0].to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_configuration(
@@ -294,11 +294,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal(results["configurations"][0], service_response.result)
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/configurations/confid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/configurations/confid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "deleted" => "bogus -- ok" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_configuration(
@@ -318,11 +318,11 @@ class DiscoveryV1Test < Minitest::Test
       "status_description" => "Document is successfully ingested and indexed with no warnings",
       "notices" => []
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/documents?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/documents?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
     File.open(Dir.getwd + "/resources/simple.html") do |file_info|
@@ -333,11 +333,11 @@ class DiscoveryV1Test < Minitest::Test
       )
       refute(service_response.nil?)
     end
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: doc_status.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_document_status(
@@ -347,11 +347,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal(doc_status, service_response.result)
 
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_document(
@@ -371,11 +371,11 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "body" => [] }, service_response.result)
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/documents/docid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { body: [] }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_document(
@@ -414,10 +414,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_all_training_data
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 204, body: "", headers: {})
     service_response = service.delete_all_training_data(
@@ -446,11 +446,11 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_training_data(
@@ -486,13 +486,13 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data?version=2018-03-05")
       .with(
         body: "{\"natural_language_query\":\"why is the sky blue\",\"filter\":\"text:meteorology\",\"examples\":[{\"document_id\":\"54f95ac0-3e4f-4756-bea6-7a67b2713c81\",\"relevance\":1},{\"document_id\":\"01bcca32-7300-4c9f-8d32-33ed7ea643da\",\"cross_reference\":\"my_id_field:1463\",\"relevance\":5}]}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_training_data(
@@ -506,10 +506,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_data
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_training_data(
@@ -533,11 +533,11 @@ class DiscoveryV1Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_training_data(
@@ -557,13 +557,13 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
       .with(
         body: "{\"document_id\":\"string\",\"cross_reference\":\"string\",\"relevance\":0}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_training_example(
@@ -578,10 +578,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_training_example
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 204, body: "", headers: {})
     service_response = service.delete_training_example(
@@ -599,11 +599,11 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_training_example(
@@ -623,13 +623,13 @@ class DiscoveryV1Test < Minitest::Test
       "cross_reference" => "string",
       "relevance" => 0
     }
-    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
+    stub_request(:put, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid/examples/exampleid?version=2018-03-05")
       .with(
         body: "{\"cross_reference\":\"string\",\"relevance\":0}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_training_example(
@@ -644,11 +644,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_expansions
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { expansions: "results" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_expansions(
@@ -657,13 +657,13 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "expansions" => "results" }, service_response.result)
 
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
         body: "{\"expansions\":[{\"input_terms\":\"dumb\",\"expanded_terms\":\"dumb2\"}]}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { expansions: "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_expansions(
@@ -678,10 +678,10 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "expansions" => "success" }, service_response.result)
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/expansions?version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { description: "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_expansions(
@@ -692,11 +692,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_tokenization_dictionary
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { tokenization_dictionary: "results" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_tokenization_dictionary_status(
@@ -705,13 +705,13 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "tokenization_dictionary" => "results" }, service_response.result)
 
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
         body: "{\"tokenization_rules\":[{\"rule1\":\"messi\",\"rule2\":\"ronaldo\"}]}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { discription: "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_tokenization_dictionary(
@@ -726,10 +726,10 @@ class DiscoveryV1Test < Minitest::Test
     )
     assert_equal({ "discription" => "success" }, service_response.result)
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/word_lists/tokenization_dictionary?version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { description: "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_tokenization_dictionary(
@@ -740,10 +740,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_user_data
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/user_data?customer_id=id&version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/user_data?customer_id=id&version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_user_data(
@@ -753,11 +753,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_notices
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/notices?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/notices?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.query_notices(
@@ -768,12 +768,12 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/query?&version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/query?&version=2018-03-05")
       .with(
         body: "{\"collection_ids\":[\"collid\"]}",
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com",
           "Content-type" => "application/json"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -785,11 +785,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_federated_query_notices
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/notices?collection_ids=collid&version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/notices?collection_ids=collid&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.federated_query_notices(
@@ -800,11 +800,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_autocompletion
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/autocompletion?prefix=hi&version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/autocompletion?prefix=hi&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_autocompletion(
@@ -816,11 +816,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_training_examples
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/training_data/queryid/examples?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_training_examples(
@@ -850,13 +850,13 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-05-23",
       authenticator: authenticator
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/events?version=2018-05-23")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/events?version=2018-05-23")
       .with(
         body: "{\"type\":\"click\",\"data\":{\"environment_id\":\"envid\",\"session_token\":\"token\",\"collection_id\":\"collid\",\"document_id\":\"docid\"}}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 201, body: mock_response.to_json, headers: { "Content-Type" => "application/json" })
@@ -868,11 +868,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_query_log
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/logs?count=10&query=test&version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/logs?count=10&query=test&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -892,11 +892,11 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-05-23",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/metrics/number_of_queries?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -916,11 +916,11 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-05-23",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries_with_event?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/metrics/number_of_queries_with_event?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -940,11 +940,11 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-05-23",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/top_query_tokens_with_event_rate?count=10&version=2018-05-23")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/metrics/top_query_tokens_with_event_rate?count=10&version=2018-05-23")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -963,11 +963,11 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-05-23",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/event_rate?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/metrics/event_rate?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -987,11 +987,11 @@ class DiscoveryV1Test < Minitest::Test
       version: "2018-05-23",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/metrics/number_of_queries_with_no_search_results?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/metrics/number_of_queries_with_no_search_results?end_time=2018-01-01T00:10:00Z&start_time=2018-01-01T00:00:00Z&version=2018-05-23")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       )
       .to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
@@ -1003,11 +1003,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_credentials
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/credentials?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_credentials(
@@ -1017,13 +1017,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_credentials
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/credentials?version=2018-03-05")
       .with(
         body: "{\"source_type\":\"salesforce\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_credentials(
@@ -1034,11 +1034,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_credentials
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_credentials(
@@ -1049,13 +1049,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_credentials
-    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
+    stub_request(:put, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
         body: "{\"source_type\":\"salesforce\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_credentials(
@@ -1067,11 +1067,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_credentials
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/credentials/credid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/credentials/credid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "deleted" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_credentials(
@@ -1082,13 +1082,13 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_update_collection
-    stub_request(:put, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid?version=2018-03-05")
+    stub_request(:put, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid?version=2018-03-05")
       .with(
         body: "{\"name\":\"name\",\"description\":\"updated description\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "updated" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.update_collection(
@@ -1101,11 +1101,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_stopword_list_status
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/collid/word_lists/stopwords?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/collid/word_lists/stopwords?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_stopword_list_status(
@@ -1116,11 +1116,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_fields
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/fields?collection_ids=collid&version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/fields?collection_ids=collid&version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_fields(
@@ -1131,7 +1131,7 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_stopword_list
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05").with do |req|
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -1144,10 +1144,10 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_stopword_list
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/collections/colid/word_lists/stopwords?version=2018-03-05")
       .with(
         headers: {
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "deleted" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_stopword_list(
@@ -1158,11 +1158,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_list_gateways
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/gateways?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_gateways(
@@ -1172,11 +1172,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_create_gateway
-    stub_request(:post, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways?version=2018-03-05")
+    stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/gateways?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_gateway(
@@ -1186,11 +1186,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_get_gateway
-    stub_request(:get, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_gateway(
@@ -1201,11 +1201,11 @@ class DiscoveryV1Test < Minitest::Test
   end
 
   def test_delete_gateway
-    stub_request(:delete, "https://gateway.watsonplatform.net/discovery/api/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/v1/environments/envid/gateways/gatewayid?version=2018-03-05")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "received" => "true" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_gateway(

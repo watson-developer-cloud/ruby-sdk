@@ -17,14 +17,14 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       version: "2018-03-16",
       authenticator: authenticator
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-03-16")
+    stub_request(:post, "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2018-03-16")
       .with(
         body: "{\"features\":{\"sentiment\":{}},\"text\":\"hello this is a test\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-understanding.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { resulting_key: true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.analyze(
@@ -45,14 +45,14 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       version: "2018-03-16",
       authenticator: authenticator
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-03-16")
+    stub_request(:post, "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2018-03-16")
       .with(
         body: "{\"features\":{\"sentiment\":{},\"emotion\":{\"document\":false}},\"html\":\"<span>hello this is a test </span>\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-understanding.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { resulting_key: true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.analyze(
@@ -76,14 +76,14 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       version: "2018-03-16",
       authenticator: authenticator
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-03-16")
+    stub_request(:post, "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2018-03-16")
       .with(
         body: "{\"features\":{\"sentiment\":{},\"emotion\":{\"document\":false}},\"url\":\"http://cnn.com\",\"xpath\":\"/bogus/xpath\",\"language\":\"en\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-understanding.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { resulting_key: true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.analyze(
@@ -109,12 +109,12 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       version: "2018-03-16",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/models?version=2018-03-16")
+    stub_request(:get, "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/models?version=2018-03-16")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-understanding.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { resulting_key: true }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_models
@@ -131,12 +131,12 @@ class NaturalLanguageUnderstandingV1Test < Minitest::Test
       version: "2018-03-16",
       authenticator: authenticator
     )
-    stub_request(:delete, "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/models/invalid_model_id?version=2018-03-16")
+    stub_request(:delete, "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/models/invalid_model_id?version=2018-03-16")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-understanding.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { deleted: model_id }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_model(

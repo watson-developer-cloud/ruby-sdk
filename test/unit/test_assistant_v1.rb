@@ -29,13 +29,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
       .with(
         body: "{\"text\":\"I want financial advice today.\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_counterexample(
@@ -54,13 +54,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
       .with(
         body: "{\"text\":\"I want financial advice today.\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_counterexample(
@@ -80,13 +80,13 @@ class AssistantV1Test < Minitest::Test
       "code" => error_code,
       "error" => error_msg
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
       .with(
         body: "{\"text\":\"I want financial advice today.\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 429, body: error_response.to_json, headers: headers)
     begin
@@ -111,13 +111,13 @@ class AssistantV1Test < Minitest::Test
       "error" => error_msg,
       "code" => error_code
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
       .with(
         body: "{\"text\":\"I want financial advice today.\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 407, body: error_response.to_json, headers: headers)
     begin
@@ -135,11 +135,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/I%20want%20financial%20advice%20today?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples/I%20want%20financial%20advice%20today?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: {}.to_json, headers: headers)
     service_response = service.delete_counterexample(
@@ -158,11 +158,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_counterexample(
@@ -193,11 +193,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_counterexamples(
@@ -215,13 +215,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/counterexamples/What%20are%20you%20wearing%3F?version=2018-02-16")
       .with(
         body: "{\"text\":\"What are you wearing?\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.update_counterexample(
@@ -245,13 +245,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities?version=2018-02-16")
       .with(
         body: "{\"entity\":\"pizza_toppings\",\"description\":\"Tasty pizza toppings\",\"metadata\":{\"property\":\"value\"}}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.create_entity(
@@ -269,11 +269,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/pizza_toppings?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/pizza_toppings?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
     service_response = service.delete_entity(
@@ -296,11 +296,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/pizza_toppings?export=true&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/pizza_toppings?export=true&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_entity(
@@ -334,11 +334,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities?export=true&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities?export=true&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_entities(
@@ -361,13 +361,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/pizza_toppings?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/pizza_toppings?version=2018-02-16")
       .with(
         body: "{\"entity\":\"pizza_toppings\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.update_entity(
@@ -387,13 +387,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order/examples?version=2018-02-16")
       .with(
         body: "{\"text\":\"Gimme a pizza with pepperoni\",\"mentions\":[{\"mentioned\":\"yes\"}]}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_example(
@@ -409,11 +409,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
     service_response = service.delete_example(
@@ -433,11 +433,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_example(
@@ -469,11 +469,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order/examples?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_examples(
@@ -492,13 +492,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order/examples/Gimme%20a%20pizza%20with%20pepperoni?version=2018-02-16")
       .with(
         body: "{\"text\":\"Gimme a pizza with pepperoni\",\"mentions\":[{\"mentioned\":\"yes\"}]}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.update_example(
@@ -521,13 +521,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents?version=2018-02-16")
       .with(
         body: "{\"intent\":\"pizza_order\",\"description\":\"User wants to start a new pizza order\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_intent(
@@ -542,11 +542,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "{}", headers: headers)
     service_response = service.delete_intent(
@@ -566,11 +566,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order?export=false&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order?export=false&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_intent(
@@ -599,11 +599,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents?export=false&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents?export=false&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_intents(
@@ -623,13 +623,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/intents/pizza_order?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/intents/pizza_order?version=2018-02-16")
       .with(
         body: "{\"intent\":\"pizza_order\",\"description\":\"User wants to start a new pizza order\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
@@ -704,11 +704,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/logs?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/logs?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_logs(
@@ -780,11 +780,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/logs?filter=language::en,request.context.metadata.deployment::deployment_1&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/logs?filter=language::en,request.context.metadata.deployment::deployment_1&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_all_logs(
@@ -816,13 +816,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/message?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/message?version=2018-02-16")
       .with(
         body: "{\"input\":{\"text\":\"Turn on the lights\"}}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
     service_response = service.message(
@@ -842,13 +842,13 @@ class AssistantV1Test < Minitest::Test
         }
       }
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/message?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/message?version=2018-02-16")
       .with(
         body: "{\"input\":{\"text\":\"Turn on the lights\"},\"context\":\"{\\\"conversation_id\\\":\\\"1b7b67c0-90ed-45dc-8508-9488bc483d5b\\\",\\\"system\\\":{\\\"dialog_stack\\\":[\\\"root\\\"],\\\"dialog_turn_counter\\\":2,\\\"dialog_request_counter\\\":1}}\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
     service_response = service.message(
@@ -868,13 +868,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/aeiou/values/vowel/synonyms?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/aeiou/values/vowel/synonyms?version=2018-02-16")
       .with(
         body: "{\"synonym\":\"a\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_synonym(
@@ -890,11 +890,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/aeiou/values/vowel/synonyms/a?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/aeiou/values/vowel/synonyms/a?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service_response = service.delete_synonym(
@@ -915,11 +915,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms/barbecue?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms/barbecue?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_synonym(
@@ -955,11 +955,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_synonyms(
@@ -979,13 +979,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms/barbecue?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values/bbq/synonyms/barbecue?version=2018-02-16")
       .with(
         body: "{\"synonym\":\"barbecue\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.update_synonym(
@@ -1009,13 +1009,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values?version=2018-02-16")
       .with(
         body: "{\"value\":\"aeiou\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_value(
@@ -1030,11 +1030,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values/bbq?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service_response = service.delete_value(
@@ -1058,11 +1058,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq?export=true&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values/bbq?export=true&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_value(
@@ -1097,11 +1097,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values?export=true&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values?export=true&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_values(
@@ -1125,13 +1125,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid/entities/grilling/values/bbq?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid/entities/grilling/values/bbq?version=2018-02-16")
       .with(
         body: "{\"value\":\"BBQ sauce\",\"metadata\":{\"code\":1422}}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.update_value(
@@ -1158,13 +1158,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces?version=2018-02-16")
       .with(
         body: "{\"name\":\"Pizza app\",\"description\":\"Pizza app\",\"language\":\"en\",\"metadata\":{},\"system_settings\":{\"system_settings\":\"yes\"},\"webhooks\":[]}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 201, body: response.to_json, headers: headers)
     service_response = service.create_workspace(
@@ -1182,11 +1182,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service_response = service.delete_workspace(
@@ -1210,11 +1210,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/boguswid?export=false&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/boguswid?export=false&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.get_workspace(
@@ -1245,11 +1245,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.list_workspaces
@@ -1269,13 +1269,13 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/pizza_app-e0f3?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/pizza_app-e0f3?version=2018-02-16")
       .with(
         body: "{\"name\":\"Pizza app\",\"description\":\"Pizza app\",\"language\":\"en\",\"metadata\":{},\"system_settings\":{\"system_settings\":\"yes\"}}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: headers)
     service_response = service.update_workspace(
@@ -1294,13 +1294,13 @@ class AssistantV1Test < Minitest::Test
       "Content-Type" => "application/json"
     }
 
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/id/dialog_nodes?version=2018-02-16")
       .with(
         body: "{\"dialog_node\":\"location-done\",\"user_label\":\"labeled\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-done" } }.to_json, headers: headers)
     service_response = service.create_dialog_node(
@@ -1310,11 +1310,11 @@ class AssistantV1Test < Minitest::Test
     )
     assert_equal("location-done", service_response.result["application/json"]["dialog_node"])
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "description" => "deleted successfully" }.to_json, headers: headers)
     service_response = service.delete_dialog_node(
@@ -1323,11 +1323,11 @@ class AssistantV1Test < Minitest::Test
     )
     assert(service_response.nil?)
 
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/id/dialog_nodes/location-done?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-atm" } }.to_json, headers: headers)
     service_response = service.get_dialog_node(
@@ -1336,11 +1336,11 @@ class AssistantV1Test < Minitest::Test
     )
     assert_equal({ "application/json" => { "dialog_node" => "location-atm" } }, service_response.result)
 
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/id/dialog_nodes?version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/id/dialog_nodes?version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "application/json" => { "dialog_node" => "location-atm" } }.to_json, headers: headers)
     service_response = service.list_dialog_nodes(
@@ -1353,11 +1353,11 @@ class AssistantV1Test < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/assistant/api/v1/user_data?customer_id=id&version=2018-02-16")
+    stub_request(:delete, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/user_data?customer_id=id&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: headers)
     service_response = service.delete_user_data(
@@ -1367,13 +1367,13 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_update_dialog_node
-    stub_request(:post, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/dialog_nodes/dialog_node?version=2018-02-16")
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/workspace_id/dialog_nodes/dialog_node?version=2018-02-16")
       .with(
         body: "{\"description\":\"A new description\",\"user_label\":\"new_label\"}",
         headers: {
           "Accept" => "application/json",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "Pseudo update dialog node response", headers: {})
     service_response = service.update_dialog_node(
@@ -1386,11 +1386,11 @@ class AssistantV1Test < Minitest::Test
   end
 
   def test_list_mentions
-    stub_request(:get, "https://gateway.watsonplatform.net/assistant/api/v1/workspaces/workspace_id/entities/entity/mentions?export=true&include_audit=true&version=2018-02-16")
+    stub_request(:get, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/workspace_id/entities/entity/mentions?export=true&include_audit=true&version=2018-02-16")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "list_mentions_response" => "yes" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_mentions(
