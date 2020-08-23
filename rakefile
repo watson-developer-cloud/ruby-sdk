@@ -13,7 +13,7 @@ namespace :test do
     t.name = "unit"
     t.description = "Run unit tests"
     t.libs << "test"
-    t.test_files = FileList["test/unit/*.rb"]
+    t.test_files = FileList["test/unit/*assistant*.rb"]
     t.verbose = true
     t.warning = true
     t.deps = [:rubocop]
