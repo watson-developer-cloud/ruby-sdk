@@ -12,8 +12,7 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
     attr_accessor :service
     def before_all
       authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
-        apikey: ENV["ASSISTANT_APIKEY"],
-        url: ENV["ASSISTANT_AUTH_URL"]
+        apikey: ENV["ASSISTANT_APIKEY"]
       )
       @service = IBMWatson::AssistantV2.new(
         version: "2018-12-31",
