@@ -33,7 +33,7 @@ module IBMWatson
   class DiscoveryV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "discovery"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/discovery/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.discovery.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Discovery service.

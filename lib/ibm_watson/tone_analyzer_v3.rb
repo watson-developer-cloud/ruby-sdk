@@ -39,7 +39,7 @@ module IBMWatson
   class ToneAnalyzerV3 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "tone_analyzer"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/tone-analyzer/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.tone-analyzer.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Tone Analyzer service.

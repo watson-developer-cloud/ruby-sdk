@@ -15,14 +15,14 @@ class ToneAnalyzerV3Test < Minitest::Test
     }
     expected_response = IBMWatson::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
+    stub_request(:post, "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/v3/tone?version=2017-09-21")
       .with(
         body: tone_text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.tone-analyzer.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
@@ -49,14 +49,14 @@ class ToneAnalyzerV3Test < Minitest::Test
     }
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
     expected_response = IBMWatson::DetailedResponse.new(status: 200, headers: headers, body: tone_response)
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?sentences=false&version=2017-09-21")
+    stub_request(:post, "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/v3/tone?sentences=false&version=2017-09-21")
       .with(
         body: tone_text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.tone-analyzer.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
@@ -82,14 +82,14 @@ class ToneAnalyzerV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     expected_response = IBMWatson::DetailedResponse.new(body: tone_response, status: 200, headers: headers)
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone_chat?version=2017-09-21")
+    stub_request(:post, "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/v3/tone_chat?version=2017-09-21")
       .with(
         body: "{\"utterances\":[{\"text\":\"I am very happy\",\"user\":\"glenn\"}]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.tone-analyzer.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
@@ -127,14 +127,14 @@ class ToneAnalyzerV3Test < Minitest::Test
       "error" => error_message
     }
     text = "Team, I know that times are tough!"
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
+    stub_request(:post, "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/v3/tone?version=2017-09-21")
       .with(
         body: text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.tone-analyzer.watson.cloud.ibm.com"
         }
       ).to_return(status: 400, body: tone_response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
@@ -161,14 +161,14 @@ class ToneAnalyzerV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     tone_text = File.read(Dir.getwd + "/resources/personality.txt")
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
+    stub_request(:post, "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/v3/tone?version=2017-09-21")
       .with(
         body: tone_text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "Custom/Type",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.tone-analyzer.watson.cloud.ibm.com",
           "Custom-Header-One" => "yes"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
@@ -193,14 +193,14 @@ class ToneAnalyzerV3Test < Minitest::Test
       "Content-Type" => "application/json"
     }
     tone_text = { "text" => "This is the text to be analyzed" }
-    stub_request(:post, "https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2017-09-21")
+    stub_request(:post, "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/v3/tone?version=2017-09-21")
       .with(
         body: tone_text,
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.tone-analyzer.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: tone_response.to_json, headers: headers)
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(

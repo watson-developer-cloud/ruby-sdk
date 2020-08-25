@@ -60,14 +60,14 @@ class LanguageTranslatorV3Test < Minitest::Test
       "translations" => [{ "translation" => "Hello, how are you ? \u20ac" }],
       "word_count" => 4
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/translate?version=2018-05-01")
+    stub_request(:post, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/translate?version=2018-05-01")
       .with(
         body: "{\"text\":\"Hola, cómo estás? €\",\"source\":\"es\",\"target\":\"en\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.translate(
@@ -109,14 +109,14 @@ class LanguageTranslatorV3Test < Minitest::Test
       ],
       "word_count" => 5
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/translate?version=2018-05-01")
+    stub_request(:post, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/translate?version=2018-05-01")
       .with(
         body: "{\"text\":\"Messi is the best ever\",\"model_id\":\"en-es-conversational\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.translate(
@@ -164,14 +164,14 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ]
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/identify?version=2018-05-01")
+    stub_request(:post, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/identify?version=2018-05-01")
       .with(
         body: "祝你有美好的一天",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
           "Content-Type" => "text/plain",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.identify(
@@ -230,7 +230,7 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/identifiable_languages?version=2018-05-01")
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/identifiable_languages?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
@@ -275,12 +275,12 @@ class LanguageTranslatorV3Test < Minitest::Test
       "default_model" => false,
       "name" => "test_glossary"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/models?base_model_id=en-fr&name=test_glossary&version=2018-05-01")
+    stub_request(:post, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/models?base_model_id=en-fr&name=test_glossary&version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     custom_model = File.open(Dir.getwd + "/resources/language_translator_model.tmx")
@@ -333,12 +333,12 @@ class LanguageTranslatorV3Test < Minitest::Test
     expected = {
       "status" => "OK"
     }
-    stub_request(:delete, "https://gateway.watsonplatform.net/language-translator/api/v3/models/en-es-conversational?version=2018-05-01")
+    stub_request(:delete, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/models/en-es-conversational?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_model(
@@ -381,12 +381,12 @@ class LanguageTranslatorV3Test < Minitest::Test
       "default_model" => false,
       "name" => "en-es-conversational"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/models/en-es-conversational?version=2018-05-01")
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/models/en-es-conversational?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_model(
@@ -445,12 +445,12 @@ class LanguageTranslatorV3Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/models?version=2018-05-01")
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/models?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_models
@@ -480,12 +480,12 @@ class LanguageTranslatorV3Test < Minitest::Test
       authenticator: authenticator
     )
     expected = {}
-    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents?version=2018-05-01")
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/documents?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_documents
@@ -514,7 +514,7 @@ class LanguageTranslatorV3Test < Minitest::Test
       version: "2018-05-01",
       authenticator: authenticator
     )
-    stub_request(:post, "https://gateway.watsonplatform.net/language-translator/api/v3/documents?version=2018-05-01")
+    stub_request(:post, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/documents?version=2018-05-01")
       .with do |req|
         assert_equal req.headers["Accept"], "application/json"
         assert_match %r{\Amultipart/form-data}, req.headers["Content-Type"]
@@ -546,12 +546,12 @@ class LanguageTranslatorV3Test < Minitest::Test
       authenticator: authenticator
     )
     expected = {}
-    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/documents/id?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_document_status(document_id: "id")
@@ -581,12 +581,12 @@ class LanguageTranslatorV3Test < Minitest::Test
       authenticator: authenticator
     )
     expected = {}
-    stub_request(:get, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id/translated_document?version=2018-05-01")
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/documents/id/translated_document?version=2018-05-01")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_translated_document(document_id: "id")
@@ -616,14 +616,75 @@ class LanguageTranslatorV3Test < Minitest::Test
       authenticator: authenticator
     )
     expected = {}
-    stub_request(:delete, "https://gateway.watsonplatform.net/language-translator/api/v3/documents/id?version=2018-05-01")
+    stub_request(:delete, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/documents/id?version=2018-05-01")
       .with(
         headers: {
           "Authorization" => "Bearer " + token_response["access_token"],
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.language-translator.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_document(document_id: "id")
     assert_nil(service_response)
+  end
+
+  def test_list_languages
+    token_response = token
+    stub_request(:post, "https://iam.cloud.ibm.com/identity/token")
+      .with(
+        body: { "apikey" => "iam_apikey", "grant_type" => "urn:ibm:params:oauth:grant-type:apikey", "response_type" => "cloud_iam" },
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/x-www-form-urlencoded",
+          "Host" => "iam.cloud.ibm.com"
+        }
+      ).to_return(
+        status: 200,
+        body: token_response.to_json,
+        headers: {}
+      )
+    authenticator = IBMWatson::Authenticators::IamAuthenticator.new(
+      apikey: "iam_apikey"
+    )
+    service = IBMWatson::LanguageTranslatorV3.new(
+      version: "2018-05-01",
+      authenticator: authenticator
+    )
+    expected = {
+      "languages" => [
+        {
+          "name" => "German",
+          "language" => "de"
+        },
+        {
+          "name" => "Greek",
+          "language" => "el"
+        },
+        {
+          "name" => "English",
+          "language" => "en"
+        },
+        {
+          "name" => "Esperanto",
+          "language" => "eo"
+        },
+        {
+          "name" => "Spanish",
+          "language" => "es"
+        },
+        {
+          "name" => "Chinese",
+          "language" => "zh"
+        }
+      ]
+    }
+    stub_request(:get, "https://api.us-south.language-translator.watson.cloud.ibm.com/v3/languages?version=2018-05-01")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Bearer " + token_response["access_token"]
+        }
+      ).to_return(status: 200, body: expected.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_languages
+    assert_equal(expected, service_response.result)
   end
 end

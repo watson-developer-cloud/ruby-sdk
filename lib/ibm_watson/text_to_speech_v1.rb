@@ -14,10 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The IBM&reg; Text to Speech service provides APIs that use IBM's speech-synthesis
-# capabilities to synthesize text into natural-sounding speech in a variety of languages,
-# dialects, and voices. The service supports at least one male or female voice, sometimes
-# both, for each language. The audio is streamed back to the client with minimal delay.
+# The IBM Watson&trade; Text to Speech service provides APIs that use IBM's
+# speech-synthesis capabilities to synthesize text into natural-sounding speech in a
+# variety of languages, dialects, and voices. The service supports at least one male or
+# female voice, sometimes both, for each language. The audio is streamed back to the
+# client with minimal delay.
 #
 # For speech synthesis, the service supports a synchronous HTTP Representational State
 # Transfer (REST) interface and a WebSocket interface. Both interfaces support plain text
@@ -46,7 +47,7 @@ module IBMWatson
   class TextToSpeechV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "text_to_speech"
-    DEFAULT_SERVICE_URL = "https://stream.watsonplatform.net/text-to-speech/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.text-to-speech.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Text to Speech service.
@@ -78,8 +79,10 @@ module IBMWatson
     # @!method list_voices
     # List voices.
     # Lists all voices available for use with the service. The information includes the
-    #   name, language, gender, and other details about the voice. To see information
-    #   about a specific voice, use the **Get a voice** method.
+    #   name, language, gender, and other details about the voice. The ordering of the
+    #   list of voices can change from call to call; do not rely on an alphabetized or
+    #   static list of voices. To see information about a specific voice, use the **Get a
+    #   voice** method.
     #
     #   **See also:** [Listing all available
     #   voices](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-voices#listVoices).
@@ -802,10 +805,14 @@ module IBMWatson
     #   deletes all data for the customer ID, regardless of the method by which the
     #   information was added. The method has no effect if no data is associated with the
     #   customer ID. You must issue the request with credentials for the same instance of
-    #   the service that was used to associate the customer ID with the data.
+    #   the service that was used to associate the customer ID with the data. You
+    #   associate a customer ID with data by passing the `X-Watson-Metadata` header with a
+    #   request that passes the data.
     #
-    #   You associate a customer ID with data by passing the `X-Watson-Metadata` header
-    #   with a request that passes the data.
+    #   **Note:** If you delete an instance of the service from the service console, all
+    #   data associated with that service instance is automatically deleted. This includes
+    #   all custom voice models and word/translation pairs, and all data related to speech
+    #   synthesis requests.
     #
     #   **See also:** [Information
     #   security](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-information-security#information-security).

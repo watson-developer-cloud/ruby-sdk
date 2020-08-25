@@ -28,11 +28,11 @@ class VisualRecognitionV3Test < Minitest::Test
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classifiers/bogusnumber?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -50,11 +50,11 @@ class VisualRecognitionV3Test < Minitest::Test
       version: "2018-03-19",
       authenticator: authenticator
     )
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusnumber?version=2018-03-19")
+    stub_request(:delete, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classifiers/bogusnumber?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: { "response" => 200 }.to_json, headers: { "Content-Type" => "applicaton/json" })
@@ -87,11 +87,11 @@ class VisualRecognitionV3Test < Minitest::Test
           }
         ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classifiers?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -118,11 +118,11 @@ class VisualRecognitionV3Test < Minitest::Test
     cars = File.open(Dir.getwd + "/resources/cars.zip")
     trucks = File.open(Dir.getwd + "/resources/trucks.zip")
 
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classifiers?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -161,11 +161,11 @@ class VisualRecognitionV3Test < Minitest::Test
         { "class" => "brokenwinshield" }
       ]
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/bogusid?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classifiers/bogusid?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -219,11 +219,11 @@ class VisualRecognitionV3Test < Minitest::Test
       "images_processed" => 1
     }
 
-    stub_request(:post, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classify?version=2018-03-19")
+    stub_request(:post, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classify?version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
@@ -265,11 +265,11 @@ class VisualRecognitionV3Test < Minitest::Test
       version: "2018-03-19",
       authenticator: authenticator
     )
-    stub_request(:delete, "https://gateway.watsonplatform.net/visual-recognition/api/v3/user_data?customer_id=id&version=2018-03-19")
+    stub_request(:delete, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/user_data?customer_id=id&version=2018-03-19")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net",
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com",
           "Authorization" => "Bearer bogus_access_token"
         }
       ).to_return(status: 200, body: "", headers: {})
@@ -287,11 +287,11 @@ class VisualRecognitionV3Test < Minitest::Test
       version: "2018-03-19",
       authenticator: authenticator
     )
-    stub_request(:get, "https://gateway.watsonplatform.net/visual-recognition/api/v3/classifiers/classifierid/core_ml_model?version=2018-03-19")
+    stub_request(:get, "https://api.us-south.visual-recognition.watson.cloud.ibm.com/v3/classifiers/classifierid/core_ml_model?version=2018-03-19")
       .with(
         headers: {
           "Authorization" => "Bearer bogus_access_token",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.visual-recognition.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "ml_model", headers: {})
     service_response = service.get_core_ml_model(classifier_id: "classifierid")

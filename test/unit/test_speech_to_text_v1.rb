@@ -28,7 +28,7 @@ class SpeechToTextV1Test < Minitest::Test
     models_response = {
       "models" => [
         {
-          "url" => "https://stream.watsonplatform.net/speech-to-text/api/v1/models/WatsonModel",
+          "url" => "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/models/WatsonModel",
           "rate" => 16_000,
           "name" => "WatsonModel",
           "language" => "en-US",
@@ -43,12 +43,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/models")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/models")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: models_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_models
@@ -68,13 +68,13 @@ class SpeechToTextV1Test < Minitest::Test
       "result_index" => 0
     }
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognize")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "audio/l16; rate=44100",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: recognize_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.recognize(
@@ -102,13 +102,13 @@ class SpeechToTextV1Test < Minitest::Test
     )
 
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-    stub_request(:post, "ws://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+    stub_request(:post, "ws://api.us-south.speech-to-text.watson.cloud.ibm.com/speech-to-text/api/v1/recognize")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "audio/l16; rate=44100",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: { "Content-Type" => "application/json" })
 
@@ -134,12 +134,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/models/modelid")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/models/modelid")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_model(
@@ -166,23 +166,23 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognitions")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: get_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.check_jobs
     assert_equal("6193190c-0777-11e8-9b4b-43ad845196dd", service_response.result["recognitions"][0]["id"])
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions/jobid")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognitions/jobid")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "status" => "waiting" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.check_job(
@@ -190,13 +190,13 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "status" => "waiting" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognitions")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "audio/basic",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "status" => "waiting" }.to_json, headers: { "Content-Type" => "application/json" })
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
@@ -206,11 +206,11 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "status" => "waiting" }, service_response.result)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognitions/jobid")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognitions/jobid")
       .with(
         headers: {
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "description" => "deleted successfully" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_job(
@@ -227,11 +227,11 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/register_callback?callback_url=monitorcalls.com")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/register_callback?callback_url=monitorcalls.com")
       .with(
         headers: {
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "status" => "created", "url" => "monitorcalls.com" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.register_callback(
@@ -239,11 +239,11 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "status" => "created", "url" => "monitorcalls.com" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/unregister_callback?callback_url=monitorcalls.com")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/unregister_callback?callback_url=monitorcalls.com")
       .with(
         headers: {
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "response" => "The callback URL was successfully unregistered" }.to_json, headers: { "Content-Type" => "applicaton/json" })
     service_response = service.unregister_callback(
@@ -260,25 +260,25 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_language_models
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations")
       .with(
         body: "{\"name\":\"Example model\",\"base_model_name\":\"en-US_BroadbandModel\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_language_model(
@@ -287,12 +287,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/train")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customid/train")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.train_language_model(
@@ -300,12 +300,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     refute_nil(service_response)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/modelid")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/modelid")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_language_model(
@@ -313,12 +313,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/modelid")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/modelid")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_language_model(
@@ -335,25 +335,25 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_acoustic_models
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations")
       .with(
         body: "{\"name\":\"Example model\",\"base_model_name\":\"en-US_BroadbandModel\",\"description\":\"Example custom language model\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.create_acoustic_model(
@@ -363,12 +363,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customid/train")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/customid/train")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.train_acoustic_model(
@@ -376,12 +376,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     refute_nil(service_response)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/modelid")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/modelid")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_acoustic_model(
@@ -389,12 +389,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "bogus_response" => "yep" }, service_response.result)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/modelid")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/modelid")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "bogus_response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_acoustic_model(
@@ -411,12 +411,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customid/corpora")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_corpora(
@@ -424,11 +424,11 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customid/corpora/corpus")
       .with(
         headers: {
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     corpus_file = File.open(Dir.getwd + "/resources/speech_to_text/corpus-short-1.txt")
@@ -446,12 +446,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customid/corpora/corpus")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_corpus(
@@ -460,12 +460,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customid/corpora/corpus")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customid/corpora/corpus")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_corpus(
@@ -483,14 +483,14 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:put, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/IEEE")
+    stub_request(:put, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words/IEEE")
       .with(
         body: "{\"sounds_like\":[\"i triple e\"],\"display_as\":\"IEEE\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_word(
@@ -501,12 +501,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/wordname")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words/wordname")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_word(
@@ -515,12 +515,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/IEEE")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words/IEEE")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_word(
@@ -536,14 +536,14 @@ class SpeechToTextV1Test < Minitest::Test
     }
     custom_words = [custom_word, custom_word, custom_word]
 
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words")
       .with(
         body: "{\"words\":[{\"word\":\"IEEE\",\"sounds_like\":[\" i triple e\"],\"display_as\":\"IEEE\"},{\"word\":\"IEEE\",\"sounds_like\":[\" i triple e\"],\"display_as\":\"IEEE\"},{\"word\":\"IEEE\",\"sounds_like\":[\" i triple e\"],\"display_as\":\"IEEE\"}]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_words(
@@ -552,12 +552,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/IEEE")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words/IEEE")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_word(
@@ -566,12 +566,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words/wordname")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words/wordname")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_word(
@@ -580,12 +580,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_words(
@@ -593,12 +593,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words?sort=alphabetical")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words?sort=alphabetical")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_words(
@@ -607,12 +607,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "yep" }, service_response.result)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/words?word_type=all")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/words?word_type=all")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_words(
@@ -630,12 +630,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/grammars")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_grammars(
@@ -652,12 +652,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/grammars/grammar")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     response = service.add_grammar(
@@ -677,12 +677,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/grammars/grammar")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     response = service.get_grammar(
@@ -700,12 +700,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/custid/grammars/grammar")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/custid/grammars/grammar")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "yep" }.to_json, headers: { "Content-Type" => "application/json" })
     response = service.delete_grammar(
@@ -724,13 +724,13 @@ class SpeechToTextV1Test < Minitest::Test
       authenticator: authenticator
     )
     audio_file = File.open(Dir.getwd + "/resources/speech.wav")
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/custid/audio/hiee")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/custid/audio/hiee")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "post response" => "done" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.add_audio(
@@ -741,12 +741,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
 
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/custid/audio/hiee")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/custid/audio/hiee")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "post response" => "done" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_audio(
@@ -755,12 +755,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_nil(service_response)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/custid/audio/hiee")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/custid/audio/hiee")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response" => "done" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_audio(
@@ -769,12 +769,12 @@ class SpeechToTextV1Test < Minitest::Test
     )
     assert_equal({ "get response" => "done" }, service_response.result)
 
-    stub_request(:get, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/custid/audio")
+    stub_request(:get, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/custid/audio")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "get response all" => "done" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_audio(
@@ -791,11 +791,11 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:delete, "https://stream.watsonplatform.net/speech-to-text/api/v1/user_data?customer_id=id")
+    stub_request(:delete, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/user_data?customer_id=id")
       .with(
         headers: {
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "description" => "success" }.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.delete_user_data(
@@ -826,13 +826,13 @@ class SpeechToTextV1Test < Minitest::Test
       ],
       "result_index" => 0
     }
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognize")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "audio/l16; rate=44100",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: recognize_response.to_json, headers: { "Content-Type" => "application/json" })
     future = service.await.recognize(
@@ -865,13 +865,13 @@ class SpeechToTextV1Test < Minitest::Test
       ],
       "result_index" => 0
     }
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/recognize")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognize")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "audio/l16; rate=44100",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: recognize_response.to_json, headers: { "Content-Type" => "application/json" })
     future = service.async.recognize(
@@ -891,12 +891,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customization_id/reset")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customization_id/reset")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.reset_language_model(customization_id: "customization_id")
@@ -911,12 +911,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/customizations/customization_id/upgrade_model")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/customizations/customization_id/upgrade_model")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.upgrade_language_model(customization_id: "customization_id")
@@ -931,12 +931,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customization_id/upgrade_model")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/customization_id/upgrade_model")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.upgrade_acoustic_model(customization_id: "customization_id")
@@ -951,12 +951,12 @@ class SpeechToTextV1Test < Minitest::Test
     service = IBMWatson::SpeechToTextV1.new(
       authenticator: authenticator
     )
-    stub_request(:post, "https://stream.watsonplatform.net/speech-to-text/api/v1/acoustic_customizations/customization_id/reset")
+    stub_request(:post, "https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/acoustic_customizations/customization_id/reset")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "stream.watsonplatform.net"
+          "Host" => "api.us-south.speech-to-text.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.reset_acoustic_model(customization_id: "customization_id")

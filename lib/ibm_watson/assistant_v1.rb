@@ -34,7 +34,7 @@ module IBMWatson
   class AssistantV1 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "assistant"
-    DEFAULT_SERVICE_URL = "https://gateway.watsonplatform.net/assistant/api"
+    DEFAULT_SERVICE_URL = "https://api.us-south.assistant.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Assistant service.
@@ -85,8 +85,6 @@ module IBMWatson
     #   API offers significant advantages, including ease of deployment, automatic state
     #   management, versioning, and search capabilities. For more information, see the
     #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-api-overview).
-    #
-    #   There is no rate limit for this operation.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param input [MessageInput] An input object that includes the input text.
     # @param intents [Array[RuntimeIntent]] Intents to use when evaluating the user input. Include intents from the previous
@@ -146,9 +144,6 @@ module IBMWatson
     # @!method list_workspaces(page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List workspaces.
     # List the workspaces associated with a Watson Assistant service instance.
-    #
-    #   This operation is limited to 500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param sort [String] The attribute by which returned workspaces will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
@@ -187,9 +182,6 @@ module IBMWatson
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
-    #
-    #   This operation is limited to 30 requests per 30 minutes. For more information, see
-    #   **Rate limiting**.
     # @param name [String] The name of the workspace. This string cannot contain carriage return, newline, or
     #   tab characters.
     # @param description [String] The description of the workspace. This string cannot contain carriage return,
@@ -251,10 +243,6 @@ module IBMWatson
     # @!method get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
     # Get information about a workspace.
     # Get information about a workspace, optionally including all workspace content.
-    #
-    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
-    #   With **export**=`true`, the limit is 20 requests per 30 minutes. For more
-    #   information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
@@ -297,9 +285,6 @@ module IBMWatson
     # Update workspace.
     # Update an existing workspace with new or modified data. You must provide component
     #   objects defining the content of the updated workspace.
-    #
-    #   This operation is limited to 30 request per 30 minutes. For more information, see
-    #   **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param name [String] The name of the workspace. This string cannot contain carriage return, newline, or
     #   tab characters.
@@ -375,9 +360,6 @@ module IBMWatson
     # @!method delete_workspace(workspace_id:)
     # Delete workspace.
     # Delete a workspace from the service instance.
-    #
-    #   This operation is limited to 30 requests per 30 minutes. For more information, see
-    #   **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @return [nil]
     def delete_workspace(workspace_id:)
@@ -411,10 +393,6 @@ module IBMWatson
     # @!method list_intents(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List intents.
     # List the intents for a workspace.
-    #
-    #   With **export**=`false`, this operation is limited to 2000 requests per 30
-    #   minutes. With **export**=`true`, the limit is 400 requests per 30 minutes. For
-    #   more information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
@@ -462,9 +440,6 @@ module IBMWatson
     #
     #   If you want to create multiple intents with a single API call, consider using the
     #   **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 2000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The name of the intent. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, hyphen, and dot
@@ -514,10 +489,6 @@ module IBMWatson
     # @!method get_intent(workspace_id:, intent:, export: nil, include_audit: nil)
     # Get intent.
     # Get information about an intent, optionally including all intent content.
-    #
-    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
-    #   With **export**=`true`, the limit is 400 requests per 30 minutes. For more
-    #   information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param export [Boolean] Whether to include all element content in the returned data. If
@@ -562,9 +533,6 @@ module IBMWatson
     #
     #   If you want to update multiple intents with a single API call, consider using the
     #   **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 2000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param new_intent [String] The name of the intent. This string must conform to the following restrictions:
@@ -625,9 +593,6 @@ module IBMWatson
     # @!method delete_intent(workspace_id:, intent:)
     # Delete intent.
     # Delete an intent from a workspace.
-    #
-    #   This operation is limited to 2000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @return [nil]
@@ -665,9 +630,6 @@ module IBMWatson
     # List user input examples.
     # List the user input examples for an intent, optionally including contextual entity
     #   mentions.
-    #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
@@ -714,9 +676,6 @@ module IBMWatson
     #
     #   If you want to add multiple examples with a single API call, consider using the
     #   **[Update intent](#update-intent)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param text [String] The text of a user input example. This string must conform to the following
@@ -766,9 +725,6 @@ module IBMWatson
     # @!method get_example(workspace_id:, intent:, text:, include_audit: nil)
     # Get user input example.
     # Get information about a user input example.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param text [String] The text of the user input example.
@@ -811,9 +767,6 @@ module IBMWatson
     #
     #   If you want to update multiple examples with a single API call, consider using the
     #   **[Update intent](#update-intent)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param text [String] The text of the user input example.
@@ -864,9 +817,6 @@ module IBMWatson
     # @!method delete_example(workspace_id:, intent:, text:)
     # Delete user input example.
     # Delete a user input example from an intent.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param text [String] The text of the user input example.
@@ -907,9 +857,6 @@ module IBMWatson
     # List counterexamples.
     # List the counterexamples for a workspace. Counterexamples are examples that have
     #   been marked as irrelevant input.
-    #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param sort [String] The attribute by which returned counterexamples will be sorted. To reverse the
@@ -954,9 +901,6 @@ module IBMWatson
     #
     #   If you want to add multiple counterexamples with a single API call, consider using
     #   the **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param text [String] The text of a user input marked as irrelevant input. This string must conform to
     #   the following restrictions:
@@ -1002,9 +946,6 @@ module IBMWatson
     # Get counterexample.
     # Get information about a counterexample. Counterexamples are examples that have
     #   been marked as irrelevant input.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
@@ -1042,12 +983,6 @@ module IBMWatson
     # Update counterexample.
     # Update the text of a counterexample. Counterexamples are examples that have been
     #   marked as irrelevant input.
-    #
-    #   If you want to update multiple counterexamples with a single API call, consider
-    #   using the **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @param new_text [String] The text of a user input marked as irrelevant input. This string must conform to
@@ -1094,9 +1029,6 @@ module IBMWatson
     # Delete counterexample.
     # Delete a counterexample from a workspace. Counterexamples are examples that have
     #   been marked as irrelevant input.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param text [String] The text of a user input counterexample (for example, `What are you wearing?`).
     # @return [nil]
@@ -1133,10 +1065,6 @@ module IBMWatson
     # @!method list_entities(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entities.
     # List the entities for a workspace.
-    #
-    #   With **export**=`false`, this operation is limited to 1000 requests per 30
-    #   minutes. With **export**=`true`, the limit is 200 requests per 30 minutes. For
-    #   more information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param export [Boolean] Whether to include all element content in the returned data. If
     #   **export**=`false`, the returned data includes only information about the element
@@ -1184,9 +1112,6 @@ module IBMWatson
     #
     #   If you want to create multiple entities with a single API call, consider using the
     #   **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, underscore, and hyphen characters.
@@ -1241,10 +1166,6 @@ module IBMWatson
     # @!method get_entity(workspace_id:, entity:, export: nil, include_audit: nil)
     # Get entity.
     # Get information about an entity, optionally including all entity content.
-    #
-    #   With **export**=`false`, this operation is limited to 6000 requests per 5 minutes.
-    #   With **export**=`true`, the limit is 200 requests per 30 minutes. For more
-    #   information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param export [Boolean] Whether to include all element content in the returned data. If
@@ -1289,9 +1210,6 @@ module IBMWatson
     #
     #   If you want to update multiple entities with a single API call, consider using the
     #   **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param new_entity [String] The name of the entity. This string must conform to the following restrictions:
@@ -1355,9 +1273,6 @@ module IBMWatson
     # @!method delete_entity(workspace_id:, entity:)
     # Delete entity.
     # Delete an entity from a workspace, or disable a system entity.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @return [nil]
@@ -1395,9 +1310,6 @@ module IBMWatson
     # List entity mentions.
     # List mentions for a contextual entity. An entity mention is an occurrence of a
     #   contextual entity in the context of an intent user input example.
-    #
-    #   This operation is limited to 200 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param export [Boolean] Whether to include all element content in the returned data. If
@@ -1441,9 +1353,6 @@ module IBMWatson
     # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entity values.
     # List the values for an entity.
-    #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param export [Boolean] Whether to include all element content in the returned data. If
@@ -1494,9 +1403,6 @@ module IBMWatson
     #
     #   If you want to create multiple entity values with a single API call, consider
     #   using the **[Update entity](#update-entity)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value. This string must conform to the following
@@ -1559,9 +1465,6 @@ module IBMWatson
     # @!method get_value(workspace_id:, entity:, value:, export: nil, include_audit: nil)
     # Get entity value.
     # Get information about an entity value.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1609,9 +1512,6 @@ module IBMWatson
     #
     #   If you want to update multiple entity values with a single API call, consider
     #   using the **[Update entity](#update-entity)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1686,9 +1586,6 @@ module IBMWatson
     # @!method delete_value(workspace_id:, entity:, value:)
     # Delete entity value.
     # Delete a value from an entity.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1728,9 +1625,6 @@ module IBMWatson
     # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entity value synonyms.
     # List the synonyms for an entity value.
-    #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1781,9 +1675,6 @@ module IBMWatson
     #   If you want to create multiple synonyms with a single API call, consider using the
     #   **[Update entity](#update-entity)** or **[Update entity
     #   value](#update-entity-value)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1833,9 +1724,6 @@ module IBMWatson
     # @!method get_synonym(workspace_id:, entity:, value:, synonym:, include_audit: nil)
     # Get entity value synonym.
     # Get information about a synonym of an entity value.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1882,9 +1770,6 @@ module IBMWatson
     #   If you want to update multiple synonyms with a single API call, consider using the
     #   **[Update entity](#update-entity)** or **[Update entity
     #   value](#update-entity-value)** method instead.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1935,9 +1820,6 @@ module IBMWatson
     # @!method delete_synonym(workspace_id:, entity:, value:, synonym:)
     # Delete entity value synonym.
     # Delete a synonym from an entity value.
-    #
-    #   This operation is limited to 1000 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
@@ -1980,9 +1862,6 @@ module IBMWatson
     # @!method list_dialog_nodes(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
     # List dialog nodes.
     # List the dialog nodes for a workspace.
-    #
-    #   This operation is limited to 2500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
     # @param sort [String] The attribute by which returned dialog nodes will be sorted. To reverse the sort
@@ -2026,9 +1905,6 @@ module IBMWatson
     #
     #   If you want to create multiple dialog nodes with a single API call, consider using
     #   the **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
     #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
@@ -2119,9 +1995,6 @@ module IBMWatson
     # @!method get_dialog_node(workspace_id:, dialog_node:, include_audit: nil)
     # Get dialog node.
     # Get information about a dialog node.
-    #
-    #   This operation is limited to 6000 requests per 5 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param dialog_node [String] The dialog node ID (for example, `get_order`).
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
@@ -2161,9 +2034,6 @@ module IBMWatson
     #
     #   If you want to update multiple dialog nodes with a single API call, consider using
     #   the **[Update workspace](#update-workspace)** method instead.
-    #
-    #   This operation is limited to 500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param dialog_node [String] The dialog node ID (for example, `get_order`).
     # @param new_dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
@@ -2255,9 +2125,6 @@ module IBMWatson
     # @!method delete_dialog_node(workspace_id:, dialog_node:)
     # Delete dialog node.
     # Delete a dialog node from a workspace.
-    #
-    #   This operation is limited to 500 requests per 30 minutes. For more information,
-    #   see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param dialog_node [String] The dialog node ID (for example, `get_order`).
     # @return [nil]
@@ -2294,10 +2161,6 @@ module IBMWatson
     # @!method list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
     # List log events in a workspace.
     # List the events from the log of a specific workspace.
-    #
-    #   If **cursor** is not specified, this operation is limited to 40 requests per 30
-    #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
-    #   more information, see **Rate limiting**.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
@@ -2339,10 +2202,6 @@ module IBMWatson
     # @!method list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
     # List log events in all workspaces.
     # List the events from the logs of all workspaces in the service instance.
-    #
-    #   If **cursor** is not specified, this operation is limited to 40 requests per 30
-    #   minutes. If **cursor** is specified, the limit is 120 requests per minute. For
-    #   more information, see **Rate limiting**.
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. You must specify a filter query that includes a value for `language`, as
     #   well as a value for `request.context.system.assistant_id`, `workspace_id`, or
@@ -2394,9 +2253,6 @@ module IBMWatson
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
     #   security](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security).
-    #
-    #   This operation is limited to 4 requests per minute. For more information, see
-    #   **Rate limiting**.
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)

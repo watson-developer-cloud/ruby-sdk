@@ -7,7 +7,7 @@ SimpleCov.command_name "test:unit"
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-# Unit tests for the Watson Assistant V1 Service
+# Unit test for the Watson Assistant V1 Service
 class CompareComplyV1 < Minitest::Test
   include Minitest::Hooks
   attr_accessor :service
@@ -21,7 +21,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_convert_to_html
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/html_conversion?version=2018-10-15").with do |req|
+    stub_request(:post, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/html_conversion?version=2018-10-15").with do |req|
       # Test the headers.
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
@@ -33,7 +33,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_classify_elements
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/element_classification?version=2018-10-15").with do |req|
+    stub_request(:post, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/element_classification?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -48,7 +48,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_extract_tables
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/tables?version=2018-10-15").with do |req|
+    stub_request(:post, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/tables?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -63,7 +63,7 @@ class CompareComplyV1 < Minitest::Test
 
   def test_compare_documents
     file = File.open(Dir.getwd + "/resources/cnc_test.pdf")
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/comparison?version=2018-10-15").with do |req|
+    stub_request(:post, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/comparison?version=2018-10-15").with do |req|
       assert_equal(req.headers["Accept"], "application/json")
       assert_match(%r{\Amultipart/form-data}, req.headers["Content-Type"])
       assert_match(/Content-Disposition: form-data/, req.body)
@@ -90,11 +90,11 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback?version=2018-10-15")
+    stub_request(:get, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/feedback?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
 
@@ -109,11 +109,11 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback?version=2018-10-15")
+    stub_request(:post, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/feedback?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
 
@@ -130,11 +130,11 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi?version=2018-10-15")
+    stub_request(:get, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/feedback/messi?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
 
@@ -146,11 +146,11 @@ class CompareComplyV1 < Minitest::Test
 
   def test_delete_feedback
     message_response = "200"
-    stub_request(:delete, "https://gateway.watsonplatform.net/compare-comply/api/v1/feedback/messi?version=2018-10-15")
+    stub_request(:delete, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/feedback/messi?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response, headers: {})
 
@@ -161,7 +161,7 @@ class CompareComplyV1 < Minitest::Test
   end
 
   def test_create_batch
-    stub_request(:post, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches?function=tables&version=2018-10-15")
+    stub_request(:post, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/batches?function=tables&version=2018-10-15")
       .with do |req|
         assert_equal req.headers["Accept"], "application/json"
         assert_match %r{\Amultipart/form-data}, req.headers["Content-Type"]
@@ -185,11 +185,11 @@ class CompareComplyV1 < Minitest::Test
     headers = {
       "Content-Type" => "application/json"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches?version=2018-10-15")
+    stub_request(:get, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/batches?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response.to_json, headers: headers)
 
@@ -199,11 +199,11 @@ class CompareComplyV1 < Minitest::Test
 
   def test_get_batch
     message_response = "200"
-    stub_request(:get, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?version=2018-10-15")
+    stub_request(:get, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/batches/mo?version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response, headers: {})
 
@@ -215,11 +215,11 @@ class CompareComplyV1 < Minitest::Test
 
   def test_update_batch
     message_response = "200"
-    stub_request(:put, "https://gateway.watsonplatform.net/compare-comply/api/v1/batches/mo?action=goal&version=2018-10-15")
+    stub_request(:put, "https://api.us-south.compare-comply.watson.cloud.ibm.com/v1/batches/mo?action=goal&version=2018-10-15")
       .with(
         headers: {
           "Accept" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.compare-comply.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: message_response, headers: {})
 

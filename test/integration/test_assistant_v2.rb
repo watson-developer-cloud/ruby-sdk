@@ -64,5 +64,23 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
         session_id: session_id
       )
     end
+
+    def test_list_logs
+      skip "Premium plan only.  Need Premium credentials"
+
+      service_response = service.list_logs(
+        assistant_id: ENV["ASSISTANT_ASSISTANT_ID"]
+      )
+      assert((200..299).cover?(service_response.status))
+    end
+
+    def test_delete_user_data
+      skip "Covered with the unit test.  No need to run it here"
+
+      service_response = service.delete_user_data(
+        customer_id: ENV["ASSISTANT_ASSISTANT_ID"]
+      )
+      assert(service_response.nil?)
+    end
   end
 end

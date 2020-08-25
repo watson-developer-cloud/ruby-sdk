@@ -19,34 +19,34 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     list_response = {
       "classifiers" => [
         {
-          "url" => "https://gateway.watsonplatform.net/natural-language-classifier-experimental/api/v1/classifiers/497EF2-nlc-00",
+          "url" => "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/natural-language-classifier-experimental/api/v1/classifiers/497EF2-nlc-00",
           "classifier_id" => "497EF2-nlc-00"
         }
       ]
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers")
+    stub_request(:get, "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-classifier.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: list_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.list_classifiers
     assert_equal(list_response, service_response.result)
 
     status_response = {
-      "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00",
+      "url" => "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/497EF2-nlc-00",
       "status" => "Available",
       "status_description" => "The classifier instance is now available and is ready to take classifier requests.",
       "classifier_id" => "497EF2-nlc-00"
     }
-    stub_request(:get, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00")
+    stub_request(:get, "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/497EF2-nlc-00")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-classifier.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: status_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.get_classifier(
@@ -55,7 +55,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     assert_equal(status_response, service_response.result)
 
     classify_response = {
-      "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1",
+      "url" => "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1",
       "text" => "test",
       "classes" =>
       [
@@ -71,14 +71,14 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
       "classifier_id" => "497EF2-nlc-00",
       "top_class" => "conditions"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00/classify")
+    stub_request(:post, "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/497EF2-nlc-00/classify")
       .with(
         body: "{\"text\":\"test\"}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-classifier.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: classify_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.classify(
@@ -88,17 +88,17 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     assert_equal(classify_response, service_response.result)
 
     create_response = {
-      "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00",
+      "url" => "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/497EF2-nlc-00",
       "status" => "Available",
       "status_description" => "The classifier instance is now available and is ready to take classifier requests.",
       "classifier_id" => "497EF2-nlc-00"
     }
-    stub_request(:post, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers")
+    stub_request(:post, "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-classifier.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: create_response.to_json, headers: { "Content-Type" => "application/json" })
     training_data = File.open(Dir.getwd + "/resources/weather_data_train.csv")
@@ -114,12 +114,12 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     )
     assert_equal(create_response, service_response.result)
 
-    stub_request(:delete, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00")
+    stub_request(:delete, "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/497EF2-nlc-00")
       .with(
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-classifier.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
     service_response = service.delete_classifier(
@@ -138,7 +138,7 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     )
     classify_collection_response = {
       "classifier_id" => "497EF2-nlc-00",
-      "url" => "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/10D41B-nlc-1",
+      "url" => "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/10D41B-nlc-1",
       "collection" => [
         {
           "text" => "How hot will it be today?",
@@ -172,14 +172,14 @@ class NaturalLanguageClassifierV1Test < Minitest::Test
     }
     classifier_id = "497EF2-nlc-00"
     collection = [{ "text" => "How hot will it be today?" }, { "text" => "Is it hot outside?" }]
-    stub_request(:post, "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/497EF2-nlc-00/classify_collection")
+    stub_request(:post, "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com/v1/classifiers/497EF2-nlc-00/classify_collection")
       .with(
         body: "{\"collection\":[{\"text\":\"How hot will it be today?\"},{\"text\":\"Is it hot outside?\"}]}",
         headers: {
           "Accept" => "application/json",
           "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
           "Content-Type" => "application/json",
-          "Host" => "gateway.watsonplatform.net"
+          "Host" => "api.us-south.natural-language-classifier.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: classify_collection_response.to_json, headers: { "Content-Type" => "application/json" })
     service_response = service.classify_collection(

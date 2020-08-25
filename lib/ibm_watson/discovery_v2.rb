@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# IBM Watson&trade; Discovery for IBM Cloud Pak for Data is a cognitive search and
-# content analytics engine that you can add to applications to identify patterns, trends
-# and actionable insights to drive better decision-making. Securely unify structured and
-# unstructured data with pre-enriched content, and use a simplified query language to
-# eliminate the need for manual filtering of results.
+# IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
+# you can add to applications to identify patterns, trends and actionable insights to
+# drive better decision-making. Securely unify structured and unstructured data with
+# pre-enriched content, and use a simplified query language to eliminate the need for
+# manual filtering of results.
 
 require "concurrent"
 require "erb"
@@ -33,7 +33,7 @@ module IBMWatson
   class DiscoveryV2 < IBMCloudSdkCore::BaseService
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "discovery"
-    DEFAULT_SERVICE_URL = nil
+    DEFAULT_SERVICE_URL = "https://api.us-south.discovery.watson.cloud.ibm.com"
     ##
     # @!method initialize(args)
     # Construct a new client for the Discovery service.
@@ -105,6 +105,164 @@ module IBMWatson
       )
       response
     end
+
+    ##
+    # @!method create_collection(project_id:, name:, description: nil, language: nil, enrichments: nil)
+    # Create a collection.
+    # Create a new collection in the specified project.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param name [String] The name of the collection.
+    # @param description [String] A description of the collection.
+    # @param language [String] The language of the collection.
+    # @param enrichments [Array[CollectionEnrichment]] An array of enrichments that are applied to this collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_collection(project_id:, name:, description: nil, language: nil, enrichments: nil)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("name must be provided") if name.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "create_collection")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "name" => name,
+        "description" => description,
+        "language" => language,
+        "enrichments" => enrichments
+      }
+
+      method_url = "/v2/projects/%s/collections" % [ERB::Util.url_encode(project_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_collection(project_id:, collection_id:)
+    # Get collection.
+    # Get details about the specified collection.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param collection_id [String] The ID of the collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_collection(project_id:, collection_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "get_collection")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s/collections/%s" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_collection(project_id:, collection_id:, name: nil, description: nil, enrichments: nil)
+    # Update a collection.
+    # Updates the specified collection's name, description, and enrichments.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param collection_id [String] The ID of the collection.
+    # @param name [String] The name of the collection.
+    # @param description [String] A description of the collection.
+    # @param enrichments [Array[CollectionEnrichment]] An array of enrichments that are applied to this collection.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_collection(project_id:, collection_id:, name: nil, description: nil, enrichments: nil)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "update_collection")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "name" => name,
+        "description" => description,
+        "enrichments" => enrichments
+      }
+
+      method_url = "/v2/projects/%s/collections/%s" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_collection(project_id:, collection_id:)
+    # Delete a collection.
+    # Deletes the specified collection from the project. All documents stored in the
+    #   specified collection and not shared is also deleted.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param collection_id [String] The ID of the collection.
+    # @return [nil]
+    def delete_collection(project_id:, collection_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "delete_collection")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s/collections/%s" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(collection_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
+    end
     #########################
     # Queries
     #########################
@@ -114,6 +272,12 @@ module IBMWatson
     # Query a project.
     # By using this method, you can construct queries. For details, see the [Discovery
     #   documentation](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-query-concepts).
+    #   The default query parameters are defined by the settings for this project, see the
+    #   [Discovery
+    #   documentation](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-project-defaults)
+    #   for an overview of the standard default settings, and see [the Projects API
+    #   documentation](#create-project) for details about how to set custom default query
+    #   settings.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
@@ -327,7 +491,7 @@ module IBMWatson
 
     ##
     # @!method get_component_settings(project_id:)
-    # Configuration settings for components.
+    # List component settings.
     # Returns default configuration settings for components.
     # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
     #   Discovery administrative tooling.
@@ -405,7 +569,10 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected. Example:  ``` {
+    #   are rejected.
+    #
+    #
+    #   Example:  ``` {
     #     "Creator": "Johnny Appleseed",
     #     "Subject": "Apples"
     #   } ```.
@@ -481,7 +648,10 @@ module IBMWatson
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
-    #   are rejected. Example:  ``` {
+    #   are rejected.
+    #
+    #
+    #   Example:  ``` {
     #     "Creator": "Johnny Appleseed",
     #     "Subject": "Apples"
     #   } ```.
@@ -773,6 +943,417 @@ module IBMWatson
         accept_json: true
       )
       response
+    end
+    #########################
+    # enrichments
+    #########################
+
+    ##
+    # @!method list_enrichments(project_id:)
+    # List Enrichments.
+    # List the enrichments available to this project.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_enrichments(project_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "list_enrichments")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s/enrichments" % [ERB::Util.url_encode(project_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_enrichment(project_id:, enrichment:, file: nil)
+    # Create an enrichment.
+    # Create an enrichment for use with the specified project/.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param enrichment [CreateEnrichment]
+    # @param file [File] The enrichment file to upload.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_enrichment(project_id:, enrichment:, file: nil)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("enrichment must be provided") if enrichment.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "create_enrichment")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:enrichment] = HTTP::FormData::Part.new(enrichment.to_s, content_type: "application/json")
+
+      unless file.nil?
+        unless file.instance_of?(StringIO) || file.instance_of?(File)
+          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
+        end
+        form_data[:file] = HTTP::FormData::File.new(file, content_type: "application/octet-stream", filename: file.respond_to?(:path) ? file.path : nil)
+      end
+
+      method_url = "/v2/projects/%s/enrichments" % [ERB::Util.url_encode(project_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_enrichment(project_id:, enrichment_id:)
+    # Get enrichment.
+    # Get details about a specific enrichment.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param enrichment_id [String] The ID of the enrichment.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_enrichment(project_id:, enrichment_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "get_enrichment")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s/enrichments/%s" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(enrichment_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_enrichment(project_id:, enrichment_id:, name:, description: nil)
+    # Update an enrichment.
+    # Updates an existing enrichment's name and description.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param enrichment_id [String] The ID of the enrichment.
+    # @param name [String] A new name for the enrichment.
+    # @param description [String] A new description for the enrichment.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_enrichment(project_id:, enrichment_id:, name:, description: nil)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
+
+      raise ArgumentError.new("name must be provided") if name.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "update_enrichment")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "name" => name,
+        "description" => description
+      }
+
+      method_url = "/v2/projects/%s/enrichments/%s" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(enrichment_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_enrichment(project_id:, enrichment_id:)
+    # Delete an enrichment.
+    # Deletes an existing enrichment from the specified project.
+    #
+    #   **Note:** Only enrichments that have been manually created can be deleted.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param enrichment_id [String] The ID of the enrichment.
+    # @return [nil]
+    def delete_enrichment(project_id:, enrichment_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "delete_enrichment")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s/enrichments/%s" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(enrichment_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
+    end
+    #########################
+    # projects
+    #########################
+
+    ##
+    # @!method list_projects
+    # List projects.
+    # Lists existing projects for this instance.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_projects
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "list_projects")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method create_project(name:, type:, default_query_parameters: nil)
+    # Create a Project.
+    # Create a new project for this instance.
+    # @param name [String] The human readable name of this project.
+    # @param type [String] The project type of this project.
+    # @param default_query_parameters [DefaultQueryParams] Default query parameters for this project.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_project(name:, type:, default_query_parameters: nil)
+      raise ArgumentError.new("name must be provided") if name.nil?
+
+      raise ArgumentError.new("type must be provided") if type.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "create_project")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "name" => name,
+        "type" => type,
+        "default_query_parameters" => default_query_parameters
+      }
+
+      method_url = "/v2/projects"
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_project(project_id:)
+    # Get project.
+    # Get details on the specified project.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_project(project_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "get_project")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s" % [ERB::Util.url_encode(project_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_project(project_id:, name: nil)
+    # Update a project.
+    # Update the specified project's name.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param name [String] The new name to give this project.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_project(project_id:, name: nil)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "update_project")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "name" => name
+      }
+
+      method_url = "/v2/projects/%s" % [ERB::Util.url_encode(project_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_project(project_id:)
+    # Delete a project.
+    # Deletes the specified project.
+    #
+    #   **Important:** Deleting a project deletes everything that is part of the specified
+    #   project, including all collections.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @return [nil]
+    def delete_project(project_id:)
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "delete_project")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v2/projects/%s" % [ERB::Util.url_encode(project_id)]
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
+    end
+    #########################
+    # userData
+    #########################
+
+    ##
+    # @!method delete_user_data(customer_id:)
+    # Delete labeled data.
+    # Deletes all data associated with a specified customer ID. The method has no effect
+    #   if no data is associated with the customer ID.
+    #
+    #   You associate a customer ID with data by passing the **X-Watson-Metadata** header
+    #   with a request that passes data. For more information about personal data and
+    #   customer IDs, see [Information
+    #   security](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-information-security#information-security).
+    #
+    #
+    #   **Note:** This method is only supported on IBM Cloud instances of Discovery.
+    # @param customer_id [String] The customer ID for which all data is to be deleted.
+    # @return [nil]
+    def delete_user_data(customer_id:)
+      raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "delete_user_data")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version,
+        "customer_id" => customer_id
+      }
+
+      method_url = "/v2/user_data"
+
+      request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: false
+      )
+      nil
     end
   end
 end
