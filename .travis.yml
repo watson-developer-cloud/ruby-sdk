@@ -19,6 +19,7 @@ before_install:
 install:
   - pip install --user bumpversion
   - npm install -g semantic-release
+  - npm install -g @semantic-release/changelog
   - npm install -g @semantic-release/exec
   - npm install -g @semantic-release/git
   - npm install -g @semantic-release/github
@@ -33,6 +34,7 @@ before_deploy:
 deploy:
   - provider: script
     script: npx semantic-release
+    skip_cleanup: true
     on:
       branch: master
       rvm: 2.5.1
