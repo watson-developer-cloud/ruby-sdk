@@ -269,7 +269,7 @@ Result: "<response returned by service>"
 
 ### Transaction IDs
 
-Every SDK call will return a response which will contain a transaction ID, accessible via the `x-global-transaction-id` header. This transaction ID is useful for troubleshooting and accessing relevant logs from your service instance.
+Every SDK call returns a response with a transaction ID in the `X-Global-Transaction-Id` header. Together the service instance region, this ID helps support teams troubleshoot issues from relevant logs.
 
 ```ruby
 require "ibm_watson"
@@ -287,6 +287,22 @@ rescue IBMCloudSdkCore::ApiException => e
   # Global transaction on failed api call is contained in the error message
   print "Error: ##{e}"
 end
+```
+
+However, the transaction ID isn't available when the API doesn't return a response for some reason. In that case, you can set your own transaction ID in the request. For example, replace `<my-unique-transaction-id>` in the following example with a unique transaction ID.
+
+```ruby
+require "ibm_watson"
+include IBMWatson
+
+assistant = AssistantV1.new(
+  authenticator: "<authenticator>"
+  version: "2017-04-21"
+)
+
+response = assistant.headers(
+  "X-Global-Transaction-Id" => "<my-unique-transaction-id>"
+  ).list_workspaces
 ```
 
 ## Configuring the HTTP client
