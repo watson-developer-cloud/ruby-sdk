@@ -69,7 +69,7 @@ module IBMWatson
     #   Consider migrating to Watson Natural Language Understanding.
     #   For more information, see https://cloud.ibm.com/docs/natural-language-understanding.
     def initialize(args = {})
-      warn "On 1 December 2021, Personality Insights will no longer be available."
+      warn "On 1 December 2021, Personality Insights will no longer be available. For more information, see the README."
       @__async_initialized__ = false
       defaults = {}
       defaults[:service_url] = DEFAULT_SERVICE_URL
