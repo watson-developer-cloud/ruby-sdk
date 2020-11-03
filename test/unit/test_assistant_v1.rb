@@ -1401,4 +1401,55 @@ class AssistantV1Test < Minitest::Test
     )
     assert_equal({ "list_mentions_response" => "yes" }, service_response.result)
   end
+
+  def test_bulk_classify
+    workspace_id = "f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec"
+    message_response = {
+      "context" => {
+        "conversation_id" => "1b7b67c0-90ed-45dc-8508-9488bc483d5b",
+        "system" => {
+          "dialog_stack" => ["root"],
+          "dialog_turn_counter" => 1,
+          "dialog_request_counter" => 1
+        }
+      },
+      "intents" => [],
+      "entities" => [],
+      "input" => {},
+      "output" => {
+        "text" => "okay",
+        "log_messages" => []
+      }
+    }
+    headers = {
+      "Content-Type" => "application/json"
+    }
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/bulk_classify?version=2018-02-16")
+      .with(
+        body: "{\"input\":{\"text\":\"Turn on the lights\"}}",
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/json",
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: message_response.to_json, headers: headers)
+    service_response = service.bulk_classify(
+      workspace_id: workspace_id,
+      input: { "text" => "Turn on the lights" }
+    )
+    assert_equal(message_response, service_response.result)
+
+    stub_request(:post, "https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/f8fdbc65-e0bd-4e43-b9f8-2975a366d4ec/bulk_classify?version=2018-02-16")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/json",
+          "Host" => "api.us-south.assistant.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: message_response.to_json, headers: headers)
+    service_response = service.bulk_classify(
+      workspace_id: workspace_id
+    )
+    assert_equal(message_response, service_response.result)
+  end
 end

@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.16.0-36b26b63-20201022-212410
+#
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to
 # drive better decision-making. Securely unify structured and unstructured data with
@@ -34,21 +36,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "discovery"
     DEFAULT_SERVICE_URL = "https://api.us-south.discovery.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Discovery service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the version of the API you want to use. Specify dates in
+    #   YYYY-MM-DD format. The current version is `2019-11-22`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -57,10 +52,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -84,6 +79,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collections(project_id:)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -118,6 +115,8 @@ module IBMWatson
     # @param enrichments [Array[CollectionEnrichment]] An array of enrichments that are applied to this collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_collection(project_id:, name:, description: nil, language: nil, enrichments: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("name must be provided") if name.nil?
@@ -160,6 +159,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_collection(project_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -197,6 +198,8 @@ module IBMWatson
     # @param enrichments [Array[CollectionEnrichment]] An array of enrichments that are applied to this collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_collection(project_id:, collection_id:, name: nil, description: nil, enrichments: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -239,6 +242,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_collection(project_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -315,6 +320,8 @@ module IBMWatson
     def query(project_id:, collection_ids: nil, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, spelling_suggestions: nil, table_results: nil, suggested_refinements: nil, passages: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "query")
@@ -371,6 +378,8 @@ module IBMWatson
     def get_autocompletion(project_id:, prefix:, collection_ids: nil, field: nil, count: nil)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("prefix must be provided") if prefix.nil?
 
       headers = {
@@ -422,6 +431,8 @@ module IBMWatson
     #   one query is **10000**.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_notices(project_id:, filter: nil, query: nil, natural_language_query: nil, count: nil, offset: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -461,6 +472,8 @@ module IBMWatson
     #   all collections in the project are used.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_fields(project_id:, collection_ids: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -498,6 +511,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_component_settings(project_id:)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -580,6 +595,8 @@ module IBMWatson
     #   that collection is shared with other collections.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_document(project_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil, x_watson_discovery_force: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -659,6 +676,8 @@ module IBMWatson
     #   that collection is shared with other collections.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_document(project_id:, collection_id:, document_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil, x_watson_discovery_force: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -721,6 +740,8 @@ module IBMWatson
     #   that collection is shared with other collections.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_document(project_id:, collection_id:, document_id:, x_watson_discovery_force: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -760,6 +781,8 @@ module IBMWatson
     #   Discovery administrative tooling.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_training_queries(project_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -791,6 +814,8 @@ module IBMWatson
     #   Discovery administrative tooling.
     # @return [nil]
     def delete_training_queries(project_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -827,6 +852,8 @@ module IBMWatson
     #   applied.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_training_query(project_id:, natural_language_query:, examples:, filter: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("natural_language_query must be provided") if natural_language_query.nil?
@@ -871,6 +898,8 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_query(project_id:, query_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("query_id must be provided") if query_id.nil?
@@ -909,6 +938,8 @@ module IBMWatson
     #   applied.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_training_query(project_id:, query_id:, natural_language_query:, examples:, filter: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("query_id must be provided") if query_id.nil?
@@ -945,6 +976,79 @@ module IBMWatson
       response
     end
     #########################
+    # analyze
+    #########################
+
+    ##
+    # @!method analyze_document(project_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
+    # Analyze a Document.
+    # Process a document using the specified collection's settings and return it for
+    #   realtime use.
+    #
+    #   **Note:** Documents processed using this method are not added to the specified
+    #   collection.
+    #
+    #   **Note:** This method is only supported on IBM Cloud Pak for Data instances of
+    #   Discovery.
+    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
+    #   Discovery administrative tooling.
+    # @param collection_id [String] The ID of the collection.
+    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
+    #   a file to a collection is 50 megabytes, the maximum supported file size when
+    #   testing a configuration is 1 megabyte. Files larger than the supported size are
+    #   rejected.
+    # @param filename [String] The filename for file.
+    # @param file_content_type [String] The content type of file.
+    # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
+    #   are rejected.
+    #
+    #
+    #   Example:  ``` {
+    #     "Creator": "Johnny Appleseed",
+    #     "Subject": "Apples"
+    #   } ```.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def analyze_document(project_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("project_id must be provided") if project_id.nil?
+
+      raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "analyze_document")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      unless file.nil?
+        unless file.instance_of?(StringIO) || file.instance_of?(File)
+          file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
+        end
+        filename = file.path if filename.nil? && file.respond_to?(:path)
+        form_data[:file] = HTTP::FormData::File.new(file, content_type: file_content_type.nil? ? "application/octet-stream" : file_content_type, filename: filename)
+      end
+
+      form_data[:metadata] = HTTP::FormData::Part.new(metadata.to_s, content_type: "text/plain") unless metadata.nil?
+
+      method_url = "/v2/projects/%s/collections/%s/analyze" % [ERB::Util.url_encode(project_id), ERB::Util.url_encode(collection_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
     # enrichments
     #########################
 
@@ -956,6 +1060,8 @@ module IBMWatson
     #   Discovery administrative tooling.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_enrichments(project_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -989,6 +1095,8 @@ module IBMWatson
     # @param file [File] The enrichment file to upload.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_enrichment(project_id:, enrichment:, file: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("enrichment must be provided") if enrichment.nil?
@@ -1035,6 +1143,8 @@ module IBMWatson
     # @param enrichment_id [String] The ID of the enrichment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_enrichment(project_id:, enrichment_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
@@ -1071,6 +1181,8 @@ module IBMWatson
     # @param description [String] A new description for the enrichment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_enrichment(project_id:, enrichment_id:, name:, description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
@@ -1115,6 +1227,8 @@ module IBMWatson
     # @param enrichment_id [String] The ID of the enrichment.
     # @return [nil]
     def delete_enrichment(project_id:, enrichment_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       raise ArgumentError.new("enrichment_id must be provided") if enrichment_id.nil?
@@ -1149,6 +1263,8 @@ module IBMWatson
     # Lists existing projects for this instance.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_projects
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V2", "list_projects")
@@ -1179,6 +1295,8 @@ module IBMWatson
     # @param default_query_parameters [DefaultQueryParams] Default query parameters for this project.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_project(name:, type:, default_query_parameters: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("name must be provided") if name.nil?
 
       raise ArgumentError.new("type must be provided") if type.nil?
@@ -1219,6 +1337,8 @@ module IBMWatson
     #   Discovery administrative tooling.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_project(project_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -1251,6 +1371,8 @@ module IBMWatson
     # @param name [String] The new name to give this project.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_project(project_id:, name: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -1290,6 +1412,8 @@ module IBMWatson
     #   Discovery administrative tooling.
     # @return [nil]
     def delete_project(project_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
 
       headers = {
@@ -1332,6 +1456,8 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {

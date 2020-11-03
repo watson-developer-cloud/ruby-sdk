@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.16.0-36b26b63-20201022-212410
+#
 # IBM Watson&trade; Compare and Comply analyzes governing documents to provide details
 # about critical aspects of the documents.
 
@@ -31,21 +33,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "compare_comply"
     DEFAULT_SERVICE_URL = "https://api.us-south.compare-comply.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Compare Comply service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the version of the API you want to use. Specify dates in
+    #   YYYY-MM-DD format. The current version is `2018-10-15`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -54,10 +49,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -84,6 +79,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def convert_to_html(file:, file_content_type: nil, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
@@ -131,6 +128,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify_elements(file:, file_content_type: nil, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
@@ -178,6 +177,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def extract_tables(file:, file_content_type: nil, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
@@ -229,6 +230,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def compare_documents(file_1:, file_2:, file_1_content_type: nil, file_2_content_type: nil, file_1_label: nil, file_2_label: nil, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("file_1 must be provided") if file_1.nil?
 
       raise ArgumentError.new("file_2 must be provided") if file_2.nil?
@@ -286,6 +289,8 @@ module IBMWatson
     # @param comment [String] An optional comment on or description of the feedback.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_feedback(feedback_data:, user_id: nil, comment: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("feedback_data must be provided") if feedback_data.nil?
 
       headers = {
@@ -317,15 +322,11 @@ module IBMWatson
     end
 
     ##
-    # @!method list_feedback(feedback_type: nil, before: nil, after: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
+    # @!method list_feedback(feedback_type: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
     # List the feedback in a document.
     # Lists the feedback in a document.
     # @param feedback_type [String] An optional string that filters the output to include only feedback with the
     #   specified feedback type. The only permitted value is `element_classification`.
-    # @param before [Time] An optional string in the format `YYYY-MM-DD` that filters the output to include
-    #   only feedback that was added before the specified date.
-    # @param after [Time] An optional string in the format `YYYY-MM-DD` that filters the output to include
-    #   only feedback that was added after the specified date.
     # @param document_title [String] An optional string that filters the output to include only feedback from the
     #   document with the specified `document_title`.
     # @param model_id [String] An optional string that filters the output to include only feedback with the
@@ -362,7 +363,9 @@ module IBMWatson
     #   output includes a value called `total` that gives the total count of feedback
     #   created.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_feedback(feedback_type: nil, before: nil, after: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
+    def list_feedback(feedback_type: nil, document_title: nil, model_id: nil, model_version: nil, category_removed: nil, category_added: nil, category_not_changed: nil, type_removed: nil, type_added: nil, type_not_changed: nil, page_limit: nil, cursor: nil, sort: nil, include_total: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "list_feedback")
@@ -371,8 +374,6 @@ module IBMWatson
       params = {
         "version" => @version,
         "feedback_type" => feedback_type,
-        "before" => before,
-        "after" => after,
         "document_title" => document_title,
         "model_id" => model_id,
         "model_version" => model_version,
@@ -411,6 +412,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_feedback(feedback_id:, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
 
       headers = {
@@ -446,6 +449,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_feedback(feedback_id:, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("feedback_id must be provided") if feedback_id.nil?
 
       headers = {
@@ -504,6 +509,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_batch(function:, input_credentials_file:, input_bucket_location:, input_bucket_name:, output_credentials_file:, output_bucket_location:, output_bucket_name:, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("function must be provided") if function.nil?
 
       raise ArgumentError.new("input_credentials_file must be provided") if input_credentials_file.nil?
@@ -568,6 +575,8 @@ module IBMWatson
     # Lists batch-processing jobs submitted by users.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_batches
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("compare-comply", "V1", "list_batches")
@@ -596,6 +605,8 @@ module IBMWatson
     # @param batch_id [String] The ID of the batch-processing job whose information you want to retrieve.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_batch(batch_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("batch_id must be provided") if batch_id.nil?
 
       headers = {
@@ -632,6 +643,8 @@ module IBMWatson
     #   standalone methods as well as to the methods' use in batch-processing requests.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_batch(batch_id:, action:, model: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("batch_id must be provided") if batch_id.nil?
 
       raise ArgumentError.new("action must be provided") if action.nil?

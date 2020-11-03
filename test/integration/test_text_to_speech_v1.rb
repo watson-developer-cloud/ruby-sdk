@@ -48,13 +48,13 @@ if !ENV["TEXT_TO_SPEECH_APIKEY"].nil? && !ENV["TEXT_TO_SPEECH_URL"].nil?
     end
 
     def test_customizations
-      service_response = @service.list_voice_models
+      service_response = @service.list_custom_models
       refute(service_response.nil?)
     end
 
     def test_custom_words
       skip "Skip to allow for concurrent travis jobs"
-      customization_id = @service.create_voice_model(
+      customization_id = @service.create_custom_model(
         name: "test_integration_customization",
         description: "customization for tests"
       ).result["customization_id"]
@@ -79,7 +79,7 @@ if !ENV["TEXT_TO_SPEECH_APIKEY"].nil? && !ENV["TEXT_TO_SPEECH_URL"].nil?
         word: "MACLs"
       ).result
       assert(word["translation"] == "mackles")
-      @service.delete_voice_model(
+      @service.delete_custom_model(
         customization_id: customization_id
       )
     end

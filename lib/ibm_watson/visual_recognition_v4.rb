@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.16.0-36b26b63-20201022-212410
+#
 # Provide images to the IBM Watson&trade; Visual Recognition service for analysis. The
 # service detects objects based on a set of images with training data.
 
@@ -31,21 +33,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "visual_recognition"
     DEFAULT_SERVICE_URL = "https://api.us-south.visual-recognition.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Visual Recognition service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
+    #   format. The current version is `2019-02-11`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -54,10 +49,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -101,6 +96,8 @@ module IBMWatson
     # @param threshold [Float] The minimum score a feature must have to be returned.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def analyze(collection_ids:, features:, images_file: nil, image_url: nil, threshold: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
 
       raise ArgumentError.new("features must be provided") if features.nil?
@@ -156,7 +153,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method create_collection(name: nil, description: nil)
+    # @!method create_collection(name: nil, description: nil, training_status: nil)
     # Create a collection.
     # Create a collection that can be used to store images.
     #
@@ -168,8 +165,11 @@ module IBMWatson
     # @param name [String] The name of the collection. The name can contain alphanumeric, underscore, hyphen,
     #   and dot characters. It cannot begin with the reserved prefix `sys-`.
     # @param description [String] The description of the collection.
+    # @param training_status [TrainingStatus] Training status information for the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_collection(name: nil, description: nil)
+    def create_collection(name: nil, description: nil, training_status: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "create_collection")
@@ -181,7 +181,8 @@ module IBMWatson
 
       data = {
         "name" => name,
-        "description" => description
+        "description" => description,
+        "training_status" => training_status
       }
 
       method_url = "/v4/collections"
@@ -203,6 +204,8 @@ module IBMWatson
     # Retrieves a list of collections for the service instance.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collections
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "list_collections")
@@ -231,6 +234,8 @@ module IBMWatson
     # @param collection_id [String] The identifier of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_collection(collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -255,7 +260,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_collection(collection_id:, name: nil, description: nil)
+    # @!method update_collection(collection_id:, name: nil, description: nil, training_status: nil)
     # Update a collection.
     # Update the name or description of a collection.
     #
@@ -265,8 +270,11 @@ module IBMWatson
     # @param name [String] The name of the collection. The name can contain alphanumeric, underscore, hyphen,
     #   and dot characters. It cannot begin with the reserved prefix `sys-`.
     # @param description [String] The description of the collection.
+    # @param training_status [TrainingStatus] Training status information for the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_collection(collection_id:, name: nil, description: nil)
+    def update_collection(collection_id:, name: nil, description: nil, training_status: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -280,7 +288,8 @@ module IBMWatson
 
       data = {
         "name" => name,
-        "description" => description
+        "description" => description,
+        "training_status" => training_status
       }
 
       method_url = "/v4/collections/%s" % [ERB::Util.url_encode(collection_id)]
@@ -303,6 +312,8 @@ module IBMWatson
     # @param collection_id [String] The identifier of the collection.
     # @return [nil]
     def delete_collection(collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -342,6 +353,8 @@ module IBMWatson
     # @param model_format [String] The format of the returned model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_model_file(collection_id:, feature:, model_format:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("feature must be provided") if feature.nil?
@@ -405,6 +418,8 @@ module IBMWatson
     #   than 32 characters.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_images(collection_id:, images_file: nil, image_url: nil, training_data: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -454,6 +469,8 @@ module IBMWatson
     # @param collection_id [String] The identifier of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_images(collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -485,6 +502,8 @@ module IBMWatson
     # @param image_id [String] The identifier of the image.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_image_details(collection_id:, image_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("image_id must be provided") if image_id.nil?
@@ -518,6 +537,8 @@ module IBMWatson
     # @param image_id [String] The identifier of the image.
     # @return [nil]
     def delete_image(collection_id:, image_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("image_id must be provided") if image_id.nil?
@@ -554,6 +575,8 @@ module IBMWatson
     #   For example, an original 800 x 1000 image is resized to 160 x 200 pixels.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_jpeg_image(collection_id:, image_id:, size: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("image_id must be provided") if image_id.nil?
@@ -590,6 +613,8 @@ module IBMWatson
     # @param collection_id [String] The identifier of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_object_metadata(collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -625,6 +650,8 @@ module IBMWatson
     #   `sys-`.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_object_metadata(collection_id:, object:, new_object:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("object must be provided") if object.nil?
@@ -665,6 +692,8 @@ module IBMWatson
     # @param object [String] The name of the object.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_object_metadata(collection_id:, object:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("object must be provided") if object.nil?
@@ -699,6 +728,8 @@ module IBMWatson
     # @param object [String] The name of the object.
     # @return [nil]
     def delete_object(collection_id:, object:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("object must be provided") if object.nil?
@@ -736,6 +767,8 @@ module IBMWatson
     # @param collection_id [String] The identifier of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def train(collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       headers = {
@@ -777,6 +810,8 @@ module IBMWatson
     # @param objects [Array[TrainingDataObject]] Training data for specific objects.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_image_training_data(collection_id:, image_id:, objects: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
 
       raise ArgumentError.new("image_id must be provided") if image_id.nil?
@@ -812,14 +847,16 @@ module IBMWatson
     # Get training usage.
     # Information about the completed training events. You can use this information to
     #   determine how close you are to the training limits for the month.
-    # @param start_time [String] The earliest day to include training events. Specify dates in YYYY-MM-DD format.
+    # @param start_time [Time] The earliest day to include training events. Specify dates in YYYY-MM-DD format.
     #   If empty or not specified, the earliest training event is included.
-    # @param end_time [String] The most recent day to include training events. Specify dates in YYYY-MM-DD
+    # @param end_time [Time] The most recent day to include training events. Specify dates in YYYY-MM-DD
     #   format. All events for the day are included. If empty or not specified, the
     #   current day is used. Specify the same value as `start_time` to request events for
     #   a single day.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_usage(start_time: nil, end_time: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V4", "get_training_usage")
@@ -859,6 +896,8 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {

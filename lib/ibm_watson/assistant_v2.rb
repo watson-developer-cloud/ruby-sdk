@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.16.0-36b26b63-20201022-212410
+#
 # The IBM Watson&trade; Assistant service combines machine learning, natural language
 # understanding, and an integrated dialog editor to create conversation flows between your
 # apps and your users.
@@ -35,21 +37,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "assistant"
     DEFAULT_SERVICE_URL = "https://api.us-south.assistant.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Assistant service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
+    #   format. The current version is `2020-04-01`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -58,10 +53,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -93,6 +88,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_session(assistant_id:)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -131,6 +128,8 @@ module IBMWatson
     # @return [nil]
     def delete_session(assistant_id:, session_id:)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("session_id must be provided") if session_id.nil?
 
@@ -184,6 +183,8 @@ module IBMWatson
 
       raise ArgumentError.new("session_id must be provided") if session_id.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "message")
@@ -233,6 +234,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def message_stateless(assistant_id:, input: nil, context: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -287,6 +290,8 @@ module IBMWatson
     def list_logs(assistant_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "list_logs")
@@ -331,6 +336,8 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {
@@ -353,6 +360,53 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+    #########################
+    # bulkClassify
+    #########################
+
+    ##
+    # @!method bulk_classify(skill_id:, input: nil)
+    # Identify intents and entities in multiple user utterances.
+    # Send multiple user inputs to a dialog skill in a single request and receive
+    #   information about the intents and entities recognized in each input. This method
+    #   is useful for testing and comparing the performance of different skills or skill
+    #   versions.
+    #
+    #   This method is available only with Premium plans.
+    # @param skill_id [String] Unique identifier of the skill. To find the skill ID in the Watson Assistant user
+    #   interface, open the skill settings and click **API Details**.
+    # @param input [Array[BulkClassifyUtterance]] An array of input utterances to classify.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def bulk_classify(skill_id:, input: nil)
+      raise ArgumentError.new("skill_id must be provided") if skill_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "bulk_classify")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "input" => input
+      }
+
+      method_url = "/v2/skills/%s/workspace/bulk_classify" % [ERB::Util.url_encode(skill_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
     end
   end
 end
