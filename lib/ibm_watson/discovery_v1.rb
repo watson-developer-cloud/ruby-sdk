@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.16.0-36b26b63-20201022-212410
+# IBM OpenAPI SDK Code Generator Version: 3.17.0-8d569e8f-20201030-142059
 #
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to

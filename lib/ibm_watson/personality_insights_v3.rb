@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 99-SNAPSHOT-0c6c6df1-20201029-152136
+# IBM OpenAPI SDK Code Generator Version: 3.17.0-8d569e8f-20201030-142059
 #
 # The IBM Watson&trade; Personality Insights service enables applications to derive
 # insights from social media, enterprise data, or other digital communications. The

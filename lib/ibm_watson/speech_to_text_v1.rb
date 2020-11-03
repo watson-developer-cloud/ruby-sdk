@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 99-SNAPSHOT-0c6c6df1-20201029-152136
+# IBM OpenAPI SDK Code Generator Version: 3.17.0-8d569e8f-20201030-142059
 #
 # The IBM Watson&trade; Speech to Text service provides APIs that use IBM's
 # speech-recognition capabilities to produce transcripts of spoken audio. The service can
