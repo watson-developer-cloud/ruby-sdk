@@ -1,39 +1,44 @@
 ### Ruby SDK V2 Migration guide
 
 #### Breaking Changes
-* The Text To Speech changes
+* The Text To Speech changes listed below
+* All services now require a version to be specified (except for stt, tts and nlu)
 
 #### Service changes
 
 ##### Assistant v1
 
-* Now Accepts `includeCount` Parameter: `listWorkspaces()`, `listIntents()`, `listExamples()`, `listCounterexamples()`, `listEntities()`, `listValues()`, `listSynonyms()`, `listDialogNodes()`, 
-* `createWorkspace()`: function parameter reordering
-* `updateWorkspace()`: function parameter reordering
-* `createDialogNode()`: parameter `context` type change from `[Sting: JSON]?` to `DialogNodeContext?`
-* `updateDialogNode()`: parameter `newContext` type change from `[Sting: JSON]?` to `DialogNodeContext?`
-* `bulkClassify()`: function added - Identify intents and entities in multiple user utterances.
+* `list_workspaces()`: `include_count` parameter added 
+* `list_intents()`: `include_count` parameter added 
+* `list_examples()`: `include_count` parameter added 
+* `list_counterexamples()`: `include_count` parameter added 
+* `list_entities()`: `include_count` parameter added 
+* `list_values()`: `include_count` parameter added 
+* `list_synonyms()`: `include_count` parameter added 
+* `list_dialog_nodes()`: `include_count` parameter added 
+* `create_workspace()`: reorder `dialog_nodes`, `counterexamples`, `webhooks` parameters 
+* `update_workspace()`: reorder `dialog_nodes`, `counterexamples`, `webhooks` parameters 
+* `bulk_classify()`: function added - Identify intents and entities in multiple user utterances.
 
 ##### Assistant v2
-* `bulkClassify()`: function added - Identify intents and entities in multiple user utterances.
+* `bulk_classify()`: function added - Identify intents and entities in multiple user utterances.
 
 ##### Compare Comply v1
-* `listFeedback()`: `before` and `after` parameters removed
+* `list_feedback()`: `before` and `after` parameters removed
 
 ##### Discovery v2
-* `analyzeDocument()`: function added - Process a document using the specified collection's settings and return it for realtime use. - Currently CP4D only
+* `analyze_document()`: function added - Process a document using the specified collection's settings and return it for realtime use. - Currently CP4D only
+
+##### Personality Insights V3
+* On 1 December 2021, Personality Insights will no longer be available
 
 ##### Text To Speech V1
-* `createVoiceModel()`: function changed to `createCustomModel()`
-* `listVoiceModels()`: function changed to `listCustomModels()`
-* `updateVoiceModel()`: function changed to `updateCustomModel()`
-* `getVoiceModel()`: function changed to `getCustomModel()`
-* `deleteVoiceModel()`: function changed to `deleteCustomModel()`
-
-##### Tone Analyzer V3
-* `tone()`: `tones` parameter added
+* `create_voice_model()`: function changed to `create_custom_model()`
+* `list_voice_models()`: function changed to `list_custom_models()`
+* `update_voice_model()`: function changed to `update_custom_model()`
+* `get_voice_model()`: function changed to `get_custom_model()`
+* `delete_voice_model()`: function changed to `delete_custom_model()`
 
 ##### Visual Recognition V4
-* `createCollection()`: `trainingStatus` parameter added
-* `updateCollection()`: `trainingStatus` parameter added
-* `getTrainingUsage()`: `startTime` and `endTime` parameter types changed from `String?` to `Date?`
+* `create_collection()`: `training_status` parameter added
+* `update_collection()`: `training_status` parameter added
