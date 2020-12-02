@@ -52,7 +52,7 @@ module IBMWatson
     # @option args service_name [String] The name of the service to configure. Will be used as the key to load
     #   any external configuration, if applicable.
     def initialize(args = {})
-      warn "On 1 December 2021, Visual Recognition will no longer be available. For more information, see the README."
+      warn "On 1 December 2021, Visual Recognition will no longer be available. For more information, see https://github.com/watson-developer-cloud/ruby-sdk/tree/master#visual-recognition-deprecation."
       @__async_initialized__ = false
       defaults = {}
       defaults[:service_url] = DEFAULT_SERVICE_URL
