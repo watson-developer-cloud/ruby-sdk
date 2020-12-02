@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.17.0-8d569e8f-20201030-142059
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
 #
 # IBM Watson&trade; Language Translator translates text from one language to another.
 # The service offers multiple IBM-provided translation models that you can customize based
