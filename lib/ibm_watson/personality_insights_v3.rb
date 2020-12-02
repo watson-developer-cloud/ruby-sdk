@@ -16,11 +16,22 @@
 #
 # IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
 #
-# The IBM Watson&trade; Personality Insights service enables applications to derive
-# insights from social media, enterprise data, or other digital communications. The
-# service uses linguistic analytics to infer individuals' intrinsic personality
-# characteristics, including Big Five, Needs, and Values, from digital communications such
-# as email, text messages, tweets, and forum posts.
+# IBM&reg; will begin sunsetting IBM Watson&trade; Personality Insights on 1 December
+# 2020. For a period of one year from this date, you will still be able to use Watson
+# Personality Insights. However, as of 1 December 2021, the offering will no longer be
+# available.<br/><br/>As an alternative, we encourage you to consider migrating to IBM
+# Watson&trade; Natural Language Understanding, a service on IBM Cloud&reg; that uses deep
+# learning to extract data and insights from text such as keywords, categories, sentiment,
+# emotion, and syntax to provide insights for your business or industry. For more
+# information, see [About Natural Language
+# Understanding](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-about).
+# {: deprecated}
+#
+# The IBM Watson Personality Insights service enables applications to derive insights from
+# social media, enterprise data, or other digital communications. The service uses
+# linguistic analytics to infer individuals' intrinsic personality characteristics,
+# including Big Five, Needs, and Values, from digital communications such as email, text
+# messages, tweets, and forum posts.
 #
 # The service can automatically infer, from potentially noisy social media, portraits of
 # individuals that reflect their personality characteristics. The service can infer
@@ -64,10 +75,6 @@ module IBMWatson
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     # @option args service_name [String] The name of the service to configure. Will be used as the key to load
     #   any external configuration, if applicable.
-    #
-    # @deprecated On 1 December 2021, Personality Insights will no longer be available.
-    #   Consider migrating to Watson Natural Language Understanding.
-    #   For more information, see [Personality Insights Deprecation](https://github.com/watson-developer-cloud/ruby-sdk/tree/master#personality-insights-deprecation).
     def initialize(args = {})
       warn "On 1 December 2021, Personality Insights will no longer be available. For more information, see the README."
       @__async_initialized__ = false
