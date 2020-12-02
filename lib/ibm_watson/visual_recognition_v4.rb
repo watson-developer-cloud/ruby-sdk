@@ -16,8 +16,13 @@
 #
 # IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
 #
-# Provide images to the IBM Watson&trade; Visual Recognition service for analysis. The
-# service detects objects based on a set of images with training data.
+# IBM Watson&trade; Visual Recognition is discontinued. Existing instances are supported
+# until 1 December 2021, but as of 7 January 2021, you can't create instances. Any
+# instance that is provisioned on 1 December 2021 will be deleted.
+# {: deprecated}
+#
+# Provide images to the IBM Watson Visual Recognition service for analysis. The service
+# detects objects based on a set of images with training data.
 
 require "concurrent"
 require "erb"

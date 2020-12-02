@@ -16,9 +16,14 @@
 #
 # IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
 #
-# The IBM Watson&trade; Visual Recognition service uses deep learning algorithms to
-# identify scenes and objects in images that you upload to the service. You can create and
-# train a custom classifier to identify subjects that suit your needs.
+# IBM Watson&trade; Visual Recognition is discontinued. Existing instances are supported
+# until 1 December 2021, but as of 7 January 2021, you can't create instances. Any
+# instance that is provisioned on 1 December 2021 will be deleted.
+# {: deprecated}
+#
+# The IBM Watson Visual Recognition service uses deep learning algorithms to identify
+# scenes and objects in images that you upload to the service. You can create and train a
+# custom classifier to identify subjects that suit your needs.
 
 require "concurrent"
 require "erb"
