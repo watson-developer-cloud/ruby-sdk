@@ -151,7 +151,7 @@ class TextToSpeechV1Test < Minitest::Test
     assert_equal(response, service_response.result)
   end
 
-  def test_custom_voice_models
+  def test_custom_custom_models
     response = { "customizations" => "yep" }
     authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
       username: "username",
@@ -170,7 +170,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.list_voice_models
+    service_response = service.list_custom_models
     assert_equal(response, service_response.result)
 
     stub_request(:get, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/customizations?language=en-US")
@@ -181,7 +181,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.list_voice_models(
+    service_response = service.list_custom_models(
       language: "en-US"
     )
     assert_equal(response, service_response.result)
@@ -196,7 +196,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.create_voice_model(
+    service_response = service.create_custom_model(
       name: "name",
       description: "description"
     )
@@ -210,7 +210,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: { "customization" => "yep, just one" }.to_json, headers: { "Content-Type" => "application/json" })
-    service_response = service.get_voice_model(
+    service_response = service.get_custom_model(
       customization_id: "custid"
     )
     assert_equal({ "customization" => "yep, just one" }, service_response.result)
@@ -225,7 +225,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
-    service_response = service.update_voice_model(
+    service_response = service.update_custom_model(
       customization_id: "custid",
       name: "name",
       description: "description"
@@ -239,7 +239,7 @@ class TextToSpeechV1Test < Minitest::Test
           "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
         }
       ).to_return(status: 200, body: "", headers: {})
-    service_response = service.delete_voice_model(
+    service_response = service.delete_custom_model(
       customization_id: "custid"
     )
     assert(service_response.nil?)

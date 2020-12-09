@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # The IBM Watson&trade; Speech to Text service provides APIs that use IBM's
 # speech-recognition capabilities to produce transcripts of spoken audio. The service can
 # transcribe speech from various languages and audio formats. In addition to basic
@@ -230,7 +232,7 @@ module IBMWatson
     #
     #   **See also:** [Making a multipart HTTP
     #   request](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-http#HTTP-multi).
-    # @param audio [String] The audio to transcribe.
+    # @param audio [File] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
@@ -883,7 +885,7 @@ module IBMWatson
     #
     #    **See also:** [Audio
     #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
-    # @param audio [String] The audio to transcribe.
+    # @param audio [File] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
     # @param model [String] The identifier of the model that is to be used for the recognition request. See
@@ -1391,9 +1393,11 @@ module IBMWatson
     #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageLanguageModels#listModels-language).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned. Omit the parameter to see all custom language or custom
-    #   acoustic models that are owned by the requesting credentials. **Note:** The
-    #   `ar-AR` (Modern Standard Arabic) and `zh-CN` (Mandarin Chinese) languages are not
-    #   available for language model customization.
+    #   acoustic models that are owned by the requesting credentials.
+    #
+    #   To determine the languages for which customization is available, see [Language
+    #   support for
+    #   customization](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customization#languageSupport).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_language_models(language: nil)
       headers = {
@@ -2513,9 +2517,11 @@ module IBMWatson
     #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAcousticModels#listModels-acoustic).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned. Omit the parameter to see all custom language or custom
-    #   acoustic models that are owned by the requesting credentials. **Note:** The
-    #   `ar-AR` (Modern Standard Arabic) and `zh-CN` (Mandarin Chinese) languages are not
-    #   available for language model customization.
+    #   acoustic models that are owned by the requesting credentials.
+    #
+    #   To determine the languages for which customization is available, see [Language
+    #   support for
+    #   customization](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customization#languageSupport).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_acoustic_models(language: nil)
       headers = {
@@ -2613,14 +2619,14 @@ module IBMWatson
     #   it. You must use credentials for the instance of the service that owns a model to
     #   train it.
     #
-    #   The training method is asynchronous. It can take on the order of minutes or hours
-    #   to complete depending on the total amount of audio data on which the custom
-    #   acoustic model is being trained and the current load on the service. Typically,
-    #   training a custom acoustic model takes approximately two to four times the length
-    #   of its audio data. The actual time depends on the model being trained and the
-    #   nature of the audio, such as whether the audio is clean or noisy. The method
-    #   returns an HTTP 200 response code to indicate that the training process has begun.
-    #
+    #   The training method is asynchronous. Training time depends on the cumulative
+    #   amount of audio data that the custom acoustic model contains and the current load
+    #   on the service. When you train or retrain a model, the service uses all of the
+    #   model's audio data in the training. Training a custom acoustic model takes
+    #   approximately as long as the length of its cumulative audio data. For example, it
+    #   takes approximately 2 hours to train a model that contains a total of 2 hours of
+    #   audio. The method returns an HTTP 200 response code to indicate that the training
+    #   process has begun.
     #
     #   You can monitor the status of the training by using the **Get a custom acoustic
     #   model** method to poll the model's status. Use a loop to check the status once a
@@ -2964,7 +2970,7 @@ module IBMWatson
     #   used, their use is strongly discouraged.)
     #   * Do not use the name of an audio resource that has already been added to the
     #   custom model.
-    # @param audio_resource [String] The audio resource that is to be added to the custom acoustic model, an individual
+    # @param audio_resource [File] The audio resource that is to be added to the custom acoustic model, an individual
     #   audio file or an archive file.
     #
     #   With the `curl` command, use the `--data-binary` option to upload the file for the

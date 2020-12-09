@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # The IBM Watson&trade; Assistant service combines machine learning, natural language
 # understanding, and an integrated dialog editor to create conversation flows between your
 # apps and your users.
@@ -35,21 +37,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "assistant"
     DEFAULT_SERVICE_URL = "https://api.us-south.assistant.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Assistant service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
+    #   format. The current version is `2020-04-01`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -58,10 +53,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -105,6 +100,8 @@ module IBMWatson
     def message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, nodes_visited_details: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "message")
@@ -141,17 +138,22 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_workspaces(page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List workspaces.
     # List the workspaces associated with a Watson Assistant service instance.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned workspaces will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_workspaces(page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_workspaces(page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_workspaces")
@@ -160,6 +162,7 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -178,7 +181,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, include_audit: nil)
+    # @!method create_workspace(name: nil, description: nil, language: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, webhooks: nil, intents: nil, entities: nil, include_audit: nil)
     # Create workspace.
     # Create a workspace based on component objects. You must provide workspace
     #   components defining the content of the new workspace.
@@ -187,21 +190,23 @@ module IBMWatson
     # @param description [String] The description of the workspace. This string cannot contain carriage return,
     #   newline, or tab characters.
     # @param language [String] The language of the workspace.
+    # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
+    # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
+    #   input.
     # @param metadata [Hash] Any metadata related to the workspace.
     # @param learning_opt_out [Boolean] Whether training data from the workspace (including artifacts such as intents and
     #   entities) can be used by IBM for general service improvements. `true` indicates
     #   that workspace training data is not to be used.
     # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
+    # @param webhooks [Array[Webhook]]
     # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
     # @param entities [Array[CreateEntity]] An array of objects describing the entities for the workspace.
-    # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
-    # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
-    #   input.
-    # @param webhooks [Array[Webhook]]
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_workspace(name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, include_audit: nil)
+    def create_workspace(name: nil, description: nil, language: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, webhooks: nil, intents: nil, entities: nil, include_audit: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "create_workspace")
@@ -216,14 +221,14 @@ module IBMWatson
         "name" => name,
         "description" => description,
         "language" => language,
+        "dialog_nodes" => dialog_nodes,
+        "counterexamples" => counterexamples,
         "metadata" => metadata,
         "learning_opt_out" => learning_opt_out,
         "system_settings" => system_settings,
+        "webhooks" => webhooks,
         "intents" => intents,
-        "entities" => entities,
-        "dialog_nodes" => dialog_nodes,
-        "counterexamples" => counterexamples,
-        "webhooks" => webhooks
+        "entities" => entities
       }
 
       method_url = "/v1/workspaces"
@@ -256,6 +261,8 @@ module IBMWatson
     def get_workspace(workspace_id:, export: nil, include_audit: nil, sort: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_workspace")
@@ -281,7 +288,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil, include_audit: nil)
+    # @!method update_workspace(workspace_id:, name: nil, description: nil, language: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, webhooks: nil, intents: nil, entities: nil, append: nil, include_audit: nil)
     # Update workspace.
     # Update an existing workspace with new or modified data. You must provide component
     #   objects defining the content of the updated workspace.
@@ -291,17 +298,17 @@ module IBMWatson
     # @param description [String] The description of the workspace. This string cannot contain carriage return,
     #   newline, or tab characters.
     # @param language [String] The language of the workspace.
+    # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
+    # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
+    #   input.
     # @param metadata [Hash] Any metadata related to the workspace.
     # @param learning_opt_out [Boolean] Whether training data from the workspace (including artifacts such as intents and
     #   entities) can be used by IBM for general service improvements. `true` indicates
     #   that workspace training data is not to be used.
     # @param system_settings [WorkspaceSystemSettings] Global settings for the workspace.
+    # @param webhooks [Array[Webhook]]
     # @param intents [Array[CreateIntent]] An array of objects defining the intents for the workspace.
     # @param entities [Array[CreateEntity]] An array of objects describing the entities for the workspace.
-    # @param dialog_nodes [Array[DialogNode]] An array of objects describing the dialog nodes in the workspace.
-    # @param counterexamples [Array[Counterexample]] An array of objects defining input examples that have been marked as irrelevant
-    #   input.
-    # @param webhooks [Array[Webhook]]
     # @param append [Boolean] Whether the new data is to be appended to the existing data in the object. If
     #   **append**=`false`, elements included in the new data completely replace the
     #   corresponding existing elements, including all subelements. For example, if the
@@ -315,8 +322,10 @@ module IBMWatson
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, intents: nil, entities: nil, dialog_nodes: nil, counterexamples: nil, webhooks: nil, append: nil, include_audit: nil)
+    def update_workspace(workspace_id:, name: nil, description: nil, language: nil, dialog_nodes: nil, counterexamples: nil, metadata: nil, learning_opt_out: nil, system_settings: nil, webhooks: nil, intents: nil, entities: nil, append: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -333,14 +342,14 @@ module IBMWatson
         "name" => name,
         "description" => description,
         "language" => language,
+        "dialog_nodes" => dialog_nodes,
+        "counterexamples" => counterexamples,
         "metadata" => metadata,
         "learning_opt_out" => learning_opt_out,
         "system_settings" => system_settings,
+        "webhooks" => webhooks,
         "intents" => intents,
-        "entities" => entities,
-        "dialog_nodes" => dialog_nodes,
-        "counterexamples" => counterexamples,
-        "webhooks" => webhooks
+        "entities" => entities
       }
 
       method_url = "/v1/workspaces/%s" % [ERB::Util.url_encode(workspace_id)]
@@ -364,6 +373,8 @@ module IBMWatson
     # @return [nil]
     def delete_workspace(workspace_id:)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -390,7 +401,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_intents(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List intents.
     # List the intents for a workspace.
     # @param workspace_id [String] Unique identifier of the workspace.
@@ -398,14 +409,19 @@ module IBMWatson
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned intents will be sorted. To reverse the sort order,
     #   prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_intents(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_intents(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -416,6 +432,7 @@ module IBMWatson
         "version" => @version,
         "export" => export,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -453,6 +470,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_intent(workspace_id:, intent:, description: nil, examples: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
 
@@ -501,6 +520,8 @@ module IBMWatson
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -559,6 +580,8 @@ module IBMWatson
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_intent")
@@ -601,6 +624,8 @@ module IBMWatson
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_intent")
@@ -626,23 +651,28 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_examples(workspace_id:, intent:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List user input examples.
     # List the user input examples for an intent, optionally including contextual entity
     #   mentions.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param intent [String] The intent name.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned examples will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_examples(workspace_id:, intent:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_examples(workspace_id:, intent:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -652,6 +682,7 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -690,6 +721,8 @@ module IBMWatson
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("intent must be provided") if intent.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
@@ -738,6 +771,8 @@ module IBMWatson
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_example")
@@ -785,6 +820,8 @@ module IBMWatson
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_example")
@@ -828,6 +865,8 @@ module IBMWatson
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_example")
@@ -853,20 +892,25 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_counterexamples(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List counterexamples.
     # List the counterexamples for a workspace. Counterexamples are examples that have
     #   been marked as irrelevant input.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned counterexamples will be sorted. To reverse the
     #   sort order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_counterexamples(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_counterexamples(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -876,6 +920,7 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -911,6 +956,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_counterexample(workspace_id:, text:, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
@@ -956,6 +1003,8 @@ module IBMWatson
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_counterexample")
@@ -997,6 +1046,8 @@ module IBMWatson
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_counterexample")
@@ -1037,6 +1088,8 @@ module IBMWatson
 
       raise ArgumentError.new("text must be provided") if text.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_counterexample")
@@ -1062,7 +1115,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_entities(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entities.
     # List the entities for a workspace.
     # @param workspace_id [String] Unique identifier of the workspace.
@@ -1070,14 +1123,19 @@ module IBMWatson
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned entities will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_entities(workspace_id:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_entities(workspace_id:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -1088,6 +1146,7 @@ module IBMWatson
         "version" => @version,
         "export" => export,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1128,6 +1187,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_entity(workspace_id:, entity:, description: nil, metadata: nil, fuzzy_match: nil, values: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
@@ -1178,6 +1239,8 @@ module IBMWatson
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -1237,6 +1300,8 @@ module IBMWatson
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_entity")
@@ -1281,6 +1346,8 @@ module IBMWatson
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_entity")
@@ -1323,6 +1390,8 @@ module IBMWatson
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "list_mentions")
@@ -1350,7 +1419,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entity values.
     # List the values for an entity.
     # @param workspace_id [String] Unique identifier of the workspace.
@@ -1359,16 +1428,21 @@ module IBMWatson
     #   **export**=`false`, the returned data includes only information about the element
     #   itself. If **export**=`true`, all content, including subelements, is included.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned entity values will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_values(workspace_id:, entity:, export: nil, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_values(workspace_id:, entity:, export: nil, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -1379,6 +1453,7 @@ module IBMWatson
         "version" => @version,
         "export" => export,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1427,6 +1502,8 @@ module IBMWatson
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("value must be provided") if value.nil?
 
@@ -1480,6 +1557,8 @@ module IBMWatson
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
       raise ArgumentError.new("value must be provided") if value.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -1550,6 +1629,8 @@ module IBMWatson
 
       raise ArgumentError.new("value must be provided") if value.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_value")
@@ -1597,6 +1678,8 @@ module IBMWatson
 
       raise ArgumentError.new("value must be provided") if value.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_value")
@@ -1622,25 +1705,30 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List entity value synonyms.
     # List the synonyms for an entity value.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param entity [String] The name of the entity.
     # @param value [String] The text of the entity value.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned entity value synonyms will be sorted. To reverse
     #   the sort order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_synonyms(workspace_id:, entity:, value:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
       raise ArgumentError.new("value must be provided") if value.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -1650,6 +1738,7 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1690,6 +1779,8 @@ module IBMWatson
       raise ArgumentError.new("entity must be provided") if entity.nil?
 
       raise ArgumentError.new("value must be provided") if value.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
@@ -1740,6 +1831,8 @@ module IBMWatson
 
       raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_synonym")
@@ -1789,6 +1882,8 @@ module IBMWatson
 
       raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "update_synonym")
@@ -1834,6 +1929,8 @@ module IBMWatson
 
       raise ArgumentError.new("synonym must be provided") if synonym.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_synonym")
@@ -1859,19 +1956,24 @@ module IBMWatson
     #########################
 
     ##
-    # @!method list_dialog_nodes(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    # @!method list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
     # List dialog nodes.
     # List the dialog nodes for a workspace.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param page_limit [Fixnum] The number of records to return in each page of results.
+    # @param include_count [Boolean] Whether to include information about the number of records that satisfy the
+    #   request, regardless of the page limit. If this parameter is `true`, the
+    #   `pagination` object in the response includes the `total` property.
     # @param sort [String] The attribute by which returned dialog nodes will be sorted. To reverse the sort
     #   order, prefix the value with a minus sign (`-`).
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_dialog_nodes(workspace_id:, page_limit: nil, sort: nil, cursor: nil, include_audit: nil)
+    def list_dialog_nodes(workspace_id:, page_limit: nil, include_count: nil, sort: nil, cursor: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -1881,6 +1983,7 @@ module IBMWatson
       params = {
         "version" => @version,
         "page_limit" => page_limit,
+        "include_count" => include_count,
         "sort" => sort,
         "cursor" => cursor,
         "include_audit" => include_audit
@@ -1920,7 +2023,7 @@ module IBMWatson
     # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
-    # @param context [Hash] The context for the dialog node.
+    # @param context [DialogNodeContext] The context for the dialog node.
     # @param metadata [Hash] The metadata for the dialog node.
     # @param next_step [DialogNodeNextStep] The next step to execute following this dialog node.
     # @param title [String] The alias used to identify the dialog node. This string must conform to the
@@ -1943,6 +2046,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_dialog_node(workspace_id:, dialog_node:, description: nil, conditions: nil, parent: nil, previous_sibling: nil, output: nil, context: nil, metadata: nil, next_step: nil, title: nil, type: nil, event_name: nil, variable: nil, actions: nil, digress_in: nil, digress_out: nil, digress_out_slots: nil, user_label: nil, disambiguation_opt_out: nil, include_audit: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
@@ -2005,6 +2110,8 @@ module IBMWatson
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "get_dialog_node")
@@ -2050,7 +2157,7 @@ module IBMWatson
     # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
-    # @param new_context [Hash] The context for the dialog node.
+    # @param new_context [DialogNodeContext] The context for the dialog node.
     # @param new_metadata [Hash] The metadata for the dialog node.
     # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
     # @param new_title [String] The alias used to identify the dialog node. This string must conform to the
@@ -2075,6 +2182,8 @@ module IBMWatson
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -2133,6 +2242,8 @@ module IBMWatson
 
       raise ArgumentError.new("dialog_node must be provided") if dialog_node.nil?
 
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "delete_dialog_node")
@@ -2172,6 +2283,8 @@ module IBMWatson
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
       }
@@ -2213,6 +2326,8 @@ module IBMWatson
     # @param cursor [String] A token identifying the page of results to retrieve.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_all_logs(filter:, sort: nil, page_limit: nil, cursor: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("filter must be provided") if filter.nil?
 
       headers = {
@@ -2256,6 +2371,8 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {
@@ -2278,6 +2395,51 @@ module IBMWatson
         accept_json: true
       )
       nil
+    end
+    #########################
+    # bulkClassify
+    #########################
+
+    ##
+    # @!method bulk_classify(workspace_id:, input: nil)
+    # Identify intents and entities in multiple user utterances.
+    # Send multiple user inputs to a workspace in a single request and receive
+    #   information about the intents and entities recognized in each input. This method
+    #   is useful for testing and comparing the performance of different workspaces.
+    #
+    #   This method is available only with Premium plans.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param input [Array[BulkClassifyUtterance]] An array of input utterances to classify.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def bulk_classify(workspace_id:, input: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "bulk_classify")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "input" => input
+      }
+
+      method_url = "/v1/workspaces/%s/bulk_classify" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
     end
   end
 end

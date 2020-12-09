@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # Analyze various features of text content at scale. Provide text, raw HTML, or a public
 # URL and IBM Watson Natural Language Understanding will give you results for the features
 # you request. The service cleans HTML content before analysis by default, so the results
@@ -38,21 +40,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "natural_language_understanding"
     DEFAULT_SERVICE_URL = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Natural Language Understanding service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
+    #   format. The current version is `2020-08-01`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -61,10 +56,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -92,7 +87,8 @@ module IBMWatson
     #   - Relations
     #   - Semantic roles
     #   - Sentiment
-    #   - Syntax.
+    #   - Syntax
+    #   - Summarization (Experimental)
     #
     #   If a language for the input text is not specified with the `language` parameter,
     #   the service [automatically detects the
@@ -121,6 +117,8 @@ module IBMWatson
     # @param limit_text_characters [Fixnum] Sets the maximum number of characters that are processed by the service.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def analyze(features:, text: nil, html: nil, url: nil, clean: nil, xpath: nil, fallback_to_raw: nil, return_analyzed_text: nil, language: nil, limit_text_characters: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("features must be provided") if features.nil?
 
       headers = {
@@ -169,6 +167,8 @@ module IBMWatson
     #   that are deployed to your Natural Language Understanding service.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_models
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_models")
@@ -197,6 +197,8 @@ module IBMWatson
     # @param model_id [String] Model ID of the model to delete.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {

@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # The IBM Watson&trade; Text to Speech service provides APIs that use IBM's
 # speech-synthesis capabilities to synthesize text into natural-sounding speech in a
 # variety of languages, dialects, and voices. The service supports at least one male or
@@ -109,14 +111,14 @@ module IBMWatson
     # Get a voice.
     # Gets information about the specified voice. The information includes the name,
     #   language, gender, and other details about the voice. Specify a customization ID to
-    #   obtain information for a custom voice model that is defined for the language of
-    #   the specified voice. To list information about all available voices, use the
-    #   **List voices** method.
+    #   obtain information for a custom model that is defined for the language of the
+    #   specified voice. To list information about all available voices, use the **List
+    #   voices** method.
     #
     #   **See also:** [Listing a specific
     #   voice](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-voices#listVoice).
     # @param voice [String] The voice for which information is to be returned.
-    # @param customization_id [String] The customization ID (GUID) of a custom voice model for which information is to be
+    # @param customization_id [String] The customization ID (GUID) of a custom model for which information is to be
     #   returned. You must make the request with credentials for the instance of the
     #   service that owns the custom model. Omit the parameter to see information about
     #   the specified voice with no customization.
@@ -225,8 +227,8 @@ module IBMWatson
     #   specifying an audio format, see **Audio formats (accept types)** in the method
     #   description.
     # @param voice [String] The voice to use for synthesis.
-    # @param customization_id [String] The customization ID (GUID) of a custom voice model to use for the synthesis. If a
-    #   custom voice model is specified, it works only if it matches the language of the
+    # @param customization_id [String] The customization ID (GUID) of a custom model to use for the synthesis. If a
+    #   custom model is specified, it works only if it matches the language of the
     #   indicated voice. You must make the request with credentials for the instance of
     #   the service that owns the custom model. Omit the parameter to use the specified
     #   voice with no customization.
@@ -271,9 +273,7 @@ module IBMWatson
     # Gets the phonetic pronunciation for the specified word. You can request the
     #   pronunciation for a specific format. You can also request the pronunciation for a
     #   specific voice to see the default translation for the language of that voice or
-    #   for a specific custom voice model to see the translation for that voice model.
-    #
-    #   **Note:** This method is currently a beta release.
+    #   for a specific custom model to see the translation for that model.
     #
     #   **See also:** [Querying a word from a
     #   language](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryLanguage).
@@ -284,13 +284,13 @@ module IBMWatson
     # @param format [String] The phoneme format in which to return the pronunciation. The Arabic, Chinese,
     #   Dutch, and Korean languages support only IPA. Omit the parameter to obtain the
     #   pronunciation in the default format.
-    # @param customization_id [String] The customization ID (GUID) of a custom voice model for which the pronunciation is
-    #   to be returned. The language of a specified custom model must match the language
-    #   of the specified voice. If the word is not defined in the specified custom model,
-    #   the service returns the default translation for the custom model's language. You
-    #   must make the request with credentials for the instance of the service that owns
-    #   the custom model. Omit the parameter to see the translation for the specified
-    #   voice with no customization.
+    # @param customization_id [String] The customization ID (GUID) of a custom model for which the pronunciation is to be
+    #   returned. The language of a specified custom model must match the language of the
+    #   specified voice. If the word is not defined in the specified custom model, the
+    #   service returns the default translation for the custom model's language. You must
+    #   make the request with credentials for the instance of the service that owns the
+    #   custom model. Omit the parameter to see the translation for the specified voice
+    #   with no customization.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_pronunciation(text:, voice: nil, format: nil, customization_id: nil)
       raise ArgumentError.new("text must be provided") if text.nil?
@@ -323,31 +323,28 @@ module IBMWatson
     #########################
 
     ##
-    # @!method create_voice_model(name:, language: nil, description: nil)
+    # @!method create_custom_model(name:, language: nil, description: nil)
     # Create a custom model.
-    # Creates a new empty custom voice model. You must specify a name for the new custom
+    # Creates a new empty custom model. You must specify a name for the new custom
     #   model. You can optionally specify the language and a description for the new
     #   model. The model is owned by the instance of the service whose credentials are
     #   used to create it.
     #
-    #   **Note:** This method is currently a beta release.
-    #
     #   **See also:** [Creating a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsCreate).
-    # @param name [String] The name of the new custom voice model.
-    # @param language [String] The language of the new custom voice model. You create a custom voice model for a
-    #   specific language, not for a specific voice. A custom model can be used with any
-    #   voice, standard or neural, for its specified language. Omit the parameter to use
-    #   the the default language, `en-US`.
-    # @param description [String] A description of the new custom voice model. Specifying a description is
-    #   recommended.
+    # @param name [String] The name of the new custom model.
+    # @param language [String] The language of the new custom model. You create a custom model for a specific
+    #   language, not for a specific voice. A custom model can be used with any voice,
+    #   standard or neural, for its specified language. Omit the parameter to use the the
+    #   default language, `en-US`.
+    # @param description [String] A description of the new custom model. Specifying a description is recommended.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_voice_model(name:, language: nil, description: nil)
+    def create_custom_model(name:, language: nil, description: nil)
       raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "create_voice_model")
+      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "create_custom_model")
       headers.merge!(sdk_headers)
 
       data = {
@@ -369,27 +366,25 @@ module IBMWatson
     end
 
     ##
-    # @!method list_voice_models(language: nil)
+    # @!method list_custom_models(language: nil)
     # List custom models.
-    # Lists metadata such as the name and description for all custom voice models that
-    #   are owned by an instance of the service. Specify a language to list the voice
-    #   models for that language only. To see the words in addition to the metadata for a
-    #   specific voice model, use the **List a custom model** method. You must use
+    # Lists metadata such as the name and description for all custom models that are
+    #   owned by an instance of the service. Specify a language to list the custom models
+    #   for that language only. To see the words in addition to the metadata for a
+    #   specific custom model, use the **List a custom model** method. You must use
     #   credentials for the instance of the service that owns a model to list information
     #   about it.
     #
-    #   **Note:** This method is currently a beta release.
-    #
     #   **See also:** [Querying all custom
     #   models](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsQueryAll).
-    # @param language [String] The language for which custom voice models that are owned by the requesting
-    #   credentials are to be returned. Omit the parameter to see all custom voice models
-    #   that are owned by the requester.
+    # @param language [String] The language for which custom models that are owned by the requesting credentials
+    #   are to be returned. Omit the parameter to see all custom models that are owned by
+    #   the requester.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def list_voice_models(language: nil)
+    def list_custom_models(language: nil)
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "list_voice_models")
+      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "list_custom_models")
       headers.merge!(sdk_headers)
 
       params = {
@@ -409,14 +404,14 @@ module IBMWatson
     end
 
     ##
-    # @!method update_voice_model(customization_id:, name: nil, description: nil, words: nil)
+    # @!method update_custom_model(customization_id:, name: nil, description: nil, words: nil)
     # Update a custom model.
-    # Updates information for the specified custom voice model. You can update metadata
-    #   such as the name and description of the voice model. You can also update the words
-    #   in the model and their translations. Adding a new translation for a word that
-    #   already exists in a custom model overwrites the word's existing translation. A
-    #   custom model can contain no more than 20,000 entries. You must use credentials for
-    #   the instance of the service that owns a model to update it.
+    # Updates information for the specified custom model. You can update metadata such
+    #   as the name and description of the model. You can also update the words in the
+    #   model and their translations. Adding a new translation for a word that already
+    #   exists in a custom model overwrites the word's existing translation. A custom
+    #   model can contain no more than 20,000 entries. You must use credentials for the
+    #   instance of the service that owns a model to update it.
     #
     #   You can define sounds-like or phonetic translations for words. A sounds-like
     #   translation consists of one or more words that, when combined, sound like the
@@ -432,8 +427,6 @@ module IBMWatson
     #     <code>&lt;phoneme alphabet="ibm"
     #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
-    #   **Note:** This method is currently a beta release.
-    #
     #   **See also:**
     #   * [Updating a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsUpdate)
@@ -441,20 +434,20 @@ module IBMWatson
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
     #   * [Understanding
     #   customization](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customIntro#customIntro).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
-    # @param name [String] A new name for the custom voice model.
-    # @param description [String] A new description for the custom voice model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
+    # @param name [String] A new name for the custom model.
+    # @param description [String] A new description for the custom model.
     # @param words [Array[Word]] An array of `Word` objects that provides the words and their translations that are
-    #   to be added or updated for the custom voice model. Pass an empty array to make no
+    #   to be added or updated for the custom model. Pass an empty array to make no
     #   additions or updates.
     # @return [nil]
-    def update_voice_model(customization_id:, name: nil, description: nil, words: nil)
+    def update_custom_model(customization_id:, name: nil, description: nil, words: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "update_voice_model")
+      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "update_custom_model")
       headers.merge!(sdk_headers)
 
       data = {
@@ -476,26 +469,24 @@ module IBMWatson
     end
 
     ##
-    # @!method get_voice_model(customization_id:)
+    # @!method get_custom_model(customization_id:)
     # Get a custom model.
-    # Gets all information about a specified custom voice model. In addition to metadata
-    #   such as the name and description of the voice model, the output includes the words
-    #   and their translations as defined in the model. To see just the metadata for a
-    #   voice model, use the **List custom models** method.
-    #
-    #   **Note:** This method is currently a beta release.
+    # Gets all information about a specified custom model. In addition to metadata such
+    #   as the name and description of the custom model, the output includes the words and
+    #   their translations as defined in the model. To see just the metadata for a model,
+    #   use the **List custom models** method.
     #
     #   **See also:** [Querying a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsQuery).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def get_voice_model(customization_id:)
+    def get_custom_model(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "get_voice_model")
+      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "get_custom_model")
       headers.merge!(sdk_headers)
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -510,24 +501,22 @@ module IBMWatson
     end
 
     ##
-    # @!method delete_voice_model(customization_id:)
+    # @!method delete_custom_model(customization_id:)
     # Delete a custom model.
-    # Deletes the specified custom voice model. You must use credentials for the
-    #   instance of the service that owns a model to delete it.
-    #
-    #   **Note:** This method is currently a beta release.
+    # Deletes the specified custom model. You must use credentials for the instance of
+    #   the service that owns a model to delete it.
     #
     #   **See also:** [Deleting a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customModels#cuModelsDelete).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
     # @return [nil]
-    def delete_voice_model(customization_id:)
+    def delete_custom_model(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       headers = {
       }
-      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "delete_voice_model")
+      sdk_headers = Common.new.get_sdk_headers("text_to_speech", "V1", "delete_custom_model")
       headers.merge!(sdk_headers)
 
       method_url = "/v1/customizations/%s" % [ERB::Util.url_encode(customization_id)]
@@ -547,7 +536,7 @@ module IBMWatson
     ##
     # @!method add_words(customization_id:, words:)
     # Add custom words.
-    # Adds one or more words and their translations to the specified custom voice model.
+    # Adds one or more words and their translations to the specified custom model.
     #   Adding a new translation for a word that already exists in a custom model
     #   overwrites the word's existing translation. A custom model can contain no more
     #   than 20,000 entries. You must use credentials for the instance of the service that
@@ -567,8 +556,6 @@ module IBMWatson
     #     <code>&lt;phoneme alphabet="ibm"
     #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
-    #   **Note:** This method is currently a beta release.
-    #
     #   **See also:**
     #   * [Adding multiple words to a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsAdd)
@@ -576,15 +563,15 @@ module IBMWatson
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
     #   * [Understanding
     #   customization](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customIntro#customIntro).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
     # @param words [Array[Word]] The **Add custom words** method accepts an array of `Word` objects. Each object
-    #   provides a word that is to be added or updated for the custom voice model and the
-    #   word's translation.
+    #   provides a word that is to be added or updated for the custom model and the word's
+    #   translation.
     #
     #   The **List custom words** method returns an array of `Word` objects. Each object
-    #   shows a word and its translation from the custom voice model. The words are listed
-    #   in alphabetical order, with uppercase letters listed before lowercase letters. The
+    #   shows a word and its translation from the custom model. The words are listed in
+    #   alphabetical order, with uppercase letters listed before lowercase letters. The
     #   array is empty if the custom model contains no words.
     # @return [nil]
     def add_words(customization_id:, words:)
@@ -616,17 +603,14 @@ module IBMWatson
     ##
     # @!method list_words(customization_id:)
     # List custom words.
-    # Lists all of the words and their translations for the specified custom voice
-    #   model. The output shows the translations as they are defined in the model. You
-    #   must use credentials for the instance of the service that owns a model to list its
-    #   words.
-    #
-    #   **Note:** This method is currently a beta release.
+    # Lists all of the words and their translations for the specified custom model. The
+    #   output shows the translations as they are defined in the model. You must use
+    #   credentials for the instance of the service that owns a model to list its words.
     #
     #   **See also:** [Querying all words from a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordsQueryModel).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_words(customization_id:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -650,11 +634,11 @@ module IBMWatson
     ##
     # @!method add_word(customization_id:, word:, translation:, part_of_speech: nil)
     # Add a custom word.
-    # Adds a single word and its translation to the specified custom voice model. Adding
-    #   a new translation for a word that already exists in a custom model overwrites the
-    #   word's existing translation. A custom model can contain no more than 20,000
-    #   entries. You must use credentials for the instance of the service that owns a
-    #   model to add a word to it.
+    # Adds a single word and its translation to the specified custom model. Adding a new
+    #   translation for a word that already exists in a custom model overwrites the word's
+    #   existing translation. A custom model can contain no more than 20,000 entries. You
+    #   must use credentials for the instance of the service that owns a model to add a
+    #   word to it.
     #
     #   You can define sounds-like or phonetic translations for words. A sounds-like
     #   translation consists of one or more words that, when combined, sound like the
@@ -670,8 +654,6 @@ module IBMWatson
     #     <code>&lt;phoneme alphabet="ibm"
     #   ph="1gAstroEntxrYFXs"&gt;&lt;/phoneme&gt;</code>
     #
-    #   **Note:** This method is currently a beta release.
-    #
     #   **See also:**
     #   * [Adding a single word to a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordAdd)
@@ -679,9 +661,9 @@ module IBMWatson
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuJapaneseAdd)
     #   * [Understanding
     #   customization](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customIntro#customIntro).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
-    # @param word [String] The word that is to be added or updated for the custom voice model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
+    # @param word [String] The word that is to be added or updated for the custom model.
     # @param translation [String] The phonetic or sounds-like translation for the word. A phonetic translation is
     #   based on the SSML format for representing the phonetic string of a word either as
     #   an IPA translation or as an IBM SPR translation. The Arabic, Chinese, Dutch, and
@@ -730,13 +712,11 @@ module IBMWatson
     #   shows the translation as it is defined in the model. You must use credentials for
     #   the instance of the service that owns a model to list its words.
     #
-    #   **Note:** This method is currently a beta release.
-    #
     #   **See also:** [Querying a single word from a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordQueryModel).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
-    # @param word [String] The word that is to be queried from the custom voice model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
+    # @param word [String] The word that is to be queried from the custom model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_word(customization_id:, word:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -762,17 +742,14 @@ module IBMWatson
     ##
     # @!method delete_word(customization_id:, word:)
     # Delete a custom word.
-    # Deletes a single word from the specified custom voice model. You must use
-    #   credentials for the instance of the service that owns a model to delete its words.
-    #
-    #
-    #   **Note:** This method is currently a beta release.
+    # Deletes a single word from the specified custom model. You must use credentials
+    #   for the instance of the service that owns a model to delete its words.
     #
     #   **See also:** [Deleting a word from a custom
     #   model](https://cloud.ibm.com/docs/text-to-speech?topic=text-to-speech-customWords#cuWordDelete).
-    # @param customization_id [String] The customization ID (GUID) of the custom voice model. You must make the request
-    #   with credentials for the instance of the service that owns the custom model.
-    # @param word [String] The word that is to be deleted from the custom voice model.
+    # @param customization_id [String] The customization ID (GUID) of the custom model. You must make the request with
+    #   credentials for the instance of the service that owns the custom model.
+    # @param word [String] The word that is to be deleted from the custom model.
     # @return [nil]
     def delete_word(customization_id:, word:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -811,7 +788,7 @@ module IBMWatson
     #
     #   **Note:** If you delete an instance of the service from the service console, all
     #   data associated with that service instance is automatically deleted. This includes
-    #   all custom voice models and word/translation pairs, and all data related to speech
+    #   all custom models and word/translation pairs, and all data related to speech
     #   synthesis requests.
     #
     #   **See also:** [Information

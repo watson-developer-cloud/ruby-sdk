@@ -13,10 +13,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# The IBM Watson&trade; Visual Recognition service uses deep learning algorithms to
-# identify scenes and objects in images that you upload to the service. You can create and
-# train a custom classifier to identify subjects that suit your needs.
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
+# IBM Watson&trade; Visual Recognition is discontinued. Existing instances are supported
+# until 1 December 2021, but as of 7 January 2021, you can't create instances. Any
+# instance that is provisioned on 1 December 2021 will be deleted.
+# {: deprecated}
+#
+# The IBM Watson Visual Recognition service uses deep learning algorithms to identify
+# scenes and objects in images that you upload to the service. You can create and train a
+# custom classifier to identify subjects that suit your needs.
 
 require "concurrent"
 require "erb"
@@ -32,33 +39,27 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "visual_recognition"
     DEFAULT_SERVICE_URL = "https://api.us-south.visual-recognition.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Visual Recognition service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
+    #   format. The current version is `2018-03-19`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     # @option args service_name [String] The name of the service to configure. Will be used as the key to load
     #   any external configuration, if applicable.
     def initialize(args = {})
+      warn "On 1 December 2021, Visual Recognition will no longer be available. For more information, see https://github.com/watson-developer-cloud/ruby-sdk/tree/master#visual-recognition-deprecation."
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -112,6 +113,8 @@ module IBMWatson
     # @param accept_language [String] The desired language of parts of the response. See the response for details.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def classify(images_file: nil, images_filename: nil, images_file_content_type: nil, url: nil, threshold: nil, owners: nil, classifier_ids: nil, accept_language: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
         "Accept-Language" => accept_language
       }
@@ -198,6 +201,8 @@ module IBMWatson
     # @param negative_examples_filename [String] The filename for negative_examples.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_classifier(name:, positive_examples:, negative_examples: nil, negative_examples_filename: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("name must be provided") if name.nil?
 
       raise ArgumentError.new("positive_examples must be a hash") unless positive_examples.is_a?(Hash)
@@ -253,6 +258,8 @@ module IBMWatson
     #   return a brief list of classifiers.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_classifiers(verbose: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("watson_vision_combined", "V3", "list_classifiers")
@@ -282,6 +289,8 @@ module IBMWatson
     # @param classifier_id [String] The ID of the classifier.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_classifier(classifier_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
@@ -350,6 +359,8 @@ module IBMWatson
     # @param negative_examples_filename [String] The filename for negative_examples.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_classifier(classifier_id:, positive_examples: nil, negative_examples: nil, negative_examples_filename: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       raise ArgumentError.new("positive_examples must be a hash") unless positive_examples.nil? || positive_examples.is_a?(Hash)
@@ -401,6 +412,8 @@ module IBMWatson
     # @param classifier_id [String] The ID of the classifier.
     # @return [nil]
     def delete_classifier(classifier_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
@@ -435,6 +448,8 @@ module IBMWatson
     # @param classifier_id [String] The ID of the classifier.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_core_ml_model(classifier_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("classifier_id must be provided") if classifier_id.nil?
 
       headers = {
@@ -474,6 +489,8 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {

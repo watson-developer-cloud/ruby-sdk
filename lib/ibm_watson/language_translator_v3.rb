@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # IBM Watson&trade; Language Translator translates text from one language to another.
 # The service offers multiple IBM-provided translation models that you can customize based
 # on your unique terminology and language. Use Language Translator to take news from
@@ -34,21 +36,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "language_translator"
     DEFAULT_SERVICE_URL = "https://api.us-south.language-translator.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Language Translator service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the version of the API you want to use. Specify dates in
+    #   YYYY-MM-DD format. The current version is `2018-05-01`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -57,10 +52,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -78,11 +73,16 @@ module IBMWatson
     ##
     # @!method list_languages
     # List supported languages.
-    # Lists all supported languages. The method returns an array of supported languages
-    #   with information about each language. Languages are listed in alphabetical order
-    #   by language code (for example, `af`, `ar`).
+    # Lists all supported languages for translation. The method returns an array of
+    #   supported languages with information about each language. Languages are listed in
+    #   alphabetical order by language code (for example, `af`, `ar`). In addition to
+    #   basic information about each language, the response indicates whether the language
+    #   is `supported_as_source` for translation and `supported_as_target` for
+    #   translation. It also lists whether the language is `identifiable`.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_languages
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_languages")
@@ -116,8 +116,12 @@ module IBMWatson
     #   service attempt to detect the language from the input text. If you omit the source
     #   language, the request must contain sufficient input text for the service to
     #   identify the source language.
-    # @param text [Array[String]] Input text in UTF-8 encoding. Multiple entries result in multiple translations in
-    #   the response.
+    #
+    #   You can translate a maximum of 50 KB (51,200 bytes) of text with a single request.
+    #   All input text must be encoded in UTF-8 format.
+    # @param text [Array[String]] Input text in UTF-8 encoding. Submit a maximum of 50 KB (51,200 bytes) of text
+    #   with a single request. Multiple elements result in multiple translations in the
+    #   response.
     # @param model_id [String] The model to use for translation. For example, `en-de` selects the IBM-provided
     #   base model for English-to-German translation. A model ID overrides the `source`
     #   and `target` parameters and is required if you use a custom model. If no model ID
@@ -129,6 +133,8 @@ module IBMWatson
     #   model ID is not specified.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def translate(text:, model_id: nil, source: nil, target: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
@@ -170,6 +176,8 @@ module IBMWatson
     #   example, `en` for English or `es` for Spanish) and name of each language.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_identifiable_languages
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_identifiable_languages")
@@ -198,6 +206,8 @@ module IBMWatson
     # @param text [String] Input text in UTF-8 format.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def identify(text:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("text must be provided") if text.nil?
 
       headers = {
@@ -241,6 +251,8 @@ module IBMWatson
     #   model, per language pair.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_models(source: nil, target: nil, default: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_models")
@@ -302,9 +314,13 @@ module IBMWatson
     #   * **XLIFF** (`.xliff`) - XML Localization Interchange File Format (XLIFF) is an
     #   XML specification for the exchange of translation memories.
     #   * **CSV** (`.csv`) - Comma-separated values (CSV) file with two columns for
-    #   aligned sentences and phrases. The first row contains the language code.
+    #   aligned sentences and phrases. The first row must have two language codes. The
+    #   first column is for the source language code, and the second column is for the
+    #   target language code.
     #   * **TSV** (`.tsv` or `.tab`) - Tab-separated values (TSV) file with two columns
-    #   for aligned sentences and phrases. The first row contains the language code.
+    #   for aligned sentences and phrases. The first row must have two language codes. The
+    #   first column is for the source language code, and the second column is for the
+    #   target language code.
     #   * **JSON** (`.json`) - Custom JSON format for specifying aligned sentences and
     #   phrases.
     #   * **Microsoft Excel** (`.xls` or `.xlsx`) - Excel file with the first two columns
@@ -365,6 +381,8 @@ module IBMWatson
     #   length of the name is 32 characters.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_model(base_model_id:, forced_glossary: nil, parallel_corpus: nil, name: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("base_model_id must be provided") if base_model_id.nil?
 
       headers = {
@@ -414,6 +432,8 @@ module IBMWatson
     # @param model_id [String] Model ID of the model to delete.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
@@ -446,6 +466,8 @@ module IBMWatson
     # @param model_id [String] Model ID of the model to get.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
 
       headers = {
@@ -478,6 +500,8 @@ module IBMWatson
     # Lists documents that have been submitted for translation.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_documents
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("language_translator", "V3", "list_documents")
@@ -504,13 +528,14 @@ module IBMWatson
     # Translate document.
     # Submit a document for translation. You can submit the document contents in the
     #   `file` parameter, or you can reference a previously submitted document by document
-    #   ID.
-    # @param file [File] The contents of the source file to translate.
-    #
-    #   [Supported file
-    #   types](https://cloud.ibm.com/docs/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats)
-    #
-    #   Maximum file size: **20 MB**.
+    #   ID. The maximum file size for document translation is
+    #   * 20 MB for service instances on the Standard, Advanced, and Premium plans
+    #   * 2 MB for service instances on the Lite plan.
+    # @param file [File] The contents of the source file to translate. The maximum file size for document
+    #   translation is 20 MB for service instances on the Standard, Advanced, and Premium
+    #   plans, and 2 MB for service instances on the Lite plan. For more information, see
+    #   [Supported file formats
+    #   (Beta)](https://cloud.ibm.com/docs/language-translator?topic=language-translator-document-translator-tutorial#supported-file-formats).
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param model_id [String] The model to use for translation. For example, `en-de` selects the IBM-provided
@@ -526,6 +551,8 @@ module IBMWatson
     #   the `document_id` of the document.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def translate_document(file:, filename: nil, file_content_type: nil, model_id: nil, source: nil, target: nil, document_id: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("file must be provided") if file.nil?
 
       headers = {
@@ -573,6 +600,8 @@ module IBMWatson
     # @param document_id [String] The document ID of the document.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_document_status(document_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("document_id must be provided") if document_id.nil?
 
       headers = {
@@ -603,6 +632,8 @@ module IBMWatson
     # @param document_id [String] Document ID of the document to delete.
     # @return [nil]
     def delete_document(document_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("document_id must be provided") if document_id.nil?
 
       headers = {
@@ -646,6 +677,8 @@ module IBMWatson
     #   example, 'text/html;charset=utf-8'.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_translated_document(document_id:, accept: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("document_id must be provided") if document_id.nil?
 
       headers = {

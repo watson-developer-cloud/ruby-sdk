@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to
 # drive better decision-making. Securely unify structured and unstructured data with
@@ -34,21 +36,14 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "discovery"
     DEFAULT_SERVICE_URL = "https://api.us-south.discovery.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Discovery service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the version of the API you want to use. Specify dates in
+    #   YYYY-MM-DD format. The current version is `2019-04-30`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -57,10 +52,10 @@ module IBMWatson
     def initialize(args = {})
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -89,6 +84,8 @@ module IBMWatson
     #   `LT`, in all other plans the default is `S`.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_environment(name:, description: nil, size: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("name must be provided") if name.nil?
 
       headers = {
@@ -126,6 +123,8 @@ module IBMWatson
     # @param name [String] Show only the environment with the given name.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_environments(name: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "list_environments")
@@ -154,6 +153,8 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_environment(environment_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -190,6 +191,8 @@ module IBMWatson
     #   decreased.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_environment(environment_id:, name: nil, description: nil, size: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -226,6 +229,8 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_environment(environment_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -258,6 +263,8 @@ module IBMWatson
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_fields(environment_id:, collection_ids:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
@@ -314,6 +321,8 @@ module IBMWatson
     # @param source [Source] Object containing source parameters for the configuration.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_configuration(environment_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("name must be provided") if name.nil?
@@ -357,6 +366,8 @@ module IBMWatson
     # @param name [String] Find configurations with the given name.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_configurations(environment_id:, name: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -388,6 +399,8 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_configuration(environment_id:, configuration_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
@@ -437,6 +450,8 @@ module IBMWatson
     # @param source [Source] Object containing source parameters for the configuration.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_configuration(environment_id:, configuration_id:, name:, description: nil, conversions: nil, enrichments: nil, normalizations: nil, source: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
@@ -487,6 +502,8 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_configuration(environment_id:, configuration_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("configuration_id must be provided") if configuration_id.nil?
@@ -526,6 +543,8 @@ module IBMWatson
     #   639-1 language code.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_collection(environment_id:, name:, description: nil, configuration_id: nil, language: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("name must be provided") if name.nil?
@@ -567,6 +586,8 @@ module IBMWatson
     # @param name [String] Find collections with the given name.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collections(environment_id:, name: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -598,6 +619,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_collection(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -633,6 +656,8 @@ module IBMWatson
     # @param configuration_id [String] The ID of the configuration in which the collection is to be updated.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_collection(environment_id:, collection_id:, name:, description: nil, configuration_id: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -674,6 +699,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_collection(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -707,6 +734,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collection_fields(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -744,6 +773,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_expansions(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -795,6 +826,8 @@ module IBMWatson
     #   **expanded_terms** array.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_expansions(environment_id:, collection_id:, expansions:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -836,6 +869,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_expansions(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -870,6 +905,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_tokenization_dictionary_status(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -906,6 +943,8 @@ module IBMWatson
     #   `part_of_speech` the text is from.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_tokenization_dictionary(environment_id:, collection_id:, tokenization_rules: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -944,6 +983,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_tokenization_dictionary(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -977,6 +1018,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_stopword_list_status(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1012,6 +1055,8 @@ module IBMWatson
     # @param stopword_filename [String] The filename for stopword_file.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_stopword_list(environment_id:, collection_id:, stopword_file:, stopword_filename: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1057,6 +1102,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_stopword_list(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1131,6 +1178,8 @@ module IBMWatson
     #   } ```.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_document(environment_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1181,6 +1230,8 @@ module IBMWatson
     # @param document_id [String] The ID of the document.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_document_status(environment_id:, collection_id:, document_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1232,6 +1283,8 @@ module IBMWatson
     #   } ```.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_document(environment_id:, collection_id:, document_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1283,6 +1336,8 @@ module IBMWatson
     # @param document_id [String] The ID of the document.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_document(environment_id:, collection_id:, document_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1382,6 +1437,8 @@ module IBMWatson
     # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, spelling_suggestions: nil, x_watson_logging_opt_out: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1486,6 +1543,8 @@ module IBMWatson
     #   comparison.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_notices(environment_id:, collection_id:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1596,6 +1655,8 @@ module IBMWatson
     # @param x_watson_logging_opt_out [Boolean] If `true`, queries are not stored in the Discovery **Logs** endpoint.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def federated_query(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, passages: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, passages_fields: nil, passages_count: nil, passages_characters: nil, deduplicate: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil, bias: nil, x_watson_logging_opt_out: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
@@ -1694,6 +1755,8 @@ module IBMWatson
     #   comparison.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def federated_query_notices(environment_id:, collection_ids:, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, deduplicate_field: nil, similar: nil, similar_document_ids: nil, similar_fields: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_ids must be provided") if collection_ids.nil?
@@ -1753,6 +1816,8 @@ module IBMWatson
     # @param count [Fixnum] The number of autocompletion suggestions to return.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_autocompletion(environment_id:, collection_id:, prefix:, field: nil, count: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1794,6 +1859,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_training_data(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1832,6 +1899,8 @@ module IBMWatson
     # @param examples [Array[TrainingExample]] Array of training examples.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def add_training_data(environment_id:, collection_id:, natural_language_query: nil, filter: nil, examples: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1872,6 +1941,8 @@ module IBMWatson
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_all_training_data(environment_id:, collection_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1907,6 +1978,8 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_data(environment_id:, collection_id:, query_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1944,6 +2017,8 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [nil]
     def delete_training_data(environment_id:, collection_id:, query_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -1980,6 +2055,8 @@ module IBMWatson
     # @param query_id [String] The ID of the query used for training.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_training_examples(environment_id:, collection_id:, query_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -2019,6 +2096,8 @@ module IBMWatson
     # @param relevance [Fixnum] The relevance of the training example.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_training_example(environment_id:, collection_id:, query_id:, document_id: nil, cross_reference: nil, relevance: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -2063,6 +2142,8 @@ module IBMWatson
     # @param example_id [String] The ID of the document as it is indexed.
     # @return [nil]
     def delete_training_example(environment_id:, collection_id:, query_id:, example_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -2104,6 +2185,8 @@ module IBMWatson
     # @param relevance [Fixnum] The relevance value for this example.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_training_example(environment_id:, collection_id:, query_id:, example_id:, cross_reference: nil, relevance: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -2149,6 +2232,8 @@ module IBMWatson
     # @param example_id [String] The ID of the document as it is indexed.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_example(environment_id:, collection_id:, query_id:, example_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -2194,6 +2279,8 @@ module IBMWatson
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("customer_id must be provided") if customer_id.nil?
 
       headers = {
@@ -2231,6 +2318,8 @@ module IBMWatson
     # @param data [EventData] Query event data object.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_event(type:, data:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("type must be provided") if type.nil?
 
       raise ArgumentError.new("data must be provided") if data.nil?
@@ -2284,6 +2373,8 @@ module IBMWatson
     #   ascending. Ascending is the default sort direction if no prefix is specified.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query_log(filter: nil, query: nil, count: nil, offset: nil, sort: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "query_log")
@@ -2323,6 +2414,8 @@ module IBMWatson
     # @param result_type [String] The type of result to consider when calculating the metric.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query(start_time: nil, end_time: nil, result_type: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query")
@@ -2360,6 +2453,8 @@ module IBMWatson
     # @param result_type [String] The type of result to consider when calculating the metric.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_event(start_time: nil, end_time: nil, result_type: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query_event")
@@ -2396,6 +2491,8 @@ module IBMWatson
     # @param result_type [String] The type of result to consider when calculating the metric.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_no_results(start_time: nil, end_time: nil, result_type: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query_no_results")
@@ -2433,6 +2530,8 @@ module IBMWatson
     # @param result_type [String] The type of result to consider when calculating the metric.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_event_rate(start_time: nil, end_time: nil, result_type: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_event_rate")
@@ -2468,6 +2567,8 @@ module IBMWatson
     #   together in any one query is **10000**.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_metrics_query_token_event(count: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       headers = {
       }
       sdk_headers = Common.new.get_sdk_headers("discovery", "V1", "get_metrics_query_token_event")
@@ -2503,6 +2604,8 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_credentials(environment_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -2553,6 +2656,8 @@ module IBMWatson
     #   expired) and must be corrected before they can be used with a collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil, status: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -2594,6 +2699,8 @@ module IBMWatson
     # @param credential_id [String] The unique identifier for a set of source credentials.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_credentials(environment_id:, credential_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
@@ -2646,6 +2753,8 @@ module IBMWatson
     #   expired) and must be corrected before they can be used with a collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil, status: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
@@ -2686,6 +2795,8 @@ module IBMWatson
     # @param credential_id [String] The unique identifier for a set of source credentials.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_credentials(environment_id:, credential_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("credential_id must be provided") if credential_id.nil?
@@ -2721,6 +2832,8 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_gateways(environment_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -2752,6 +2865,8 @@ module IBMWatson
     # @param name [String] User-defined name.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_gateway(environment_id:, name: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       headers = {
@@ -2788,6 +2903,8 @@ module IBMWatson
     # @param gateway_id [String] The requested gateway ID.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_gateway(environment_id:, gateway_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("gateway_id must be provided") if gateway_id.nil?
@@ -2821,6 +2938,8 @@ module IBMWatson
     # @param gateway_id [String] The requested gateway ID.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_gateway(environment_id:, gateway_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("environment_id must be provided") if environment_id.nil?
 
       raise ArgumentError.new("gateway_id must be provided") if gateway_id.nil?

@@ -13,12 +13,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# The IBM Watson&trade; Personality Insights service enables applications to derive
-# insights from social media, enterprise data, or other digital communications. The
-# service uses linguistic analytics to infer individuals' intrinsic personality
-# characteristics, including Big Five, Needs, and Values, from digital communications such
-# as email, text messages, tweets, and forum posts.
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
+# IBM&reg; will begin sunsetting IBM Watson&trade; Personality Insights on 1 December
+# 2020. For a period of one year from this date, you will still be able to use Watson
+# Personality Insights. However, as of 1 December 2021, the offering will no longer be
+# available.<br/><br/>As an alternative, we encourage you to consider migrating to IBM
+# Watson&trade; Natural Language Understanding, a service on IBM Cloud&reg; that uses deep
+# learning to extract data and insights from text such as keywords, categories, sentiment,
+# emotion, and syntax to provide insights for your business or industry. For more
+# information, see [About Natural Language
+# Understanding](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-about).
+# {: deprecated}
+#
+# The IBM Watson Personality Insights service enables applications to derive insights from
+# social media, enterprise data, or other digital communications. The service uses
+# linguistic analytics to infer individuals' intrinsic personality characteristics,
+# including Big Five, Needs, and Values, from digital communications such as email, text
+# messages, tweets, and forum posts.
 #
 # The service can automatically infer, from potentially noisy social media, portraits of
 # individuals that reflect their personality characteristics. The service can infer
@@ -49,33 +62,27 @@ module IBMWatson
     include Concurrent::Async
     DEFAULT_SERVICE_NAME = "personality_insights"
     DEFAULT_SERVICE_URL = "https://api.us-south.personality-insights.watson.cloud.ibm.com"
+    attr_accessor :version
     ##
     # @!method initialize(args)
     # Construct a new client for the Personality Insights service.
     #
     # @param args [Hash] The args to initialize with
-    # @option args version [String] The API version date to use with the service, in
-    #   "YYYY-MM-DD" format. Whenever the API is changed in a backwards
-    #   incompatible way, a new minor version of the API is released.
-    #   The service uses the API version for the date you specify, or
-    #   the most recent version before that date. Note that you should
-    #   not programmatically specify the current date at runtime, in
-    #   case the API has been updated since your application's release.
-    #   Instead, specify a version date that is compatible with your
-    #   application, and don't change it until your application is
-    #   ready for a later version.
+    # @option args version [String] Release date of the version of the API you want to use. Specify dates in
+    #   YYYY-MM-DD format. The current version is `2017-10-13`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
     # @option args service_name [String] The name of the service to configure. Will be used as the key to load
     #   any external configuration, if applicable.
     def initialize(args = {})
+      warn "On 1 December 2021, Personality Insights will no longer be available. For more information, see https://github.com/watson-developer-cloud/ruby-sdk/tree/master#personality-insights-deprecation."
       @__async_initialized__ = false
       defaults = {}
-      defaults[:version] = nil
       defaults[:service_url] = DEFAULT_SERVICE_URL
       defaults[:service_name] = DEFAULT_SERVICE_NAME
       defaults[:authenticator] = nil
+      defaults[:version] = nil
       user_service_url = args[:service_url] unless args[:service_url].nil?
       args = defaults.merge(args)
       @version = args[:version]
@@ -170,6 +177,8 @@ module IBMWatson
     #   default, no consumption preferences are returned.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def profile(content:, accept:, content_type: nil, content_language: nil, accept_language: nil, raw_scores: nil, csv_headers: nil, consumption_preferences: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
       raise ArgumentError.new("content must be provided") if content.nil?
 
       raise ArgumentError.new("accept must be provided") if accept.nil?

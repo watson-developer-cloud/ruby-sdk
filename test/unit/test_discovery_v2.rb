@@ -295,7 +295,7 @@ class DiscoveryV2Test < Minitest::Test
   end
 
   def test_analyze_document
-    skip "not available yet"
+    # skip "not available yet"
 
     stub_request(:post, "https://api.us-south.discovery.watson.cloud.ibm.com/discovery/api/v2/projects/project/collections/collid/analyze?version=2018-03-05")
       .with(

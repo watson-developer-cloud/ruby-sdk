@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+#
 # IBM Watson&trade; Natural Language Classifier uses machine learning algorithms to
 # return the top matching predefined classes for short text input. You create and train a
 # classifier to connect predefined classes to example texts so that the service can apply

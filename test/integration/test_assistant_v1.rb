@@ -382,6 +382,15 @@ if !ENV["ASSISTANT_APIKEY"].nil? && !ENV["ASSISTANT_URL"].nil?
       )
       assert(service_response.nil?)
     end
+
+    def test_bulk_classify
+      skip "Covered with the unit test.  No need to run it here"
+
+      service_response = service.bulk_classify(
+        workspace_id: ENV["ASSISTANT_WORKSPACE_ID"]
+      )
+      assert(service_response.nil?)
+    end
   end
 else
   class AssistantV1Test < Minitest::Test

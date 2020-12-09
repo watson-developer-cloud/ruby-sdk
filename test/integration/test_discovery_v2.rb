@@ -246,6 +246,20 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
       )
       assert(service_response.nil?)
     end
+
+    def test_analyze_document
+      skip "CPD only.  Do not run on premium"
+      analyze_data = File.open(Dir.getwd + "/resources/problem.json")
+
+      service_response = service.analyze_document(
+        project_id: @project_id,
+        collection_id: @collection_id,
+        file: analyze_data,
+        file_content_type: "application/json"
+      )
+      assert((200..299).cover?(service_response.status))
+      refute(service_response.nil?)
+    end
   end
 else
   class DiscoveryV2Test < Minitest::Test
