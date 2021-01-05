@@ -115,7 +115,7 @@ The file downloaded will be called `ibm-credentials.env`. This is the name the S
 discovery = DiscoveryV1(version: "2018-08-01")
 ```
 
- And that's it!
+ And that's it! 
 
  If you're using more than one service at a time in your code and get two different `ibm-credentials.env` files, just put the contents together in one `ibm-credentials.env` file and the SDK will handle assigning credentials to their appropriate services.
 
