@@ -35,10 +35,13 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Execute Ruby unit tests
+    - name: Execute Ruby unit tests with code coverage
       if: matrix.ruby-version == '2.6'
       env:
         COVERAGE: true
+      run: bundle exec rake test:unit
+    - name: Execute Ruby unit tests
+      if: matrix.ruby-version != '2.6'
       run: bundle exec rake test:unit
     - name: Execute Ruby integration tests
       env:
@@ -46,6 +49,7 @@ jobs:
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_API }}
         NATURAL_LANGUAGE_UNDERSTANDING_URL: ${{ secrets.NLU_URL }}
         NATURAL_LANGUAGE_UNDERSTANDING_APIKEY: ${{ secrets.NLU_API }}
-      run: |
-        bundle exec rake test:integration
-        echo ${{ secrets.NLC_URL }} | sed 's/./& /g'
+        LANGUAGE_TRANSLATOR_APIKEY: ${{ secrets.LT_API }}
+        LANGUAGE_TRANSLATOR_URL: ${{ secrets.LT_URL }}
+      run: bundle exec rake test:integration
+      
