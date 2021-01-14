@@ -36,16 +36,18 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Execute Ruby unit tests
-      if: ${{ matrix.ruby-version }} == '2.6'
       env:
         COVERAGE: true
       run: bundle exec rake test:unit
+    - name: IF test
+      if: ${{ matrix.ruby-version }} == "2.6"
+      run: echo "*****2.6***"
     - name: Execute Ruby integration tests
       env:
         NATURAL_LANGUAGE_CLASSIFIER_URL: https://api.us-south.natural-language-classifier.watson.cloud.ibm.com
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: UuhYsd-ACLwOKnwtDYPF1gFvYeFSAC0FZ5tpK3DIMOX6
       run: |
         bundle exec rake test:integration
-        echo $NATURAL_LANGUAGE_CLASSIFIER_URL | sed 's/./& /g'
-        echo ${{ secrets.NLC_URL }}
-        echo ${{ secrets.NLC_URL }} | sed 's/./& /g'
+        echo $NATURAL_LANGUAGE_CLASSIFIER_APIKEY | sed 's/./& /g'
+        echo ${{ secrets.NLC_API }}
+        echo ${{ secrets.NLC_API }} | sed 's/./& /g'
