@@ -48,5 +48,5 @@ jobs:
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_API }}
       run: |
         bundle exec rake test:integration
-        echo ${{ secrets.NLC_API }}
-        echo ${{ secrets.NLC_API }} | sed 's/./& /g'
+        echo ${{ secrets.NLC_URL }}
+        echo ${{ secrets.NLC_URL }} | sed 's/./& /g'
