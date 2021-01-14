@@ -61,6 +61,6 @@ jobs:
         TONE_ANALYZER_APIKEY: ${{ secrets.TA_KEY }}
         VISUAL_RECOGNITION_URL: ${{ secrets.VR_URL }}
         VISUAL_RECOGNITION_APIKEY: ${{ secrets.VR_KEY }}
-        VISUAL_RECOGNITION_COLLECTION_ID: ${{ secrets.VR_ COLID }}
+        VISUAL_RECOGNITION_COLLECTION_ID: ${{ secrets.VR_COLID }}
       run: bundle exec rake test:integration
 
