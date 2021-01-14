@@ -59,5 +59,8 @@ jobs:
         TEXT_TO_SPEECH_APIKEY: ${{ secrets.TTS_KEY }}
         TONE_ANALYZER_URL: ${{ secrets.TA_URL }}
         TONE_ANALYZER_APIKEY: ${{ secrets.TA_KEY }}
+        VISUAL_RECOGNITION_URL: ${{ secrets.VR_URL }}
+        VISUAL_RECOGNITION_APIKEY: ${{ secrets.VR_KEY }}
+        VISUAL_RECOGNITION_COLLECTION_ID: ${{ secrets.VR_ COLID }}
       run: bundle exec rake test:integration
 
