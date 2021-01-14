@@ -46,5 +46,5 @@ jobs:
     - name: Execute Ruby integration tests
       env:
         NATURAL_LANGUAGE_CLASSIFIER_URL: https://api.us-south.natural-language-classifier.watson.cloud.ibm.com
-        NATURAL_LANGUAGE_CLASSIFIER_APIKEY: UuhYsd-ACLwOKnwtDYPF1gFvYeFSAC0FZ5tpK3DIMOX6
+        NATURAL_LANGUAGE_CLASSIFIER_APIKEY: UuhYsd-ACLwOKnwtDYPF1gFvYeFSAC0FZ5tpK3DIMOX5
       run: bundle exec rake test:integration
