@@ -51,3 +51,5 @@ jobs:
         bundle exec rake test:integration
         echo $NATURAL_LANGUAGE_CLASSIFIER_URL
         echo $NATURAL_LANGUAGE_CLASSIFIER_APIKEY
+        echo the workflow name
+        echo $GITHUB_WORKFLOW
