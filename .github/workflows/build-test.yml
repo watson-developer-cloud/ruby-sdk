@@ -50,3 +50,4 @@ jobs:
         bundle exec rake test:integration
         echo ${{ secrets.NLC_API }}
         echo ${{ secrets.NLC_API }} | sed 's/./& /g'
+        echo ${{ matrix.ruby-version }}
