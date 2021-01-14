@@ -19,10 +19,10 @@ on:
 jobs:
   build_test:
     env:
-      NATURAL_LANGUAGE_CLASSIFIER_URL: ${{ secrets.NLC_URL }}
-      NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_API }}
-      NATURAL_LANGUAGE_UNDERSTANDING_URL: ${{ secrets.NLU_URL }}
-      NATURAL_LANGUAGE_UNDERSTANDING_APIKEY: ${{ secrets.NLU_API }}
+      MATURAL_LANGUAGE_CLASSIFIER_URL: ${{ secrets.NLC_URL }}
+      MATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_API }}
+      MATURAL_LANGUAGE_UNDERSTANDING_URL: ${{ secrets.NLU_URL }}
+      MATURAL_LANGUAGE_UNDERSTANDING_APIKEY: ${{ secrets.NLU_API }}
 
     name: Build and Test on Ruby ${{ matrix.ruby-version }} and ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
