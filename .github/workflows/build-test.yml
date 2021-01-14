@@ -28,9 +28,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
-    # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):
-    # uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
@@ -62,5 +60,8 @@ jobs:
         VISUAL_RECOGNITION_URL: ${{ secrets.VR_URL }}
         VISUAL_RECOGNITION_APIKEY: ${{ secrets.VR_KEY }}
         VISUAL_RECOGNITION_COLLECTION_ID: ${{ secrets.VR_COLID }}
+        COMPARE_COMPLY_URL: ${{ secrets.CC_URL }}
+        COMPARE_COMPLY_APIKEY: ${{ secrets.CC_KEY }}
+        COMPARE_COMPLY_FEEDBACK_ID: ${{ secrets.CC_FEEDID }}
       run: bundle exec rake test:integration
 
