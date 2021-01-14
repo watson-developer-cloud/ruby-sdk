@@ -39,12 +39,9 @@ jobs:
       env:
         COVERAGE: true
       run: bundle exec rake test:unit
-    - name: IF test
-      if: ${{ matrix.ruby-version }} == '2.6'
-      run: echo ${{ matrix.ruby-version }}
     - name: Execute Ruby integration tests
       env:
-        NATURAL_LANGUAGE_CLASSIFIER_URL: https://api.us-south.natural-language-classifier.watson.cloud.ibm.com
+        NATURAL_LANGUAGE_CLASSIFIER_URL: ${{ secrets.NLC_URL }}
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_API }}
       run: |
         bundle exec rake test:integration
