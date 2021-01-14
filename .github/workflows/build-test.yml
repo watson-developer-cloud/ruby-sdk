@@ -49,7 +49,7 @@ jobs:
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: UuhYsd-ACLwOKnwtDYPF1gFvYeFSAC0FZ5tpK3DIMOX6
       run: |
         bundle exec rake test:integration
-        echo $NATURAL_LANGUAGE_CLASSIFIER_URL
+        echo "NLC URL is $NATURAL_LANGUAGE_CLASSIFIER_URL"
         echo $NATURAL_LANGUAGE_CLASSIFIER_APIKEY
         echo the workflow name
         echo $GITHUB_WORKFLOW
