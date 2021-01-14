@@ -53,5 +53,11 @@ jobs:
         LANGUAGE_TRANSLATOR_APIKEY: ${{ secrets.LT_API }}
         PERSONALITY_INSIGHTS_URL: ${{ secrets.PI_URL }}
         PERSONALITY_INSIGHTS_APIKEY: ${{ secrets.PI_API }}
+        SPEECH_TO_TEXT_URL: ${{ secrets.STT_URL }}
+        SPEECH_TO_TEXT_APIKEY: ${{ secrets.STT_KEY }}
+        TEXT_TO_SPEECH_URL: ${{ secrets.TTS_URL }}
+        TEXT_TO_SPEECH_APIKEY: ${{ secrets.TTS_KEY }}
+        TONE_ANALYZER_URL: ${{ secrets.TA_URL }}
+        TONE_ANALYZER_APIKEY: ${{ secrets.TA_KEY }}
       run: bundle exec rake test:integration
 
