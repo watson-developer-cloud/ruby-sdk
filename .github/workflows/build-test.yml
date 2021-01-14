@@ -46,13 +46,13 @@ jobs:
     - name: Execute Ruby integration tests
       env:
         NATURAL_LANGUAGE_CLASSIFIER_URL: ${{ secrets.NLC_URL }}
-        NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_API }}
+        NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_KEY }}
         NATURAL_LANGUAGE_UNDERSTANDING_URL: ${{ secrets.NLU_URL }}
-        NATURAL_LANGUAGE_UNDERSTANDING_APIKEY: ${{ secrets.NLU_API }}
+        NATURAL_LANGUAGE_UNDERSTANDING_APIKEY: ${{ secrets.NLU_KEY }}
         LANGUAGE_TRANSLATOR_URL: ${{ secrets.LT_URL }}
-        LANGUAGE_TRANSLATOR_APIKEY: ${{ secrets.LT_API }}
+        LANGUAGE_TRANSLATOR_APIKEY: ${{ secrets.LT_KEY }}
         PERSONALITY_INSIGHTS_URL: ${{ secrets.PI_URL }}
-        PERSONALITY_INSIGHTS_APIKEY: ${{ secrets.PI_API }}
+        PERSONALITY_INSIGHTS_APIKEY: ${{ secrets.PI_KEY }}
         SPEECH_TO_TEXT_URL: ${{ secrets.STT_URL }}
         SPEECH_TO_TEXT_APIKEY: ${{ secrets.STT_KEY }}
         TEXT_TO_SPEECH_URL: ${{ secrets.TTS_URL }}
