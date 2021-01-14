@@ -37,8 +37,8 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Execute Ruby unit tests
       if: ${{ matrix.ruby-version }} == '2.6'
-        env:
-          COVERAGE: true
+      env:
+        COVERAGE: true
       run: bundle exec rake test:unit
     - name: Execute Ruby integration tests
       env:
