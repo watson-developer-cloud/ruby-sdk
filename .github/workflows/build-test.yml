@@ -37,6 +37,7 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Execute Ruby unit tests
       env:
+        if: ${{ matrix.ruby-version }} == '2.6'
         COVERAGE: true
       run: bundle exec rake test:unit
     - name: Execute Ruby integration tests
@@ -45,5 +46,9 @@ jobs:
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: UuhYsd-ACLwOKnwtDYPF1gFvYeFSAC0FZ5tpK3DIMOX6
       run: |
         bundle exec rake test:integration
-        echo env.NATURAL_LANGUAGE_CLASSIFIER_URL
-        echo env.NATURAL_LANGUAGE_CLASSIFIER_URL | sed 's/./& /g'
+        echo $NATURAL_LANGUAGE_CLASSIFIER_URL
+        echo $NATURAL_LANGUAGE_CLASSIFIER_URL | sed 's/./& /g'
+        echo ${{ secrets.NLC_URL }}
+        echo ${{ secrets.NLC_URL }} | sed 's/./& /g'
+        if:  ${{ secrets.NLC_URL }} == 'https://api.us-south.natural-language-classifier.watson.cloud.ibm.com'
+        run: echo "I know what the secret token is!"
