@@ -40,7 +40,7 @@ jobs:
         COVERAGE: true
       run: bundle exec rake test:unit
     - name: IF test
-      if: ${{ matrix.ruby-version }} == "2.6"
+      if: ${{ matrix.ruby-version }} == '2.6'
       run: echo "*****2.6***"
     - name: Execute Ruby integration tests
       env:
@@ -48,6 +48,5 @@ jobs:
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: UuhYsd-ACLwOKnwtDYPF1gFvYeFSAC0FZ5tpK3DIMOX6
       run: |
         bundle exec rake test:integration
-        echo $NATURAL_LANGUAGE_CLASSIFIER_APIKEY | sed 's/./& /g'
         echo ${{ secrets.NLC_API }}
         echo ${{ secrets.NLC_API }} | sed 's/./& /g'
