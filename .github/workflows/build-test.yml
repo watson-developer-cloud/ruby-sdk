@@ -63,5 +63,13 @@ jobs:
         COMPARE_COMPLY_URL: ${{ secrets.CC_URL }}
         COMPARE_COMPLY_APIKEY: ${{ secrets.CC_KEY }}
         COMPARE_COMPLY_FEEDBACK_ID: ${{ secrets.CC_FEEDID }}
+        ASSISTANT_URL: ${{ secrets.WA_URL }}
+        ASSISTANT_APIKEY: ${{ secrets.WA_KEY }}
+        ASSISTANT_WORKSPACE_ID: ${{ secrets.WA_WORKID }}
+        ASSISTANT_ASSISTANT_ID: ${{ secrets.WA_ASSTID }}
+        DISCOVERY_URL: ${{ secrets.DSC_URL }}
+        DISCOVERY_APIKEY: ${{ secrets.DSC_KEY }}
+        DISCOVERY_ENVIRONMENT_ID: ${{ secrets.DSC_ENVID }}
+        DISCOVERY_COLLECTION_ID: ${{ secrets.DSC_COLLID }}
       run: bundle exec rake test:integration
 
