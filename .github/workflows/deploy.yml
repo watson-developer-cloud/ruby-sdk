@@ -24,11 +24,16 @@ jobs:
       with:
         ruby-version: 2.5
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
     - name: Install SR dependencies
       run: npm ci
     - name: Publish to Git Releases and Tags
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release
     - name: Publish to RubyGems
       env:
