@@ -24,13 +24,20 @@ jobs:
       with:
         ruby-version: 2.5
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Install SR dependencies
+      run: npm ci
+    - name: Publish to Git Releases and Tags
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx semantic-release
     - name: Publish to RubyGems
+      env:
+        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
         gem build *.gemspec
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
+      # gem push *.gem
 
