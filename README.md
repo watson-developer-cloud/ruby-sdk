@@ -1,12 +1,16 @@
 # IBM Watson Ruby SDK
 
-[![Build Status](https://travis-ci.org/watson-developer-cloud/ruby-sdk.svg)](https://travis-ci.org/watson-developer-cloud/ruby-sdk)
-[![Build status](https://ci.appveyor.com/api/projects/status/ir3k0ue138o4u67e?svg=true)](https://ci.appveyor.com/project/maxnussbaum/ruby-sdk)
+[![Build and Test](https://github.com/watson-developer-cloud/ruby-sdk/workflows/Build%20and%20Test/badge.svg?branch=master)](https://github.com/watson-developer-cloud/ruby-sdk/actions?query=workflow%3A"Build+and+Test")
+[![Deploy and Publish](https://github.com/watson-developer-cloud/ruby-sdk/workflows/Deploy%20and%20Publish/badge.svg?branch=master)](https://github.com/watson-developer-cloud/ruby-sdk/actions?query=workflow%3A%22Deploy+and+Publish%22)
 [![Slack](https://wdc-slack-inviter.mybluemix.net/badge.svg)](https://wdc-slack-inviter.mybluemix.net)
 [![codecov.io](https://codecov.io/github/watson-developer-cloud/ruby-sdk/coverage.svg)](https://codecov.io/github/watson-developer-cloud/ruby-sdk)
 [![Gem Version](https://badge.fury.io/rb/ibm_watson.svg)](https://badge.fury.io/rb/ibm_watson)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![CLA assistant](https://cla-assistant.io/readme/badge/watson-developer-cloud/ruby-sdk)](https://cla-assistant.io/watson-developer-cloud/ruby-sdk)
+
+## Deprecated builds
+[![Build Status](https://travis-ci.org/watson-developer-cloud/ruby-sdk.svg)](https://travis-ci.org/watson-developer-cloud/ruby-sdk)
+[![Build status](https://ci.appveyor.com/api/projects/status/ir3k0ue138o4u67e?svg=true)](https://ci.appveyor.com/project/maxnussbaum/ruby-sdk)
 
 Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
