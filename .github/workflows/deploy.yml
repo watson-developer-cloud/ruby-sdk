@@ -43,13 +43,13 @@ jobs:
         npm install -g @semantic-release/github
         npm install -g @semantic-release/commit-analyzer
     - name: Publish to Git Releases and Tags
-      if: ${{ github.event.workflow_run.conclusion == 'success' }
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release --dry-run
     - name: Publish to RubyGems
-      if: ${{ github.event.workflow_run.conclusion == 'success' }
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
       env:
         GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
       run: |
