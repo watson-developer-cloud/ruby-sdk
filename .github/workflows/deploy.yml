@@ -35,7 +35,7 @@ jobs:
         node-version: 12
     - name: Install Semantic Release dependencies
       run: |
-        pip install bumpversion
+        sudo apt-get install bumpversion
         npm install -g semantic-release
         npm install -g @semantic-release/changelog
         npm install -g @semantic-release/exec
@@ -47,7 +47,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npx semantic-release --dry-run
+      run: npx semantic-release # --dry-run
     - name: Publish to RubyGems
       if: ${{ github.event.workflow_run.conclusion == 'success' }}
       env:
