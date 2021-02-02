@@ -35,7 +35,7 @@ jobs:
         node-version: 12
     - name: Install Semantic Release dependencies
       run: |
-        pip install --upgrade bumpversion
+        pip install bumpversion
         npm install -g semantic-release
         npm install -g @semantic-release/changelog
         npm install -g @semantic-release/exec
