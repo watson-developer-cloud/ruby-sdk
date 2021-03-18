@@ -39,6 +39,9 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 </details>
 
 ## Announcements
+### Support for 2.7 ruby
+To support 2.7 the http gem dependency is updated to 4.4.0. Since it conflicted with the dependency in the ruby-sdk-core that gem was also updated.  Using 2.0.2 or above ruby sdk will require a core of 1.1.3 or above.
+
 ### Updating endpoint URLs from watsonplatform.net
 Watson API endpoint URLs at watsonplatform.net are changing and will not work after 26 May 2021. Update your calls to use the newer endpoint URLs. For more information, see https://cloud.ibm.com/docs/watson?topic=watson-endpoint-change.
 
