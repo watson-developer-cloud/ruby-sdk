@@ -38,7 +38,7 @@ Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
 </details>
 
-## ANNOUNCEMENTS!
+## Announcements
 ### Support for 2.7 ruby
 To support 2.7 the http gem dependency is updated to 4.4.0. Since it conflicted with the dependency in the ruby-sdk-core that gem was also updated.  Using 2.0.2 or above ruby sdk will require a core of 1.1.3 or above.
 
