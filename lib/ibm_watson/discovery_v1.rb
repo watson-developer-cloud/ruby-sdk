@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to
@@ -28,7 +28,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Discovery V1 service.
@@ -1430,7 +1429,7 @@ module IBMWatson
     #   parameter.
     # @param spelling_suggestions [Boolean] When `true` and the **natural_language_query** parameter is used, the
     #   **natural_languge_query** parameter is spell checked. The most likely correction
-    #   is retunred in the **suggested_query** field of the response (if one exists).
+    #   is returned in the **suggested_query** field of the response (if one exists).
     #
     #   **Important:** this parameter is only valid when using the Cloud Pak version of
     #   Discovery.

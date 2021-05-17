@@ -1,6 +1,6 @@
 
     ##
-    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
@@ -117,6 +117,23 @@
     #
     #   The values increase on a monotonic curve. See [Speech Activity
     #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    # @param low_latency [Boolean] If `true` for next-generation `Multimedia` and `Telephony` models that support low
+    #   latency, directs the service to produce results even more quickly than it usually
+    #   does. Next-generation models produce transcription results faster than
+    #   previous-generation models. The `low_latency` parameter causes the models to
+    #   produce results even more quickly, though the results might be less accurate when
+    #   the parameter is used.
+    #
+    #   **Note:** The parameter is beta functionality. It is not available for
+    #   previous-generation `Broadband` and `Narrowband` models. It is available only for
+    #   some next-generation models.
+    #
+    #   * For a list of next-generation models that support low latency, see [Supported
+    #   language
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng#models-ng-supported)
+    #   for next-generation models.
+    #   * For more information about the `low_latency` parameter, see [Low
+    #   latency](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-interim#low-latency).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def recognize_using_websocket(
       content_type: nil,
@@ -148,7 +165,8 @@
       end_of_phrase_silence_time: nil,
       split_transcript_at_phrase_end: nil,
       speech_detector_sensitivity: nil,
-      background_audio_suppression: nil
+      background_audio_suppression: nil,
+      low_latency: nil
     )
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
@@ -190,7 +208,8 @@
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
         "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
         "speech_detector_sensitivity" => speech_detector_sensitivity,
-        "background_audio_suppression" => background_audio_suppression
+        "background_audio_suppression" => background_audio_suppression,
+        "low_latency" => low_latency
       }
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, service_url: service_url, headers: headers, disable_ssl_verification: @disable_ssl_verification)

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
 # The IBM Watson&trade; Assistant service combines machine learning, natural language
 # understanding, and an integrated dialog editor to create conversation flows between your
@@ -29,7 +29,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Assistant V1 service.
@@ -72,7 +71,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, nodes_visited_details: nil)
+    # @!method message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, user_id: nil, nodes_visited_details: nil)
     # Get response to user input.
     # Send user input to a workspace and receive a response.
     #
@@ -94,10 +93,20 @@ module IBMWatson
     #   from the previous response.
     # @param output [OutputData] An output object that includes the response to the user, the dialog nodes that
     #   were triggered, and messages from the log.
+    # @param user_id [String] A string value that identifies the user who is interacting with the workspace. The
+    #   client must provide a unique identifier for each individual end user who accesses
+    #   the application. For user-based plans, this user ID is used to identify unique
+    #   users for billing purposes. This string cannot contain carriage return, newline,
+    #   or tab characters. If no value is specified in the input, **user_id** is
+    #   automatically set to the value of **context.conversation_id**.
+    #
+    #   **Note:** This property is the same as the **user_id** property in the context
+    #   metadata. If **user_id** is specified in both locations in a message request, the
+    #   value specified at the root is used.
     # @param nodes_visited_details [Boolean] Whether to include additional diagnostic information about the dialog nodes that
     #   were visited during processing of the message.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, nodes_visited_details: nil)
+    def message(workspace_id:, input: nil, intents: nil, entities: nil, alternate_intents: nil, context: nil, output: nil, user_id: nil, nodes_visited_details: nil)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
 
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -118,10 +127,56 @@ module IBMWatson
         "entities" => entities,
         "alternate_intents" => alternate_intents,
         "context" => context,
-        "output" => output
+        "output" => output,
+        "user_id" => user_id
       }
 
       method_url = "/v1/workspaces/%s/message" % [ERB::Util.url_encode(workspace_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Bulk classify
+    #########################
+
+    ##
+    # @!method bulk_classify(workspace_id:, input: nil)
+    # Identify intents and entities in multiple user utterances.
+    # Send multiple user inputs to a workspace in a single request and receive
+    #   information about the intents and entities recognized in each input. This method
+    #   is useful for testing and comparing the performance of different workspaces.
+    #
+    #   This method is available only with Enterprise with Data Isolation plans.
+    # @param workspace_id [String] Unique identifier of the workspace.
+    # @param input [Array[BulkClassifyUtterance]] An array of input utterances to classify.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def bulk_classify(workspace_id:, input: nil)
+      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "bulk_classify")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "input" => input
+      }
+
+      method_url = "/v1/workspaces/%s/bulk_classify" % [ERB::Util.url_encode(workspace_id)]
 
       response = request(
         method: "POST",
@@ -2009,27 +2064,34 @@ module IBMWatson
     #   If you want to create multiple dialog nodes with a single API call, consider using
     #   the **[Update workspace](#update-workspace)** method instead.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
-    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
-    #   characters.
+    # @param dialog_node [String] The unique ID of the dialog node. This is an internal identifier used to refer to
+    #   the dialog node from other dialog nodes and in the diagnostic information included
+    #   with message responses.
+    #
+    #   This string can contain only Unicode alphanumeric, space, underscore, hyphen, and
+    #   dot characters.
     # @param description [String] The description of the dialog node. This string cannot contain carriage return,
     #   newline, or tab characters.
     # @param conditions [String] The condition that will trigger the dialog node. This string cannot contain
     #   carriage return, newline, or tab characters.
-    # @param parent [String] The ID of the parent dialog node. This property is omitted if the dialog node has
-    #   no parent.
-    # @param previous_sibling [String] The ID of the previous sibling dialog node. This property is omitted if the dialog
-    #   node has no previous sibling.
+    # @param parent [String] The unique ID of the parent dialog node. This property is omitted if the dialog
+    #   node has no parent.
+    # @param previous_sibling [String] The unique ID of the previous sibling dialog node. This property is omitted if the
+    #   dialog node has no previous sibling.
     # @param output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
     # @param context [DialogNodeContext] The context for the dialog node.
     # @param metadata [Hash] The metadata for the dialog node.
     # @param next_step [DialogNodeNextStep] The next step to execute following this dialog node.
-    # @param title [String] The alias used to identify the dialog node. This string must conform to the
-    #   following restrictions:
-    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
-    #   characters.
+    # @param title [String] A human-readable name for the dialog node. If the node is included in
+    #   disambiguation, this title is used to populate the **label** property of the
+    #   corresponding suggestion in the `suggestion` response type (unless it is
+    #   overridden by the **user_label** property). The title is also used to populate the
+    #   **topic** property in the `connect_to_agent` response type.
+    #
+    #   This string can contain only Unicode alphanumeric, space, underscore, hyphen, and
+    #   dot characters.
     # @param type [String] How the dialog node is processed.
     # @param event_name [String] How an `event_handler` node is processed.
     # @param variable [String] The location in the dialog context where output is stored.
@@ -2038,7 +2100,8 @@ module IBMWatson
     # @param digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param user_label [String] A label that can be displayed externally to describe the purpose of the node to
-    #   users.
+    #   users. If set, this label is used to identify the node in disambiguation responses
+    #   (overriding the value of the **title** property).
     # @param disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions. Valid
     #   only when **type**=`standard` or `frame`.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
@@ -2101,7 +2164,7 @@ module IBMWatson
     # Get dialog node.
     # Get information about a dialog node.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
+    # @param dialog_node [String] The dialog node ID (for example, `node_1_1479323581900`).
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
     #   the response.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -2142,28 +2205,35 @@ module IBMWatson
     #   If you want to update multiple dialog nodes with a single API call, consider using
     #   the **[Update workspace](#update-workspace)** method instead.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
-    # @param new_dialog_node [String] The dialog node ID. This string must conform to the following restrictions:
-    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
-    #   characters.
+    # @param dialog_node [String] The dialog node ID (for example, `node_1_1479323581900`).
+    # @param new_dialog_node [String] The unique ID of the dialog node. This is an internal identifier used to refer to
+    #   the dialog node from other dialog nodes and in the diagnostic information included
+    #   with message responses.
+    #
+    #   This string can contain only Unicode alphanumeric, space, underscore, hyphen, and
+    #   dot characters.
     # @param new_description [String] The description of the dialog node. This string cannot contain carriage return,
     #   newline, or tab characters.
     # @param new_conditions [String] The condition that will trigger the dialog node. This string cannot contain
     #   carriage return, newline, or tab characters.
-    # @param new_parent [String] The ID of the parent dialog node. This property is omitted if the dialog node has
-    #   no parent.
-    # @param new_previous_sibling [String] The ID of the previous sibling dialog node. This property is omitted if the dialog
-    #   node has no previous sibling.
+    # @param new_parent [String] The unique ID of the parent dialog node. This property is omitted if the dialog
+    #   node has no parent.
+    # @param new_previous_sibling [String] The unique ID of the previous sibling dialog node. This property is omitted if the
+    #   dialog node has no previous sibling.
     # @param new_output [DialogNodeOutput] The output of the dialog node. For more information about how to specify dialog
     #   node output, see the
     #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-overview#dialog-overview-responses).
     # @param new_context [DialogNodeContext] The context for the dialog node.
     # @param new_metadata [Hash] The metadata for the dialog node.
     # @param new_next_step [DialogNodeNextStep] The next step to execute following this dialog node.
-    # @param new_title [String] The alias used to identify the dialog node. This string must conform to the
-    #   following restrictions:
-    #   - It can contain only Unicode alphanumeric, space, underscore, hyphen, and dot
-    #   characters.
+    # @param new_title [String] A human-readable name for the dialog node. If the node is included in
+    #   disambiguation, this title is used to populate the **label** property of the
+    #   corresponding suggestion in the `suggestion` response type (unless it is
+    #   overridden by the **user_label** property). The title is also used to populate the
+    #   **topic** property in the `connect_to_agent` response type.
+    #
+    #   This string can contain only Unicode alphanumeric, space, underscore, hyphen, and
+    #   dot characters.
     # @param new_type [String] How the dialog node is processed.
     # @param new_event_name [String] How an `event_handler` node is processed.
     # @param new_variable [String] The location in the dialog context where output is stored.
@@ -2172,7 +2242,8 @@ module IBMWatson
     # @param new_digress_out [String] Whether this dialog node can be returned to after a digression.
     # @param new_digress_out_slots [String] Whether the user can digress to top-level nodes while filling out slots.
     # @param new_user_label [String] A label that can be displayed externally to describe the purpose of the node to
-    #   users.
+    #   users. If set, this label is used to identify the node in disambiguation responses
+    #   (overriding the value of the **title** property).
     # @param new_disambiguation_opt_out [Boolean] Whether the dialog node should be excluded from disambiguation suggestions. Valid
     #   only when **type**=`standard` or `frame`.
     # @param include_audit [Boolean] Whether to include the audit properties (`created` and `updated` timestamps) in
@@ -2235,7 +2306,7 @@ module IBMWatson
     # Delete dialog node.
     # Delete a dialog node from a workspace.
     # @param workspace_id [String] Unique identifier of the workspace.
-    # @param dialog_node [String] The dialog node ID (for example, `get_order`).
+    # @param dialog_node [String] The dialog node ID (for example, `node_1_1479323581900`).
     # @return [nil]
     def delete_dialog_node(workspace_id:, dialog_node:)
       raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
@@ -2272,6 +2343,8 @@ module IBMWatson
     # @!method list_logs(workspace_id:, sort: nil, filter: nil, page_limit: nil, cursor: nil)
     # List log events in a workspace.
     # List the events from the log of a specific workspace.
+    #
+    #   This method requires Manager access.
     # @param workspace_id [String] Unique identifier of the workspace.
     # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
@@ -2368,6 +2441,12 @@ module IBMWatson
     #   with a request that passes data. For more information about personal data and
     #   customer IDs, see [Information
     #   security](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security).
+    #
+    #   **Note:** This operation is intended only for deleting data associated with a
+    #   single specific customer, not for deleting data associated with multiple customers
+    #   or for any other purpose. For more information, see [Labeling and deleting data in
+    #   Watson
+    #   Assistant](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security-gdpr-wa).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
@@ -2395,51 +2474,6 @@ module IBMWatson
         accept_json: true
       )
       nil
-    end
-    #########################
-    # bulkClassify
-    #########################
-
-    ##
-    # @!method bulk_classify(workspace_id:, input: nil)
-    # Identify intents and entities in multiple user utterances.
-    # Send multiple user inputs to a workspace in a single request and receive
-    #   information about the intents and entities recognized in each input. This method
-    #   is useful for testing and comparing the performance of different workspaces.
-    #
-    #   This method is available only with Premium plans.
-    # @param workspace_id [String] Unique identifier of the workspace.
-    # @param input [Array[BulkClassifyUtterance]] An array of input utterances to classify.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def bulk_classify(workspace_id:, input: nil)
-      raise ArgumentError.new("workspace_id must be provided") if workspace_id.nil?
-
-      raise ArgumentError.new("version must be provided") if version.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("conversation", "V1", "bulk_classify")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "input" => input
-      }
-
-      method_url = "/v1/workspaces/%s/bulk_classify" % [ERB::Util.url_encode(workspace_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
     end
   end
 end

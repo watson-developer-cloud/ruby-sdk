@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
 # The IBM Watson&trade; Assistant service combines machine learning, natural language
 # understanding, and an integrated dialog editor to create conversation flows between your
@@ -29,7 +29,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Assistant V2 service.
@@ -44,7 +43,7 @@ module IBMWatson
     #
     # @param args [Hash] The args to initialize with
     # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
-    #   format. The current version is `2020-04-01`.
+    #   format. The current version is `2020-09-24`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -158,7 +157,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method message(assistant_id:, session_id:, input: nil, context: nil)
+    # @!method message(assistant_id:, session_id:, input: nil, context: nil, user_id: nil)
     # Send user input to assistant (stateful).
     # Send user input to an assistant and receive a response, with conversation state
     #   (including context data) stored by Watson Assistant for the duration of the
@@ -177,8 +176,18 @@ module IBMWatson
     #
     #   **Note:** The total size of the context data stored for a stateful session cannot
     #   exceed 100KB.
+    # @param user_id [String] A string value that identifies the user who is interacting with the assistant. The
+    #   client must provide a unique identifier for each individual end user who accesses
+    #   the application. For user-based plans, this user ID is used to identify unique
+    #   users for billing purposes. This string cannot contain carriage return, newline,
+    #   or tab characters. If no value is specified in the input, **user_id** is
+    #   automatically set to the value of **context.global.session_id**.
+    #
+    #   **Note:** This property is the same as the **user_id** property in the global
+    #   system context. If **user_id** is specified in both locations, the value specified
+    #   at the root is used.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def message(assistant_id:, session_id:, input: nil, context: nil)
+    def message(assistant_id:, session_id:, input: nil, context: nil, user_id: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
       raise ArgumentError.new("session_id must be provided") if session_id.nil?
@@ -196,7 +205,8 @@ module IBMWatson
 
       data = {
         "input" => input,
-        "context" => context
+        "context" => context,
+        "user_id" => user_id
       }
 
       method_url = "/v2/assistants/%s/sessions/%s/message" % [ERB::Util.url_encode(assistant_id), ERB::Util.url_encode(session_id)]
@@ -213,7 +223,7 @@ module IBMWatson
     end
 
     ##
-    # @!method message_stateless(assistant_id:, input: nil, context: nil)
+    # @!method message_stateless(assistant_id:, input: nil, context: nil, user_id: nil)
     # Send user input to assistant (stateless).
     # Send user input to an assistant and receive a response, with conversation state
     #   (including context data) managed by your application.
@@ -231,8 +241,18 @@ module IBMWatson
     #
     #   **Note:** The total size of the context data for a stateless session cannot exceed
     #   250KB.
+    # @param user_id [String] A string value that identifies the user who is interacting with the assistant. The
+    #   client must provide a unique identifier for each individual end user who accesses
+    #   the application. For user-based plans, this user ID is used to identify unique
+    #   users for billing purposes. This string cannot contain carriage return, newline,
+    #   or tab characters. If no value is specified in the input, **user_id** is
+    #   automatically set to the value of **context.global.session_id**.
+    #
+    #   **Note:** This property is the same as the **user_id** property in the global
+    #   system context. If **user_id** is specified in both locations in a message
+    #   request, the value specified at the root is used.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def message_stateless(assistant_id:, input: nil, context: nil)
+    def message_stateless(assistant_id:, input: nil, context: nil, user_id: nil)
       raise ArgumentError.new("assistant_id must be provided") if assistant_id.nil?
 
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -248,10 +268,58 @@ module IBMWatson
 
       data = {
         "input" => input,
-        "context" => context
+        "context" => context,
+        "user_id" => user_id
       }
 
       method_url = "/v2/assistants/%s/message" % [ERB::Util.url_encode(assistant_id)]
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        json: data,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Bulk classify
+    #########################
+
+    ##
+    # @!method bulk_classify(skill_id:, input: nil)
+    # Identify intents and entities in multiple user utterances.
+    # Send multiple user inputs to a dialog skill in a single request and receive
+    #   information about the intents and entities recognized in each input. This method
+    #   is useful for testing and comparing the performance of different skills or skill
+    #   versions.
+    #
+    #   This method is available only with Enterprise with Data Isolation plans.
+    # @param skill_id [String] Unique identifier of the skill. To find the skill ID in the Watson Assistant user
+    #   interface, open the skill settings and click **API Details**.
+    # @param input [Array[BulkClassifyUtterance]] An array of input utterances to classify.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def bulk_classify(skill_id:, input: nil)
+      raise ArgumentError.new("skill_id must be provided") if skill_id.nil?
+
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "bulk_classify")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      data = {
+        "input" => input
+      }
+
+      method_url = "/v2/skills/%s/workspace/bulk_classify" % [ERB::Util.url_encode(skill_id)]
 
       response = request(
         method: "POST",
@@ -272,7 +340,7 @@ module IBMWatson
     # List log events for an assistant.
     # List the events from the log of an assistant.
     #
-    #   This method is available only with Premium plans.
+    #   This method requires Manager access, and is available only with Enterprise plans.
     # @param assistant_id [String] Unique identifier of the assistant. To find the assistant ID in the Watson
     #   Assistant user interface, open the assistant settings and click **API Details**.
     #   For information about creating assistants, see the
@@ -331,8 +399,11 @@ module IBMWatson
     #   customer IDs, see [Information
     #   security](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security).
     #
-    #   This operation is limited to 4 requests per minute. For more information, see
-    #   **Rate limiting**.
+    #   **Note:** This operation is intended only for deleting data associated with a
+    #   single specific customer, not for deleting data associated with multiple customers
+    #   or for any other purpose. For more information, see [Labeling and deleting data in
+    #   Watson
+    #   Assistant](https://cloud.ibm.com/docs/assistant?topic=assistant-information-security#information-security-gdpr-wa).
     # @param customer_id [String] The customer ID for which all data is to be deleted.
     # @return [nil]
     def delete_user_data(customer_id:)
@@ -360,53 +431,6 @@ module IBMWatson
         accept_json: true
       )
       nil
-    end
-    #########################
-    # bulkClassify
-    #########################
-
-    ##
-    # @!method bulk_classify(skill_id:, input: nil)
-    # Identify intents and entities in multiple user utterances.
-    # Send multiple user inputs to a dialog skill in a single request and receive
-    #   information about the intents and entities recognized in each input. This method
-    #   is useful for testing and comparing the performance of different skills or skill
-    #   versions.
-    #
-    #   This method is available only with Premium plans.
-    # @param skill_id [String] Unique identifier of the skill. To find the skill ID in the Watson Assistant user
-    #   interface, open the skill settings and click **API Details**.
-    # @param input [Array[BulkClassifyUtterance]] An array of input utterances to classify.
-    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def bulk_classify(skill_id:, input: nil)
-      raise ArgumentError.new("skill_id must be provided") if skill_id.nil?
-
-      raise ArgumentError.new("version must be provided") if version.nil?
-
-      headers = {
-      }
-      sdk_headers = Common.new.get_sdk_headers("conversation", "V2", "bulk_classify")
-      headers.merge!(sdk_headers)
-
-      params = {
-        "version" => @version
-      }
-
-      data = {
-        "input" => input
-      }
-
-      method_url = "/v2/skills/%s/workspace/bulk_classify" % [ERB::Util.url_encode(skill_id)]
-
-      response = request(
-        method: "POST",
-        url: method_url,
-        headers: headers,
-        params: params,
-        json: data,
-        accept_json: true
-      )
-      response
     end
   end
 end

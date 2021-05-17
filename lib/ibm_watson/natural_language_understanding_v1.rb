@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
 # Analyze various features of text content at scale. Provide text, raw HTML, or a public
 # URL and IBM Watson Natural Language Understanding will give you results for the features
@@ -32,7 +32,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Natural Language Understanding V1 service.
@@ -47,7 +46,7 @@ module IBMWatson
     #
     # @param args [Hash] The args to initialize with
     # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
-    #   format. The current version is `2020-08-01`.
+    #   format. The current version is `2021-03-25`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -79,6 +78,7 @@ module IBMWatson
     # Analyze text.
     # Analyzes text, HTML, or a public webpage for the following features:
     #   - Categories
+    #   - Classifications
     #   - Concepts
     #   - Emotion
     #   - Entities
@@ -211,6 +211,695 @@ module IBMWatson
       }
 
       method_url = "/v1/models/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Manage sentiment models
+    #########################
+
+    ##
+    # @!method create_sentiment_model(language:, training_data:, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+    # Create sentiment model.
+    # (Beta) Creates a custom sentiment model by uploading training data and associated
+    #   metadata. The model begins the training and deploying process and is ready to use
+    #   when the `status` is `available`.
+    # @param language [String] The 2-letter language code of this model.
+    # @param training_data [File] Training data in CSV format. For more information, see [Sentiment training data
+    #   requirements](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-custom-sentiment#sentiment-training-data-requirements).
+    # @param name [String] An optional name for the model.
+    # @param description [String] An optional description of the model.
+    # @param model_version [String] An optional version string.
+    # @param workspace_id [String] ID of the Watson Knowledge Studio workspace that deployed this model to Natural
+    #   Language Understanding.
+    # @param version_description [String] The description of the version.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_sentiment_model(language:, training_data:, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("language must be provided") if language.nil?
+
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "create_sentiment_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:language] = HTTP::FormData::Part.new(language.to_s, content_type: "text/plain")
+
+      unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
+        training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
+      end
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: "text/csv", filename: training_data.respond_to?(:path) ? training_data.path : nil)
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain") unless name.nil?
+
+      form_data[:description] = HTTP::FormData::Part.new(description.to_s, content_type: "text/plain") unless description.nil?
+
+      form_data[:model_version] = HTTP::FormData::Part.new(model_version.to_s, content_type: "text/plain") unless model_version.nil?
+
+      form_data[:workspace_id] = HTTP::FormData::Part.new(workspace_id.to_s, content_type: "text/plain") unless workspace_id.nil?
+
+      form_data[:version_description] = HTTP::FormData::Part.new(version_description.to_s, content_type: "text/plain") unless version_description.nil?
+
+      method_url = "/v1/models/sentiment"
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_sentiment_models
+    # List sentiment models.
+    # (Beta) Returns all custom sentiment models associated with this service instance.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_sentiment_models
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_sentiment_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/sentiment"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_sentiment_model(model_id:)
+    # Get sentiment model details.
+    # (Beta) Returns the status of the sentiment model with the given model ID.
+    # @param model_id [String] ID of the model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_sentiment_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "get_sentiment_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/sentiment/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_sentiment_model(model_id:, language:, training_data:, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+    # Update sentiment model.
+    # (Beta) Overwrites the training data associated with this custom sentiment model
+    #   and retrains the model. The new model replaces the current deployment.
+    # @param model_id [String] ID of the model.
+    # @param language [String] The 2-letter language code of this model.
+    # @param training_data [File] Training data in CSV format. For more information, see [Sentiment training data
+    #   requirements](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-custom-sentiment#sentiment-training-data-requirements).
+    # @param name [String] An optional name for the model.
+    # @param description [String] An optional description of the model.
+    # @param model_version [String] An optional version string.
+    # @param workspace_id [String] ID of the Watson Knowledge Studio workspace that deployed this model to Natural
+    #   Language Understanding.
+    # @param version_description [String] The description of the version.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_sentiment_model(model_id:, language:, training_data:, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      raise ArgumentError.new("language must be provided") if language.nil?
+
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "update_sentiment_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:language] = HTTP::FormData::Part.new(language.to_s, content_type: "text/plain")
+
+      unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
+        training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
+      end
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: "text/csv", filename: training_data.respond_to?(:path) ? training_data.path : nil)
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain") unless name.nil?
+
+      form_data[:description] = HTTP::FormData::Part.new(description.to_s, content_type: "text/plain") unless description.nil?
+
+      form_data[:model_version] = HTTP::FormData::Part.new(model_version.to_s, content_type: "text/plain") unless model_version.nil?
+
+      form_data[:workspace_id] = HTTP::FormData::Part.new(workspace_id.to_s, content_type: "text/plain") unless workspace_id.nil?
+
+      form_data[:version_description] = HTTP::FormData::Part.new(version_description.to_s, content_type: "text/plain") unless version_description.nil?
+
+      method_url = "/v1/models/sentiment/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "PUT",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_sentiment_model(model_id:)
+    # Delete sentiment model.
+    # (Beta) Un-deploys the custom sentiment model with the given model ID and deletes
+    #   all associated customer data, including any training data or binary artifacts.
+    # @param model_id [String] ID of the model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_sentiment_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "delete_sentiment_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/sentiment/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Manage categories models
+    #########################
+
+    ##
+    # @!method create_categories_model(language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+    # Create categories model.
+    # (Beta) Creates a custom categories model by uploading training data and associated
+    #   metadata. The model begins the training and deploying process and is ready to use
+    #   when the `status` is `available`.
+    # @param language [String] The 2-letter language code of this model.
+    # @param training_data [File] Training data in JSON format. For more information, see [Categories training data
+    #   requirements](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-categories##categories-training-data-requirements).
+    # @param training_data_content_type [String] The content type of training_data.
+    # @param name [String] An optional name for the model.
+    # @param description [String] An optional description of the model.
+    # @param model_version [String] An optional version string.
+    # @param workspace_id [String] ID of the Watson Knowledge Studio workspace that deployed this model to Natural
+    #   Language Understanding.
+    # @param version_description [String] The description of the version.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_categories_model(language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("language must be provided") if language.nil?
+
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "create_categories_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:language] = HTTP::FormData::Part.new(language.to_s, content_type: "text/plain")
+
+      unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
+        training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
+      end
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: training_data_content_type.nil? ? "application/octet-stream" : training_data_content_type, filename: training_data.respond_to?(:path) ? training_data.path : nil)
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain") unless name.nil?
+
+      form_data[:description] = HTTP::FormData::Part.new(description.to_s, content_type: "text/plain") unless description.nil?
+
+      form_data[:model_version] = HTTP::FormData::Part.new(model_version.to_s, content_type: "text/plain") unless model_version.nil?
+
+      form_data[:workspace_id] = HTTP::FormData::Part.new(workspace_id.to_s, content_type: "text/plain") unless workspace_id.nil?
+
+      form_data[:version_description] = HTTP::FormData::Part.new(version_description.to_s, content_type: "text/plain") unless version_description.nil?
+
+      method_url = "/v1/models/categories"
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_categories_models
+    # List categories models.
+    # (Beta) Returns all custom categories models associated with this service instance.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_categories_models
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_categories_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/categories"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_categories_model(model_id:)
+    # Get categories model details.
+    # (Beta) Returns the status of the categories model with the given model ID.
+    # @param model_id [String] ID of the model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_categories_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "get_categories_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/categories/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_categories_model(model_id:, language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+    # Update categories model.
+    # (Beta) Overwrites the training data associated with this custom categories model
+    #   and retrains the model. The new model replaces the current deployment.
+    # @param model_id [String] ID of the model.
+    # @param language [String] The 2-letter language code of this model.
+    # @param training_data [File] Training data in JSON format. For more information, see [Categories training data
+    #   requirements](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-categories##categories-training-data-requirements).
+    # @param training_data_content_type [String] The content type of training_data.
+    # @param name [String] An optional name for the model.
+    # @param description [String] An optional description of the model.
+    # @param model_version [String] An optional version string.
+    # @param workspace_id [String] ID of the Watson Knowledge Studio workspace that deployed this model to Natural
+    #   Language Understanding.
+    # @param version_description [String] The description of the version.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_categories_model(model_id:, language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      raise ArgumentError.new("language must be provided") if language.nil?
+
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "update_categories_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:language] = HTTP::FormData::Part.new(language.to_s, content_type: "text/plain")
+
+      unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
+        training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
+      end
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: training_data_content_type.nil? ? "application/octet-stream" : training_data_content_type, filename: training_data.respond_to?(:path) ? training_data.path : nil)
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain") unless name.nil?
+
+      form_data[:description] = HTTP::FormData::Part.new(description.to_s, content_type: "text/plain") unless description.nil?
+
+      form_data[:model_version] = HTTP::FormData::Part.new(model_version.to_s, content_type: "text/plain") unless model_version.nil?
+
+      form_data[:workspace_id] = HTTP::FormData::Part.new(workspace_id.to_s, content_type: "text/plain") unless workspace_id.nil?
+
+      form_data[:version_description] = HTTP::FormData::Part.new(version_description.to_s, content_type: "text/plain") unless version_description.nil?
+
+      method_url = "/v1/models/categories/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "PUT",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_categories_model(model_id:)
+    # Delete categories model.
+    # (Beta) Un-deploys the custom categories model with the given model ID and deletes
+    #   all associated customer data, including any training data or binary artifacts.
+    # @param model_id [String] ID of the model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_categories_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "delete_categories_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/categories/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "DELETE",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+    #########################
+    # Manage classifications models
+    #########################
+
+    ##
+    # @!method create_classifications_model(language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+    # Create classifications model.
+    # (Beta) Creates a custom classifications model by uploading training data and
+    #   associated metadata. The model begins the training and deploying process and is
+    #   ready to use when the `status` is `available`.
+    # @param language [String] The 2-letter language code of this model.
+    # @param training_data [File] Training data in JSON format. For more information, see [Classifications training
+    #   data
+    #   requirements](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-classifications#classification-training-data-requirements).
+    # @param training_data_content_type [String] The content type of training_data.
+    # @param name [String] An optional name for the model.
+    # @param description [String] An optional description of the model.
+    # @param model_version [String] An optional version string.
+    # @param workspace_id [String] ID of the Watson Knowledge Studio workspace that deployed this model to Natural
+    #   Language Understanding.
+    # @param version_description [String] The description of the version.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def create_classifications_model(language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("language must be provided") if language.nil?
+
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "create_classifications_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:language] = HTTP::FormData::Part.new(language.to_s, content_type: "text/plain")
+
+      unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
+        training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
+      end
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: training_data_content_type.nil? ? "application/octet-stream" : training_data_content_type, filename: training_data.respond_to?(:path) ? training_data.path : nil)
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain") unless name.nil?
+
+      form_data[:description] = HTTP::FormData::Part.new(description.to_s, content_type: "text/plain") unless description.nil?
+
+      form_data[:model_version] = HTTP::FormData::Part.new(model_version.to_s, content_type: "text/plain") unless model_version.nil?
+
+      form_data[:workspace_id] = HTTP::FormData::Part.new(workspace_id.to_s, content_type: "text/plain") unless workspace_id.nil?
+
+      form_data[:version_description] = HTTP::FormData::Part.new(version_description.to_s, content_type: "text/plain") unless version_description.nil?
+
+      method_url = "/v1/models/classifications"
+
+      response = request(
+        method: "POST",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method list_classifications_models
+    # List classifications models.
+    # (Beta) Returns all custom classifications models associated with this service
+    #   instance.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def list_classifications_models
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "list_classifications_models")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/classifications"
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method get_classifications_model(model_id:)
+    # Get classifications model details.
+    # (Beta) Returns the status of the classifications model with the given model ID.
+    # @param model_id [String] ID of the model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def get_classifications_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "get_classifications_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/classifications/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "GET",
+        url: method_url,
+        headers: headers,
+        params: params,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method update_classifications_model(model_id:, language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+    # Update classifications model.
+    # (Beta) Overwrites the training data associated with this custom classifications
+    #   model and retrains the model. The new model replaces the current deployment.
+    # @param model_id [String] ID of the model.
+    # @param language [String] The 2-letter language code of this model.
+    # @param training_data [File] Training data in JSON format. For more information, see [Classifications training
+    #   data
+    #   requirements](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-classifications#classification-training-data-requirements).
+    # @param training_data_content_type [String] The content type of training_data.
+    # @param name [String] An optional name for the model.
+    # @param description [String] An optional description of the model.
+    # @param model_version [String] An optional version string.
+    # @param workspace_id [String] ID of the Watson Knowledge Studio workspace that deployed this model to Natural
+    #   Language Understanding.
+    # @param version_description [String] The description of the version.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def update_classifications_model(model_id:, language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      raise ArgumentError.new("language must be provided") if language.nil?
+
+      raise ArgumentError.new("training_data must be provided") if training_data.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "update_classifications_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      form_data = {}
+
+      form_data[:language] = HTTP::FormData::Part.new(language.to_s, content_type: "text/plain")
+
+      unless training_data.instance_of?(StringIO) || training_data.instance_of?(File)
+        training_data = training_data.respond_to?(:to_json) ? StringIO.new(training_data.to_json) : StringIO.new(training_data)
+      end
+      form_data[:training_data] = HTTP::FormData::File.new(training_data, content_type: training_data_content_type.nil? ? "application/octet-stream" : training_data_content_type, filename: training_data.respond_to?(:path) ? training_data.path : nil)
+
+      form_data[:name] = HTTP::FormData::Part.new(name.to_s, content_type: "text/plain") unless name.nil?
+
+      form_data[:description] = HTTP::FormData::Part.new(description.to_s, content_type: "text/plain") unless description.nil?
+
+      form_data[:model_version] = HTTP::FormData::Part.new(model_version.to_s, content_type: "text/plain") unless model_version.nil?
+
+      form_data[:workspace_id] = HTTP::FormData::Part.new(workspace_id.to_s, content_type: "text/plain") unless workspace_id.nil?
+
+      form_data[:version_description] = HTTP::FormData::Part.new(version_description.to_s, content_type: "text/plain") unless version_description.nil?
+
+      method_url = "/v1/models/classifications/%s" % [ERB::Util.url_encode(model_id)]
+
+      response = request(
+        method: "PUT",
+        url: method_url,
+        headers: headers,
+        params: params,
+        form: form_data,
+        accept_json: true
+      )
+      response
+    end
+
+    ##
+    # @!method delete_classifications_model(model_id:)
+    # Delete classifications model.
+    # (Beta) Un-deploys the custom classifications model with the given model ID and
+    #   deletes all associated customer data, including any training data or binary
+    #   artifacts.
+    # @param model_id [String] ID of the model.
+    # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
+    def delete_classifications_model(model_id:)
+      raise ArgumentError.new("version must be provided") if version.nil?
+
+      raise ArgumentError.new("model_id must be provided") if model_id.nil?
+
+      headers = {
+      }
+      sdk_headers = Common.new.get_sdk_headers("natural-language-understanding", "V1", "delete_classifications_model")
+      headers.merge!(sdk_headers)
+
+      params = {
+        "version" => @version
+      }
+
+      method_url = "/v1/models/classifications/%s" % [ERB::Util.url_encode(model_id)]
 
       response = request(
         method: "DELETE",

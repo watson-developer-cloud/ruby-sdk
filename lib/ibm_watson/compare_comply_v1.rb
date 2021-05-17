@@ -14,10 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
-# IBM Watson&trade; Compare and Comply analyzes governing documents to provide details
-# about critical aspects of the documents.
+# IBM Watson&trade; Compare and Comply is discontinued. Existing instances are supported
+# until 30 November 2021, but as of 1 December 2020, you can't create instances. Any
+# instance that exists on 30 November 2021 will be deleted. Consider migrating to Watson
+# Discovery Premium on IBM Cloud for your Compare and Comply use cases. To start the
+# migration process, visit
+# [https://ibm.biz/contact-wdc-premium](https://ibm.biz/contact-wdc-premium).
+# {: deprecated}
+#
+# Compare and Comply analyzes governing documents to provide details about critical
+# aspects of the documents.
 
 require "concurrent"
 require "erb"
@@ -25,7 +33,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Compare Comply V1 service.
