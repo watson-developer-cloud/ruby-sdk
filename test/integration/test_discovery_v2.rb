@@ -120,6 +120,7 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
       )
       query_id = service_response.result["query_id"]
       refute(service_response.nil?)
+      # puts JSON.pretty_generate(service_response.result)
 
       service_response = service.get_training_query(
         project_id: @project_id,
@@ -134,6 +135,12 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
         examples: []
       )
       refute(service_response.nil?)
+
+      service_response = service.delete_training_query(
+        project_id: @project_id,
+        query_id: query_id
+      )
+      assert(service_response.nil?)
     end
 
     def test_create_get_update_delete_collection
@@ -236,6 +243,14 @@ if !ENV["DISCOVERY_V2_APIKEY"].nil?
         enrichment_id: create_enrichment_id
       )
       assert(service_response.nil?)
+    end
+
+    def test_query_collection_notices
+      service_response = service.query_collection_notices(
+        project_id: @project_id,
+        collection_id: @collection_id
+      )
+      refute(service_response.result.nil?)
     end
 
     def test_delete_user_data
