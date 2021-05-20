@@ -86,7 +86,7 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_
     end
 
     def test_list_models
-      skip
+      # skip
       service.add_default_headers(
         headers: {
           "X-Watson-Learning-Opt-Out" => "1",
@@ -94,6 +94,139 @@ if !ENV["NATURAL_LANGUAGE_UNDERSTANDING_APIKEY"].nil? && !ENV["NATURAL_LANGUAGE_
         }
       )
       service_response = service.list_models
+      assert((200..299).cover?(service_response.status))
+    end
+
+    def test_check_orphands
+      skip "Use to help delete old models"
+      service.add_default_headers(
+        headers: {
+          "X-Watson-Learning-Opt-Out" => "1",
+          "X-Watson-Test" => "1"
+        }
+      )
+      service_response = service.list_sentiment_models
+      puts JSON.pretty_generate(service_response.result)
+      service_response = service.list_categories_models
+      puts JSON.pretty_generate(service_response.result)
+      service_response = service.list_classifications_models
+      puts JSON.pretty_generate(service_response.result)
+
+      # service.delete_sentiment_model(model_id: "model_id1")
+      # service.delete_categories_model(model_id: "0122b971-94c9-4468-a98f-930f4ce28c32")
+      # service.delete_classifications_model(model_id: "0122b971-94c9-4468-a98f-930f4ce28c32")
+    end
+
+    def test_sentiment_models
+      # skip "test_sentiment_models"
+      service.add_default_headers(
+        headers: {
+          "X-Watson-Learning-Opt-Out" => "1",
+          "X-Watson-Test" => "1"
+        }
+      )
+      training_data = File.open(Dir.getwd + "/resources/nlu_sentiment_data.csv")
+      service_response = service.create_sentiment_model(
+        language: "en",
+        training_data: training_data
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.list_sentiment_models
+      model_id = service_response.result["models"][0]["model_id"]
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.get_sentiment_model(model_id: model_id)
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.update_sentiment_model(
+        model_id: model_id,
+        language: "en",
+        training_data: training_data
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.delete_sentiment_model(
+        model_id: model_id
+      )
+      assert((200..299).cover?(service_response.status))
+    end
+
+    def test_categories_models
+      # skip "test_categories_models"
+      service.add_default_headers(
+        headers: {
+          "X-Watson-Learning-Opt-Out" => "1",
+          "X-Watson-Test" => "1"
+        }
+      )
+      training_data = File.open(Dir.getwd + "/resources/nlu_categories_training.json")
+      service_response = service.create_categories_model(
+        language: "en",
+        training_data: training_data,
+        training_data_content_type: "application/json"
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.list_categories_models
+      model_id = service_response.result["models"][0]["model_id"]
+      assert((200..299).cover?(service_response.status))
+      # puts JSON.pretty_generate(service_response.result)
+      # puts JSON.pretty_generate(model_id)
+
+      service_response = service.get_categories_model(model_id: model_id)
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.update_categories_model(
+        model_id: model_id,
+        language: "en",
+        training_data: training_data,
+        training_data_content_type: "application/json"
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.delete_categories_model(
+        model_id: model_id
+      )
+      assert((200..299).cover?(service_response.status))
+    end
+
+    def test_classifications_models
+      # skip "test_classifications_models"
+      service.add_default_headers(
+        headers: {
+          "X-Watson-Learning-Opt-Out" => "1",
+          "X-Watson-Test" => "1"
+        }
+      )
+      training_data = File.open(Dir.getwd + "/resources/nlu_classifications_training.json")
+      service_response = service.create_classifications_model(
+        language: "en",
+        training_data: training_data,
+        training_data_content_type: "application/json"
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.list_classifications_models
+      model_id = service_response.result["models"][0]["model_id"]
+      assert((200..299).cover?(service_response.status))
+      # puts JSON.pretty_generate(service_response.result)
+      # puts JSON.pretty_generate(model_id)
+
+      service_response = service.get_classifications_model(model_id: model_id)
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.update_classifications_model(
+        model_id: model_id,
+        language: "en",
+        training_data: training_data,
+        training_data_content_type: "application/json"
+      )
+      assert((200..299).cover?(service_response.status))
+
+      service_response = service.delete_classifications_model(
+        model_id: model_id
+      )
       assert((200..299).cover?(service_response.status))
     end
   end
