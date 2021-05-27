@@ -354,4 +354,149 @@ class TextToSpeechV1Test < Minitest::Test
     )
     assert(service_response.nil?)
   end
+
+  def test_custom_prompts
+    response = {
+      "prompt" => "Thank you and good-bye!",
+      "prompt_id" => "goodbye"
+    }
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+      username: "username",
+      password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
+    )
+    stub_request(:get, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/customizations/cust_id/prompts")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_custom_prompts(
+      customization_id: "cust_id"
+    )
+    assert_equal(response, service_response.result)
+
+    stub_request(:get, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/customizations/cust_id/prompts/p_id")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_custom_prompt(
+      customization_id: "cust_id",
+      prompt_id: "p_id"
+    )
+    assert_equal(response, service_response.result)
+
+    stub_request(:delete, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/customizations/cust_id/prompts/p_id")
+      .with(
+        headers: {
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.delete_custom_prompt(
+      customization_id: "cust_id",
+      prompt_id: "p_id"
+    )
+    assert(service_response.nil?)
+
+    stub_request(:post, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/customizations/cust_id/prompts/p_id")
+      .with(
+        headers: {
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, headers: { "Content-Type" => "application/json" })
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    service_response = service.add_custom_prompt(
+      customization_id: "cust_id",
+      prompt_id: "p_id",
+      metadata: { "prompt_text" => "Thank you and good-bye!" },
+      file: audio_file
+    )
+    assert_equal(200, service_response.status)
+  end
+
+  def test_speaker_models
+    response = {
+      "speakers" => [
+        {
+          "speaker_id" => "56367f89-546d-4b37-891e-4eb0c13cc833",
+          "name" => "speaker_one"
+        },
+        {
+          "speaker_id" => "323e4476-63de-9825-7cd7-8120e45f8331",
+          "name" => "speaker_two"
+        }
+      ]
+    }
+
+    authenticator = IBMWatson::Authenticators::BasicAuthenticator.new(
+      username: "username",
+      password: "password"
+    )
+    service = IBMWatson::TextToSpeechV1.new(
+      username: "username",
+      password: "password",
+      authenticator: authenticator
+    )
+    stub_request(:get, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/speakers")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.list_speaker_models
+    assert_equal(response, service_response.result)
+
+    stub_request(:get, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/speakers/speaker_id1")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.get_speaker_model(
+      speaker_id: "speaker_id1"
+    )
+    assert_equal(response, service_response.result)
+
+    stub_request(:delete, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/speakers/speaker_id1")
+      .with(
+        headers: {
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    service_response = service.delete_speaker_model(
+      speaker_id: "speaker_id1"
+    )
+    assert(service_response.nil?)
+
+    stub_request(:post, "https://api.us-south.text-to-speech.watson.cloud.ibm.com/v1/speakers?speaker_name=Russ")
+      .with(
+        headers: {
+          "Authorization" => "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+          "Host" => "api.us-south.text-to-speech.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: "", headers: {})
+    audio_file = File.open(Dir.getwd + "/resources/speech.wav")
+    service_response = service.create_speaker_model(
+      speaker_name: "Russ",
+      audio: audio_file
+    )
+    assert_equal(200, service_response.status)
+  end
 end

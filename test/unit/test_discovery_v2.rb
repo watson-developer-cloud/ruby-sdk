@@ -467,4 +467,33 @@ class DiscoveryV2Test < Minitest::Test
     )
     assert_nil(service_response)
   end
+
+  def test_delete_training_query
+    stub_request(:delete, "https://api.us-south.discovery.watson.cloud.ibm.com/discovery/api/v2/projects/project/training_data/queries/queryid?version=2018-03-05")
+      .with(
+        headers: {
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.delete_training_query(
+      project_id: "project",
+      query_id: "queryid"
+    )
+    assert_nil(service_response)
+  end
+
+  def test_query_collection_notices
+    stub_request(:get, "https://api.us-south.discovery.watson.cloud.ibm.com/discovery/api/v2/projects/project/collections/collection/notices?version=2018-03-05")
+      .with(
+        headers: {
+          "Accept" => "application/json",
+          "Host" => "api.us-south.discovery.watson.cloud.ibm.com"
+        }
+      ).to_return(status: 200, body: { "body" => "hello" }.to_json, headers: { "Content-Type" => "application/json" })
+    service_response = service.query_collection_notices(
+      project_id: "project",
+      collection_id: "collection"
+    )
+    assert_equal({ "body" => "hello" }, service_response.result)
+  end
 end

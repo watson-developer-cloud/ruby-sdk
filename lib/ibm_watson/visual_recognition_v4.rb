@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
 # IBM Watson&trade; Visual Recognition is discontinued. Existing instances are supported
 # until 1 December 2021, but as of 7 January 2021, you can't create instances. Any
@@ -30,7 +30,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Visual Recognition V4 service.
@@ -159,7 +158,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method create_collection(name: nil, description: nil)
+    # @!method create_collection(name: nil, description: nil, training_status: nil)
     # Create a collection.
     # Create a collection that can be used to store images.
     #
@@ -171,8 +170,9 @@ module IBMWatson
     # @param name [String] The name of the collection. The name can contain alphanumeric, underscore, hyphen,
     #   and dot characters. It cannot begin with the reserved prefix `sys-`.
     # @param description [String] The description of the collection.
+    # @param training_status [TrainingStatus] Training status information for the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_collection(name: nil, description: nil)
+    def create_collection(name: nil, description: nil, training_status: nil)
       raise ArgumentError.new("version must be provided") if version.nil?
 
       headers = {
@@ -186,7 +186,8 @@ module IBMWatson
 
       data = {
         "name" => name,
-        "description" => description
+        "description" => description,
+        "training_status" => training_status
       }
 
       method_url = "/v4/collections"
@@ -264,7 +265,7 @@ module IBMWatson
     end
 
     ##
-    # @!method update_collection(collection_id:, name: nil, description: nil)
+    # @!method update_collection(collection_id:, name: nil, description: nil, training_status: nil)
     # Update a collection.
     # Update the name or description of a collection.
     #
@@ -274,8 +275,9 @@ module IBMWatson
     # @param name [String] The name of the collection. The name can contain alphanumeric, underscore, hyphen,
     #   and dot characters. It cannot begin with the reserved prefix `sys-`.
     # @param description [String] The description of the collection.
+    # @param training_status [TrainingStatus] Training status information for the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def update_collection(collection_id:, name: nil, description: nil)
+    def update_collection(collection_id:, name: nil, description: nil, training_status: nil)
       raise ArgumentError.new("version must be provided") if version.nil?
 
       raise ArgumentError.new("collection_id must be provided") if collection_id.nil?
@@ -291,7 +293,8 @@ module IBMWatson
 
       data = {
         "name" => name,
-        "description" => description
+        "description" => description,
+        "training_status" => training_status
       }
 
       method_url = "/v4/collections/%s" % [ERB::Util.url_encode(collection_id)]

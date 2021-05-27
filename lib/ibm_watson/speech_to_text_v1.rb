@@ -14,14 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
 # The IBM Watson&trade; Speech to Text service provides APIs that use IBM's
 # speech-recognition capabilities to produce transcripts of spoken audio. The service can
 # transcribe speech from various languages and audio formats. In addition to basic
 # transcription, the service can produce detailed information about many different aspects
-# of the audio. For most languages, the service supports two sampling rates, broadband and
-# narrowband. It returns all JSON response content in the UTF-8 character set.
+# of the audio. It returns all JSON response content in the UTF-8 character set.
+#
+# The service supports two types of models: previous-generation models that include the
+# terms `Broadband` and `Narrowband` in their names, and beta next-generation models that
+# include the terms `Multimedia` and `Telephony` in their names. Broadband and multimedia
+# models have minimum sampling rates of 16 kHz. Narrowband and telephony models have
+# minimum sampling rates of 8 kHz. The beta next-generation models currently support fewer
+# languages and features, but they offer high throughput and greater transcription
+# accuracy.
 #
 # For speech recognition, the service supports synchronous and asynchronous HTTP
 # Representational State Transfer (REST) interfaces. It also supports a WebSocket
@@ -37,8 +44,9 @@
 # can recognize.
 #
 # Language model customization and acoustic model customization are generally available
-# for production use with all language models that are generally available. Grammars are
-# beta functionality for all language models that support language model customization.
+# for production use with all previous-generation models that are generally available.
+# Grammars are beta functionality for all previous-generation models that support language
+# model customization. Next-generation models do not support customization at this time.
 
 require "concurrent"
 require "erb"
@@ -46,7 +54,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Speech to Text V1 service.
@@ -89,8 +96,8 @@ module IBMWatson
     #   among other things. The ordering of the list of models can change from call to
     #   call; do not rely on an alphabetized or static list of models.
     #
-    #   **See also:** [Languages and
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
+    #   **See also:** [Listing
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-list).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_models
       headers = {
@@ -116,10 +123,11 @@ module IBMWatson
     #   with the service. The information includes the name of the model and its minimum
     #   sampling rate in Hertz, among other things.
     #
-    #   **See also:** [Languages and
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
+    #   **See also:** [Listing
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-list).
     # @param model_id [String] The identifier of the model in the form of its name from the output of the **Get a
-    #   model** method.
+    #   model** method. (**Note:** The model `ar-AR_BroadbandModel` is deprecated; use
+    #   `ar-MS_BroadbandModel` instead.).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_model(model_id:)
       raise ArgumentError.new("model_id must be provided") if model_id.nil?
@@ -144,7 +152,7 @@ module IBMWatson
     #########################
 
     ##
-    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
+    # @!method recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
     # Recognize audio.
     # Sends audio and returns transcription results for a recognition request. You can
     #   pass a maximum of 100 MB and a minimum of 100 bytes of audio with a request. The
@@ -211,8 +219,40 @@ module IBMWatson
     #   sampling rate of the audio is lower than the minimum required rate, the request
     #   fails.
     #
-    #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
+    #    **See also:** [Supported audio
+    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats).
+    #
+    #
+    #   ### Next-generation models
+    #
+    #    **Note:** The next-generation language models are beta functionality. They
+    #   support a limited number of languages and features at this time. The supported
+    #   languages, models, and features will increase with future releases.
+    #
+    #   The service supports next-generation `Multimedia` (16 kHz) and `Telephony` (8 kHz)
+    #   models for many languages. Next-generation models have higher throughput than the
+    #   service's previous generation of `Broadband` and `Narrowband` models. When you use
+    #   next-generation models, the service can return transcriptions more quickly and
+    #   also provide noticeably better transcription accuracy.
+    #
+    #   You specify a next-generation model by using the `model` query parameter, as you
+    #   do a previous-generation model. Next-generation models support the same request
+    #   headers as previous-generation models, but they support only the following
+    #   additional query parameters:
+    #   * `background_audio_suppression`
+    #   * `inactivity_timeout`
+    #   * `profanity_filter`
+    #   * `redaction`
+    #   * `smart_formatting`
+    #   * `speaker_labels`
+    #   * `speech_detector_sensitivity`
+    #   * `timestamps`
+    #
+    #   Many next-generation models also support the beta `low_latency` parameter, which
+    #   is not available with previous-generation models.
+    #
+    #   **See also:** [Next-generation languages and
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng).
     #
     #
     #   ### Multipart speech recognition
@@ -235,15 +275,19 @@ module IBMWatson
     # @param audio [File] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
-    # @param model [String] The identifier of the model that is to be used for the recognition request. See
-    #   [Languages and
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
+    # @param model [String] The identifier of the model that is to be used for the recognition request.
+    #   (**Note:** The model `ar-AR_BroadbandModel` is deprecated; use
+    #   `ar-MS_BroadbandModel` instead.) See [Languages and
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models) and
+    #   [Next-generation languages and
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng).
     # @param language_customization_id [String] The customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. The base model of the specified custom language model must
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
-    #   default, no custom language model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   default, no custom language model is used. See [Using a custom language model for
+    #   speech
+    #   recognition](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageUse).
     #
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
@@ -252,14 +296,16 @@ module IBMWatson
     #   recognition request. The base model of the specified custom acoustic model must
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
-    #   default, no custom acoustic model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   default, no custom acoustic model is used. See [Using a custom acoustic model for
+    #   speech
+    #   recognition](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-acousticUse).
     # @param base_model_version [String] The version of the specified base model that is to be used with the recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
     #   models that have been upgraded for a new base model. The default value depends on
-    #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#version).
+    #   whether the parameter is used with or without a custom model. See [Making speech
+    #   recognition requests with upgraded custom
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-custom-upgrade-use#custom-upgrade-use-recognition).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
     #   recognition request, the customization weight tells the service how much weight to
     #   give to words from the custom language model compared to those from the base model
@@ -276,8 +322,8 @@ module IBMWatson
     #   custom model's domain, but it can negatively affect performance on non-domain
     #   phrases.
     #
-    #   See [Custom
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   See [Using customization
+    #   weight](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageUse#weight).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
     #   streaming audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
@@ -294,34 +340,34 @@ module IBMWatson
     #   for double-byte languages might be shorter. Keywords are case-insensitive.
     #
     #   See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-spotting#keyword-spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
     #   threshold. Specify a probability between 0.0 and 1.0. If you specify a threshold,
     #   you must also specify one or more keywords. The service performs no keyword
     #   spotting if you omit either parameter. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-spotting#keyword-spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
     #   default, the service returns a single transcript. If you specify a value of `0`,
     #   the service uses the default value, `1`. See [Maximum
-    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#max_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metadata#max-alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as "Confusion Networks"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. By default, the service computes no
     #   alternative words. See [Word
-    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-spotting#word-alternatives).
     # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
     #   each word. By default, the service returns no word confidence scores. See [Word
-    #   confidence](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_confidence).
+    #   confidence](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metadata#word-confidence).
     # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
     #   timestamps are returned. See [Word
-    #   timestamps](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_timestamps).
+    #   timestamps](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metadata#word-timestamps).
     # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
-    #   transcription only. See [Profanity
-    #   filtering](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#profanity_filter).
+    #   and Japanese transcription only. See [Profanity
+    #   filtering](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-formatting#profanity-filtering).
     # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
     #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
@@ -331,19 +377,21 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Spanish transcription only.
     #
     #   See [Smart
-    #   formatting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#smart_formatting).
+    #   formatting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-formatting#smart-formatting).
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, the service returns no
     #   speaker labels. Setting `speaker_labels` to `true` forces the `timestamps`
     #   parameter to be `true`, regardless of whether you specify `false` for the
     #   parameter.
+    #   * For previous-generation models, can be used for US English, Australian English,
+    #   German, Japanese, Korean, and Spanish (both broadband and narrowband models) and
+    #   UK English (narrowband model) transcription only.
+    #   * For next-generation models, can be used for English (Australian, UK, and US),
+    #   German, and Spanish transcription only.
     #
-    #   **Note:** Applies to US English, Australian English, German, Japanese, Korean, and
-    #   Spanish (both broadband and narrowband models) and UK English (narrowband model)
-    #   transcription only.
-    #
-    #   See [Speaker
-    #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
+    #   Restrictions and limitations apply to the use of speaker labels for both types of
+    #   models. See [Speaker
+    #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-speaker-labels).
     # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
@@ -352,7 +400,8 @@ module IBMWatson
     #   specify the name of the custom language model for which the grammar is defined.
     #   The service recognizes only strings that are recognized by the specified grammar;
     #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#grammars-input).
+    #   [Using a grammar for speech
+    #   recognition](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-grammarUse).
     # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
     #   feature redacts any number that has three or more consecutive digits by replacing
     #   each digit with an `X` character. It is intended to redact sensitive numeric data,
@@ -367,13 +416,13 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Korean transcription only.
     #
     #   See [Numeric
-    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#redaction).
+    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-formatting#numeric-redaction).
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
     #
     #   See [Audio
-    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio-metrics).
     # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
     #   splits a transcript into multiple final results. If the service detects pauses or
     #   extended silence before it reaches the end of the audio stream, its response can
@@ -390,7 +439,7 @@ module IBMWatson
     #   Chinese is 0.6 seconds.
     #
     #   See [End of phrase silence
-    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#silence_time).
+    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-parsing#silence-time).
     # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
     #   based on semantic features of the input, for example, at the conclusion of
     #   meaningful phrases such as sentences. The service bases its understanding of
@@ -400,7 +449,7 @@ module IBMWatson
     #   interval.
     #
     #   See [Split transcript at phrase
-    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
+    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-parsing#split-transcript).
     # @param speech_detector_sensitivity [Float] The sensitivity of speech activity detection that the service is to perform. Use
     #   the parameter to suppress word insertions from music, coughing, and other
     #   non-speech events. The service biases the audio it passes for speech recognition
@@ -412,8 +461,8 @@ module IBMWatson
     #   * 0.5 (the default) provides a reasonable compromise for the level of sensitivity.
     #   * 1.0 suppresses no audio (speech detection sensitivity is disabled).
     #
-    #   The values increase on a monotonic curve. See [Speech Activity
-    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    #   The values increase on a monotonic curve. See [Speech detector
+    #   sensitivity](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-detection#detection-parameters-sensitivity).
     # @param background_audio_suppression [Float] The level to which the service is to suppress background audio based on its volume
     #   to prevent it from being transcribed as speech. Use the parameter to suppress side
     #   conversations or background noise.
@@ -424,10 +473,27 @@ module IBMWatson
     #   * 0.5 provides a reasonable level of audio suppression for general usage.
     #   * 1.0 suppresses all audio (no audio is transcribed).
     #
-    #   The values increase on a monotonic curve. See [Speech Activity
-    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    #   The values increase on a monotonic curve. See [Background audio
+    #   suppression](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-detection#detection-parameters-suppression).
+    # @param low_latency [Boolean] If `true` for next-generation `Multimedia` and `Telephony` models that support low
+    #   latency, directs the service to produce results even more quickly than it usually
+    #   does. Next-generation models produce transcription results faster than
+    #   previous-generation models. The `low_latency` parameter causes the models to
+    #   produce results even more quickly, though the results might be less accurate when
+    #   the parameter is used.
+    #
+    #   **Note:** The parameter is beta functionality. It is not available for
+    #   previous-generation `Broadband` and `Narrowband` models. It is available only for
+    #   some next-generation models.
+    #
+    #   * For a list of next-generation models that support low latency, see [Supported
+    #   language
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng#models-ng-supported)
+    #   for next-generation models.
+    #   * For more information about the `low_latency` parameter, see [Low
+    #   latency](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-interim#low-latency).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
+    def recognize(audio:, content_type: nil, model: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -460,7 +526,8 @@ module IBMWatson
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
         "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
         "speech_detector_sensitivity" => speech_detector_sensitivity,
-        "background_audio_suppression" => background_audio_suppression
+        "background_audio_suppression" => background_audio_suppression,
+        "low_latency" => low_latency
       }
 
       data = audio
@@ -479,7 +546,7 @@ module IBMWatson
     end
 
     ##
-    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
+    # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
     # @param recognize_callback [RecognizeCallback] The instance handling events returned from the service.
@@ -596,6 +663,23 @@ module IBMWatson
     #
     #   The values increase on a monotonic curve. See [Speech Activity
     #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    # @param low_latency [Boolean] If `true` for next-generation `Multimedia` and `Telephony` models that support low
+    #   latency, directs the service to produce results even more quickly than it usually
+    #   does. Next-generation models produce transcription results faster than
+    #   previous-generation models. The `low_latency` parameter causes the models to
+    #   produce results even more quickly, though the results might be less accurate when
+    #   the parameter is used.
+    #
+    #   **Note:** The parameter is beta functionality. It is not available for
+    #   previous-generation `Broadband` and `Narrowband` models. It is available only for
+    #   some next-generation models.
+    #
+    #   * For a list of next-generation models that support low latency, see [Supported
+    #   language
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng#models-ng-supported)
+    #   for next-generation models.
+    #   * For more information about the `low_latency` parameter, see [Low
+    #   latency](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-interim#low-latency).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def recognize_using_websocket(
       content_type: nil,
@@ -627,7 +711,8 @@ module IBMWatson
       end_of_phrase_silence_time: nil,
       split_transcript_at_phrase_end: nil,
       speech_detector_sensitivity: nil,
-      background_audio_suppression: nil
+      background_audio_suppression: nil,
+      low_latency: nil
     )
       raise ArgumentError("Audio must be provided") if audio.nil? && !chunk_data
       raise ArgumentError("Recognize callback must be provided") if recognize_callback.nil?
@@ -669,7 +754,8 @@ module IBMWatson
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
         "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
         "speech_detector_sensitivity" => speech_detector_sensitivity,
-        "background_audio_suppression" => background_audio_suppression
+        "background_audio_suppression" => background_audio_suppression,
+        "low_latency" => low_latency
       }
       options.delete_if { |_, v| v.nil? }
       WebSocketClient.new(audio: audio, chunk_data: chunk_data, options: options, recognize_callback: recognize_callback, service_url: service_url, headers: headers, disable_ssl_verification: @disable_ssl_verification)
@@ -787,7 +873,7 @@ module IBMWatson
     end
 
     ##
-    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
+    # @!method create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
     # Create a job.
     # Creates a job for a new asynchronous recognition request. The job is owned by the
     #   instance of the service whose credentials are used to create it. How you learn the
@@ -883,14 +969,49 @@ module IBMWatson
     #   sampling rate of the audio is lower than the minimum required rate, the request
     #   fails.
     #
-    #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
+    #    **See also:** [Supported audio
+    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats).
+    #
+    #
+    #   ### Next-generation models
+    #
+    #    **Note:** The next-generation language models are beta functionality. They
+    #   support a limited number of languages and features at this time. The supported
+    #   languages, models, and features will increase with future releases.
+    #
+    #   The service supports next-generation `Multimedia` (16 kHz) and `Telephony` (8 kHz)
+    #   models for many languages. Next-generation models have higher throughput than the
+    #   service's previous generation of `Broadband` and `Narrowband` models. When you use
+    #   next-generation models, the service can return transcriptions more quickly and
+    #   also provide noticeably better transcription accuracy.
+    #
+    #   You specify a next-generation model by using the `model` query parameter, as you
+    #   do a previous-generation model. Next-generation models support the same request
+    #   headers as previous-generation models, but they support only the following
+    #   additional query parameters:
+    #   * `background_audio_suppression`
+    #   * `inactivity_timeout`
+    #   * `profanity_filter`
+    #   * `redaction`
+    #   * `smart_formatting`
+    #   * `speaker_labels`
+    #   * `speech_detector_sensitivity`
+    #   * `timestamps`
+    #
+    #   Many next-generation models also support the beta `low_latency` parameter, which
+    #   is not available with previous-generation models.
+    #
+    #   **See also:** [Next-generation languages and
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng).
     # @param audio [File] The audio to transcribe.
     # @param content_type [String] The format (MIME type) of the audio. For more information about specifying an
     #   audio format, see **Audio formats (content types)** in the method description.
-    # @param model [String] The identifier of the model that is to be used for the recognition request. See
-    #   [Languages and
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models#models).
+    # @param model [String] The identifier of the model that is to be used for the recognition request.
+    #   (**Note:** The model `ar-AR_BroadbandModel` is deprecated; use
+    #   `ar-MS_BroadbandModel` instead.) See [Languages and
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models) and
+    #   [Next-generation languages and
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng).
     # @param callback_url [String] A URL to which callback notifications are to be sent. The URL must already be
     #   successfully allowlisted by using the **Register a callback** method. You can
     #   include the same callback URL with any number of job creation requests. Omit the
@@ -929,8 +1050,9 @@ module IBMWatson
     #   recognition request. The base model of the specified custom language model must
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
-    #   default, no custom language model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   default, no custom language model is used. See [Using a custom language model for
+    #   speech
+    #   recognition](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageUse).
     #
     #
     #   **Note:** Use this parameter instead of the deprecated `customization_id`
@@ -939,14 +1061,16 @@ module IBMWatson
     #   recognition request. The base model of the specified custom acoustic model must
     #   match the model specified with the `model` parameter. You must make the request
     #   with credentials for the instance of the service that owns the custom model. By
-    #   default, no custom acoustic model is used. See [Custom
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   default, no custom acoustic model is used. See [Using a custom acoustic model for
+    #   speech
+    #   recognition](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-acousticUse).
     # @param base_model_version [String] The version of the specified base model that is to be used with the recognition
     #   request. Multiple versions of a base model can exist when a model is updated for
     #   internal improvements. The parameter is intended primarily for use with custom
     #   models that have been upgraded for a new base model. The default value depends on
-    #   whether the parameter is used with or without a custom model. See [Base model
-    #   version](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#version).
+    #   whether the parameter is used with or without a custom model. See [Making speech
+    #   recognition requests with upgraded custom
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-custom-upgrade-use#custom-upgrade-use-recognition).
     # @param customization_weight [Float] If you specify the customization ID (GUID) of a custom language model with the
     #   recognition request, the customization weight tells the service how much weight to
     #   give to words from the custom language model compared to those from the base model
@@ -963,8 +1087,8 @@ module IBMWatson
     #   custom model's domain, but it can negatively affect performance on non-domain
     #   phrases.
     #
-    #   See [Custom
-    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#custom-input).
+    #   See [Using customization
+    #   weight](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageUse#weight).
     # @param inactivity_timeout [Fixnum] The time in seconds after which, if only silence (no speech) is detected in
     #   streaming audio, the connection is closed with a 400 error. The parameter is
     #   useful for stopping audio submission from a live microphone when a user simply
@@ -981,34 +1105,34 @@ module IBMWatson
     #   for double-byte languages might be shorter. Keywords are case-insensitive.
     #
     #   See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-spotting#keyword-spotting).
     # @param keywords_threshold [Float] A confidence value that is the lower bound for spotting a keyword. A word is
     #   considered to match a keyword if its confidence is greater than or equal to the
     #   threshold. Specify a probability between 0.0 and 1.0. If you specify a threshold,
     #   you must also specify one or more keywords. The service performs no keyword
     #   spotting if you omit either parameter. See [Keyword
-    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#keyword_spotting).
+    #   spotting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-spotting#keyword-spotting).
     # @param max_alternatives [Fixnum] The maximum number of alternative transcripts that the service is to return. By
     #   default, the service returns a single transcript. If you specify a value of `0`,
     #   the service uses the default value, `1`. See [Maximum
-    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#max_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metadata#max-alternatives).
     # @param word_alternatives_threshold [Float] A confidence value that is the lower bound for identifying a hypothesis as a
     #   possible word alternative (also known as "Confusion Networks"). An alternative
     #   word is considered if its confidence is greater than or equal to the threshold.
     #   Specify a probability between 0.0 and 1.0. By default, the service computes no
     #   alternative words. See [Word
-    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_alternatives).
+    #   alternatives](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-spotting#word-alternatives).
     # @param word_confidence [Boolean] If `true`, the service returns a confidence measure in the range of 0.0 to 1.0 for
     #   each word. By default, the service returns no word confidence scores. See [Word
-    #   confidence](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_confidence).
+    #   confidence](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metadata#word-confidence).
     # @param timestamps [Boolean] If `true`, the service returns time alignment for each word. By default, no
     #   timestamps are returned. See [Word
-    #   timestamps](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#word_timestamps).
+    #   timestamps](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metadata#word-timestamps).
     # @param profanity_filter [Boolean] If `true`, the service filters profanity from all output except for keyword
     #   results by replacing inappropriate words with a series of asterisks. Set the
     #   parameter to `false` to return results with no censoring. Applies to US English
-    #   transcription only. See [Profanity
-    #   filtering](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#profanity_filter).
+    #   and Japanese transcription only. See [Profanity
+    #   filtering](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-formatting#profanity-filtering).
     # @param smart_formatting [Boolean] If `true`, the service converts dates, times, series of digits and numbers, phone
     #   numbers, currency values, and internet addresses into more readable, conventional
     #   representations in the final transcript of a recognition request. For US English,
@@ -1018,19 +1142,21 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Spanish transcription only.
     #
     #   See [Smart
-    #   formatting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#smart_formatting).
+    #   formatting](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-formatting#smart-formatting).
     # @param speaker_labels [Boolean] If `true`, the response includes labels that identify which words were spoken by
     #   which participants in a multi-person exchange. By default, the service returns no
     #   speaker labels. Setting `speaker_labels` to `true` forces the `timestamps`
     #   parameter to be `true`, regardless of whether you specify `false` for the
     #   parameter.
+    #   * For previous-generation models, can be used for US English, Australian English,
+    #   German, Japanese, Korean, and Spanish (both broadband and narrowband models) and
+    #   UK English (narrowband model) transcription only.
+    #   * For next-generation models, can be used for English (Australian, UK, and US),
+    #   German, and Spanish transcription only.
     #
-    #   **Note:** Applies to US English, Australian English, German, Japanese, Korean, and
-    #   Spanish (both broadband and narrowband models) and UK English (narrowband model)
-    #   transcription only.
-    #
-    #   See [Speaker
-    #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#speaker_labels).
+    #   Restrictions and limitations apply to the use of speaker labels for both types of
+    #   models. See [Speaker
+    #   labels](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-speaker-labels).
     # @param customization_id [String] **Deprecated.** Use the `language_customization_id` parameter to specify the
     #   customization ID (GUID) of a custom language model that is to be used with the
     #   recognition request. Do not specify both parameters with a request.
@@ -1039,7 +1165,8 @@ module IBMWatson
     #   specify the name of the custom language model for which the grammar is defined.
     #   The service recognizes only strings that are recognized by the specified grammar;
     #   it does not recognize other custom words from the model's words resource. See
-    #   [Grammars](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#grammars-input).
+    #   [Using a grammar for speech
+    #   recognition](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-grammarUse).
     # @param redaction [Boolean] If `true`, the service redacts, or masks, numeric data from final transcripts. The
     #   feature redacts any number that has three or more consecutive digits by replacing
     #   each digit with an `X` character. It is intended to redact sensitive numeric data,
@@ -1054,7 +1181,7 @@ module IBMWatson
     #   **Note:** Applies to US English, Japanese, and Korean transcription only.
     #
     #   See [Numeric
-    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#redaction).
+    #   redaction](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-formatting#numeric-redaction).
     # @param processing_metrics [Boolean] If `true`, requests processing metrics about the service's transcription of the
     #   input audio. The service returns processing metrics at the interval specified by
     #   the `processing_metrics_interval` parameter. It also returns processing metrics
@@ -1062,7 +1189,7 @@ module IBMWatson
     #   the service returns no processing metrics.
     #
     #   See [Processing
-    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#processing-metrics).
     # @param processing_metrics_interval [Float] Specifies the interval in real wall-clock seconds at which the service is to
     #   return processing metrics. The parameter is ignored unless the
     #   `processing_metrics` parameter is set to `true`.
@@ -1076,13 +1203,13 @@ module IBMWatson
     #   the service returns processing metrics only for transcription events.
     #
     #   See [Processing
-    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#processing_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#processing-metrics).
     # @param audio_metrics [Boolean] If `true`, requests detailed information about the signal characteristics of the
     #   input audio. The service returns audio metrics with the final transcription
     #   results. By default, the service returns no audio metrics.
     #
     #   See [Audio
-    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio_metrics).
+    #   metrics](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-metrics#audio-metrics).
     # @param end_of_phrase_silence_time [Float] If `true`, specifies the duration of the pause interval at which the service
     #   splits a transcript into multiple final results. If the service detects pauses or
     #   extended silence before it reaches the end of the audio stream, its response can
@@ -1099,7 +1226,7 @@ module IBMWatson
     #   Chinese is 0.6 seconds.
     #
     #   See [End of phrase silence
-    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#silence_time).
+    #   time](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-parsing#silence-time).
     # @param split_transcript_at_phrase_end [Boolean] If `true`, directs the service to split the transcript into multiple final results
     #   based on semantic features of the input, for example, at the conclusion of
     #   meaningful phrases such as sentences. The service bases its understanding of
@@ -1109,7 +1236,7 @@ module IBMWatson
     #   interval.
     #
     #   See [Split transcript at phrase
-    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-output#split_transcript).
+    #   end](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-parsing#split-transcript).
     # @param speech_detector_sensitivity [Float] The sensitivity of speech activity detection that the service is to perform. Use
     #   the parameter to suppress word insertions from music, coughing, and other
     #   non-speech events. The service biases the audio it passes for speech recognition
@@ -1121,8 +1248,8 @@ module IBMWatson
     #   * 0.5 (the default) provides a reasonable compromise for the level of sensitivity.
     #   * 1.0 suppresses no audio (speech detection sensitivity is disabled).
     #
-    #   The values increase on a monotonic curve. See [Speech Activity
-    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    #   The values increase on a monotonic curve. See [Speech detector
+    #   sensitivity](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-detection#detection-parameters-sensitivity).
     # @param background_audio_suppression [Float] The level to which the service is to suppress background audio based on its volume
     #   to prevent it from being transcribed as speech. Use the parameter to suppress side
     #   conversations or background noise.
@@ -1133,10 +1260,27 @@ module IBMWatson
     #   * 0.5 provides a reasonable level of audio suppression for general usage.
     #   * 1.0 suppresses all audio (no audio is transcribed).
     #
-    #   The values increase on a monotonic curve. See [Speech Activity
-    #   Detection](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-input#detection).
+    #   The values increase on a monotonic curve. See [Background audio
+    #   suppression](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-detection#detection-parameters-suppression).
+    # @param low_latency [Boolean] If `true` for next-generation `Multimedia` and `Telephony` models that support low
+    #   latency, directs the service to produce results even more quickly than it usually
+    #   does. Next-generation models produce transcription results faster than
+    #   previous-generation models. The `low_latency` parameter causes the models to
+    #   produce results even more quickly, though the results might be less accurate when
+    #   the parameter is used.
+    #
+    #   **Note:** The parameter is beta functionality. It is not available for
+    #   previous-generation `Broadband` and `Narrowband` models. It is available only for
+    #   some next-generation models.
+    #
+    #   * For a list of next-generation models that support low latency, see [Supported
+    #   language
+    #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng#models-ng-supported)
+    #   for next-generation models.
+    #   * For more information about the `low_latency` parameter, see [Low
+    #   latency](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-interim#low-latency).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil)
+    def create_job(audio:, content_type: nil, model: nil, callback_url: nil, events: nil, user_token: nil, results_ttl: nil, language_customization_id: nil, acoustic_customization_id: nil, base_model_version: nil, customization_weight: nil, inactivity_timeout: nil, keywords: nil, keywords_threshold: nil, max_alternatives: nil, word_alternatives_threshold: nil, word_confidence: nil, timestamps: nil, profanity_filter: nil, smart_formatting: nil, speaker_labels: nil, customization_id: nil, grammar_name: nil, redaction: nil, processing_metrics: nil, processing_metrics_interval: nil, audio_metrics: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
       raise ArgumentError.new("audio must be provided") if audio.nil?
 
       headers = {
@@ -1175,7 +1319,8 @@ module IBMWatson
         "end_of_phrase_silence_time" => end_of_phrase_silence_time,
         "split_transcript_at_phrase_end" => split_transcript_at_phrase_end,
         "speech_detector_sensitivity" => speech_detector_sensitivity,
-        "background_audio_suppression" => background_audio_suppression
+        "background_audio_suppression" => background_audio_suppression,
+        "low_latency" => low_latency
       }
 
       data = audio
@@ -1393,7 +1538,8 @@ module IBMWatson
     #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageLanguageModels#listModels-language).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned. Omit the parameter to see all custom language or custom
-    #   acoustic models that are owned by the requesting credentials.
+    #   acoustic models that are owned by the requesting credentials. (**Note:** The
+    #   identifier `ar-AR` is deprecated; use `ar-MS` instead.)
     #
     #   To determine the languages for which customization is available, see [Language
     #   support for
@@ -1548,6 +1694,9 @@ module IBMWatson
     #   The value that you assign is used for all recognition requests that use the model.
     #   You can override it for any recognition request by specifying a customization
     #   weight for that request.
+    #
+    #   See [Using customization
+    #   weight](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-languageUse#weight).
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def train_language_model(customization_id:, word_type_to_add: nil, customization_weight: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -1629,7 +1778,7 @@ module IBMWatson
     #   subsequent requests for the model until the upgrade completes.
     #
     #   **See also:** [Upgrading a custom language
-    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customUpgrade#upgradeLanguage).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-custom-upgrade#custom-upgrade-language).
     # @param customization_id [String] The customization ID (GUID) of the custom language model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2468,7 +2617,8 @@ module IBMWatson
     #   custom model`.
     # @param base_model_name [String] The name of the base language model that is to be customized by the new custom
     #   acoustic model. The new custom model can be used only with the base model that it
-    #   customizes.
+    #   customizes. (**Note:** The model `ar-AR_BroadbandModel` is deprecated; use
+    #   `ar-MS_BroadbandModel` instead.)
     #
     #   To determine whether a base model supports acoustic model customization, refer to
     #   [Language support for
@@ -2517,7 +2667,8 @@ module IBMWatson
     #   models](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-manageAcousticModels#listModels-acoustic).
     # @param language [String] The identifier of the language for which custom language or custom acoustic models
     #   are to be returned. Omit the parameter to see all custom language or custom
-    #   acoustic models that are owned by the requesting credentials.
+    #   acoustic models that are owned by the requesting credentials. (**Note:** The
+    #   identifier `ar-AR` is deprecated; use `ar-MS` instead.)
     #
     #   To determine the languages for which customization is available, see [Language
     #   support for
@@ -2771,7 +2922,7 @@ module IBMWatson
     #   acoustic model was not trained with a custom language model.
     #
     #   **See also:** [Upgrading a custom acoustic
-    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customUpgrade#upgradeAcoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-custom-upgrade#custom-upgrade-acoustic).
     # @param customization_id [String] The customization ID (GUID) of the custom acoustic model that is to be used for
     #   the request. You must make the request with credentials for the instance of the
     #   service that owns the custom model.
@@ -2785,7 +2936,7 @@ module IBMWatson
     #   upgrade of a custom acoustic model that is trained with a custom language model,
     #   and only if you receive a 400 response code and the message `No input data
     #   modified since last training`. See [Upgrading a custom acoustic
-    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-customUpgrade#upgradeAcoustic).
+    #   model](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-custom-upgrade#custom-upgrade-acoustic).
     # @return [nil]
     def upgrade_acoustic_model(customization_id:, custom_language_model_id: nil, force: nil)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
@@ -2923,8 +3074,8 @@ module IBMWatson
     #   If the sampling rate of the audio is lower than the minimum required rate, the
     #   service labels the audio file as `invalid`.
     #
-    #    **See also:** [Audio
-    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats#audio-formats).
+    #    **See also:** [Supported audio
+    #   formats](https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-audio-formats).
     #
     #
     #   ### Content types for archive-type resources

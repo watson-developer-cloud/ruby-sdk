@@ -14,17 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.19.0-be3b4618-20201113-200858
+# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
-# IBM&reg; will begin sunsetting IBM Watson&trade; Personality Insights on 1 December
-# 2020. For a period of one year from this date, you will still be able to use Watson
-# Personality Insights. However, as of 1 December 2021, the offering will no longer be
-# available.<br/><br/>As an alternative, we encourage you to consider migrating to IBM
-# Watson&trade; Natural Language Understanding, a service on IBM Cloud&reg; that uses deep
-# learning to extract data and insights from text such as keywords, categories, sentiment,
-# emotion, and syntax to provide insights for your business or industry. For more
-# information, see [About Natural Language
-# Understanding](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-about).
+# IBM Watson&trade; Personality Insights is discontinued. Existing instances are
+# supported until 1 December 2021, but as of 1 December 2020, you cannot create new
+# instances. Any instance that exists on 1 December 2021 will be deleted.<br/><br/>No
+# direct replacement exists for Personality Insights. However, you can consider using [IBM
+# Watson&trade; Natural Language
+# Understanding](https://cloud.ibm.com/docs/natural-language-understanding?topic=natural-language-understanding-about)
+# on IBM Cloud&reg; as part of a replacement analytic workflow for your Personality
+# Insights use cases. You can use Natural Language Understanding to extract data and
+# insights from text, such as keywords, categories, sentiment, emotion, and syntax. For
+# more information about the personality models in Personality Insights, see [The science
+# behind the
+# service](https://cloud.ibm.com/docs/personality-insights?topic=personality-insights-science).
 # {: deprecated}
 #
 # The IBM Watson Personality Insights service enables applications to derive insights from
@@ -54,7 +57,6 @@ require "json"
 require "ibm_cloud_sdk_core"
 require_relative "./common.rb"
 
-# Module for the Watson APIs
 module IBMWatson
   ##
   # The Personality Insights V3 service.
