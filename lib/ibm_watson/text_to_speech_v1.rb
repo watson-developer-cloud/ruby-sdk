@@ -921,7 +921,7 @@ module IBMWatson
     end
 
     ##
-    # @!method add_custom_prompt(customization_id:, prompt_id:, metadata:, file:, filename: nil)
+    # @!method add_custom_prompt(customization_id:, prompt_id:, metadata:, file:)
     # Add a custom prompt.
     # Adds a custom prompt to a custom model. A prompt is defined by the text that is to
     #   be spoken, the audio for that text, a unique user-specified ID for the prompt, and
@@ -1027,9 +1027,8 @@ module IBMWatson
     #   16 kHz. The service accepts audio with higher sampling rates. The service
     #   transcodes all audio to 16 kHz before processing it.
     #   * The length of the prompt audio is limited to 30 seconds.
-    # @param filename [String] The filename for file.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
-    def add_custom_prompt(customization_id:, prompt_id:, metadata:, file:, filename: nil)
+    def add_custom_prompt(customization_id:, prompt_id:, metadata:, file:)
       raise ArgumentError.new("customization_id must be provided") if customization_id.nil?
 
       raise ArgumentError.new("prompt_id must be provided") if prompt_id.nil?
@@ -1050,8 +1049,7 @@ module IBMWatson
       unless file.instance_of?(StringIO) || file.instance_of?(File)
         file = file.respond_to?(:to_json) ? StringIO.new(file.to_json) : StringIO.new(file)
       end
-      filename = file.path if filename.nil? && file.respond_to?(:path)
-      form_data[:file] = HTTP::FormData::File.new(file, content_type: "audio/wav", filename: filename)
+      form_data[:file] = HTTP::FormData::File.new(file, content_type: "audio/wav", filename: file.respond_to?(:path) ? file.path : nil)
 
       method_url = "/v1/customizations/%s/prompts/%s" % [ERB::Util.url_encode(customization_id), ERB::Util.url_encode(prompt_id)]
 
