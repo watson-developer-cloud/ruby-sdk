@@ -14,30 +14,6 @@
 
 Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
-<details>
-  <summary>Table of Contents</summary>
-
-* [Before you begin](#before-you-begin)
-* [Installation](#installation)
-* [Examples](#examples)
-* [Discovery v2 only on CP4D](#discovery-v2-only-on-cp4d)
-* [Running in IBM Cloud](#running-in-ibm-cloud)
-* [Authentication](#authentication)
-  * [Getting credentials](#getting-credentials)
-  * [IAM](#iam)
-  * [Username and password](#username-and-password)
-* [Sending requests asynchronously](#sending-requests-asynchronously)
-* [Sending request headers](#sending-request-headers)
-* [Parsing HTTP response info](#parsing-http-response-info)
-* [Configuring the HTTP client](#configuring-the-http-client)
-* [Using Websockets](#using-websockets)
-* [Ruby version](#ruby-version)
-* [Contributing](#contributing)
-* [License](#license)
-* [Featured Projects](#featured-projects)
-
-</details>
-
 ## Announcements
 ### Support for 2.7 ruby
 To support 2.7 the http gem dependency is updated to 4.4.0. Since it conflicted with the dependency in the ruby-sdk-core that gem was also updated.  Using 2.0.2 or above ruby sdk will require a core of 1.1.3 or above.
@@ -83,10 +59,6 @@ require "ibm_watson"
 ## Examples
 
 The [examples][examples] folder has basic and advanced examples. The examples within each service assume that you already have [service credentials](#getting-credentials).
-
-## Discovery v2 only on CP4D
-
-Discovery v2 is only available on Cloud Pak for Data.
 
 ## Running in IBM Cloud
 
