@@ -15,6 +15,11 @@
 Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
 ## Announcements
+### Natural Language Classifier deprecation
+On 9 August 2021, IBM announced the deprecation of the Natural Language Classifier service.The service will no longer be available from 8 August 2022. As of 9 September 2021, you will not be able to create new instances. Existing instances will be supported until 8 August 2022. Any instance that still exists on that date will be deleted.
+
+As an alternative, we encourage you to consider migrating to the Natural Language Understanding service on IBM Cloud that uses deep learning to extract data and insights from text such as keywords, categories, sentiment, emotion, and syntax, along with advanced multi-label text classification capabilities, to provide even richer insights for your business or industry. For more information, see [Migrating to Natural Language Understanding](https://cloud.ibm.com/docs/natural-language-classifier?topic=natural-language-classifier-migrating).
+
 ### Support for 2.7 ruby
 To support 2.7 the http gem dependency is updated to 4.4.0. Since it conflicted with the dependency in the ruby-sdk-core that gem was also updated.  Using 2.0.2 or above ruby sdk will require a core of 1.1.3 or above.
 
