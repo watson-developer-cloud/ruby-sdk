@@ -16,9 +16,9 @@
 #
 # IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
-# IBM Watson&trade; Natural Language Classifier is discontinued. On 9 August 2021, IBM announced the deprecation of 
-# the Natural Language Classifier service.The service will no longer be available from 8 August 2022. 
-# As of 9 September 2021, you will not be able to create new instances. Existing instances will be supported until 
+# IBM Watson&trade; Natural Language Classifier is discontinued. On 9 August 2021, IBM announced the deprecation of
+# the Natural Language Classifier service.The service will no longer be available from 8 August 2022.
+# As of 9 September 2021, you will not be able to create new instances. Existing instances will be supported until
 # 8 August 2022. Any instance that still exists on that date will be deleted.
 # {: deprecated}
 #
