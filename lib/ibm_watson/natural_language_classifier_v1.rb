@@ -16,7 +16,13 @@
 #
 # IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
 #
-# IBM Watson&trade; Natural Language Classifier uses machine learning algorithms to
+# IBM Watson&trade; Natural Language Classifier is discontinued. On 9 August 2021, IBM announced the deprecation of
+# the Natural Language Classifier service. The service will no longer be available from 8 August 2022.
+# As of 9 September 2021, you will not be able to create new instances. Existing instances will be supported until
+# 8 August 2022. Any instance that still exists on that date will be deleted.
+# {: deprecated}
+#
+# Natural Language Classifier uses machine learning algorithms to
 # return the top matching predefined classes for short text input. You create and train a
 # classifier to connect predefined classes to example texts so that the service can apply
 # those classes to new inputs.
@@ -45,6 +51,7 @@ module IBMWatson
     # @option args service_name [String] The name of the service to configure. Will be used as the key to load
     #   any external configuration, if applicable.
     def initialize(args = {})
+      warn "On 9 August 2021, IBM announced the deprecation of the Natural Language Classifier service. The service will no longer be available from 8 August 2022. As of 9 September 2021, you will not be able to create new instances. Existing instances will be supported until 8 August 2022. Any instance that still exists on that date will be deleted. For more information, see https://github.com/watson-developer-cloud/ruby-sdk#natural-language-classifier-deprecation."
       @__async_initialized__ = false
       defaults = {}
       defaults[:service_url] = DEFAULT_SERVICE_URL
