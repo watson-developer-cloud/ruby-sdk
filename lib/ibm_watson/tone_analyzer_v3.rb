@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
+# IBM OpenAPI SDK Code Generator Version: 3.38.0-07189efd-20210827-205025
 #
 # The IBM Watson&trade; Tone Analyzer service uses linguistic analysis to detect
 # emotional and language tones in written text. The service can analyze tone at both the

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
+# IBM OpenAPI SDK Code Generator Version: 3.38.0-07189efd-20210827-205025
 #
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to
@@ -42,7 +42,7 @@ module IBMWatson
     #
     # @param args [Hash] The args to initialize with
     # @option args version [String] Release date of the version of the API you want to use. Specify dates in
-    #   YYYY-MM-DD format. The current version is `2019-11-22`.
+    #   YYYY-MM-DD format. The current version is `2020-08-30`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -73,8 +73,8 @@ module IBMWatson
     # @!method list_collections(project_id:)
     # List collections.
     # Lists existing collections for the specified project.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_collections(project_id:)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
@@ -106,8 +106,8 @@ module IBMWatson
     # @!method create_collection(project_id:, name:, description: nil, language: nil, enrichments: nil)
     # Create a collection.
     # Create a new collection in the specified project.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param name [String] The name of the collection.
     # @param description [String] A description of the collection.
     # @param language [String] The language of the collection.
@@ -153,8 +153,8 @@ module IBMWatson
     # @!method get_collection(project_id:, collection_id:)
     # Get collection.
     # Get details about the specified collection.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_collection(project_id:, collection_id:)
@@ -189,8 +189,8 @@ module IBMWatson
     # @!method update_collection(project_id:, collection_id:, name: nil, description: nil, enrichments: nil)
     # Update a collection.
     # Updates the specified collection's name, description, and enrichments.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
     # @param name [String] The name of the collection.
     # @param description [String] A description of the collection.
@@ -236,8 +236,8 @@ module IBMWatson
     # Delete a collection.
     # Deletes the specified collection from the project. All documents stored in the
     #   specified collection and not shared is also deleted.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
     # @return [nil]
     def delete_collection(project_id:, collection_id:)
@@ -282,8 +282,8 @@ module IBMWatson
     #   for an overview of the standard default settings, and see [the Projects API
     #   documentation](#create-project) for details about how to set custom default query
     #   settings.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_ids [Array[String]] A comma-separated list of collection IDs to be queried against.
     # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
     #   Filter searches are better for metadata-type searches and for assessing the
@@ -297,15 +297,14 @@ module IBMWatson
     #   filters. Useful for applications to build lists, tables, and time series. For a
     #   full list of possible aggregations, see the Query reference.
     # @param count [Fixnum] Number of results to return.
-    # @param _return [Array[String]] A list of the fields in the document hierarchy to return. If this parameter not
-    #   specified, then all top-level fields are returned.
+    # @param _return [Array[String]] A list of the fields in the document hierarchy to return. If this parameter is an
+    #   empty list, then all fields are returned.
     # @param offset [Fixnum] The number of query results to skip at the beginning. For example, if the total
     #   number of results that are returned is 10 and the offset is 8, it returns the last
     #   two results.
     # @param sort [String] A comma-separated list of fields in the document to sort on. You can optionally
     #   specify a sort direction by prefixing the field with `-` for descending or `+` for
-    #   ascending. Ascending is the default sort direction if no prefix is specified. This
-    #   parameter cannot be used in the same query as the **bias** parameter.
+    #   ascending. Ascending is the default sort direction if no prefix is specified.
     # @param highlight [Boolean] When `true`, a highlight field is returned for each result which contains the
     #   fields which match the query with `<em></em>` tags around the matching query
     #   terms.
@@ -313,7 +312,7 @@ module IBMWatson
     #   **natural_language_query** parameter is spell checked. The most likely correction
     #   is returned in the **suggested_query** field of the response (if one exists).
     # @param table_results [QueryLargeTableResults] Configuration for table retrieval.
-    # @param suggested_refinements [QueryLargeSuggestedRefinements] Configuration for suggested refinements.
+    # @param suggested_refinements [QueryLargeSuggestedRefinements] Configuration for suggested refinements. Available with Premium plans only.
     # @param passages [QueryLargePassages] Configuration for passage retrieval.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def query(project_id:, collection_ids: nil, filter: nil, query: nil, natural_language_query: nil, aggregation: nil, count: nil, _return: nil, offset: nil, sort: nil, highlight: nil, spelling_suggestions: nil, table_results: nil, suggested_refinements: nil, passages: nil)
@@ -364,10 +363,10 @@ module IBMWatson
     # @!method get_autocompletion(project_id:, prefix:, collection_ids: nil, field: nil, count: nil)
     # Get Autocomplete Suggestions.
     # Returns completion query suggestions for the specified prefix.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param prefix [String] The prefix to use for autocompletion. For example, the prefix `Ho` could
-    #   autocomplete to `Hot`, `Housing`, or `How do I upgrade`. Possible completions are.
+    #   autocomplete to `hot`, `housing`, or `how`.
     # @param collection_ids [Array[String]] Comma separated list of the collection IDs. If this parameter is not specified,
     #   all collections in the project are used.
     # @param field [String] The field in the result documents that autocompletion suggestions are identified
@@ -412,8 +411,8 @@ module IBMWatson
     # Query collection notices.
     # Finds collection-level notices (errors and warnings) that are generated when
     #   documents are ingested.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
     # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
     #   Filter searches are better for metadata-type searches and for assessing the
@@ -467,8 +466,8 @@ module IBMWatson
     # Query project notices.
     # Finds project-level notices (errors and warnings). Currently, project-level
     #   notices are generated by relevancy training.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param filter [String] A cacheable query that excludes documents that don't mention the query content.
     #   Filter searches are better for metadata-type searches and for assessing the
     #   concepts in the data set.
@@ -519,8 +518,8 @@ module IBMWatson
     # List fields.
     # Gets a list of the unique fields (and their types) stored in the the specified
     #   collections.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_ids [Array[String]] Comma separated list of the collection IDs. If this parameter is not specified,
     #   all collections in the project are used.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -559,8 +558,8 @@ module IBMWatson
     # @!method get_component_settings(project_id:)
     # List component settings.
     # Returns default configuration settings for components.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_component_settings(project_id:)
       raise ArgumentError.new("project_id must be provided") if project_id.nil?
@@ -596,44 +595,42 @@ module IBMWatson
     # Add a document.
     # Add a document to a collection with optional metadata.
     #
-    #    Returns immediately after the system has accepted the document for processing.
+    #   Returns immediately after the system has accepted the document for processing.
     #
     #     * The user must provide document content, metadata, or both. If the request is
     #   missing both document content and metadata, it is rejected.
     #
-    #     * The user can set the **Content-Type** parameter on the **file** part to
-    #   indicate the media type of the document. If the **Content-Type** parameter is
-    #   missing or is one of the generic media types (for example,
-    #   `application/octet-stream`), then the service attempts to automatically detect the
-    #   document's media type.
+    #     * You can set the **Content-Type** parameter on the **file** part to indicate
+    #   the media type of the document. If the **Content-Type** parameter is missing or is
+    #   one of the generic media types (for example, `application/octet-stream`), then the
+    #   service attempts to automatically detect the document's media type.
     #
-    #     * The following field names are reserved and will be filtered out if present
-    #   after normalization: `id`, `score`, `highlight`, and any field with the prefix of:
-    #   `_`, `+`, or `-`
+    #     * The following field names are reserved and are filtered out if present after
+    #   normalization: `id`, `score`, `highlight`, and any field with the prefix of: `_`,
+    #   `+`, or `-`
     #
     #     * Fields with empty name values after normalization are filtered out before
     #   indexing.
     #
-    #     * Fields containing the following characters after normalization are filtered
+    #     * Fields that contain the following characters after normalization are filtered
     #   out before indexing: `#` and `,`
     #
-    #     If the document is uploaded to a collection that has it's data shared with
-    #   another collection, the **X-Watson-Discovery-Force** header must be set to `true`.
+    #     If the document is uploaded to a collection that shares its data with another
+    #   collection, the **X-Watson-Discovery-Force** header must be set to `true`.
     #
+    #   **Note:** You can assign an ID to a document that you add by appending the ID to
+    #   the endpoint
+    #   (`/v2/projects/{project_id}/collections/{collection_id}/documents/{document_id}`).
+    #   If a document already exists with the specified ID, it is replaced.
     #
-    #    **Note:** Documents can be added with a specific **document_id** by using the
-    #   **_/v2/projects/{project_id}/collections/{collection_id}/documents** method.
-    #
-    #   **Note:** This operation only works on collections created to accept direct file
-    #   uploads. It cannot be used to modify a collection that connects to an external
-    #   source such as Microsoft SharePoint.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    #   **Note:** This operation works with a file upload collection. It cannot be used to
+    #   modify a collection that crawls an external data source.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
-    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
-    #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a configuration is 1 megabyte. Files larger than the supported size are
-    #   rejected.
+    # @param file [File] The content of the document to ingest. For maximum supported file size limits, see
+    #   [the
+    #   documentation](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-collections#collections-doc-limits).
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
@@ -695,7 +692,7 @@ module IBMWatson
     # Replace an existing document or add a document with a specified **document_id**.
     #   Starts ingesting a document with optional metadata.
     #
-    #   If the document is uploaded to a collection that has it's data shared with another
+    #   If the document is uploaded to a collection that shares its data with another
     #   collection, the **X-Watson-Discovery-Force** header must be set to `true`.
     #
     #   **Note:** When uploading a new document with this method it automatically replaces
@@ -705,16 +702,15 @@ module IBMWatson
     #   uploads. It cannot be used to modify a collection that connects to an external
     #   source such as Microsoft SharePoint.
     #
-    #   **Note:** If an uploaded document is segmented, all segments will be overwritten,
-    #   even if the updated version of the document has fewer segments.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    #   **Note:** If an uploaded document is segmented, all segments are overwritten, even
+    #   if the updated version of the document has fewer segments.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
     # @param document_id [String] The ID of the document.
-    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
-    #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a configuration is 1 megabyte. Files larger than the supported size are
-    #   rejected.
+    # @param file [File] The content of the document to ingest. For maximum supported file size limits, see
+    #   [the
+    #   documentation](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-collections#collections-doc-limits).
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
@@ -785,8 +781,8 @@ module IBMWatson
     #
     #   **Note:** Segments of an uploaded document cannot be deleted individually. Delete
     #   all segments by deleting using the `parent_document_id` of a segment result.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
     # @param document_id [String] The ID of the document.
     # @param x_watson_discovery_force [Boolean] When `true`, the uploaded document is added to the collection even if the data for
@@ -830,8 +826,8 @@ module IBMWatson
     # @!method list_training_queries(project_id:)
     # List training queries.
     # List the training queries for the specified project.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_training_queries(project_id:)
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -863,8 +859,8 @@ module IBMWatson
     # @!method delete_training_queries(project_id:)
     # Delete training queries.
     # Removes all training queries for the specified project.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [nil]
     def delete_training_queries(project_id:)
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -897,8 +893,8 @@ module IBMWatson
     # Create training query.
     # Add a query to the training data for this project. The query can contain a filter
     #   and natural language query.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param natural_language_query [String] The natural text query for the training query.
     # @param examples [Array[TrainingExample]] Array of training examples.
     # @param filter [String] The filter used on the collection before the **natural_language_query** is
@@ -946,8 +942,8 @@ module IBMWatson
     # Get a training data query.
     # Get details for a specific training data query, including the query string and all
     #   examples.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param query_id [String] The ID of the query used for training.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_training_query(project_id:, query_id:)
@@ -982,8 +978,8 @@ module IBMWatson
     # @!method update_training_query(project_id:, query_id:, natural_language_query:, examples:, filter: nil)
     # Update a training query.
     # Updates an existing training query and it's examples.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param query_id [String] The ID of the query used for training.
     # @param natural_language_query [String] The natural text query for the training query.
     # @param examples [Array[TrainingExample]] Array of training examples.
@@ -1034,8 +1030,8 @@ module IBMWatson
     # Delete a training data query.
     # Removes details from a training data query, including the query string and all
     #   examples.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param query_id [String] The ID of the query used for training.
     # @return [nil]
     def delete_training_query(project_id:, query_id:)
@@ -1072,21 +1068,18 @@ module IBMWatson
     ##
     # @!method analyze_document(project_id:, collection_id:, file: nil, filename: nil, file_content_type: nil, metadata: nil)
     # Analyze a Document.
-    # Process a document using the specified collection's settings and return it for
-    #   realtime use.
+    # Process a document and return it for realtime use. Supports JSON files only.
     #
-    #   **Note:** Documents processed using this method are not added to the specified
-    #   collection.
+    #   The document is processed according to the collection's configuration settings but
+    #   is not stored in the collection.
     #
-    #   **Note:** This method is only supported on IBM Cloud Pak for Data instances of
-    #   Discovery.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    #   **Note:** This method is supported on installed instances of Discovery only.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param collection_id [String] The ID of the collection.
-    # @param file [File] The content of the document to ingest. The maximum supported file size when adding
-    #   a file to a collection is 50 megabytes, the maximum supported file size when
-    #   testing a configuration is 1 megabyte. Files larger than the supported size are
-    #   rejected.
+    # @param file [File] The content of the document to ingest. For maximum supported file size limits, see
+    #   [the
+    #   documentation](https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-collections#collections-doc-limits).
     # @param filename [String] The filename for file.
     # @param file_content_type [String] The content type of file.
     # @param metadata [String] The maximum supported metadata file size is 1 MB. Metadata parts larger than 1 MB
@@ -1145,9 +1138,11 @@ module IBMWatson
     ##
     # @!method list_enrichments(project_id:)
     # List Enrichments.
-    # List the enrichments available to this project.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # Lists the enrichments available to this project. The *Part of Speech* and
+    #   *Sentiment of Phrases* enrichments might be listed, but are reserved for internal
+    #   use only.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_enrichments(project_id:)
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -1178,9 +1173,9 @@ module IBMWatson
     ##
     # @!method create_enrichment(project_id:, enrichment:, file: nil)
     # Create an enrichment.
-    # Create an enrichment for use with the specified project/.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # Create an enrichment for use with the specified project.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param enrichment [CreateEnrichment] Information about a specific enrichment.
     # @param file [File] The enrichment file to upload.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
@@ -1228,8 +1223,8 @@ module IBMWatson
     # @!method get_enrichment(project_id:, enrichment_id:)
     # Get enrichment.
     # Get details about a specific enrichment.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param enrichment_id [String] The ID of the enrichment.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_enrichment(project_id:, enrichment_id:)
@@ -1264,8 +1259,8 @@ module IBMWatson
     # @!method update_enrichment(project_id:, enrichment_id:, name:, description: nil)
     # Update an enrichment.
     # Updates an existing enrichment's name and description.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param enrichment_id [String] The ID of the enrichment.
     # @param name [String] A new name for the enrichment.
     # @param description [String] A new description for the enrichment.
@@ -1312,8 +1307,8 @@ module IBMWatson
     # Deletes an existing enrichment from the specified project.
     #
     #   **Note:** Only enrichments that have been manually created can be deleted.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param enrichment_id [String] The ID of the enrichment.
     # @return [nil]
     def delete_enrichment(project_id:, enrichment_id:)
@@ -1381,7 +1376,13 @@ module IBMWatson
     # Create a Project.
     # Create a new project for this instance.
     # @param name [String] The human readable name of this project.
-    # @param type [String] The project type of this project.
+    # @param type [String] The type of project.
+    #
+    #   The `content_intelligence` type is a *Document Retrieval for Contracts* project
+    #   and the `other` type is a *Custom* project.
+    #
+    #   The `content_mining` and `content_intelligence` types are available with Premium
+    #   plan managed deployments and installed deployments only.
     # @param default_query_parameters [DefaultQueryParams] Default query parameters for this project.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_project(name:, type:, default_query_parameters: nil)
@@ -1423,8 +1424,8 @@ module IBMWatson
     # @!method get_project(project_id:)
     # Get project.
     # Get details on the specified project.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_project(project_id:)
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -1456,8 +1457,8 @@ module IBMWatson
     # @!method update_project(project_id:, name: nil)
     # Update a project.
     # Update the specified project's name.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @param name [String] The new name to give this project.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_project(project_id:, name: nil)
@@ -1498,8 +1499,8 @@ module IBMWatson
     #
     #   **Important:** Deleting a project deletes everything that is part of the specified
     #   project, including all collections.
-    # @param project_id [String] The ID of the project. This information can be found from the deploy page of the
-    #   Discovery administrative tooling.
+    # @param project_id [String] The ID of the project. This information can be found from the *Integrate and
+    #   Deploy* page in Discovery.
     # @return [nil]
     def delete_project(project_id:)
       raise ArgumentError.new("version must be provided") if version.nil?

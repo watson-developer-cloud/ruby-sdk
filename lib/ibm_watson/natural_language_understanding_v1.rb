@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
+# IBM OpenAPI SDK Code Generator Version: 3.38.0-07189efd-20210827-205025
 #
 # Analyze various features of text content at scale. Provide text, raw HTML, or a public
 # URL and IBM Watson Natural Language Understanding will give you results for the features
@@ -46,7 +46,7 @@ module IBMWatson
     #
     # @param args [Hash] The args to initialize with
     # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
-    #   format. The current version is `2021-03-25`.
+    #   format. The current version is `2021-08-01`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -684,9 +684,9 @@ module IBMWatson
     ##
     # @!method create_classifications_model(language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
     # Create classifications model.
-    # (Beta) Creates a custom classifications model by uploading training data and
-    #   associated metadata. The model begins the training and deploying process and is
-    #   ready to use when the `status` is `available`.
+    # Creates a custom classifications model by uploading training data and associated
+    #   metadata. The model begins the training and deploying process and is ready to use
+    #   when the `status` is `available`.
     # @param language [String] The 2-letter language code of this model.
     # @param training_data [File] Training data in JSON format. For more information, see [Classifications training
     #   data
@@ -750,8 +750,7 @@ module IBMWatson
     ##
     # @!method list_classifications_models
     # List classifications models.
-    # (Beta) Returns all custom classifications models associated with this service
-    #   instance.
+    # Returns all custom classifications models associated with this service instance.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def list_classifications_models
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -780,7 +779,7 @@ module IBMWatson
     ##
     # @!method get_classifications_model(model_id:)
     # Get classifications model details.
-    # (Beta) Returns the status of the classifications model with the given model ID.
+    # Returns the status of the classifications model with the given model ID.
     # @param model_id [String] ID of the model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def get_classifications_model(model_id:)
@@ -812,8 +811,8 @@ module IBMWatson
     ##
     # @!method update_classifications_model(model_id:, language:, training_data:, training_data_content_type: nil, name: nil, description: nil, model_version: nil, workspace_id: nil, version_description: nil)
     # Update classifications model.
-    # (Beta) Overwrites the training data associated with this custom classifications
-    #   model and retrains the model. The new model replaces the current deployment.
+    # Overwrites the training data associated with this custom classifications model and
+    #   retrains the model. The new model replaces the current deployment.
     # @param model_id [String] ID of the model.
     # @param language [String] The 2-letter language code of this model.
     # @param training_data [File] Training data in JSON format. For more information, see [Classifications training
@@ -880,9 +879,8 @@ module IBMWatson
     ##
     # @!method delete_classifications_model(model_id:)
     # Delete classifications model.
-    # (Beta) Un-deploys the custom classifications model with the given model ID and
-    #   deletes all associated customer data, including any training data or binary
-    #   artifacts.
+    # Un-deploys the custom classifications model with the given model ID and deletes
+    #   all associated customer data, including any training data or binary artifacts.
     # @param model_id [String] ID of the model.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def delete_classifications_model(model_id:)

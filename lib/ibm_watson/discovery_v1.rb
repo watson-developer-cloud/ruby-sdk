@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
+# IBM OpenAPI SDK Code Generator Version: 3.38.0-07189efd-20210827-205025
 #
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to
@@ -1809,7 +1809,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param prefix [String] The prefix to use for autocompletion. For example, the prefix `Ho` could
-    #   autocomplete to `Hot`, `Housing`, or `How do I upgrade`. Possible completions are.
+    #   autocomplete to `hot`, `housing`, or `how`.
     # @param field [String] The field in the result documents that autocompletion suggestions are identified
     #   from.
     # @param count [Fixnum] The number of autocompletion suggestions to return.

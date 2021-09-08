@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
+# IBM OpenAPI SDK Code Generator Version: 3.38.0-07189efd-20210827-205025
 #
 # The IBM Watson&trade; Assistant service combines machine learning, natural language
 # understanding, and an integrated dialog editor to create conversation flows between your
@@ -43,7 +43,7 @@ module IBMWatson
     #
     # @param args [Hash] The args to initialize with
     # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
-    #   format. The current version is `2020-04-01`.
+    #   format. The current version is `2021-06-14`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
@@ -2391,7 +2391,8 @@ module IBMWatson
     # @param filter [String] A cacheable parameter that limits the results to those matching the specified
     #   filter. You must specify a filter query that includes a value for `language`, as
     #   well as a value for `request.context.system.assistant_id`, `workspace_id`, or
-    #   `request.context.metadata.deployment`. For more information, see the
+    #   `request.context.metadata.deployment`. These required filters must be specified
+    #   using the exact match (`::`) operator. For more information, see the
     #   [documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-filter-reference#filter-reference).
     # @param sort [String] How to sort the returned log events. You can sort by **request_timestamp**. To
     #   reverse the sort order, prefix the parameter value with a minus sign (`-`).
