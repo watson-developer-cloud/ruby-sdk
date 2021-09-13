@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# IBM OpenAPI SDK Code Generator Version: 3.31.0-902c9336-20210504-161156
+# IBM OpenAPI SDK Code Generator Version: 3.38.0-07189efd-20210827-205025
 #
 # IBM Watson&trade; Discovery is a cognitive search and content analytics engine that
 # you can add to applications to identify patterns, trends and actionable insights to
@@ -1809,7 +1809,7 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param collection_id [String] The ID of the collection.
     # @param prefix [String] The prefix to use for autocompletion. For example, the prefix `Ho` could
-    #   autocomplete to `Hot`, `Housing`, or `How do I upgrade`. Possible completions are.
+    #   autocomplete to `hot`, `housing`, or `how`.
     # @param field [String] The field in the result documents that autocompletion suggestions are identified
     #   from.
     # @param count [Fixnum] The number of autocompletion suggestions to return.
@@ -2649,10 +2649,7 @@ module IBMWatson
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @param status [String] The current status of this set of credentials. `connected` indicates that the
-    #   credentials are available to use with the source configuration of a collection.
-    #   `invalid` refers to the credentials (for example, the password provided has
-    #   expired) and must be corrected before they can be used with a collection.
+    # @param status [StatusDetails] Object that contains details about the status of the authentication process.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil, status: nil)
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -2746,10 +2743,7 @@ module IBMWatson
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @param status [String] The current status of this set of credentials. `connected` indicates that the
-    #   credentials are available to use with the source configuration of a collection.
-    #   `invalid` refers to the credentials (for example, the password provided has
-    #   expired) and must be corrected before they can be used with a collection.
+    # @param status [StatusDetails] Object that contains details about the status of the authentication process.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil, status: nil)
       raise ArgumentError.new("version must be provided") if version.nil?
