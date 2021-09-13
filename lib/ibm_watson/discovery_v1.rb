@@ -2649,10 +2649,7 @@ module IBMWatson
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @param status [String] The current status of this set of credentials. `connected` indicates that the
-    #   credentials are available to use with the source configuration of a collection.
-    #   `invalid` refers to the credentials (for example, the password provided has
-    #   expired) and must be corrected before they can be used with a collection.
+    # @param status [StatusDetails] Object that contains details about the status of the authentication process.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def create_credentials(environment_id:, source_type: nil, credential_details: nil, status: nil)
       raise ArgumentError.new("version must be provided") if version.nil?
@@ -2746,10 +2743,7 @@ module IBMWatson
     # @param credential_details [CredentialDetails] Object containing details of the stored credentials.
     #
     #   Obtain credentials for your source from the administrator of the source.
-    # @param status [String] The current status of this set of credentials. `connected` indicates that the
-    #   credentials are available to use with the source configuration of a collection.
-    #   `invalid` refers to the credentials (for example, the password provided has
-    #   expired) and must be corrected before they can be used with a collection.
+    # @param status [StatusDetails] Object that contains details about the status of the authentication process.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_credentials(environment_id:, credential_id:, source_type: nil, credential_details: nil, status: nil)
       raise ArgumentError.new("version must be provided") if version.nil?
