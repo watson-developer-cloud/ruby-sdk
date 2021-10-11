@@ -36,7 +36,7 @@ jobs:
     - name: Execute Ruby integration tests
       env:
         NATURAL_LANGUAGE_CLASSIFIER_APIKEY: ${{ secrets.NLC_APIKEY }}
-        NATURAL_LANGUAGE_CLASSIFIER_URL: "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com"
+        NATURAL_LANGUAGE_CLASSIFIER_URL: "https://api.ussa-south.natural-language-classifier.watson.cloud.ibm.com"
       run: bundle exec rake test:integration
 
     - name: Notify slack success
