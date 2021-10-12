@@ -14,11 +14,6 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      slackMess:
-        description: 'Send Slack Notification'
-        required: true
-        default: true
 
 jobs:
   integration_test:
@@ -45,7 +40,7 @@ jobs:
       run: bundle exec rake test:integration
 
     - name: Notify slack on success
-      if: (success() && ${{ github.event.inputs.slackMess == true }})
+      if: success()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
@@ -55,7 +50,7 @@ jobs:
         color: good
 
     - name: Notify slack on failure
-      if: (failure() && ${{ github.event.inputs.slackMess == true }})
+      if: failure()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
