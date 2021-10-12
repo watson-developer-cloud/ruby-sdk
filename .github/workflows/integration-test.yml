@@ -44,7 +44,7 @@ jobs:
         NATURAL_LANGUAGE_CLASSIFIER_URL: "https://api.us-south.natural-language-classifier.watson.cloud.ibm.com"
       run: bundle exec rake test:integration
 
-    - name: Notify slack success
+    - name: Notify slack on success
       if: success() && ${{ github.event.inputs.slackMess == true }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
@@ -54,8 +54,8 @@ jobs:
         status: SUCCESS
         color: good
 
-    - name: Notify slack fail
-      if: failure()
+    - name: Notify slack on failure
+      if: failure() && ${{ github.event.inputs.slackMess == true }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
