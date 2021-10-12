@@ -45,6 +45,10 @@ jobs:
         PERSONALITY_INSIGHTS_URL: "https://api.us-south.personality-insights.watson.cloud.ibm.com"
         TONE_ANALYZER_APIKEY: ${{ secrets.TA_APIKEY }}
         TONE_ANALYZER_URL: "https://api.us-south.tone-analyzer.watson.cloud.ibm.com"
+        SPEECH_TO_TEXT_APIKEY: ${{ secrets.STT_APIKEY }}
+        SPEECH_TO_TEXT_URL: "https://api.us-south.speech-to-text.watson.cloud.ibm.com"
+        TEXT_TO_SPEECH_APIKEY: ${{ secrets.TTS_APIKEY }}
+        TEXT_TO_SPEECH_URL: "https://api.us-south.text-to-speech.watson.cloud.ibm.com"
       run: bundle exec rake test:integration
 
     - name: Notify slack on success
