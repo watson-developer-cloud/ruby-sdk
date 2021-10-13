@@ -59,6 +59,10 @@ jobs:
         ASSISTANT_WORKSPACE_ID: ${{ secrets.WAWI_APIKEY }}
         ASSISTANT_ASSISTANT_ID: ${{ secrets.WAAI_APIKEY }}
         ASSISTANT_URL: "https://api.us-south.assistant.watson.cloud.ibm.com"
+        DISCOVERY_APIKEY: ${{ secrets.D1_APIKEY }}
+        DISCOVERY_ENVIRONMENT_ID: ${{ secrets.D1EI_APIKEY }}
+        DISCOVERY_COLLECTION_ID: ${{ secrets.D1CI_APIKEY }}
+        DISCOVERY_URL: "https://api.us-south.discovery.watson.cloud.ibm.com"
       run: bundle exec rake test:integration
 
     - name: Notify slack on success
