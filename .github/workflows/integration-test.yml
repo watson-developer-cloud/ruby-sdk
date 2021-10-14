@@ -66,7 +66,7 @@ jobs:
       run: bundle exec rake test:integration
 
     - name: Notify slack on success
-      if: false # success()
+      if: success()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
@@ -76,7 +76,7 @@ jobs:
         color: good
 
     - name: Notify slack on failure
-      if: false # failure()
+      if: failure()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
