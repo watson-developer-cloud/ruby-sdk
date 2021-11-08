@@ -9,8 +9,6 @@ name: Run Integration Tests
 on:
   schedule:
     - cron: "0 20 * * 0"
-  push:
-    branches: [ '**' ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
