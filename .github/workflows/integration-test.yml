@@ -61,10 +61,14 @@ jobs:
         DISCOVERY_ENVIRONMENT_ID: ${{ secrets.D1_ENVIRONMENT_ID }}
         DISCOVERY_COLLECTION_ID: ${{ secrets.D1_COLLECTION_ID }}
         DISCOVERY_URL: "https://api.us-south.discovery.watson.cloud.ibm.com"
+        DISCOVERY_V2_APIKEY: ${{ secrets.D2_APIKEY }}
+        DISCOVERY_V2_PROJECT_ID: ${{ secrets.D2_PROJECT_ID }}
+        DISCOVERY_V2_COLLECTION_ID: ${{ secrets.D2_COLLECTION_ID }}
+        DISCOVERY_V2_URL: "https://api.us-south.discovery.watson.cloud.ibm.com"
       run: bundle exec rake test:integration
 
     - name: Notify slack on success
-      if: success()
+      if: false # success()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
