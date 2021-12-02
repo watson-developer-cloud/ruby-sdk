@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
     - name: Set up Ruby 2.5
       uses: ruby/setup-ruby@v1
       with:
