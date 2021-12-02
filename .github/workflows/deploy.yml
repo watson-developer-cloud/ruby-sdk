@@ -46,6 +46,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npx semantic-release --dry-run --branches gha_test
+      run: npx -p node@lts -c "npx semantic-release --dry-run --branches gha_test"
 
 
