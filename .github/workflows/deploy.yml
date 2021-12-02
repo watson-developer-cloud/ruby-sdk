@@ -6,11 +6,8 @@
 name: Deploy and Publish
 
 on:
-  workflow_run:
-    workflows: ["Build and Test"]
-    branches: [ master ]
-    types:
-      - completed
+  push:
+    branches: [ '**' ]
 
   # Allows you to run this workflow manually from the Action tab
   workflow_dispatch:
@@ -46,21 +43,9 @@ jobs:
         npm install -g @semantic-release/github
         npm install -g @semantic-release/commit-analyzer
     - name: Publish to Git Releases and Tags
-      if: ${{ github.event.workflow_run.conclusion == 'success' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npx semantic-release # --dry-run
-    - name: Publish to RubyGems
-      if: ${{ github.event.workflow_run.conclusion == 'success' }}
-      continue-on-error: true
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
-      run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-        gem build *.gemspec
-        gem push *.gem
+      run: npx semantic-release --dry-run --branches gha_test
+
 
