@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        persist-credentials: true
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
     - name: Set up Ruby 2.5
       uses: ruby/setup-ruby@v1
       with:
@@ -43,6 +43,9 @@ jobs:
         npm install -g @semantic-release/github
         npm install -g @semantic-release/commit-analyzer
     - name: Publish to Git Releases and Tags
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release --dry-run --branches gha_test
 
 
