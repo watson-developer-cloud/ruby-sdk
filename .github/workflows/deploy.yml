@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        persist-credentials: true
+        persist-credentials: false
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
