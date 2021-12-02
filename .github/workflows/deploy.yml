@@ -32,7 +32,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 12
     - name: Install Semantic Release dependencies
       run: |
         sudo apt-get install bumpversion
