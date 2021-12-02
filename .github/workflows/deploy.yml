@@ -43,8 +43,6 @@ jobs:
         npm install -g @semantic-release/github
         npm install -g @semantic-release/commit-analyzer
     - name: Publish to Git Releases and Tags
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release --dry-run --branches gha_test
 
 
