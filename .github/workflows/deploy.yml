@@ -25,7 +25,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 12
+        node-version: 14
     - name: Set up Ruby 2.5
       uses: ruby/setup-ruby@v1
       with:
@@ -46,6 +46,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npx -p node@lts -c "npx semantic-release --dry-run --branches gha_test"
+      run: npx semantic-release --dry-run --branches gha_test
 
 
