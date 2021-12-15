@@ -5,7 +5,7 @@
 
 name: Run Integration Tests
 
-# Every Sunday at 8PM
+# Every Sunday at 8ish PM
 on:
   schedule:
     - cron: "0 20 * * 0"
