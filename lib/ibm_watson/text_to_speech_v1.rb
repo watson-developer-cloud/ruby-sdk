@@ -914,14 +914,14 @@ module IBMWatson
     #
     #   In some cases, you might need to rerecord and resubmit a prompt as many as five
     #   times to address the following possible problems:
-    #   * The service might fail to detect a mismatch between the prompt’s text and audio.
+    #   * The service might fail to detect a mismatch between the prompts text and audio.
     #   The longer the prompt, the greater the chance for misalignment between its text
     #   and audio. Therefore, multiple shorter prompts are preferable to a single long
     #   prompt.
     #   * The text of a prompt might include a word that the service does not recognize.
     #   In this case, you can create a custom word and pronunciation pair to tell the
     #   service how to pronounce the word. You must then re-create the prompt.
-    #   * The quality of the input audio might be insufficient or the service’s processing
+    #   * The quality of the input audio might be insufficient or the services processing
     #   of the audio might fail to detect the intended prosody. Submitting new audio for
     #   the prompt can correct these issues.
     #
@@ -1140,7 +1140,7 @@ module IBMWatson
     #
     #   Speaker enrollment is a synchronous operation. Although it accepts more audio data
     #   than a prompt, the process of adding a speaker is very fast. The service simply
-    #   extracts information about the speaker’s voice from the audio. Unlike prompts,
+    #   extracts information about the speakers voice from the audio. Unlike prompts,
     #   speaker models neither need nor accept a transcription of the audio. When the call
     #   returns, the audio is fully processed and the speaker enrollment is complete.
     #
@@ -1161,7 +1161,7 @@ module IBMWatson
     #   ampersands, angle brackets, and slashes) in the name.
     #   * Do not use the name of an existing speaker that is already defined for the
     #   service instance.
-    # @param audio [File] An enrollment audio file that contains a sample of the speaker’s voice.
+    # @param audio [File] An enrollment audio file that contains a sample of the speakers voice.
     #   * The enrollment audio must be in WAV format and must have a minimum sampling rate
     #   of 16 kHz. The service accepts audio with higher sampling rates. It transcodes all
     #   audio to 16 kHz before processing it.
