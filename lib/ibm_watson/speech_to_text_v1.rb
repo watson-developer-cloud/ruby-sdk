@@ -563,7 +563,7 @@ module IBMWatson
       response
     end
 
-   ##
+    ##
     # @!method recognize_using_websocket(content_type: nil,recognize_callback:,audio: nil,chunk_data: false,model: nil,customization_id: nil,acoustic_customization_id: nil,customization_weight: nil,base_model_version: nil,inactivity_timeout: nil,interim_results: nil,keywords: nil,keywords_threshold: nil,max_alternatives: nil,word_alternatives_threshold: nil,word_confidence: nil,timestamps: nil,profanity_filter: nil,smart_formatting: nil,speaker_labels: nil, end_of_phrase_silence_time: nil, split_transcript_at_phrase_end: nil, speech_detector_sensitivity: nil, background_audio_suppression: nil, low_latency: nil)
     # Sends audio for speech recognition using web sockets.
     # @param content_type [String] The type of the input: audio/basic, audio/flac, audio/l16, audio/mp3, audio/mpeg, audio/mulaw, audio/ogg, audio/ogg;codecs=opus, audio/ogg;codecs=vorbis, audio/wav, audio/webm, audio/webm;codecs=opus, audio/webm;codecs=vorbis, or multipart/form-data.
