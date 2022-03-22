@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2018, 2020.
+# (C) Copyright IBM Corp. 2018, 2022.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -185,9 +185,8 @@ module IBMWatson
     # @param environment_id [String] The ID of the environment.
     # @param name [String] Name that identifies the environment.
     # @param description [String] Description of the environment.
-    # @param size [String] Size that the environment should be increased to. Environment size cannot be
-    #   modified when using a Lite plan. Environment size can only increased and not
-    #   decreased.
+    # @param size [String] Size to change the environment to. **Note:** Lite plan users cannot change the
+    #   environment size.
     # @return [IBMCloudSdkCore::DetailedResponse] A `IBMCloudSdkCore::DetailedResponse` object representing the response.
     def update_environment(environment_id:, name: nil, description: nil, size: nil)
       raise ArgumentError.new("version must be provided") if version.nil?

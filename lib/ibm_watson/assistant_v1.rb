@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# (C) Copyright IBM Corp. 2018, 2020.
+# (C) Copyright IBM Corp. 2018, 2022.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ module IBMWatson
     #
     # @param args [Hash] The args to initialize with
     # @option args version [String] Release date of the API version you want to use. Specify dates in YYYY-MM-DD
-    #   format. The current version is `2021-06-14`.
+    #   format. The current version is `2021-11-27`.
     # @option args service_url [String] The base service URL to use when contacting the service.
     #   The base service_url may differ between IBM Cloud regions.
     # @option args authenticator [Object] The Authenticator instance to be configured for this service.
