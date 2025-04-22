@@ -8,9 +8,8 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![CLA assistant](https://cla-assistant.io/readme/badge/watson-developer-cloud/ruby-sdk)](https://cla-assistant.io/watson-developer-cloud/ruby-sdk)
 
-## Deprecated builds
-[![Build Status](https://travis-ci.org/watson-developer-cloud/ruby-sdk.svg)](https://travis-ci.org/watson-developer-cloud/ruby-sdk)
-[![Build status](https://ci.appveyor.com/api/projects/status/ir3k0ue138o4u67e?svg=true)](https://ci.appveyor.com/project/maxnussbaum/ruby-sdk)
+## Deprecation Notice
+This repo and the gem package associated with it are being deprecated. While this repo will no longer see active support from the IBM team, contributions by the community via PRs are still welcomed and will be reviewed. Keep in mind, updates will no longer be published as gems and changes made after this update will need to be built independently.
 
 Ruby gem to quickly get started with the various [IBM Watson][wdc] services.
 
